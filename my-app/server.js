@@ -68,26 +68,28 @@ var undergradSchema = new Schema({
 
 var opportunitySchema = new Schema(
     {
-        title: {type: String, default: "No title"},
-        area: {type: [String], default: []}, //area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-        labName: String,
-        labId: String,
-        pi: String,
-        supervisor: String,
-        projectDescription: String,
-        undergradTasks: String,  //what the undergrad would be doing
-        opens: {type: Date, default: new Date()},
+        title: {type: String, default: "No title"}, //required
+        area: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
+        labName: String,    //required
+        labId: String,  //required
+        pi: String, //required
+        supervisor: String, //can be null
+        projectDescription: String, //required, add min length that you see fit
+        undergradTasks: String,  //what the undergrad would be doing, can be null
+        opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
         closes: {type: Date, default: null},  //null if rolling
         startDate: String, //null if start asap, string b/c it will prob be something like Fall 2018
-        minHours: {type: Number, min: 0, max: 500, default: 6},
-        maxHours: {type: Number, min: 0, max: 500, default: 9},
-        qualifications: String,
-        minGPA: {type: Number, min: 0, max: 4.3, default: -1}, //-1 if no minimum gpa required
-        requiredClasses: {type: [String], default: []},
-        questions: [String],
-        yearsAllowed: [String],  //do they accept freshman, sophomores, juniors, and/or seniors
-        applications: Number,   //number of people who've submitted
-        spots: Number   //number of people they're willing to take
+        minSemesters: Number,   //can be null, indicating no min. minimum number of semesters they're expected to work in the lab
+        minHours: {type: Number, min: 0, max: 500, default: 6}, //can be null, indicating no minimum
+        maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
+        qualifications: String, //can be null/empty
+        minGPA: {type: Number, min: 0, max: 4.3, default: 0}, //0 if no minimum gpa required
+        requiredClasses: {type: [String], default: []}, //can be empty
+        questions: [String],    //can be empty
+        yearsAllowed: [String],  //required, do they accept freshman, sophomores, juniors, and/or seniors
+        applications: Number,   //number of people who've submitted, default 0, they don't submit this
+        spots: Number   //required, number of people they're willing to take, -1 indicates no cap to # of spots
+        // howToStoreObjects: Schema.Types.Mixed
     }
 );
 
