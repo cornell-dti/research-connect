@@ -44,7 +44,7 @@ class NameForm extends React.Component {
 class App extends Component {
   render() {
     return (
-      <NameForm />
+        <NameForm />
       // <div className="App">
       //   <header className="App-header">
       //     <img src={logo} className="App-logo" alt="logo" />
