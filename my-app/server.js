@@ -1,4 +1,5 @@
 //server.js
+'use strict'
 
 //import dependencies
 var express = require('express');
