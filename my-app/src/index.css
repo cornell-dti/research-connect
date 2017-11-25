@@ -3,3 +3,20 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+table {
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+table, th, td {
+  border: 1px solid #d3d3d3;
+  padding: 5px;
+}
+
+td {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

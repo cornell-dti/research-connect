@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import OpportunityBox from './OpportunityBox';
 
-class NameForm extends React.Component {
+
+class NameForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +25,6 @@ class NameForm extends React.Component {
     alert('A name was submitted: ' + this.state.firstname + ' ' + this.state.lastname);
 
     // TODO: form validation
-    // TODO: AJAX call
     event.preventDefault();
   }
 
@@ -44,7 +46,11 @@ class NameForm extends React.Component {
 class App extends Component {
   render() {
     return (
-        <NameForm />
+      <div>
+        <OpportunityBox
+          url='http://localhost:3001/getOpportunitiesListing' />
+      </div>
+      // <NameForm />
       // <div className="App">
       //   <header className="App-header">
       //     <img src={logo} className="App-logo" alt="logo" />
