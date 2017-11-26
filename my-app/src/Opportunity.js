@@ -25,7 +25,7 @@ class Opportunity extends Component {
       requiredClasses: [], //can be empty
       questions: [],    //can be empty
       yearsAllowed: [],  //required, do they accept freshman, sophomores, juniors, and/or seniors
-      applications: 0,   //number of people who've submitted, default 0, they don't submit this
+      //applications: 0,   //number of people who've submitted, default 0, they don't submit this
       spots: 0
     };
   }
@@ -36,7 +36,21 @@ class Opportunity extends Component {
           <td>{ this.props.area }</td>
           <td>{ this.props.labName }</td>
           <td>{ this.props.pi }</td>
-          
+          <td>{ this.props.supervisor }</td>
+          <td>{ this.props.projectDescription }</td>
+          <td>{ this.props.undergradTasks }</td>
+          <td>{ this.props.opens }</td>
+          <td>{ this.props.closes }</td>
+          <td>{ this.props.startDate }</td>
+          <td>{ this.props.minSemesters }</td>
+          <td>{ this.props.minHours }</td>
+          <td>{ this.props.maxHours }</td>
+          <td>{ this.props.qualifications }</td>
+          <td>{ this.props.minGPA }</td>
+          <td>{ this.props.requiredClasses }</td>
+          <td>{ this.props.questions }</td>
+          <td>{ this.props.yearsAllowed }</td>
+          <td>{ this.props.spots }</td>
       </tr>
     )
   }

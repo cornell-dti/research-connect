@@ -27,7 +27,7 @@ class OpportunityList extends Component {
           requiredClasses={ opp.requiredClasses }
           questions={ opp.questions }
           yearsAllowed={ opp.yearsAllowed }
-          applications={ opp.applications }
+          //applications={ opp.applications }
           spots={ opp.spots }
         />
       )
@@ -38,6 +38,21 @@ class OpportunityList extends Component {
         <th>Area</th>
         <th>Lab Name</th>
         <th>PI</th>
+        <th>Supervisor</th>
+        <th>Project Description</th>
+        <th>Undergrad Tasks</th>
+        <th>Opens</th>
+        <th>Closes</th>
+        <th>Start Date</th>
+        <th>Min Semesters</th>
+        <th>Min Hours</th>
+        <th>Max Hours</th>
+        <th>Qualifications</th>
+        <th>Min GPA</th>
+        <th>Required Classes</th>
+        <th>Questions</th>
+        <th>Years Allowed</th>
+        <th>Spots</th>
         <tbody>{ oppNodes }</tbody>
       </table>
     )

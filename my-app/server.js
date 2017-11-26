@@ -80,15 +80,37 @@ var undergradSchema = new Schema({
     skills: []
 });
 
+var postDocsGradSchema = new Schema(
+    {
+        firstName: String,
+        lastName: String
+    });
+var labSchema = new Schema(
+    {
+        labName: String,
+        labDescription: String
+    }
+);
+
+var professorSchema = new Schema(
+    {
+        firstName: String,
+        lastName: String,
+        postDocGrad: [String]
+    }
+);
+
+var areasOfResearch = ["Computer Science", "Electrical Engineering", "Computational Biology", "Molecular Biology", "Biology"];
+
 var opportunitySchema = new Schema(
     {
-        title: {type: String, default: "No title"}, //required
+        title: {type: String, default: "No title", required: [true, 'Must have title']}, //required
         area: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-        labName: String,    //required
-        labId: String,  //required
-        pi: String, //required
+        labName: {type: String, required: [true, 'Must have lab name']},    //required
+        labId: {type: String, required: [true, 'Must have lab ID']},  //required
+        pi: {type: String, required: [true, 'Must have PI']}, //required
         supervisor: String, //can be null
-        projectDescription: String, //required, add min length that you see fit
+        projectDescription: {type: String, minlength: 250, maxlength: 1500}, //required, add min length that you see fit
         undergradTasks: String,  //what the undergrad would be doing, can be null
         opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
         closes: {type: Date, default: null},  //null if rolling
@@ -100,10 +122,30 @@ var opportunitySchema = new Schema(
         minGPA: {type: Number, min: 0, max: 4.3, default: 0}, //0 if no minimum gpa required
         requiredClasses: {type: [String], default: []}, //can be empty
         questions: [String],    //can be empty
-        yearsAllowed: [String],  //required, do they accept freshman, sophomores, juniors, and/or seniors
-        applications: Number,   //number of people who've submitted, default 0, they don't submit this
-        spots: Number   //required, number of people they're willing to take, -1 indicates no cap to # of spots
+        yearsAllowed: {type: [String], required: [true, 'Must select student year range']},  //required, do they accept freshman, sophomores, juniors, and/or seniors
+        // applications: {type: Number, default: 0},    //use applications.length from now on
+        spots: {type: Number, required: [true, 'Must indicate number of spots (enter -1 if no limit)'], min: -1},   //required, number of people they're willing to take, -1 indicates no cap to # of spots
         // howToStoreObjects: Schema.Types.Mixed
+        applications: {type: [Schema.Types.Mixed]}
+    }
+);
+
+var researchSignUpSchema = new Schema({
+    labName: String,
+    position: String,
+    year: String,
+    netID: Number
+
+});
+
+var commonAppSchema = new Schema(
+    {
+        firstName: {type: String, required: [true, 'first name required']},
+        lastName: {type: String, required: [true, 'last name required']},
+        year: String,
+        major: String,
+        GPA: {type: Number, min: [0, 'GPA cannot go below 0'], max: [4.3, 'GPA cannot exceed 4.3']}
+
     }
 );
 
@@ -112,6 +154,8 @@ var opportunitySchema = new Schema(
 
 var undergradModel = mongoose.model('Undergrads', undergradSchema); //a mongoose model = a Collection on mlab/mongodb
 var opportunityModel = mongoose.model('Opportunities', opportunitySchema); //a mongoose model = a Collection on mlab/mongodb
+var commonAppModel = mongoose.model('Common Application', commonAppSchema);
+var researcherSignupModel = mongoose.model('Research Signup', researchSignUpSchema);
 
 /** Begin ADD TO DATABASE */
 
@@ -157,20 +201,20 @@ var opportunityModel = mongoose.model('Opportunities', opportunitySchema); //a m
 
 /** Begin SEARCHING THE DATABASE */
 
-//example code for searching the database:
+//Example code for searching the database:
 /**
- opportunityModel.find({}, function (err, opportunities) {
-    console.log(opportunities);
-    //has to be double quotes for the search criteria ("andrew" in this case)!
-    // 'students' contains the list of students that match the criteria.
-    //since we only specify firstName and year, that's all the info about the students we'll get back
-    if (err) {
-        console.log(err);
-        //handle the error appropriately
-    }
-    // console.log(students);
+opportunityModel.find({}, function (err, opportunities) {
+   console.log(opportunities);
+   //has to be double quotes for the search criteria ("andrew" in this case)!
+   // 'students' contains the list of students that match the criteria.
+   //since we only specify firstName and year, that's all the info about the students we'll get back
+   if (err) {
+       console.log(err);
+       //handle the error appropriately
+   }
+   // console.log(students);
 });
- */
+*/
 
 /**End SEARCHING THE DATABASE */
 
@@ -213,6 +257,102 @@ app.post('/sendFormData', function (req, res) {
     //res is used to send the result, which the front end can parse
     res.send("hello");
 });
+
+app.post('/createOpportunity', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data);
+
+    opportunity = new opportunityModel({
+        title: data.title,
+        area: data.area,
+        labName: data.labName,
+        labId: data.labID,
+        pi: data.pi,
+        supervisor: data.supervisor,
+        projectDescription: data.projectDescription,
+        undergradTasks: data.undergradTasks,
+        opens: data.opens,
+        closes: data.closes,
+        startDate: data.startDate,
+        minHours: data.minHours,
+        maxHours: data.maxHours,
+        qualifications: data.qualifications,
+        minGPA: data.minGPA,
+        spots: data.spots,
+        requiredClasses: data.requiredClasses,
+        questions: data.question,
+        yearsAllowed: data.yearsAllowed,
+        applications: 50,   //TODO change
+        undergradID: mongoose.Types.ObjectId()
+    });
+
+    opportunity.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } else //Handle this error however you see fit
+            res.send("Success!");
+
+        // Now the opportunity is saved in the Opportunities collection on mlab!
+    });
+});
+
+
+app.post('/createCommonApp', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data);
+    console.log(data.title);
+
+    var commonApp = new commonAppModel({
+
+        firstName: data.firstName,
+        lastName: data.lastName,
+        year: data.year,
+        major: data.major,
+        GPA: data.GPA
+    });
+    commonApp.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+
+});
+
+///Endpoint for researchsignup
+
+app.post('/createResearcherSignup', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data);
+
+    var researcherSignup = new researcherSignupModel({
+        labName: data.labName,
+        position: data.position,
+        year: data.year,
+        netID: 4722392
+
+    });
+
+    researcherSignup.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+});
+
 
 /**End ENDPOINTS */
 

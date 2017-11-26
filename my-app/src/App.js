@@ -4,8 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 import OpportunityBox from './OpportunityBox';
 
-
-
 class YearSelect extends React.Component {
   constructor(props) {
     super(props);
@@ -47,9 +45,6 @@ class YearSelect extends React.Component {
     );
   }
 }
-
-
-
 
 
 class NameForm extends React.Component {
