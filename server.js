@@ -85,10 +85,13 @@ var postDocsGradSchema = new Schema(
         firstName: String,
         lastName: String
     });
-var labSchema = new Schema(
+const labSchema = new Schema(
     {
-        labName: String,
-        labDescription: String
+        name: String,
+        labPage: String,
+        labDescription: String,
+        labAdmins: [],
+        opportunities: []
     }
 );
 
@@ -153,9 +156,11 @@ var commonAppSchema = new Schema(
 /** End SCHEMAS*/
 
 var undergradModel = mongoose.model('Undergrads', undergradSchema); //a mongoose model = a Collection on mlab/mongodb
-var opportunityModel = mongoose.model('Opportunities', opportunitySchema); //a mongoose model = a Collection on mlab/mongodb
+var opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 var commonAppModel = mongoose.model('Common Application', commonAppSchema);
 var researcherSignupModel = mongoose.model('Research Signup', researchSignUpSchema);
+let labModel = mongoose.model('Labs', labSchema, 'Labs');
+
 
 /** Begin ADD TO DATABASE */
 
@@ -231,14 +236,24 @@ app.get('/something', function (req, res) {
 
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
-        opens: {
-            $lte: new Date()
-        },
-        closes: {
-            $gte: new Date()
-        }
+        // opens: {
+        //     $lte: new Date()
+        // },
+        // closes: {
+        //     $gte: new Date()
+        // }
     }, function (err, opportunities) {
         res.send(opportunities);
+        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+            res.send(err);
+            //handle the error appropriately
+        }
+    });
+});
+
+app.get('/getLabs', function (req, res) {
+    labModel.find({}, function (err, labs) {
+        res.send(labs);
         if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
             res.send(err);
             //handle the error appropriately
@@ -263,7 +278,7 @@ app.post('/createOpportunity', function (req, res) {
     var data = req.body;
     console.log(data);
 
-    opportunity = new opportunityModel({
+    let opportunity = new opportunityModel({
         title: data.title,
         area: data.area,
         labName: data.labName,

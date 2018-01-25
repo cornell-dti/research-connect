@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import OpportunityBox from './OpportunityBox';
+import OpportunityBox from './components/OpportunityBox';
 
 class YearSelect extends React.Component {
   constructor(props) {
@@ -96,6 +96,7 @@ class App extends Component {
 
         <OpportunityBox
           url='http://localhost:3001/getOpportunitiesListing' />
+          {/*TODO change the url to get the address bar */}
       </div>
       // <NameForm />
       // <div className="App">

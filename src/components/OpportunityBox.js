@@ -10,6 +10,7 @@ class OpportunityBox extends Component {
   }
 
   loadOpportunitiesFromServer() {
+    console.log("began");
     axios.get(this.props.url)
       .then(res => {
         console.log("RESULT IS",res.data);

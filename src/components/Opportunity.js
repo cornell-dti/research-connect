@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './index.css';
+import '../index.css';
 
 class Opportunity extends Component {
   constructor(props) {
