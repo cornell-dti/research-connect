@@ -29,9 +29,47 @@ class Opportunity extends Component {
       spots: 0
     };
   }
+
+    contains(needle) {
+    // Per spec, the way to identify NaN is that it is not equal to itself
+    var findNaN = needle !== needle;
+    var indexOf;
+
+    if(!findNaN && typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function(needle) {
+            var i = -1, index = -1;
+
+            for(i = 0; i < this.length; i++) {
+                var item = this[i];
+
+                if((findNaN && item !== item) || item.toLowerCase() === needle.toLowerCase()) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        };
+    }
+
+    return indexOf.call(this, needle) > -1;
+};
+
+  shouldShow(){
+      const filteredOptions = this.props.filteredOptions;
+      console.log('deep');
+      console.log(this.props.yearsAllowed);
+      if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") === -1){
+          return false;
+      }
+      return true;
+  }
+
   render() {
     return (
-      <tr>
+      <tr style={{display: this.shouldShow() ? "" : "none"}}>
           <td>{ this.props.title }</td>
           <td>{ this.props.area }</td>
           <td>{ this.props.labName }</td>

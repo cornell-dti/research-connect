@@ -25,7 +25,7 @@ class OpportunityBox extends Component {
 
   render() {
     return (
-      <OpportunityList data={ this.state.data } />
+      <OpportunityList filteredOptions ={this.props.filteredOptions } data={ this.state.data } />
     )
   }
 }
