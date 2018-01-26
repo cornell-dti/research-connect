@@ -56,10 +56,14 @@ class Opportunity extends Component {
         return indexOf.call(this, needle) > -1;
     };
 
+    /**
+     * takes the filteredOptions passed all the way down from Opportunities.js through the props
+     * and compare the fileredOptions to the years allowed passed through props by the opportunity list that has all the info about opportunities
+     * @return {boolean} based on the filter paramterse, whether or not each opportunity should show
+     */
     shouldShow() {
         const filteredOptions = this.props.filteredOptions;
-        console.log('deep');
-        console.log(this.props.yearsAllowed);
+        //filter for years allowed
         if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") === -1 ||
             filteredOptions.yearSelect.Sophomore && this.props.yearsAllowed.indexOf("sophomore") === -1 ||
             filteredOptions.yearSelect.Junior && this.props.yearsAllowed.indexOf("junior") === -1 ||

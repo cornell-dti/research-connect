@@ -14,6 +14,7 @@ class Opportunities extends Component {
         };
     }
 
+    //just used to print out the state
     test() {
         console.log("ran");
         console.log(this.state);
@@ -37,16 +38,6 @@ class Opportunities extends Component {
                 />
                 {/*TODO change the url to get the address bar */}
             </div>
-            // <NameForm />
-            // <div className="App">
-            //   <header className="App-header">
-            //     <img src={logo} className="App-logo" alt="logo" />
-            //     <h1 className="App-title">Welcome to React</h1>
-            //   </header>
-            //   <p className="App-intro">
-            //     To get started, edit <code>src/App.js</code> and save to reload.
-            //   </p>
-            // </div>
         );
     }
 }
