@@ -92,7 +92,7 @@ class Opportunity extends Component {
                 <td>{ this.props.qualifications }</td>
                 <td>{ this.props.minGPA }</td>
                 <td>{ this.props.requiredClasses }</td>
-                <td>{ this.props.questions }</td>
+                {/*<td>{ this.props.questions }</td>*/}
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
