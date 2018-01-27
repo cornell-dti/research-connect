@@ -29,19 +29,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
 
-  //and remove cacheing so we get the most recent comments
-  res.setHeader('Cache-Control', 'no-cache');
-  next();
+    //and remove cacheing so we get the most recent comments
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
 });
 
 
 router.get('/', function(req, res) {
- res.json({ message: 'API Initialized!'});
+    res.json({ message: 'API Initialized!'});
 });
 
 //app.use('/users', users);
@@ -188,7 +188,7 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 //Example code for searching the database:
 /**
-opportunityModel.find({}, function (err, opportunities) {
+ opportunityModel.find({}, function (err, opportunities) {
    console.log(opportunities);
    //has to be double quotes for the search criteria ("andrew" in this case)!
    // 'students' contains the list of students that match the criteria.
@@ -199,7 +199,7 @@ opportunityModel.find({}, function (err, opportunities) {
    }
    // console.log(students);
 });
-*/
+ */
 
 /**End SEARCHING THE DATABASE */
 
@@ -355,7 +355,7 @@ app.post('/createLabAdmin', function (req, res) {
 /**End ENDPOINTS */
 
 
- /*******************************/
+/*******************************/
 //END NON-DEFAULT CODE
 /*******************************/
 
@@ -371,5 +371,5 @@ module.exports = app;
 
 //starts the server and listens for requests
 app.listen(port, function() {
- console.log(`api running on port ${port}`);
+    console.log(`api running on port ${port}`);
 });

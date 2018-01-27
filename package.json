@@ -9,7 +9,7 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "foreman": "^2.0.0",
-    "marked": "^0.3.6",
+    "marked": "^0.3.12",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.0",
     "morgan": "~1.8.1",
