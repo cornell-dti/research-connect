@@ -75,8 +75,9 @@ class Opportunity extends Component {
     }
 
     clickRow(rowObj) {
+        console.log("opid");
         console.log(this.props.opId);
-        this.props.history.push('/opportunity/' + this.props.opID);
+        document.location.href = ('http://localhost:3000/opportunity/' + this.props.opId);
     }
 
     render() {
