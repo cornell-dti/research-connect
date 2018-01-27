@@ -140,7 +140,7 @@ opportunitySchema.pre('validate', function (next) {
 });
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-//example code at bottom
+//EXAMPLE CODE AT BOTTOM
 
 /** Begin ADD TO DATABASE */
 
@@ -159,10 +159,10 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 /**Begin ENDPOINTS */
 
 //Example code for receiving a request from the front end that doesn't send any data,
-app.get('/something', function (req, res) {
+/*app.get('/something', function (req, res) {
     //res is used to send the result
     res.send("hello");
-});
+});*/
 
 app.post('/getOpportunity', function (req, res) {
     var id = req.body.id;
@@ -179,19 +179,20 @@ app.post('/getOpportunity', function (req, res) {
 
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
-        // opens: {
-        //     $lte: new Date()
-        // },
-        // closes: {
-        //     $gte: new Date()
-        // }
-    }, function (err, opportunities) {
-        res.send(opportunities);
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
-            res.send(err);
-            //handle the error appropriately
-        }
-    });
+            // opens: {
+            //     $lte: new Date()
+            // },
+            // closes: {
+            //     $gte: new Date()
+            // }
+        },
+        function (err, opportunities) {
+            res.send(opportunities);
+            if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+                res.send(err);
+                //handle the error appropriately
+            }
+        });
 });
 
 app.get('/getLabs', function (req, res) {
@@ -313,6 +314,62 @@ app.post('/createLabAdmin', function (req, res) {
 });
 
 
+app.post('/updateOpportunity', function (req, res) {
+    var id = req.body.id;
+    console.log(id);
+    opportunityModel.findById(id, function (err, opportunities) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+
+            opportunityModel.creatorNetId = req.body.creatorNetId || opportunityModel.creatorNetId;
+            opportunityModel.labPage = req.body.labPage || opportunityModel.labPage;
+            opportunityModel.title = req.body.title || opportunityModel.title;
+            opportunityModel.projectDescription = req.body.projectDescription || opportunityModel.projectDescription;
+            opportunityModel.qualifications = req.body.qualifications || opportunityModel.qualifications;
+            opportunityModel.supervisor = req.body.supervisor || opportunityModel.supervisor;
+            opportunityModel.spots = req.body.spots || opportunityModel.spots;
+            opportunityModel.startSeason = req.body.startSeason || opportunityModel.startSeason;
+            opportunityModel.startYear = req.body.startYear || opportunityModel.startYear;
+            opportunityModel.applications = req.body.applications || opportunityModel.applications;
+            opportunityModel.questions = req.body.questions || opportunityModel.questions;
+            opportunityModel.requiredClasses= req.body.requiredClasses || opportunityModel.requiredClasses;
+            opportunityModel.minGPA = req.body.minGPA || opportunityModel.minGPA;
+            opportunityModel.minHours = req.body.minHours || opportunityModel.minHours;
+            opportunityModel.maxHours = req.body.maxHours|| opportunityModel.maxHours;
+            opportunityModel.opens = req.body.opens || opportunityModel.opens;
+            opportunityModel.closes = req.body.closes || opportunityModel.closes;
+            opportunityModel.areas = req.body.areas || opportunityModel.areas;
+
+            // Save the updated document back to the database
+            opportunityModel.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+
+//EMAIL SENDGRID
+// using SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+    to: 'ag946@cornell.edu',
+    from: 'ayeshagrocks@gmail.com',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+sgMail.send(msg);
 /**End ENDPOINTS */
 
 
