@@ -65,19 +65,36 @@ class Opportunity extends Component {
     shouldShow() {
         const filteredOptions = this.props.filteredOptions;
         //filter for years allowed
-        if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") === -1 ||
-            filteredOptions.yearSelect.Sophomore && this.props.yearsAllowed.indexOf("sophomore") === -1 ||
-            filteredOptions.yearSelect.Junior && this.props.yearsAllowed.indexOf("junior") === -1 ||
-            filteredOptions.yearSelect.Senior && this.props.yearsAllowed.indexOf("senior") === -1) {
-            return false;
+        if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") != -1 ||
+            filteredOptions.yearSelect.Sophomore && this.props.yearsAllowed.indexOf("sophomore") != -1 ||
+            filteredOptions.yearSelect.Junior && this.props.yearsAllowed.indexOf("junior") != -1 ||
+            filteredOptions.yearSelect.Senior && this.props.yearsAllowed.indexOf("senior") != -1) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     clickRow(rowObj) {
         console.log("opid");
         console.log(this.props.opId);
         document.location.href = ('http://localhost:3000/opportunity/' + this.props.opId);
+    }
+
+    convertDate(dateString){
+      var dateObj = new Date(dateString);
+      return dateObj.toString().slice(0,15);
+    }
+    checkOpen(){
+      var openDateObj = new Date(this.props.opens);
+      var closesDateObj = new Date(this.props.closes);
+      var nowTime = Date.now()
+      if (closesDateObj.getTime() < nowTime){
+        return "Closed";
+      }else if (openDateObj.getTime() > nowTime){
+        return "Not Open Yet";
+      }else{
+        return "Open";
+      }
     }
 
     render() {
@@ -104,12 +121,32 @@ class Opportunity extends Component {
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
-                <h3>
-                    Title
-                </h3>
-                <p>
+            <div className='opportunityListing'>
+                <h3>{this.props.title}</h3>
+                <h4> {this.checkOpen()}</h4>
+                <h4> Supervisor: {this.props.supervisor}</h4>
+                <h4> Area: {this.props.area}</h4>
+                <h4> Lab Name: {this.props.labName}</h4>
+                <h4> PI: {this.props.pi}</h4>
+                <h4> Description: {this.props.projectDescription}</h4>
+                <h4> Tasks: {this.props.undergradTasks}</h4>
+                <h4> Application Window: From {this.convertDate(this.props.opens)} to {this.convertDate(this.props.closes)}</h4>
+                <h4> Start Date: {this.props.startDate}</h4>
+                <h4> Weekly Hours: Between { this.props.minHours } and { this.props.maxHours } </h4>
+                <h4> Qualifications: </h4>
+                <ul>
+                  <li>Minimum GPA: {this.props.minGPA}</li>
+                  <li>Required Classes: {this.props.requiredClasses}</li>
+                  <li>Years Allowed: {this.props.yearsAllowed}</li>
+                  <li>Required minimum semesters: {this.minSemesters}</li>
+                  <li>{this.props.qualifications}</li>
+                  </ul>
 
-                </p>
+                <h4>Apply Here: </h4>
+              <div>
+              {Object.values(this.props.questions)}
+              </div>
+                </div>
             </div>
 
 

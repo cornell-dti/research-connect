@@ -359,40 +359,58 @@ app.post('/updateOpportunity', function (req, res) {
 });
 
 
+app.post('/deleteOpportunity', function (req, res) {
+    var id = req.body.id;
+    console.log("delete opportuinty");
+    console.log(id);
+
+    opportunityModel.findByIdAndRemove(id, function (err, opportunity) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Opportunity successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+
+    });
+});
+
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-    to: 'ag946@cornell.edu',
-    from: 'ayeshagrocks@gmail.com',
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-};
-sgMail.send(msg);
-/**End ENDPOINTS */
+    const sgMail = require('@sendgrid/mail');
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+        to: 'ag946@cornell.edu',
+        from: 'ayeshagrocks@gmail.com',
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    };
+    sgMail.send(msg);
+    /**End ENDPOINTS */
 
 
-/*******************************/
+    /*******************************/
 //END NON-DEFAULT CODE
-/*******************************/
+    /*******************************/
 
 
 // catch 404 and fgorward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+    app.use(function (req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
 
-module.exports = app;
+    module.exports = app;
 
 //starts the server and listens for requests
-app.listen(port, function() {
-    console.log(`api running on port ${port}`);
-});
+    app.listen(port, function () {
+        console.log(`api running on port ${port}`);
+    });
 
 
 
