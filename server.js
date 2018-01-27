@@ -71,95 +71,75 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /**Begin SCHEMAS*/
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var undergradSchema = new Schema({
-    firstName: String,
-    lastName: String,
-    year: String,  //TODO: add enum for frosh, soph, junior, senior, in form specify this is what they will be next term if it's summer
-    skills: []
+const undergradSchema = new Schema({
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
+    gradYear: {type: Number, required: true, min: new Date().getFullYear()},
+    major: {type: String},
+    gpa: {type: Number, min: 0, max: 4.3},
+    netId: {type: String, required: true}
 });
+let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
 
-var postDocsGradSchema = new Schema(
-    {
-        firstName: String,
-        lastName: String
-    });
-const labSchema = new Schema(
-    {
-        name: String,
-        labPage: String,
-        labDescription: String,
-        labAdmins: [],
-        opportunities: []
-    }
-);
-
-var professorSchema = new Schema(
-    {
-        firstName: String,
-        lastName: String,
-        postDocGrad: [String]
-    }
-);
-
-var areasOfResearch = ["Computer Science", "Electrical Engineering", "Computational Biology", "Molecular Biology", "Biology"];
-
-var opportunitySchema = new Schema(
-    {
-        title: {type: String, default: "No title", required: [true, 'Must have title']}, //required
-        area: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-        labName: {type: String, required: [true, 'Must have lab name']},    //required
-        labId: {type: String, required: [true, 'Must have lab ID']},  //required
-        pi: {type: String, required: [true, 'Must have PI']}, //required
-        supervisor: String, //can be null
-        projectDescription: {type: String, minlength: 250, maxlength: 1500}, //required, add min length that you see fit
-        undergradTasks: String,  //what the undergrad would be doing, can be null
-        opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
-        closes: {type: Date, default: null},  //null if rolling
-        startDate: String, //null if start asap, string b/c it will prob be something like Fall 2018
-        minSemesters: Number,   //can be null, indicating no min. minimum number of semesters they're expected to work in the lab
-        minHours: {type: Number, min: 0, max: 500, default: 6}, //can be null, indicating no minimum
-        maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
-        qualifications: String, //can be null/empty
-        minGPA: {type: Number, min: 0, max: 4.3, default: 0}, //0 if no minimum gpa required
-        requiredClasses: {type: [String], default: []}, //can be empty
-        questions: [String],    //can be empty
-        yearsAllowed: {type: [String], required: [true, 'Must select student year range']},  //required, do they accept freshman, sophomores, juniors, and/or seniors
-        // applications: {type: Number, default: 0},    //use applications.length from now on
-        spots: {type: Number, required: [true, 'Must indicate number of spots (enter -1 if no limit)'], min: -1},   //required, number of people they're willing to take, -1 indicates no cap to # of spots
-        // howToStoreObjects: Schema.Types.Mixed
-        applications: {type: [Schema.Types.Mixed]}
-    }
-);
-
-var researchSignUpSchema = new Schema({
-    labName: String,
-    position: String,
-    year: String,
-    netID: Number
-
+const labSchema = new Schema({
+    name: {type: String, required: true},
+    labPage: {type: String, default: ""},
+    labDescription: {type: String, default: ""},
+    labAdmins: {type: [String], default: []},
+    opportunities: [Schema.Types.ObjectId]
 });
+let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
 
-var commonAppSchema = new Schema(
-    {
-        firstName: {type: String, required: [true, 'first name required']},
-        lastName: {type: String, required: [true, 'last name required']},
-        year: String,
-        major: String,
-        GPA: {type: Number, min: [0, 'GPA cannot go below 0'], max: [4.3, 'GPA cannot exceed 4.3']}
 
+const labAdministratorSchema = new Schema({
+    role: {type: String, enum: ["pi", "postdoc", "grad", "undergrad"], required: true},
+    labId: {type: Schema.Types.ObjectId, required: true},
+    netId: {type: String, required: true},
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
+    verified: {type: Boolean, default: false}
+});
+let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
+
+
+const opportunitySchema = new Schema({
+    creatorNetId: {type: String, required: [true, "Must have NetId for the user creating the opportunity"]},
+    labPage: {type: String, default: "This lab does not have a website", required: false},
+    title: {type: String, default: "TBD", required: [true, 'Must have title']}, //required
+    projectDescription: {type: String, default: "TBD"}, //required, add min length that you see fit
+    undergradTasks: {type: String, default: "TBD"},  //what the undergrad would be doing, can be null
+    qualifications: {type: String, default: "TBD"}, //can be null/empty
+    supervisor: {type: String, default: "TBD"}, //can be null
+    spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
+    startSeason: {type: String, enum: ["Summer", "Fall", "Winter", "Spring"]}, //null if start asap, string b/c it will prob be something like Fall 2018
+    startYear: {type: Number, min: new Date().getFullYear()},
+    yearsAllowed: {
+        type: [String],
+        enum: ["freshman", "sophomore", "junior", "senior"],
+        default: ["freshman", "sophomore", "junior", "senior"]
+    },  //do they accept freshman, sophomores, juniors, and/or seniors
+    applications: {type: [Schema.Types.Mixed], default: []},
+    questions: Schema.Types.Mixed,    //can be empty
+    requiredClasses: {type: [String], default: []}, //can be empty
+    minGPA: {type: Number, min: 0, max: 4.3, default: 0}, //0 if no minimum gpa required
+    minHours: {type: Number, min: 0, max: 500, default: 6}, //can be null, indicating no minimum
+    maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
+    opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
+    closes: {type: Date, default: null},  //null if rolling
+    areas: {type: [String], default: []} //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
+    // howToStoreObjects: Schema.Types.Mixed
+});
+opportunitySchema.pre('validate', function (next) {
+    if (this.maxHours < this.minHours) {
+        next(new Error('Min hours must be greater than or equal to max hours.'));
+    } else {
+        next();
     }
-);
+});
+let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-//TODO: add schemas for Postdocs/Grad students, Professors, Opportunities, Labs, etc.
-/** End SCHEMAS*/
-
-var undergradModel = mongoose.model('Undergrads', undergradSchema); //a mongoose model = a Collection on mlab/mongodb
-var opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
-var commonAppModel = mongoose.model('Common Application', commonAppSchema);
-var researcherSignupModel = mongoose.model('Research Signup', researchSignUpSchema);
-let labModel = mongoose.model('Labs', labSchema, 'Labs');
 
 
 /** Begin ADD TO DATABASE */
@@ -278,6 +258,7 @@ app.post('/createOpportunity', function (req, res) {
     var data = req.body;
     console.log(data);
 
+    //TODO fix this to match new opportunity schema
     let opportunity = new opportunityModel({
         title: data.title,
         area: data.area,
@@ -314,21 +295,22 @@ app.post('/createOpportunity', function (req, res) {
 });
 
 
-app.post('/createCommonApp', function (req, res) {
+app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
     console.log(data.title);
 
-    var commonApp = new commonAppModel({
+    var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
-        year: data.year,
+        gradYear: data.year,    //number
         major: data.major,
-        GPA: data.GPA
+        gpa: data.gpa,
+        netID: data.netID
     });
-    commonApp.save(function (err) {
+    undergrad.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -343,7 +325,8 @@ app.post('/createCommonApp', function (req, res) {
 
 ///Endpoint for researchsignup
 
-app.post('/createResearcherSignup', function (req, res) {
+//TODO
+app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);

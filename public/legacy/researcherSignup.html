@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+This is a placeholder for the form that a student will fill out for an opportunity.
+<h3>Just some basic info</h3>
+<form id="researcherSignup">
+    Lab Name:<br>
+    <select name="labName">
+        <option value="charles lab">Charles Lab</option>
+        <option value="lab for human development">Lab for human development</option>
+        <option value="johnson lab">Johnson lab</option>
+    </select>
+    <input type="radio" name="position" value="pi">Principal Investigator<br>
+    <input type="radio" name="year" value="postdoc">Postdoc<br>
+    <input type="radio" name="year" value="grad">Grad Student<br>
+    <input type="submit" value="Submit">
+</form>
+
+
+<script>
+
+    $(document).ready(function() {
+        $("#researcherSignup").submit(function(event){
+
+            event.preventDefault(); //prevent the form from doing its default action of refreshing the page
+            $.ajax({
+                url: "/createResearcherSignup",
+                method: "POST",
+                data: $("#researcherSignup").serialize(),
+                success: function (response) {  //if everything went right when sending to the backend
+                    //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+                    console.log("success!");
+                    console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+                    console.log(JSON.parse(xhr.responseText));
+                    //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+                }
+            });
+        });
+        $.ajax({
+            url: "/",
+            method: "POST",
+            data: {
+
+            },
+            success: function (response) {  //if everything went right when sending to the backend
+                //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+                console.log("success!");
+                console.log(response);
+            },
+            error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+                console.log(JSON.parse(xhr.responseText));
+                //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

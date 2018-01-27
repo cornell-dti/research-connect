@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+This is a placeholder for our form to create an opportunity. The below form was used in coding exercises to test backend.
+<h3>Create a lab opportunity</h3>
+<form id="commonApp">
+    First Name:<br>
+    <input type="text" name="firstName" value="Ayesha"><br>
+    Last Name:<br>
+    <input type="text" name="lastName" value="Gagguturi"><br>
+    What year are you?
+    <select name="year">
+        <option value="freshman" selected>Freshman</option>
+        <option value="sophomore">Sophomore</option>
+        <option value="junior">Junior</option>
+        <option value="senior">Senior</option>
+    </select><br>
+    <select name="major">
+        <option value="computer science" selected>computer science</option>
+        <option value="electrical engineering">electrical engineering</option>
+        <option value="biology">biology</option>
+    </select><br>
+    GPA:<br>
+    <input name="GPA" id="GPA" value="0"><br>
+    Your relevant classes:<br>
+    <input type="text" name="class" value="CS 1110">
+    <input type="text" name="class" value="CS 2110">
+    <input type="text" name="class" value="CS 5150"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+
+<script>
+    $(document).ready(function() {
+        $("#GPA").spinner();
+        $("#commonApp").submit(function(event){
+            event.preventDefault();
+            $.ajax({
+                url: "/createCommonApp",
+                method: "POST",
+                data: $("#commonApp").serialize(),
+                success: function (response) {  //if everything went right when sending to the backend
+                    //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+                    console.log("success!");
+                    console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+                    console.log(JSON.parse(xhr.responseText));
+                    //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+                }
+            });
+        })
+    });
+
+</script>
+</body>
+</html>

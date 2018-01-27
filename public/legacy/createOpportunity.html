@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+This is a placeholder for our form to create an opportunity. The below form was used in coding exercises to test backend.
+<h3>Create a lab opportunity</h3>
+<form id="opportunityForm">
+    Title:<br>
+    <input type="text" name="title" value="Comp Sci Project"><br>
+    Area of Research:<br>
+    <select name="area">
+        <option value="computer science">Computer Science</option>
+        <option value="electrical engineering">Electrical Engineering</option>
+        <option value="computational biology">Computational Biology</option>
+    </select>
+    <br>
+    Lab Name:<br>
+    <input type="text" name="labName" value="Xiao Lab"><br>
+    Lab ID:<br>
+    <input type="text" name="labID" value="02qr3ijwaf"><br>
+    PI:<br>
+    <input type="text" name="pi" value="Andrew Xiao"><br>
+    Supervisor:<br>
+    <input type="text" name="supervisor" value="John Smith"><br>
+    Project Description:<br>
+    <input type="text" name="projectDescription" value="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."><br>
+    Undergrad Tasks:<br>
+    <input type="text" name="undergradTasks" value="You'll be coding a recurrent neural network"><br>
+    Open Date<br>
+    <input name="opens" id="opens" /><br>
+    Close Date<br>
+    <input name="closes" id="closes" /><br>
+    When would the undergrad start?
+    <select name="startDate">
+        <option value="Fall 2017">Fall 2017</option>
+        <option value="Winter 2017">Winter 2017</option>
+        <option value="Spring 2018">Spring 2018</option>
+    </select><br>
+    Minimum Hours:<br>
+    <input name="minHours" id="minHours" value="6"><br>
+    Maximum Hours:<br>
+    <input name="maxHours" id="maxHours" value="9"><br>
+    Qualifications:<br>
+    <input type="text" name="qualifications" value="Java, Android"><br>
+    Min GPA:<br>
+    <input name="minGPA" id="minGPA" value="0"><br>
+    Spots:<br>
+    <input name="spots" id="spots" value="1"><br>
+    Required classes:<br>
+    <input type="text" name="requiredClass" value="CS 1110">
+    <input type="text" name="requiredClass" value="CS 2110">
+    <input type="text" name="requiredClass" value="CS 5150"><br>
+    Questions:<br>
+    <input type="text" name="question" value="What experience do you have in this area?"><br>
+    <input type="text" name="question" value="Why my lab?"><br>
+    <fieldset>
+        <legend>Choose your interests</legend>
+        <div>
+            <input type="checkbox" id="freshman" name="yearsAllowed" value="freshman">
+            <label for="freshman">Freshman</label>
+        </div>
+        <div>
+            <input type="checkbox" id="sophomore" name="yearsAllowed" value="sophomore">
+            <label for="sophomore">sophomore</label>
+        </div>
+        <div>
+            <input type="checkbox" id="junior" name="yearsAllowed" value="junior">
+            <label for="junior">junior</label>
+        </div>
+        <div>
+            <input type="checkbox" id="senior" name="yearsAllowed" value="senior">
+            <label for="senior">senior</label>
+        </div>
+    </fieldset>
+
+
+
+    <input type="submit" value="Submit">
+</form>
+
+
+<script>
+    $(document).ready(function() {
+        $("#opens").datepicker();
+        $("#closes").datepicker();
+        $("#minHours, #maxHours, #minGPA").spinner();
+        $("#opportunityForm").submit(function(event){
+            event.preventDefault();
+            $.ajax({
+                url: "/createOpportunity",
+                method: "POST",
+                data: $("#opportunityForm").serialize(),
+                success: function (response) {  //if everything went right when sending to the backend
+                    //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+                    console.log("success!");
+                    console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+                    console.log(JSON.parse(xhr.responseText));
+                    //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+                }
+            });
+        })
+    });
+
+
+</script>
+</body>
+</html>

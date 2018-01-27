@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--npm start, then go to localhost:3000 on your browser-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+This is a placeholder for our landing page. The below form was used in coding exercises to learn backend.
+<form id="testForm">
+    First name:<br>
+    <input type="text" name="firstname" value="Mickey"><br>
+    Last name:<br>
+    <input type="text" name="lastname" value="Mouse"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+<script>
+    /** Example code for a GET request
+     * If you don't want it to be triggered by some action, remove the line with ".click" and the }); at the end
+     $("#something").click(function () {
+     */
+    /**
+    $.ajax({
+        url: "/something",
+        method: "GET",
+        success: function (response) {  //if everything went right when sending to the backend
+            document.write("success!")
+            //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+            //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+        }
+    });
+    */
+
+    /**
+     });
+     */
+
+
+    //Example code for a post request
+    /**
+    $.ajax({
+        url: "/sendFormData",
+        method: "POST",
+        data: $("#testForm").serialize(),
+        success: function (response) {  //if everything went right when sending to the backend
+            //CODE FOR WHAT YOU WANT TO DO IF SUCCEEDS
+            //req.body["name"]
+            console.log(response);
+        },
+        error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+            //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+        }
+    });
+    */
+
+    $.ajax({
+        url: "/getOpportunitiesListing",
+        method: "GET",
+        success: function (response) {  //if everything went right when sending to the backend
+            console.log(response);
+        },
+        error: function (xhr, ajaxOptions, thrownError) { //if there's an error when sending to the backend
+            //WHATEVER YOU WANT TO DO IF THERE'S SOME BACKEND ERROR
+        }
+    });
+</script>
+</body>
+</html>
