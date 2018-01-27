@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../index.css';
+import { BrowserRouter as Router } from 'react-router-dom'
 
 class Opportunity extends Component {
     constructor(props) {
