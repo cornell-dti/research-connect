@@ -140,66 +140,16 @@ opportunitySchema.pre('validate', function (next) {
 });
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-
+//example code at bottom
 
 /** Begin ADD TO DATABASE */
 
-//Example code to create an instance of a model (in this case we're creating an opportunity)
-/**
- var opportunity = new opportunityModel({
-    title: "CellMate: A Responsive and Accurate Vision-based Appliance Identification System",
-    area: ["Electrical Engineering"],
-    labName: "Katz Lab",
-    labId: "1tq252r3ratrey4wt",
-    pi: "Randy Katz",
-    supervisor: "Kaifei Chen",
-    projectDescription: "Identifying and interacting with smart appliances has been challenging in the burgeoning smart building era. Existing identification methods require either cumbersome query statements or the deployment of additional infrastructure. There is no platform that abstracts sophisticated computer vision technologies to provide an easy visual identification interface, which is the most intuitive way for a human. CellMate is a new kind of visual appliance identification system that leverages advantages of different computer vision technologies and organizes them to optimize single image queries for fast response, high accuracy, and scalability.",
-    undergradTasks: "Undergraduate students will learn the state-of-art of vision-based localization algorithms and implementations, design and implement our research prototypes, collect data, discuss with graduate students to tackle problems and invent algorithms, and contribute to research papers. Students will be given specific engineering tasks, and are expected to meet with the research supervisor once or twice a week.",  //what the undergrad would be doing
-    opens: new Date(2017, 8, 5, 0, 0, 0, 0),
-    closes: new Date(2018, 3, 9, 0, 0, 0, 0),  //null if rolling
-    startDate: "Summer 2018", //null if start asap, string b/c it will prob be something like Fall 2018
-    minHours: 3,
-    maxHours: 9,
-    // skills: [String],
-    qualifications: "C++ (required), Android programing (required), Algorithms (required), Operating System (required), Networking (required), Computer Vision (desirable), Machine Learning (desirable)",
-    minGPA: 0,
-    requiredClasses: ["ECE 2300"],
-    questions: ["What experience do you have in this field?", "Why do you want to work in my lab?"],
-    yearsAllowed: ["sophomore", "junior"],
-    applications: 50,   //number of people who've submitted
-    spots: 1   //number of people they're willing to take
-});
- */
-
-// Example code for saving a model instance. Save the new model instance, passing a callback. THIS IS ASYNCHRONOUS!!!
-/**
- opportunity.save(function (err) {
-    if (err) {
-        console.log(err);
-    } //Handle this error however you see fit
-
-    // Now the opportunity is saved in the Opportunities collection on mlab!
-});
- */
 
 /** End ADD TO DATABASE */
 
 /** Begin SEARCHING THE DATABASE */
 
-//Example code for searching the database:
-/**
- opportunityModel.find({}, function (err, opportunities) {
-   console.log(opportunities);
-   //has to be double quotes for the search criteria ("andrew" in this case)!
-   // 'students' contains the list of students that match the criteria.
-   //since we only specify firstName and year, that's all the info about the students we'll get back
-   if (err) {
-       console.log(err);
-       //handle the error appropriately
-   }
-   // console.log(students);
-});
- */
+
 
 /**End SEARCHING THE DATABASE */
 
@@ -371,3 +321,64 @@ module.exports = app;
 app.listen(port, function() {
     console.log(`api running on port ${port}`);
 });
+
+
+
+
+
+
+
+
+//Example code to create an instance of a model (in this case we're creating an opportunity)
+/**
+ var opportunity = new opportunityModel({
+    title: "CellMate: A Responsive and Accurate Vision-based Appliance Identification System",
+    area: ["Electrical Engineering"],
+    labName: "Katz Lab",
+    labId: "1tq252r3ratrey4wt",
+    pi: "Randy Katz",
+    supervisor: "Kaifei Chen",
+    projectDescription: "Identifying and interacting with smart appliances has been challenging in the burgeoning smart building era. Existing identification methods require either cumbersome query statements or the deployment of additional infrastructure. There is no platform that abstracts sophisticated computer vision technologies to provide an easy visual identification interface, which is the most intuitive way for a human. CellMate is a new kind of visual appliance identification system that leverages advantages of different computer vision technologies and organizes them to optimize single image queries for fast response, high accuracy, and scalability.",
+    undergradTasks: "Undergraduate students will learn the state-of-art of vision-based localization algorithms and implementations, design and implement our research prototypes, collect data, discuss with graduate students to tackle problems and invent algorithms, and contribute to research papers. Students will be given specific engineering tasks, and are expected to meet with the research supervisor once or twice a week.",  //what the undergrad would be doing
+    opens: new Date(2017, 8, 5, 0, 0, 0, 0),
+    closes: new Date(2018, 3, 9, 0, 0, 0, 0),  //null if rolling
+    startDate: "Summer 2018", //null if start asap, string b/c it will prob be something like Fall 2018
+    minHours: 3,
+    maxHours: 9,
+    // skills: [String],
+    qualifications: "C++ (required), Android programing (required), Algorithms (required), Operating System (required), Networking (required), Computer Vision (desirable), Machine Learning (desirable)",
+    minGPA: 0,
+    requiredClasses: ["ECE 2300"],
+    questions: ["What experience do you have in this field?", "Why do you want to work in my lab?"],
+    yearsAllowed: ["sophomore", "junior"],
+    applications: 50,   //number of people who've submitted
+    spots: 1   //number of people they're willing to take
+});
+ */
+
+// Example code for saving a model instance. Save the new model instance, passing a callback. THIS IS ASYNCHRONOUS!!!
+/**
+ opportunity.save(function (err) {
+    if (err) {
+        console.log(err);
+    } //Handle this error however you see fit
+
+    // Now the opportunity is saved in the Opportunities collection on mlab!
+});
+ */
+
+
+//Example code for searching the database:
+/**
+ opportunityModel.find({}, function (err, opportunities) {
+   console.log(opportunities);
+   //has to be double quotes for the search criteria ("andrew" in this case)!
+   // 'students' contains the list of students that match the criteria.
+   //since we only specify firstName and year, that's all the info about the students we'll get back
+   if (err) {
+       console.log(err);
+       //handle the error appropriately
+   }
+   // console.log(students);
+});
+ */
