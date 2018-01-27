@@ -73,9 +73,14 @@ class Opportunity extends Component {
         return true;
     }
 
+    clickRow(rowObj) {
+        console.log(this.props.opId);
+        this.props.history.push('/opportunity/' + this.props.opID);
+    }
+
     render() {
         return (
-            <tr style={{display: this.shouldShow() ? "" : "none"}}>
+            <tr onClick={this.clickRow.bind(this)}  style={{display: this.shouldShow() ? "" : "none"}}>
                 <td>{ this.props.title }</td>
                 <td>{ this.props.area }</td>
                 <td>{ this.props.labName }</td>

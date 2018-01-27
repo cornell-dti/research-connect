@@ -214,6 +214,18 @@ app.get('/something', function (req, res) {
     res.send("hello");
 });
 
+app.post('/getOpportunity', function (req, res) {
+    var id = req.body.id;
+    console.log(id);
+    opportunityModel.findById(id, function (err, opportunities) {
+        res.send(opportunities);
+        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+            res.send(err);
+            //handle the error appropriately
+        }
+    });
+});
+
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
         // opens: {

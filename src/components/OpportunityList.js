@@ -28,6 +28,7 @@ class OpportunityList extends Component {
                     yearsAllowed={ opp.yearsAllowed }
                     //applications={ opp.applications }
                     spots={ opp.spots }
+                             opId={opp._id}
                 />
             )
         });
