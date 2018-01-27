@@ -6,14 +6,16 @@ import Opportunities from './routes/Opportunities'
 import Error from './components/Error'
 import {Switch, BrowserRouter, Route} from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
+import createBrowserHistory from 'history/createBrowserHistory';
+const history = createBrowserHistory();
 
 ReactDOM.render(
-    <BrowserRouter>
+    <BrowserRouter history={history}>
         <Switch>
-            <Route exact path='/' component = {App} />
-            <Route exact path='/opportunities' component = {Opportunities} />
-            <Route path='/opportunity/:id' component = {Opportunities} />
-            <Route path='/' component = {Error} />
+            <Route exact path='/' component={App}/>
+            <Route exact path='/opportunities' component={Opportunities}/>
+            <Route path='/opportunity/:id' component={Opportunities}/>
+            <Route path='/' component={Error}/>
         </Switch>
     </BrowserRouter>
 

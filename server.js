@@ -176,6 +176,7 @@ app.post('/getOpportunity', function (req, res) {
     });
 });
 
+
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
         // opens: {
