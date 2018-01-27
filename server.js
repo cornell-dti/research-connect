@@ -316,8 +316,9 @@ app.post('/createLabAdmin', function (req, res) {
 
 app.post('/updateOpportunity', function (req, res) {
     var id = req.body.id;
+    console.log("update opportuinty");
     console.log(id);
-    opportunityModel.findById(id, function (err, opportunities) {
+    opportunityModel.findById(id, function (err, opportunity) {
         if (err) {
             res.status(500).send(err);
         }
@@ -325,28 +326,29 @@ app.post('/updateOpportunity', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-
-            opportunityModel.creatorNetId = req.body.creatorNetId || opportunityModel.creatorNetId;
-            opportunityModel.labPage = req.body.labPage || opportunityModel.labPage;
-            opportunityModel.title = req.body.title || opportunityModel.title;
-            opportunityModel.projectDescription = req.body.projectDescription || opportunityModel.projectDescription;
-            opportunityModel.qualifications = req.body.qualifications || opportunityModel.qualifications;
-            opportunityModel.supervisor = req.body.supervisor || opportunityModel.supervisor;
-            opportunityModel.spots = req.body.spots || opportunityModel.spots;
-            opportunityModel.startSeason = req.body.startSeason || opportunityModel.startSeason;
-            opportunityModel.startYear = req.body.startYear || opportunityModel.startYear;
-            opportunityModel.applications = req.body.applications || opportunityModel.applications;
-            opportunityModel.questions = req.body.questions || opportunityModel.questions;
-            opportunityModel.requiredClasses= req.body.requiredClasses || opportunityModel.requiredClasses;
-            opportunityModel.minGPA = req.body.minGPA || opportunityModel.minGPA;
-            opportunityModel.minHours = req.body.minHours || opportunityModel.minHours;
-            opportunityModel.maxHours = req.body.maxHours|| opportunityModel.maxHours;
-            opportunityModel.opens = req.body.opens || opportunityModel.opens;
-            opportunityModel.closes = req.body.closes || opportunityModel.closes;
-            opportunityModel.areas = req.body.areas || opportunityModel.areas;
+            console.log(opportunity);
+            console.log("above");
+            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId || "legacy";
+            opportunity.labPage = req.body.labPage || opportunity.labPage;
+            opportunity.title = req.body.title || opportunity.title;
+            opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
+            opportunity.qualifications = req.body.qualifications || opportunity.qualifications;
+            opportunity.supervisor = req.body.supervisor || opportunity.supervisor;
+            opportunity.spots = req.body.spots || opportunity.spots;
+            opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
+            opportunity.startYear = req.body.startYear || opportunity.startYear;
+            opportunity.applications = req.body.applications || opportunity.applications;
+            opportunity.questions = req.body.questions || opportunity.questions;
+            opportunity.requiredClasses= req.body.requiredClasses || opportunity.requiredClasses;
+            opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
+            opportunity.minHours = req.body.minHours || opportunity.minHours;
+            opportunity.maxHours = req.body.maxHours|| opportunity.maxHours;
+            opportunity.opens = req.body.opens || opportunity.opens;
+            opportunity.closes = req.body.closes || opportunity.closes;
+            opportunity.areas = req.body.areas || opportunity.areas;
 
             // Save the updated document back to the database
-            opportunityModel.save((err, todo) => {
+            opportunity.save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
