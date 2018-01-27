@@ -80,6 +80,7 @@ class Opportunity extends Component {
 
     render() {
         return (
+            <div>
             <tr onClick={this.clickRow.bind(this)}  style={{display: this.shouldShow() ? "" : "none"}}>
                 <td>{ this.props.title }</td>
                 <td>{ this.props.area }</td>
@@ -101,6 +102,15 @@ class Opportunity extends Component {
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
+                <h3>
+                    Title
+                </h3>
+                <p>
+
+                </p>
+            </div>
+
+
         )
     }
 }
