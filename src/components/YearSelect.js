@@ -37,10 +37,10 @@ class YearSelect extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input ref={(node) => {this.freshman = node}}  onChange={this.handleChange} type="checkbox" name="Freshman" value="Freshman"/>Freshman
-                <input ref={(node) => {this.sophomore = node}} onChange={this.handleChange} type="checkbox" name="Sophomore" value="Sophomore"/>Sophomore
-                <input ref={(node) => {this.junior = node}} onChange={this.handleChange} type="checkbox" name="Junior" value="Junior"/>Junior
-                <input ref={(node) => {this.senior = node}} onChange={this.handleChange} type="checkbox" name="Senior" value="Senior"/>Senior
+                <input  ref={(node) => {this.freshman = node}}  onChange={this.handleChange} type="checkbox" name="Freshman" value="Freshman"/>Freshman
+                <input  ref={(node) => {this.sophomore = node}} onChange={this.handleChange} type="checkbox" name="Sophomore" value="Sophomore"/>Sophomore
+                <input   ref={(node) => {this.junior = node}} onChange={this.handleChange} type="checkbox" name="Junior" value="Junior"/>Junior
+                <input  ref={(node) => {this.senior = node}} onChange={this.handleChange} type="checkbox" name="Senior" value="Senior"/>Senior
 
                 <input type="submit" value="Submit"/>
             </form>
