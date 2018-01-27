@@ -70,4 +70,8 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+<<<<<<< HEAD
 fabric.properties
+=======
+fabric.properties
+>>>>>>> b12c62918d82c8c769d1ebebbf4b424f611a7f80
