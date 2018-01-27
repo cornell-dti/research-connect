@@ -73,9 +73,15 @@ class Opportunity extends Component {
         return true;
     }
 
+    clickRow(rowObj) {
+        console.log(this.props.opId);
+        this.props.history.push('/opportunity/' + this.props.opID);
+    }
+
     render() {
         return (
-            <tr style={{display: this.shouldShow() ? "" : "none"}}>
+            <div>
+            <tr onClick={this.clickRow.bind(this)}  style={{display: this.shouldShow() ? "" : "none"}}>
                 <td>{ this.props.title }</td>
                 <td>{ this.props.area }</td>
                 <td>{ this.props.labName }</td>
@@ -96,6 +102,15 @@ class Opportunity extends Component {
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
+                <h3>
+                    Title
+                </h3>
+                <p>
+
+                </p>
+            </div>
+
+
         )
     }
 }

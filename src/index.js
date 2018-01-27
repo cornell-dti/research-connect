@@ -11,7 +11,8 @@ ReactDOM.render(
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component = {App} />
-            <Route exact path='/Opportunities' component = {Opportunities} />
+            <Route exact path='/opportunities' component = {Opportunities} />
+            <Route path='/opportunity/:id' component = {Opportunities} />
             <Route path='/' component = {Error} />
         </Switch>
     </BrowserRouter>
