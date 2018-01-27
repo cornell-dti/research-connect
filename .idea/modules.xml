@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/research-connect-mern.iml" filepath="$PROJECT_DIR$/.idea/research-connect-mern.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/research-connect.iml" filepath="$PROJECT_DIR$/.idea/research-connect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../research-connect-previous-version/.idea/research-connect.iml" filepath="$PROJECT_DIR$/../research-connect-previous-version/.idea/research-connect.iml" />
     </modules>
   </component>
 </project>

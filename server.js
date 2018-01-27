@@ -258,29 +258,27 @@ app.post('/createOpportunity', function (req, res) {
     var data = req.body;
     console.log(data);
 
-    //TODO fix this to match new opportunity schema
     let opportunity = new opportunityModel({
+
+        creatorNetId: data.creatorNetId,
+        labPage: data.labPage,
         title: data.title,
-        area: data.area,
-        labName: data.labName,
-        labId: data.labID,
-        pi: data.pi,
-        supervisor: data.supervisor,
         projectDescription: data.projectDescription,
         undergradTasks: data.undergradTasks,
-        opens: data.opens,
-        closes: data.closes,
-        startDate: data.startDate,
+        qualifications: data.qualifications,
+        supervisor: data.supervisor,
+        spots: data.spots,
+        startSeason: data.startSeason,
+        startYear: data.startYear,
+        applications: data.applications,
+        questions: data.questions,
+        requiredClasses: data.requiredClasses,
+        minGPA: data.minGPA,
         minHours: data.minHours,
         maxHours: data.maxHours,
-        qualifications: data.qualifications,
-        minGPA: data.minGPA,
-        spots: data.spots,
-        requiredClasses: data.requiredClasses,
-        questions: data.question,
-        yearsAllowed: data.yearsAllowed,
-        applications: 50,   //TODO change
-        undergradID: mongoose.Types.ObjectId()
+        opens: data.opens,
+        closes: data.closes,
+        areas: data.areas
     });
 
     opportunity.save(function (err) {
@@ -360,7 +358,7 @@ app.post('/createLabAdmin', function (req, res) {
 /*******************************/
 
 
-// catch 404 and forward to error handler
+// catch 404 and fgorward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
