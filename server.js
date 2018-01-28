@@ -140,7 +140,7 @@ opportunitySchema.pre('validate', function (next) {
 });
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-//EXAMPLE CODE AT BOTTOM
+//EXAMPLE CODE AT BOTTOM OF server.js
 
 /** Begin ADD TO DATABASE */
 
@@ -325,9 +325,11 @@ app.post('/updateOpportunity', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
+
+
             console.log(opportunity);
             console.log("above");
-            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId || "legacy";
+            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId;
             opportunity.labPage = req.body.labPage || opportunity.labPage;
             opportunity.title = req.body.title || opportunity.title;
             opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
@@ -358,6 +360,39 @@ app.post('/updateOpportunity', function (req, res) {
 });
 
 
+app.post('/updateUndergrad', function (req, res) {
+    var id = req.body.id;
+    console.log("update undergrad");
+    console.log(id);
+    undergradModel.findById(id, function (err, undergrad) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            console.log(undergrad);
+            console.log("above");
+
+            undergrad.firstName = req.body.firstName || undergrad.firstName;
+            undergrad.lastName = req.body.lastName || undergrad.lastName;
+            undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
+            undergrad.major = req.body.major || undergrad.major;
+            undergrad.gpa = req.body.gpa || undergrad.gpa;
+            undergrad.netID = req.body.netID || undergrad.netID;
+
+            // Save the updated document back to the database
+            undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
 app.post('/deleteOpportunity', function (req, res) {
     var id = req.body.id;
     console.log("delete opportuinty");
@@ -379,37 +414,37 @@ app.post('/deleteOpportunity', function (req, res) {
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-        to: 'ag946@cornell.edu',
-        from: 'ayeshagrocks@gmail.com',
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    sgMail.send(msg);
-    /**End ENDPOINTS */
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+    to: 'ag946@cornell.edu',
+    from: 'ayeshagrocks@gmail.com',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+sgMail.send(msg);
+/**End ENDPOINTS */
 
 
-    /*******************************/
+/*******************************/
 //END NON-DEFAULT CODE
-    /*******************************/
+/*******************************/
 
 
 // catch 404 and fgorward to error handler
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
-    module.exports = app;
+module.exports = app;
 
 //starts the server and listens for requests
-    app.listen(port, function () {
-        console.log(`api running on port ${port}`);
-    });
+app.listen(port, function () {
+    console.log(`api running on port ${port}`);
+});
 
 
 
