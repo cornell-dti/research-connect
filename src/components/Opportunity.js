@@ -77,6 +77,7 @@ class Opportunity extends Component {
     clickRow(rowObj) {
         console.log("opid");
         console.log(this.props.opId);
+        // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
         document.location.href = ('http://localhost:3000/opportunity/' + this.props.opId);
     }
 
@@ -99,7 +100,6 @@ class Opportunity extends Component {
 
     render() {
         return (
-            <div>
             <tr onClick={this.clickRow.bind(this)}  style={{display: this.shouldShow() ? "" : "none"}}>
                 <td>{ this.props.title }</td>
                 <td>{ this.props.area }</td>
@@ -121,34 +121,6 @@ class Opportunity extends Component {
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
-            <div className='opportunityListing'>
-                <h3>{this.props.title}</h3>
-                <h4> {this.checkOpen()}</h4>
-                <h4> Supervisor: {this.props.supervisor}</h4>
-                <h4> Area: {this.props.area}</h4>
-                <h4> Lab Name: {this.props.labName}</h4>
-                <h4> PI: {this.props.pi}</h4>
-                <h4> Description: {this.props.projectDescription}</h4>
-                <h4> Tasks: {this.props.undergradTasks}</h4>
-                <h4> Application Window: From {this.convertDate(this.props.opens)} to {this.convertDate(this.props.closes)}</h4>
-                <h4> Start Date: {this.props.startDate}</h4>
-                <h4> Weekly Hours: Between { this.props.minHours } and { this.props.maxHours } </h4>
-                <h4> Qualifications: </h4>
-                <ul>
-                  <li>Minimum GPA: {this.props.minGPA}</li>
-                  <li>Required Classes: {this.props.requiredClasses}</li>
-                  <li>Years Allowed: {this.props.yearsAllowed}</li>
-                  <li>Required minimum semesters: {this.minSemesters}</li>
-                  <li>{this.props.qualifications}</li>
-                  </ul>
-
-                <h4>Apply Here: </h4>
-              <div>
-              {Object.values(this.props.questions)}
-              </div>
-                </div>
-            </div>
-
 
         )
     }

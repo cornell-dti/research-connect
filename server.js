@@ -7,6 +7,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 //create instances
 var app = express();
@@ -26,16 +27,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
+app.use(cors());
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
-    //and remove cacheing so we get the most recent comments
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 
@@ -165,14 +165,14 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 });*/
 
 app.post('/getOpportunity', function (req, res) {
-    var id = req.body.id;
-    console.log(id);
+    const id = req.body.id;
     opportunityModel.findById(id, function (err, opportunities) {
-        res.send(opportunities);
         if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
             res.send(err);
+            return;
             //handle the error appropriately
         }
+        res.send(opportunities);
     });
 });
 
