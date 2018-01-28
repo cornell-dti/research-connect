@@ -140,7 +140,7 @@ opportunitySchema.pre('validate', function (next) {
 });
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-//EXAMPLE CODE AT BOTTOM
+//EXAMPLE CODE AT BOTTOM OF server.js
 
 /** Begin ADD TO DATABASE */
 
@@ -167,9 +167,9 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 app.post('/getOpportunity', function (req, res) {
     const id = req.body.id;
     opportunityModel.findById(id, function (err, opportunities) {
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
-            return;
+            return; // instead of putting an else
             //handle the error appropriately
         }
         res.send(opportunities);
@@ -186,21 +186,25 @@ app.get('/getOpportunitiesListing', function (req, res) {
             // }
         },
         function (err, opportunities) {
-            res.send(opportunities);
-            if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+            if (err) {
                 res.send(err);
+                return;
                 //handle the error appropriately
             }
+            res.send(opportunities);
+
         });
 });
 
 app.get('/getLabs', function (req, res) {
     labModel.find({}, function (err, labs) {
-        res.send(labs);
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
             //handle the error appropriately
+            return; //instead of putting an else
         }
+        res.send(labs);
+
     });
 });
 
@@ -286,21 +290,22 @@ app.post('/createUndergrad', function (req, res) {
 
 ///Endpoint for researchsignup
 
-//TODO
 app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
 
-    var researcherSignup = new researcherSignupModel({
-        labName: data.labName,
-        position: data.position,
-        year: data.year,
-        netID: 4722392
+    var labAdmin = new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        verified: data.verified
 
     });
 
-    researcherSignup.save(function (err) {
+    labAdmin.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -325,9 +330,11 @@ app.post('/updateOpportunity', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
+
+
             console.log(opportunity);
             console.log("above");
-            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId || "legacy";
+            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId;
             opportunity.labPage = req.body.labPage || opportunity.labPage;
             opportunity.title = req.body.title || opportunity.title;
             opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
@@ -358,6 +365,72 @@ app.post('/updateOpportunity', function (req, res) {
 });
 
 
+app.post('/updateUndergrad', function (req, res) {
+    var id = req.body.id;
+    console.log("update undergrad");
+    console.log(id);
+    undergradModel.findById(id, function (err, undergrad) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            console.log(undergrad);
+            console.log("above");
+
+            undergrad.firstName = req.body.firstName || undergrad.firstName;
+            undergrad.lastName = req.body.lastName || undergrad.lastName;
+            undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
+            undergrad.major = req.body.major || undergrad.major;
+            undergrad.gpa = req.body.gpa || undergrad.gpa;
+            undergrad.netID = req.body.netID || undergrad.netID;
+
+            // Save the updated document back to the database
+            undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+app.post('/updateLabAdmin', function (req, res) {
+    var id = req.body.id;
+    console.log("update lab admin");
+    console.log(id);
+    labAdministratorModel.findById(id, function (err, labAdmin) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            console.log(labAdmin);
+            console.log("above");
+
+            labAdmin.role = req.body.role || labAdmin.role || "postdoc";
+            labAdmin.labId = req.body.labId || labAdmin.labId;
+            labAdmin.netId  = req.body.netId || labAdmin.netId;
+            labAdmin.firstName = req.body.firstName || labAdmin.firstName;
+            labAdmin.lastName = req.body.lastName|| labAdmin.lastName;
+            labAdmin.verified = req.body.verified|| labAdmin.verified;
+
+            // Save the updated document back to the database
+            labAdmin.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
 app.post('/deleteOpportunity', function (req, res) {
     var id = req.body.id;
     console.log("delete opportuinty");
@@ -379,37 +452,37 @@ app.post('/deleteOpportunity', function (req, res) {
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-        to: 'ag946@cornell.edu',
-        from: 'ayeshagrocks@gmail.com',
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    sgMail.send(msg);
-    /**End ENDPOINTS */
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+    to: 'ag946@cornell.edu',
+    from: 'ayeshagrocks@gmail.com',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+sgMail.send(msg);
+/**End ENDPOINTS */
 
 
-    /*******************************/
+/*******************************/
 //END NON-DEFAULT CODE
-    /*******************************/
+/*******************************/
 
 
 // catch 404 and fgorward to error handler
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
-    module.exports = app;
+module.exports = app;
 
 //starts the server and listens for requests
-    app.listen(port, function () {
-        console.log(`api running on port ${port}`);
-    });
+app.listen(port, function () {
+    console.log(`api running on port ${port}`);
+});
 
 
 
