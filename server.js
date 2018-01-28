@@ -327,6 +327,27 @@ sgMail.send(msg);
 /**End ENDPOINTS */
 
 
+//create buttons email:
+//site url and endpoint
+/*let siteUrl = "localhost:3001"
+    function createButton(siteUrl, endpoint){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "Your Rest URL Here", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        var response = JSON.parse(xhttp.responseText);
+
+        <input type="button" onclick="location.href=siteUrl+endpoint;" value="Click" />
+            //button with atag
+            //when button clicked url/endpoint?rate=good --> rate our site endpoint, get query --> update with that value.
+
+        <a href="http://google.com" </a>
+
+    }
+*/
+
+//app.get('/rateOurSite
+
 /*******************************/
 //END NON-DEFAULT CODE
 /*******************************/
