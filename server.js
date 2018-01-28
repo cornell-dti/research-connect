@@ -167,9 +167,9 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 app.post('/getOpportunity', function (req, res) {
     const id = req.body.id;
     opportunityModel.findById(id, function (err, opportunities) {
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
-            return;
+            return; // instead of putting an else
             //handle the error appropriately
         }
         res.send(opportunities);
@@ -186,21 +186,25 @@ app.get('/getOpportunitiesListing', function (req, res) {
             // }
         },
         function (err, opportunities) {
-            res.send(opportunities);
-            if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+            if (err) {
                 res.send(err);
+                return;
                 //handle the error appropriately
             }
+            res.send(opportunities);
+
         });
 });
 
 app.get('/getLabs', function (req, res) {
     labModel.find({}, function (err, labs) {
-        res.send(labs);
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
             //handle the error appropriately
+            return; //instead of putting an else
         }
+        res.send(labs);
+
     });
 });
 
@@ -286,21 +290,22 @@ app.post('/createUndergrad', function (req, res) {
 
 ///Endpoint for researchsignup
 
-//TODO
 app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
 
-    var researcherSignup = new researcherSignupModel({
-        labName: data.labName,
-        position: data.position,
-        year: data.year,
-        netID: 4722392
+    var labAdmin = new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        verified: data.verified
 
     });
 
-    researcherSignup.save(function (err) {
+    labAdmin.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -361,6 +366,39 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
+    var id = req.body.id;
+    console.log("update undergrad");
+    console.log(id);
+    undergradModel.findById(id, function (err, undergrad) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            console.log(undergrad);
+            console.log("above");
+
+            undergrad.firstName = req.body.firstName || undergrad.firstName;
+            undergrad.lastName = req.body.lastName || undergrad.lastName;
+            undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
+            undergrad.major = req.body.major || undergrad.major;
+            undergrad.gpa = req.body.gpa || undergrad.gpa;
+            undergrad.netID = req.body.netID || undergrad.netID;
+
+            // Save the updated document back to the database
+            undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+app.post('/updateLabAdmin', function (req, res) {
     var id = req.body.id;
     console.log("update undergrad");
     console.log(id);
