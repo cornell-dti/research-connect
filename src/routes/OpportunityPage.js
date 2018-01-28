@@ -9,31 +9,47 @@ class OpportunityPage extends Component {
             opportunity: {}
         };
     }
+
     isEmpty(obj) {
-      for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-      }
-    return true;
-    }
-    printQuestions(){
-      if(!this.isEmpty(this.state.opportunity.questions)) {
-
-        var questionMapping = Object.keys(this.state.opportunity.questions).map((key) => {
-
-          return <div>
-          {this.state.opportunity.questions[key]}
-          <br/>
-          <input type="textarea"/>
-          <br/>
-          </div>
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+                return false;
         }
-      )
-      return <form> {questionMapping} <input type="submit" value="Submit"/> </form>;
-
-    } else{
-      return <form> There are no questions. <input type="submit" value="Submit"/> </form>;
+        return true;
     }
+
+    printQuestions() {
+        if (!this.isEmpty(this.state.opportunity.questions)) {
+            let keys = [];
+            //get all the keys and put them in an array
+            for (let k in this.state.opportunity.questions){
+                //make sure it's an actual key and not a property that all objects have by default
+                if (this.state.opportunity.questions.hasOwnProperty(k)){
+                    keys.push(k);
+                }
+            }
+            //sort the keys by their number
+            keys.sort((a, b) => {
+                //remove the q from "q1" or "q5" based on number of question
+                let aNum = a.replace("q","");
+                let bNum = b.replace("q", "");
+                //if a's numb is less than b's num then return a value less than 0 indicating a comes before b.
+                return aNum - bNum;
+            });
+            let questionMapping = keys.map((key) => {
+                    return <div id={key}>
+                        {this.state.opportunity.questions[key]}
+                        <br/>
+                        <input type="textarea"/>
+                        <br/>
+                    </div>
+                }
+            );
+            return <form> {questionMapping} <input type="submit" value="Submit"/></form>;
+
+        } else {
+            return <form> There are no questions. <input type="submit" value="Submit"/></form>;
+        }
     }
 
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
