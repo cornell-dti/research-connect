@@ -375,11 +375,13 @@ app.post('/deleteOpportunity', function (req, res) {
 
     });
 });
+/**End ENDPOINTS */
+
 
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
-<<<<<<< HEAD
+
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
@@ -390,47 +392,33 @@ const msg = {
     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 };
 sgMail.send(msg);
-/**End ENDPOINTS */
+
 
 
 //create buttons email:
 //site url and endpoint
-/*let siteUrl = "localhost:3001"
+let siteUrl = "localhost:3001"
     function createButton(siteUrl, endpoint){
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "Your Rest URL Here", true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send();
-        var response = JSON.parse(xhttp.responseText);
 
-        <input type="button" onclick="location.href=siteUrl+endpoint;" value="Click" />
             //button with atag
             //when button clicked url/endpoint?rate=good --> rate our site endpoint, get query --> update with that value.
 
-        <a href="http://google.com" </a>
+        <a href="siteUrl/endpoint" target="_blank" input type="button" value="Link-button"></a>
+
+
+
 
     }
-*/
-
-//app.get('/rateOurSite
 
 /*******************************/
-=======
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-        to: 'ag946@cornell.edu',
-        from: 'ayeshagrocks@gmail.com',
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    sgMail.send(msg);
+
+
     /**End ENDPOINTS */
 
 
+
     /*******************************/
->>>>>>> 328139c1d9394e18a17bdcd66f3524d66a37c308
+
 //END NON-DEFAULT CODE
     /*******************************/
 
