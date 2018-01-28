@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../index.css';
+import { BrowserRouter as Router } from 'react-router-dom'
 
 class Opportunity extends Component {
     constructor(props) {
@@ -64,23 +65,41 @@ class Opportunity extends Component {
     shouldShow() {
         const filteredOptions = this.props.filteredOptions;
         //filter for years allowed
-        if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") === -1 ||
-            filteredOptions.yearSelect.Sophomore && this.props.yearsAllowed.indexOf("sophomore") === -1 ||
-            filteredOptions.yearSelect.Junior && this.props.yearsAllowed.indexOf("junior") === -1 ||
-            filteredOptions.yearSelect.Senior && this.props.yearsAllowed.indexOf("senior") === -1) {
-            return false;
+        if (filteredOptions.yearSelect.Freshman && this.props.yearsAllowed.indexOf("freshman") != -1 ||
+            filteredOptions.yearSelect.Sophomore && this.props.yearsAllowed.indexOf("sophomore") != -1 ||
+            filteredOptions.yearSelect.Junior && this.props.yearsAllowed.indexOf("junior") != -1 ||
+            filteredOptions.yearSelect.Senior && this.props.yearsAllowed.indexOf("senior") != -1) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     clickRow(rowObj) {
+        console.log("opid");
         console.log(this.props.opId);
-        this.props.history.push('/opportunity/' + this.props.opID);
+        // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
+        document.location.href = ('http://localhost:3000/opportunity/' + this.props.opId);
+    }
+
+    convertDate(dateString){
+      var dateObj = new Date(dateString);
+      return dateObj.toString().slice(0,15);
+    }
+    checkOpen(){
+      var openDateObj = new Date(this.props.opens);
+      var closesDateObj = new Date(this.props.closes);
+      var nowTime = Date.now()
+      if (closesDateObj.getTime() < nowTime){
+        return "Closed";
+      }else if (openDateObj.getTime() > nowTime){
+        return "Not Open Yet";
+      }else{
+        return "Open";
+      }
     }
 
     render() {
         return (
-            <div>
             <tr onClick={this.clickRow.bind(this)}  style={{display: this.shouldShow() ? "" : "none"}}>
                 <td>{ this.props.title }</td>
                 <td>{ this.props.area }</td>
@@ -102,14 +121,6 @@ class Opportunity extends Component {
                 <td>{ this.props.yearsAllowed }</td>
                 <td>{ this.props.spots }</td>
             </tr>
-                <h3>
-                    Title
-                </h3>
-                <p>
-
-                </p>
-            </div>
-
 
         )
     }

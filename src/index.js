@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './routes/App';
 import Opportunities from './routes/Opportunities'
+import OpportunityPage from './routes/OpportunityPage'
+import Reference from './routes/Reference'
 import Error from './components/Error'
 import {Switch, BrowserRouter, Route} from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
@@ -12,7 +14,8 @@ ReactDOM.render(
         <Switch>
             <Route exact path='/' component = {App} />
             <Route exact path='/opportunities' component = {Opportunities} />
-            <Route path='/opportunity/:id' component = {Opportunities} />
+            <Route path='/opportunity/:id' component = {OpportunityPage} />
+            <Route exact path='/reference' component = {Reference} />
             <Route path='/' component = {Error} />
         </Switch>
     </BrowserRouter>

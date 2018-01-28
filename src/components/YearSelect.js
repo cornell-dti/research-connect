@@ -6,10 +6,7 @@ class YearSelect extends React.Component {
         this.state = {
             yearSelect: this.props.yearSelect
         };
-        console.log(this.state);
-
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e) {
@@ -19,29 +16,19 @@ class YearSelect extends React.Component {
             "Junior" : this.junior.checked,
             "Senior" : this.senior.checked
         }
-        }, () => {
+        }, function() {
             this.props.updateYear(this.state.yearSelect);
         });
     }
 
-    handleSubmit(event) {
-        var fresh = this.state.Freshman.toString();
-        var soph = this.state.Sophomore.toString();
-        var junior = this.state.Junior.toString();
-        var senior = this.state.Senior.toString();
-        alert('Freshman: ' + fresh + ' Sophomore: ' + soph + ' Junior: ' + junior + ' Senior: ' + senior);
-
-        event.preventDefault();
-    }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input ref={(node) => {this.freshman = node}}  onChange={this.handleChange} type="checkbox" name="Freshman" value="Freshman"/>Freshman
-                <input ref={(node) => {this.sophomore = node}} onChange={this.handleChange} type="checkbox" name="Sophomore" value="Sophomore"/>Sophomore
-                <input ref={(node) => {this.junior = node}} onChange={this.handleChange} type="checkbox" name="Junior" value="Junior"/>Junior
-                <input ref={(node) => {this.senior = node}} onChange={this.handleChange} type="checkbox" name="Senior" value="Senior"/>Senior
-
+                <input  ref={(node) => {this.freshman = node}}  onChange={this.handleChange} type="checkbox" name="Freshman" value="Freshman"/>Freshman
+                <input  ref={(node) => {this.sophomore = node}} onChange={this.handleChange} type="checkbox" name="Sophomore" value="Sophomore"/>Sophomore
+                <input  ref={(node) => {this.junior = node}} onChange={this.handleChange} type="checkbox" name="Junior" value="Junior"/>Junior
+                <input  ref={(node) => {this.senior = node}} onChange={this.handleChange} type="checkbox" name="Senior" value="Senior"/>Senior
                 <input type="submit" value="Submit"/>
             </form>
         );

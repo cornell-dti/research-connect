@@ -20,3 +20,9 @@ td {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.opportunityListing{
+  padding: 20px;
+  width: 70%;
+  background-color: #aed6e5;
+}

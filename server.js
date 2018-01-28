@@ -7,6 +7,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 //create instances
 var app = express();
@@ -26,16 +27,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
+app.use(cors());
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
-    //and remove cacheing so we get the most recent comments
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 
@@ -140,7 +140,7 @@ opportunitySchema.pre('validate', function (next) {
 });
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 
-//example code at bottom
+//EXAMPLE CODE AT BOTTOM
 
 /** Begin ADD TO DATABASE */
 
@@ -159,38 +159,39 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 /**Begin ENDPOINTS */
 
 //Example code for receiving a request from the front end that doesn't send any data,
-app.get('/something', function (req, res) {
+/*app.get('/something', function (req, res) {
     //res is used to send the result
     res.send("hello");
-});
+});*/
 
 app.post('/getOpportunity', function (req, res) {
-    var id = req.body.id;
-    console.log(id);
+    const id = req.body.id;
     opportunityModel.findById(id, function (err, opportunities) {
-        res.send(opportunities);
         if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
             res.send(err);
+            return;
             //handle the error appropriately
         }
+        res.send(opportunities);
     });
 });
 
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
-        // opens: {
-        //     $lte: new Date()
-        // },
-        // closes: {
-        //     $gte: new Date()
-        // }
-    }, function (err, opportunities) {
-        res.send(opportunities);
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
-            res.send(err);
-            //handle the error appropriately
-        }
-    });
+            // opens: {
+            //     $lte: new Date()
+            // },
+            // closes: {
+            //     $gte: new Date()
+            // }
+        },
+        function (err, opportunities) {
+            res.send(opportunities);
+            if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+                res.send(err);
+                //handle the error appropriately
+            }
+        });
 });
 
 app.get('/getLabs', function (req, res) {
@@ -311,9 +312,74 @@ app.post('/createLabAdmin', function (req, res) {
     });
 });
 
+
+app.post('/updateOpportunity', function (req, res) {
+    var id = req.body.id;
+    console.log("update opportuinty");
+    console.log(id);
+    opportunityModel.findById(id, function (err, opportunity) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            console.log(opportunity);
+            console.log("above");
+            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId || "legacy";
+            opportunity.labPage = req.body.labPage || opportunity.labPage;
+            opportunity.title = req.body.title || opportunity.title;
+            opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
+            opportunity.qualifications = req.body.qualifications || opportunity.qualifications;
+            opportunity.supervisor = req.body.supervisor || opportunity.supervisor;
+            opportunity.spots = req.body.spots || opportunity.spots;
+            opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
+            opportunity.startYear = req.body.startYear || opportunity.startYear;
+            opportunity.applications = req.body.applications || opportunity.applications;
+            opportunity.questions = req.body.questions || opportunity.questions;
+            opportunity.requiredClasses= req.body.requiredClasses || opportunity.requiredClasses;
+            opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
+            opportunity.minHours = req.body.minHours || opportunity.minHours;
+            opportunity.maxHours = req.body.maxHours|| opportunity.maxHours;
+            opportunity.opens = req.body.opens || opportunity.opens;
+            opportunity.closes = req.body.closes || opportunity.closes;
+            opportunity.areas = req.body.areas || opportunity.areas;
+
+            // Save the updated document back to the database
+            opportunity.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+
+app.post('/deleteOpportunity', function (req, res) {
+    var id = req.body.id;
+    console.log("delete opportuinty");
+    console.log(id);
+
+    opportunityModel.findByIdAndRemove(id, function (err, opportunity) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Opportunity successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+
+    });
+});
+
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
+<<<<<<< HEAD
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
@@ -349,23 +415,39 @@ sgMail.send(msg);
 //app.get('/rateOurSite
 
 /*******************************/
+=======
+    const sgMail = require('@sendgrid/mail');
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+        to: 'ag946@cornell.edu',
+        from: 'ayeshagrocks@gmail.com',
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    };
+    sgMail.send(msg);
+    /**End ENDPOINTS */
+
+
+    /*******************************/
+>>>>>>> 328139c1d9394e18a17bdcd66f3524d66a37c308
 //END NON-DEFAULT CODE
-/*******************************/
+    /*******************************/
 
 
 // catch 404 and fgorward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+    app.use(function (req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
 
-module.exports = app;
+    module.exports = app;
 
 //starts the server and listens for requests
-app.listen(port, function() {
-    console.log(`api running on port ${port}`);
-});
+    app.listen(port, function () {
+        console.log(`api running on port ${port}`);
+    });
 
 
 
