@@ -18,7 +18,7 @@ class Reference extends Component {
             {
                 number: this.state.number + 1
             }
-        )
+        );
     }
 
     render() {
@@ -33,7 +33,6 @@ class Reference extends Component {
                 <br />
 
 
-
                 <p>Anything in curly braces is interpreted as javascript and will display whatever it returns</p>
                 <p>3 + 4 is {3 + 4}</p>
                 <br />
@@ -42,8 +41,12 @@ class Reference extends Component {
                 <p>Even if you return an array, it'll still display that. { [1, 2, 3, 4] }. But it looks crunched,
                     since there are no spaces between arrays when react prints them out.</p>
                 <p>
-                    This is useful for using html, since it doesn't need spacing or spaces. { [<div>John</div>,
-                    <div>Joe</div>, <div>Tom</div>, <div>Jack</div>] }
+                    This is useful for using html, since it doesn't need spacing or spaces. {
+                    [<div>John</div>,
+                        <div>Joe</div>,
+                        <div>Tom</div>,
+                        <div>Jack</div>]
+                }
                 </p>
 
 
@@ -96,7 +99,7 @@ class Reference extends Component {
                 <br />
 
 
-                <p>If you want to call a functoin called when something is clicked, you have to bind it.
+                <p>If you want to call a function called when something is clicked, you have to bind it.
                     The only thing that changes in that statement below is "test", the rest can be copied and pasted
                     These functions should be defined in between the constructor and render.
                 </p>
@@ -104,19 +107,23 @@ class Reference extends Component {
 
 
                 <p>If you ever want to put something on the page that won't be static and has the chance to change,
-                store it in state.</p>
+                    store it in state.</p>
                 <p>State is a javascript object (like Python dictionary. We can access it using the "this" keyword.</p>
                 <p>number: {this.state.number}</p>
-                <p>Whenever you use the setState function, react looks for every mention of that variable and updates it</p>
-                <p>The button calls the setState function and sets number equal to number + 1. Click it to see the number
-                increment.</p>
+                <p>Whenever you use the setState function, react looks for every mention of that variable and updates
+                    it</p>
+                <p>The button calls the setState function and sets number equal to number + 1. Click it to see the
+                    number
+                    increment.</p>
 
 
                 <p>Whenever a page has "export default (name of page)", then that means you can make it a tag - as long
-                as your import it. For example, this page is called Reference.js. the TemplatePage.js has export default
-                TemplatePage. If we do "import "./TemplatePage" at the top of this file (Reference.js), then we can use
-                the TemplatePage tag. Then all the code in the "render" in TemplatePage will appear here.</p>
-                <TemplatePage/>
+                    as your import it. For example, this page is called Reference.js. the TemplatePage.js has export
+                    default
+                    TemplatePage. If we do "import "./TemplatePage" at the top of this file (Reference.js), then we can
+                    use
+                    the TemplatePage tag. Then all the code in the "render" in TemplatePage will appear here.</p>
+                <TemplatePage aName="andrew & rahcel & ayesha"  />
             </div>
         );
     }

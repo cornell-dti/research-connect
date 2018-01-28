@@ -366,7 +366,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    var id = req.body.id;
+    var id = req.query.id;
     console.log("update undergrad");
     console.log(id);
     undergradModel.findById(id, function (err, undergrad) {

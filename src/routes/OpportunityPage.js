@@ -73,6 +73,9 @@ class OpportunityPage extends Component {
 
                     <h4>Apply Here: </h4>
                     <div>
+                        {/*{Object.keys(this.state.opportunity.questions).map(function(key) {*/}
+                            {/*return <div value={key}>{this.state.opportunity.questions[key]}</div>*/}
+                        {/*})}*/}
                         {/*{Object.values(this.state.opportunity.questions)}*/}
                     </div>
                 </div>
