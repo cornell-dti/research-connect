@@ -26,7 +26,6 @@ class OpportunityPage extends Component {
             });
     }
 
-
     convertDate(dateString) {
         let dateObj = new Date(dateString);
         return dateObj.toString().slice(0, 15);

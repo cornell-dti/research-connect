@@ -14,10 +14,10 @@ class Opportunities extends Component {
     }
 
     //just used to print out the state
-    test() {
-        console.log("ran");
-        console.log(this.state);
-    }
+        test() {
+            console.log("ran");
+            console.log(this.state);
+        }
 
     //will be called by the year component whenever the year checkboxes are updated
     handleUpdateYear(yearObj) {

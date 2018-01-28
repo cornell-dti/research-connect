@@ -12,6 +12,7 @@ class TemplatePage extends Component {
     render() {
         return (
             <div>
+                Your content here
             </div>
         );
     }
