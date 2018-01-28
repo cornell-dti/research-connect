@@ -400,9 +400,9 @@ app.post('/updateUndergrad', function (req, res) {
 
 app.post('/updateLabAdmin', function (req, res) {
     var id = req.body.id;
-    console.log("update undergrad");
+    console.log("update lab admin");
     console.log(id);
-    undergradModel.findById(id, function (err, undergrad) {
+    labAdministratorModel.findById(id, function (err, labAdmin) {
         if (err) {
             res.status(500).send(err);
         }
@@ -410,18 +410,18 @@ app.post('/updateLabAdmin', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            console.log(undergrad);
+            console.log(labAdmin);
             console.log("above");
 
-            undergrad.firstName = req.body.firstName || undergrad.firstName;
-            undergrad.lastName = req.body.lastName || undergrad.lastName;
-            undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
-            undergrad.major = req.body.major || undergrad.major;
-            undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netID = req.body.netID || undergrad.netID;
+            labAdmin.role = req.body.role || labAdmin.role || "postdoc";
+            labAdmin.labId = req.body.labId || labAdmin.labId;
+            labAdmin.netId  = req.body.netId || labAdmin.netId;
+            labAdmin.firstName = req.body.firstName || labAdmin.firstName;
+            labAdmin.lastName = req.body.lastName|| labAdmin.lastName;
+            labAdmin.verified = req.body.verified|| labAdmin.verified;
 
             // Save the updated document back to the database
-            undergrad.save((err, todo) => {
+            labAdmin.save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
