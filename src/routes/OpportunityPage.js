@@ -9,6 +9,32 @@ class OpportunityPage extends Component {
             opportunity: {}
         };
     }
+    isEmpty(obj) {
+      for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+      }
+    return true;
+    }
+    printQuestions(){
+      if(!this.isEmpty(this.state.opportunity.questions)) {
+
+        var questionMapping = Object.keys(this.state.opportunity.questions).map((key) => {
+
+          return <div>
+          {this.state.opportunity.questions[key]}
+          <br/>
+          <input type="textarea"/>
+          <br/>
+          </div>
+        }
+      )
+      return <form> {questionMapping} <input type="submit" value="Submit"/> </form>;
+
+    } else{
+      return <form> There are no questions. <input type="submit" value="Submit"/> </form>;
+    }
+    }
 
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
@@ -73,10 +99,7 @@ class OpportunityPage extends Component {
 
                     <h4>Apply Here: </h4>
                     <div>
-                        {/*{Object.keys(this.state.opportunity.questions).map(function(key) {*/}
-                            {/*return <div value={key}>{this.state.opportunity.questions[key]}</div>*/}
-                        {/*})}*/}
-                        {/*{Object.values(this.state.opportunity.questions)}*/}
+                        { this.printQuestions()}
                     </div>
                 </div>
             </div>
