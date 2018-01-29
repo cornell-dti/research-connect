@@ -107,6 +107,7 @@ class CreateOppForm extends React.Component {
         <br/>
         {this.makeBoxes()}
         {this.state.numQuestions!=0 ? <input type="button" value="Delete a question" onClick={this.deleteLastQuestion.bind(this)}/> : '' }
+        <br/>
         <input type="submit" value="Submit" />
       </form>
     );
