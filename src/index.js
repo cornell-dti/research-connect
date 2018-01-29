@@ -8,6 +8,7 @@ import Reference from './routes/Reference'
 import Error from './components/Error'
 import {Switch, BrowserRouter, Route} from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
+import CreateOpportunityForm from './routes/CreateOpportunityForm'
 
 ReactDOM.render(
     <BrowserRouter>
@@ -16,6 +17,7 @@ ReactDOM.render(
             <Route exact path='/opportunities' component = {Opportunities} />
             <Route path='/opportunity/:id' component = {OpportunityPage} />
             <Route exact path='/reference' component = {Reference} />
+            <Route exact path='/newopp' component = {CreateOpportunityForm} />
             <Route path='/' component = {Error} />
         </Switch>
     </BrowserRouter>

@@ -40,7 +40,7 @@ class OpportunityPage extends Component {
                     return <div id={key}>
                         {this.state.opportunity.questions[key]}
                         <br/>
-                        <input type="textarea"/>
+                        <textarea />
                         <br/>
                     </div>
                 }
