@@ -319,9 +319,7 @@ app.post('/createLabAdmin', function (req, res) {
 
 
 app.post('/updateOpportunity', function (req, res) {
-    var id = req.body.id;
-    console.log("update opportuinty");
-    console.log(id);
+    let id = req.body.id;
     opportunityModel.findById(id, function (err, opportunity) {
         if (err) {
             res.status(500).send(err);
@@ -330,10 +328,6 @@ app.post('/updateOpportunity', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-
-
-            console.log(opportunity);
-            console.log("above");
             opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId;
             opportunity.labPage = req.body.labPage || opportunity.labPage;
             opportunity.title = req.body.title || opportunity.title;
@@ -366,9 +360,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    var id = req.query.id;
-    console.log("update undergrad");
-    console.log(id);
+    let id = req.query.id;
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
@@ -377,9 +369,6 @@ app.post('/updateUndergrad', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            console.log(undergrad);
-            console.log("above");
-
             undergrad.firstName = req.body.firstName || undergrad.firstName;
             undergrad.lastName = req.body.lastName || undergrad.lastName;
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
@@ -399,9 +388,7 @@ app.post('/updateUndergrad', function (req, res) {
 });
 
 app.post('/updateLabAdmin', function (req, res) {
-    var id = req.body.id;
-    console.log("update lab admin");
-    console.log(id);
+    let id = req.body.id;
     labAdministratorModel.findById(id, function (err, labAdmin) {
         if (err) {
             res.status(500).send(err);
@@ -410,10 +397,7 @@ app.post('/updateLabAdmin', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            console.log(labAdmin);
-            console.log("above");
-
-            labAdmin.role = req.body.role || labAdmin.role || "postdoc";
+            labAdmin.role = req.body.role || labAdmin.role;
             labAdmin.labId = req.body.labId || labAdmin.labId;
             labAdmin.netId  = req.body.netId || labAdmin.netId;
             labAdmin.firstName = req.body.firstName || labAdmin.firstName;
@@ -461,7 +445,7 @@ const msg = {
     text: 'and easy to do anywhere, even with Node.js',
     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 };
-sgMail.send(msg);
+// sgMail.send(msg);
 /**End ENDPOINTS */
 
 
