@@ -8,7 +8,7 @@ class OpportunityList extends Component {
                 <Opportunity filteredOptions={this.props.filteredOptions }
                     key={ opp ['_id'] }
                     title={ opp.title }
-                    area={ opp.area }
+                    area={ opp.areas }
                     labId={ opp.labId }
                     labName={ opp.labName }
                     pi={ opp.pi }

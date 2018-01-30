@@ -22,7 +22,7 @@ class MajorSelect extends React.Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <input ref={(node) => {this.cs = node}}  onChange={this.handleChange.bind(this)} type="checkbox" name="cs" value="cs"/>CS
-                <input ref={(input) => {this.biology = input}} onChange={this.handleChange.bind(this)} type="checkbox" name="biology" value="cs"/>Biology
+                <input ref={(input) => {this.biology = input}} onChange={this.handleChange.bind(this)} type="checkbox" name="biology" value="biology"/>Biology
             </form>
         );
     }
