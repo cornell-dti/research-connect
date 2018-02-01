@@ -183,6 +183,18 @@ app.post('/getOpportunity', function (req, res) {
     });
 });
 
+app.post('/getApplications', function (req, res) {
+    const id = req.body.id;
+    opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
+        if (err) {
+            res.send(err);
+            return; // instead of putting an else
+            //handle the error appropriately
+        }
+        res.send(opportunities.applications);
+    });
+});
+
 app.get('/getOpportunitiesListing', function (req, res) {
     opportunityModel.find({
             // opens: {
