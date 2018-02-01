@@ -2,20 +2,26 @@
 'use strict'
 
 //import dependencies
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var cors = require('cors');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const AWS = require('aws-sdk');
+AWS.config.loadFromPath('./S3Config.json');
+AWS.config.update({region: 'us-east-2'});
+const s3 = new AWS.S3();
+
 
 //create instances
-var app = express();
-var router = express.Router();
+const app = express();
+const router = express.Router();
 
 //set our port to either a predetermined port number if you have set
 //it up, or 3001
-var port = 3001;
+const port = 3001;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
 app.use(cors());
+app.use(fileUpload());
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
 app.use(function (req, res, next) {
@@ -56,16 +63,16 @@ app.use('/api', router);
 /** Begin MONGODB AND MONGOOSE SETUP*/
 //Good learning resource: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 //Require Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
+const mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
 
 //Get the default connection
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -259,7 +266,6 @@ app.post('/createOpportunity', function (req, res) {
     });
 });
 
-
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
@@ -431,6 +437,87 @@ app.post('/deleteOpportunity', function (req, res) {
 
 
     });
+});
+
+function base64ArrayBuffer(arrayBuffer) {
+    var base64    = ''
+    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+    var bytes         = new Uint8Array(arrayBuffer)
+    var byteLength    = bytes.byteLength
+    var byteRemainder = byteLength % 3
+    var mainLength    = byteLength - byteRemainder
+
+    var a, b, c, d
+    var chunk
+
+    // Main loop deals with bytes in chunks of 3
+    for (var i = 0; i < mainLength; i = i + 3) {
+        // Combine the three bytes into a single integer
+        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+        // Use bitmasks to extract 6-bit segments from the triplet
+        a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+        b = (chunk & 258048)   >> 12 // 258048   = (2^6 - 1) << 12
+        c = (chunk & 4032)     >>  6 // 4032     = (2^6 - 1) << 6
+        d = chunk & 63               // 63       = 2^6 - 1
+
+        // Convert the raw binary segments to the appropriate ASCII encoding
+        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+    }
+
+    // Deal with the remaining bytes and padding
+    if (byteRemainder == 1) {
+        chunk = bytes[mainLength]
+
+        a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+        // Set the 4 least significant bits to zero
+        b = (chunk & 3)   << 4 // 3   = 2^2 - 1
+
+        base64 += encodings[a] + encodings[b] + '=='
+    } else if (byteRemainder == 2) {
+        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+        a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+        b = (chunk & 1008)  >>  4 // 1008  = (2^6 - 1) << 4
+
+        // Set the 2 least significant bits to zero
+        c = (chunk & 15)    <<  2 // 15    = 2^4 - 1
+
+        base64 += encodings[a] + encodings[b] + encodings[c] + '='
+    }
+
+    return base64
+}
+
+app.post('/storeResume', function(req, res) {
+    if (!req.files)
+        return res.status(400).send('No files were uploaded.');
+    let params = {
+        Bucket: "research-connect-student-files",
+        Key: "1517452061886"
+    };
+    s3.getObject(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else {
+            let baseString = base64ArrayBuffer(data.Body);
+            res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,'+ baseString +' />');
+        }
+        // successful response
+    });
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let resume = req.files.resume;
+    //TODO change Key param to name of student plus date.now
+    // let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
+    // console.log("yay!");
+    // s3.upload (uploadParams, function (err, data) {
+    //     if (err) {
+    //         console.log("Error", err);
+    //     } if (data) {
+    //         console.log("Upload Success", data.Location);
+    //     }
+    // });
 });
 
 //EMAIL SENDGRID

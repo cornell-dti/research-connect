@@ -10,6 +10,7 @@ import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import CreateOpportunityForm from './routes/CreateOpportunityForm';
 import InstructorRegister from './routes/InstructorRegister';
+import ViewOpportunities from './routes/';
 
 ReactDOM.render(
     <BrowserRouter>
