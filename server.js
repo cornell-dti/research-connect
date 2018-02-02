@@ -184,7 +184,7 @@ app.post('/getOpportunity', function (req, res) {
 });
 
 app.post('/getApplications', function (req, res) {
-    const id = req.body.id;
+    const labAdminId = req.body.id;
     opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
         if (err) {
             res.send(err);
