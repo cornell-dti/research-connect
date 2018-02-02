@@ -451,6 +451,41 @@ app.post('/deleteOpportunity', function (req, res) {
     });
 });
 
+app.post('/deleteUndergrad', function (req, res) {
+    var id = req.body.id;
+    console.log("delete undergrad");
+    console.log(id);
+
+    undergradModel.findByIdAndRemove(id, function (err, undergrad) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Undergrad successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+
+    });
+});
+
+app.post('/deleteLabAdmin', function (req, res) {
+    var id = req.body.id;
+    console.log("delete lab admin");
+    console.log(id);
+
+    labAdministratorModel.findByIdAndRemove(id, function (err, labAdmin) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Lab admin successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+    });
+});
+
 function base64ArrayBuffer(arrayBuffer) {
     var base64    = ''
     var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
