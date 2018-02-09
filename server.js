@@ -441,9 +441,14 @@ let siteUrl = "localhost:3001"
 
         <a href="siteUrl/endpoint" target="_blank" input type="button" value="Link-button"></a>
 
+        var express = require('express');
+        var app = express();
 
+        app.get("/"+endpoint,function(req,res){
+            var id = req.query.id;
+            //further operations to perform updaet undergrade
 
-
+        });
 
 
     }
