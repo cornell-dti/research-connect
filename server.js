@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const AWS = require('aws-sdk');
-AWS.config.loadFromPath('./S3Config.json');
+AWS.config.loadFromPath('./S3Config2.json');
 AWS.config.update({region: 'us-east-2'});
 const s3 = new AWS.S3();
 
