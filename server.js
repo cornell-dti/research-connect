@@ -187,8 +187,23 @@ app.post('/getOpportunity', function (req, res) {
     });
 });
 
+app.post('/getLabAdmin', function (req, res) {
+    var response = getLabAdmin(req.body.id);
+    res.send(response);
+});
+
+function getLabAdmin(id, res){
+    labAdministratorModel.findById(id, function (err, labAdmin) {
+        if (err) {
+            return err;
+        }
+        return labAdmin;
+    });
+}
+
 app.post('/getApplications', function (req, res) {
     const labAdminId = req.body.id;
+
     opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
         if (err) {
             res.send(err);
