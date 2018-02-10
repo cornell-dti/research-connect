@@ -19,6 +19,9 @@ if (fs.existsSync('./S3Config2.json')) {
     s3 = new AWS.S3();
 }
 
+let corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
+corsKey = corsKey.key;
+
 //create instances
 const app = express();
 const router = express.Router();
@@ -199,7 +202,18 @@ app.post('/getApplications', function (req, res) {
     });
 });
 
+"localhost:3001/clickedButton"
+app.get("/clickedButton", function (req, res){
+    console.log("f");
+    //update mongo
+    <a href="http://localhost:3001/clickedButton"> </a>
+});
+
 app.get('/getOpportunitiesListing', function (req, res) {
+    if (req.body.corsKey != corsKey){
+        res.status(403).send("Access forbidden");
+        return;
+    }
     opportunityModel.find({
             // opens: {
             //     $lte: new Date()
