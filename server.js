@@ -197,12 +197,15 @@ function getLabAdmin(id, res){
         if (err) {
             return err;
         }
+        console.log(labAdmin.labId);
         return labAdmin;
     });
 }
 
 app.post('/getApplications', function (req, res) {
     const labAdminId = req.body.id;
+    var labAdmin = getLabAdmin(labAdminId, res);
+
 
     opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
         if (err) {
