@@ -30,3 +30,7 @@
 form {
   padding: 10px;
 }
+
+.createOppLabel input {
+  margin: 5px;
+}

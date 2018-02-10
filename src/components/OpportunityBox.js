@@ -13,7 +13,7 @@ class OpportunityBox extends Component {
     console.log("began");
     axios.get(this.props.url)
       .then(res => {
-        console.log("RESULT IS",res.data);
+        console.log("RESULT IS", res.data);
         this.setState({ data: res.data });
       })
   }

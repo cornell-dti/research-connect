@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import '../App.css';
 
 class TemplatePage extends Component {
     constructor(props) {
@@ -9,10 +7,11 @@ class TemplatePage extends Component {
         };
     }
 
+
     render() {
         return (
             <div>
-                Your content here
+                Your {this.props.aName} here
             </div>
         );
     }

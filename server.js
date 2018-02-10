@@ -2,20 +2,26 @@
 'use strict'
 
 //import dependencies
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var cors = require('cors');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const AWS = require('aws-sdk');
+AWS.config.loadFromPath('./S3Config.json');
+AWS.config.update({region: 'us-east-2'});
+const s3 = new AWS.S3();
+
 
 //create instances
-var app = express();
-var router = express.Router();
+const app = express();
+const router = express.Router();
 
 //set our port to either a predetermined port number if you have set
 //it up, or 3001
-var port = 3001;
+const port = 3001;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
 app.use(cors());
+app.use(fileUpload());
 
 //To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
 app.use(function (req, res, next) {
@@ -56,16 +63,16 @@ app.use('/api', router);
 /** Begin MONGODB AND MONGOOSE SETUP*/
 //Good learning resource: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 //Require Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
+const mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
 
 //Get the default connection
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -167,12 +174,24 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 app.post('/getOpportunity', function (req, res) {
     const id = req.body.id;
     opportunityModel.findById(id, function (err, opportunities) {
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
-            return;
+            return; // instead of putting an else
             //handle the error appropriately
         }
         res.send(opportunities);
+    });
+});
+
+app.post('/getApplications', function (req, res) {
+    const labAdminId = req.body.id;
+    opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
+        if (err) {
+            res.send(err);
+            return; // instead of putting an else
+            //handle the error appropriately
+        }
+        res.send(opportunities.applications);
     });
 });
 
@@ -186,21 +205,25 @@ app.get('/getOpportunitiesListing', function (req, res) {
             // }
         },
         function (err, opportunities) {
-            res.send(opportunities);
-            if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+            if (err) {
                 res.send(err);
+                return;
                 //handle the error appropriately
             }
+            res.send(opportunities);
+
         });
 });
 
 app.get('/getLabs', function (req, res) {
     labModel.find({}, function (err, labs) {
-        res.send(labs);
-        if (err) {  //TODO put this before the above line and add an else so you don't risk both of these running
+        if (err) {
             res.send(err);
             //handle the error appropriately
+            return; //instead of putting an else
         }
+        res.send(labs);
+
     });
 });
 
@@ -255,7 +278,6 @@ app.post('/createOpportunity', function (req, res) {
     });
 });
 
-
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
@@ -286,21 +308,22 @@ app.post('/createUndergrad', function (req, res) {
 
 ///Endpoint for researchsignup
 
-//TODO
 app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
 
-    var researcherSignup = new researcherSignupModel({
-        labName: data.labName,
-        position: data.position,
-        year: data.year,
-        netID: 4722392
+    var labAdmin = new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        verified: data.verified
 
     });
 
-    researcherSignup.save(function (err) {
+    labAdmin.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -314,9 +337,7 @@ app.post('/createLabAdmin', function (req, res) {
 
 
 app.post('/updateOpportunity', function (req, res) {
-    var id = req.body.id;
-    console.log("update opportuinty");
-    console.log(id);
+    let id = req.body.id;
     opportunityModel.findById(id, function (err, opportunity) {
         if (err) {
             res.status(500).send(err);
@@ -325,10 +346,6 @@ app.post('/updateOpportunity', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-
-
-            console.log(opportunity);
-            console.log("above");
             opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId;
             opportunity.labPage = req.body.labPage || opportunity.labPage;
             opportunity.title = req.body.title || opportunity.title;
@@ -361,9 +378,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    var id = req.body.id;
-    console.log("update undergrad");
-    console.log(id);
+    let id = req.query.id;
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
@@ -372,9 +387,6 @@ app.post('/updateUndergrad', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            console.log(undergrad);
-            console.log("above");
-
             undergrad.firstName = req.body.firstName || undergrad.firstName;
             undergrad.lastName = req.body.lastName || undergrad.lastName;
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
@@ -384,6 +396,34 @@ app.post('/updateUndergrad', function (req, res) {
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+app.post('/updateLabAdmin', function (req, res) {
+    let id = req.body.id;
+    labAdministratorModel.findById(id, function (err, labAdmin) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            labAdmin.role = req.body.role || labAdmin.role;
+            labAdmin.labId = req.body.labId || labAdmin.labId;
+            labAdmin.netId  = req.body.netId || labAdmin.netId;
+            labAdmin.firstName = req.body.firstName || labAdmin.firstName;
+            labAdmin.lastName = req.body.lastName|| labAdmin.lastName;
+            labAdmin.verified = req.body.verified|| labAdmin.verified;
+
+            // Save the updated document back to the database
+            labAdmin.save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
@@ -413,9 +453,134 @@ app.post('/deleteOpportunity', function (req, res) {
 /**End ENDPOINTS */
 
 
+app.post('/deleteUndergrad', function (req, res) {
+    var id = req.body.id;
+    console.log("delete undergrad");
+    console.log(id);
+
+    undergradModel.findByIdAndRemove(id, function (err, undergrad) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Undergrad successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+
+    });
+});
+
+app.post('/deleteLabAdmin', function (req, res) {
+    var id = req.body.id;
+    console.log("delete lab admin");
+    console.log(id);
+
+    labAdministratorModel.findByIdAndRemove(id, function (err, labAdmin) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Lab admin successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+    });
+});
+
+function base64ArrayBuffer(arrayBuffer) {
+    var base64    = ''
+    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+    var bytes         = new Uint8Array(arrayBuffer)
+    var byteLength    = bytes.byteLength
+    var byteRemainder = byteLength % 3
+    var mainLength    = byteLength - byteRemainder
+
+    var a, b, c, d
+    var chunk
+
+    // Main loop deals with bytes in chunks of 3
+    for (var i = 0; i < mainLength; i = i + 3) {
+        // Combine the three bytes into a single integer
+        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+        // Use bitmasks to extract 6-bit segments from the triplet
+        a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+        b = (chunk & 258048)   >> 12 // 258048   = (2^6 - 1) << 12
+        c = (chunk & 4032)     >>  6 // 4032     = (2^6 - 1) << 6
+        d = chunk & 63               // 63       = 2^6 - 1
+
+        // Convert the raw binary segments to the appropriate ASCII encoding
+        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+    }
+
+    // Deal with the remaining bytes and padding
+    if (byteRemainder == 1) {
+        chunk = bytes[mainLength]
+
+        a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+        // Set the 4 least significant bits to zero
+        b = (chunk & 3)   << 4 // 3   = 2^2 - 1
+
+        base64 += encodings[a] + encodings[b] + '=='
+    } else if (byteRemainder == 2) {
+        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+        a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+        b = (chunk & 1008)  >>  4 // 1008  = (2^6 - 1) << 4
+
+        // Set the 2 least significant bits to zero
+        c = (chunk & 15)    <<  2 // 15    = 2^4 - 1
+
+        base64 += encodings[a] + encodings[b] + encodings[c] + '='
+    }
+
+    return base64
+}
+
+app.post('/storeResume', function(req, res) {
+    if (!req.files)
+        return res.status(400).send('No files were uploaded.');
+    let params = {
+        Bucket: "research-connect-student-files",
+        Key: "1517452061886"
+    };
+    s3.getObject(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else {
+            let baseString = base64ArrayBuffer(data.Body);
+            res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,'+ baseString +' />');
+        }
+        // successful response
+    });
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let resume = req.files.resume;
+    //TODO change Key param to name of student plus date.now
+    // let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
+    // console.log("yay!");
+    // s3.upload (uploadParams, function (err, data) {
+    //     if (err) {
+    //         console.log("Error", err);
+    //     } if (data) {
+    //         console.log("Upload Success", data.Location);
+    //     }
+    // });
+});
+
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
+//create buttons email:
+//site url and endpoint
+
+let siteUrl = "localhost:3001"
+var messsgeContent = "";
+messageContent += createButton(siteUrl, );
+
+
+
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -424,32 +589,25 @@ const msg = {
     from: 'ayeshagrocks@gmail.com',
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    html: '<strong>and easy to do anywhere, even with Node.js </strong> ',
 };
+
 sgMail.send(msg);
 
 
 
-
-//create buttons email:
-//site url and endpoint
-let siteUrl = "localhost:3001"
     function createButton(siteUrl, endpoint){
 
             //button with atag
             //when button clicked url/endpoint?rate=good --> rate our site endpoint, get query --> update with that value.
 
-        <a href="siteUrl/endpoint" target="_blank" input type="button" value="Link-button"></a>
-
-        var express = require('express');
-        var app = express();
+        var s = '<a href="siteUrl/endpoint" target="_blank" input type="button" value="Link-button"></a>'
 
         app.get("/"+endpoint,function(req,res){
             var id = req.query.id;
-            //further operations to perform updaet undergrade
-
         });
 
+        return s;
 
     }
 
@@ -461,6 +619,9 @@ let siteUrl = "localhost:3001"
 
 
     /*******************************/
+
+
+// sgMail.send(msg);
 
 /**End ENDPOINTS */
 
@@ -529,7 +690,6 @@ app.listen(port, function () {
     // Now the opportunity is saved in the Opportunities collection on mlab!
 });
  */
-
 
 //Example code for searching the database:
 /**
