@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../App.css';
+import Autosuggester from '../components/Autosuggest';
+
 
 class InstructorRegister extends React.Component {
   constructor(props) {
@@ -11,21 +13,26 @@ class InstructorRegister extends React.Component {
     };
 
       this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
+
+
     };
 
-displayLabs() {
-  var arrayOfLabs = [];
+// displayLabs() {
+//   var arrayOfLabs = [];
+//
+//   for (var i = 0; i < this.state.data.length; i++) {
+//       arrayOfLabs.push(<option key={this.state.data[i].name} value={this.state.data[i].name}>{this.state.data[i].name}</option>);
+//
+//   }
+//   return ( <select> <option key="empty" value="">Select Lab</option> {arrayOfLabs} </select>);
+// }
 
-  for (var i = 0; i < this.state.data.length; i++) {
-      arrayOfLabs.push(<option key={this.state.data[i].name} value={this.state.data[i].name}>{this.state.data[i].name}</option>);
 
-  }
-  return ( <select> <option key="empty" value="">Select Lab</option> {arrayOfLabs} </select>);
+
+toggleNewLab() {
+  this.setState({newLab: !this.state.newLab});
 }
 
-turnOnNewLab() {
-  this.setState({newLab: true});
-}
 
 loadOpportunitiesFromServer() {
 
@@ -46,10 +53,18 @@ render() {
     return (
         <div>
 
-                {this.displayLabs()}
-                <input type="button" value="Add a new lab" onClick={this.turnOnNewLab.bind(this)}/>
+            <Autosuggester
+              data={this.state.data}
+              />
+
+                <input type="button" value="Toggle new lab" onClick={this.toggleNewLab.bind(this)}/>
                 {this.state.newLab ?
-                <form>
+                <form
+                      id='create'
+                      action='http://localhost:3001/createLabAdmin'
+                      method='post'
+                      >
+
                 <label>
                   *Lab Name:
                   <input type="text" name="labName" id="labName"/>
