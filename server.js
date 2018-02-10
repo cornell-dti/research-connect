@@ -1,3 +1,5 @@
+//import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
+
 //server.js
 'use strict'
 
@@ -176,7 +178,10 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 });*/
 
 app.post('/getOpportunity', function (req, res) {
-    const id = req.body.id;
+    getOpportunity(req.body.id, res);
+});
+
+function getOpportunity(id, res) {
     opportunityModel.findById(id, function (err, opportunities) {
         if (err) {
             res.send(err);
@@ -185,7 +190,8 @@ app.post('/getOpportunity', function (req, res) {
         }
         res.send(opportunities);
     });
-});
+
+}
 
 app.post('/getLabAdmin', function (req, res) {
     var response = getLabAdmin(req.body.id);
@@ -198,23 +204,43 @@ function getLabAdmin(id, res){
             return err;
         }
         console.log(labAdmin.labId);
+
         return labAdmin;
     });
 }
 
 app.post('/getApplications', function (req, res) {
+
+    var async = require('async');
+
+    function callbackHandler(err, results) {
+        console.log('It came back with this ' + results);
+    }
+
     const labAdminId = req.body.id;
+    function labAdmin (callbackHandler) {
+        var labAdmin = getLabAdmin(labAdminId, res);
+    }
+
+    //function
+
+    /*
     var labAdmin = getLabAdmin(labAdminId, res);
+    var lab = getLab(labAdmin.labId, res);
+    var labOpportunities = lab.opportunities;
 
+    var applicationsInOpportunities = {};
 
-    opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
-        if (err) {
-            res.send(err);
-            return; // instead of putting an else
-            //handle the error appropriately
-        }
-        res.send(opportunities.applications);
-    });
+    for(var opportunityID in labOpportunities) {
+
+        var opportunity = getOpportunity(opportunityID, res);
+        applicationsInOpportunities[opportunity.title] = opportunity.applications;
+    }
+
+    console.log(applicationsInOpportunities);
+
+    */
+
 });
 
 app.get('/getOpportunitiesListing', function (req, res) {
@@ -237,6 +263,7 @@ app.get('/getOpportunitiesListing', function (req, res) {
         });
 });
 
+//get all the labs
 app.get('/getLabs', function (req, res) {
     labModel.find({}, function (err, labs) {
         if (err) {
@@ -248,6 +275,23 @@ app.get('/getLabs', function (req, res) {
 
     });
 });
+
+//get one lab by id
+app.get('/getLab', function (req, res) {
+    var response = getLab(req.body.id, res);
+    res.send(response);
+});
+
+function getLab(id, res){
+    labModel.findById(id, function (err, lab) {
+        if (err) {
+            return err;
+        }
+        console.log(lab.name);
+        return lab;
+    });
+}
+
 
 /**
  * Example of code for receiving a request from the front end that sends data with its requests,
@@ -354,6 +398,30 @@ app.post('/createLabAdmin', function (req, res) {
             res.send("success!");
         }
         // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+});
+
+app.post('/createLab', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data);
+
+    var lab = new labModel({
+        name: data.name,
+        labPage: data.labPage,
+        labDescription: data.labDescription,
+        labAdmins: data.labAdmins,
+        opportunities: data.opportunities
+    });
+
+    lab.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
     });
 });
 
