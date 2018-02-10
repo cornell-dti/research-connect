@@ -4,6 +4,7 @@
 'use strict'
 
 //import dependencies
+const async = require('async');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -211,7 +212,6 @@ function getLabAdmin(id, res){
 
 app.post('/getApplications', function (req, res) {
 
-    var async = require('async');
 
     function callbackHandler(err, results) {
         console.log('It came back with this ' + results);
@@ -220,6 +220,10 @@ app.post('/getApplications', function (req, res) {
     const labAdminId = req.body.id;
     function labAdmin (callbackHandler) {
         var labAdmin = getLabAdmin(labAdminId, res);
+    }
+
+    function lab (callbackHandler) {
+        var lab = getLab(labAdmin.labId, res);
     }
 
     //function
@@ -347,18 +351,17 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
-    console.log(data.title);
 
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
-        gradYear: data.year,    //number
+        gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.gpa,
-        netID: data.netID
+        netId: data.netId
     });
+    console.log(undergrad);
     undergrad.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -405,6 +408,7 @@ app.post('/createLab', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
+
 
     var lab = new labModel({
         name: data.name,
@@ -468,7 +472,8 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    let id = req.query.id;
+    let id = req.body.id;
+    console.log(id);
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
@@ -486,6 +491,33 @@ app.post('/updateUndergrad', function (req, res) {
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+app.post('/updateLab', function (req, res) {
+    let id = req.body.id;
+    labModel.findById(id, function (err, lab) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            lab.name = req.body.name || lab.name;
+            lab.labPage = req.body.labPage || lab.labPage;
+            lab.labDescription = req.body.labDescription || lab.labDescription;
+            lab.labAdmins = req.body.labAdmins || lab.labAdmins;
+            lab.opportunities = req.body.opportunities || lab.opportunities;
+
+            // Save the updated document back to the database
+            lab.save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
@@ -575,6 +607,24 @@ app.post('/deleteLabAdmin', function (req, res) {
 
     });
 });
+
+app.post('/deleteLab', function (req, res) {
+    var id = req.body.id;
+    console.log("delete lab");
+    console.log(id);
+
+    labModel.findByIdAndRemove(id, function (err, lab) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Lab successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+    });
+});
+
 
 function base64ArrayBuffer(arrayBuffer) {
     var base64    = ''
