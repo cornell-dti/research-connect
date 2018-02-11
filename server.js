@@ -250,13 +250,6 @@ app.post('/getApplications', function (req, res) {
 
 });
 
-"localhost:3001/clickedButton"
-app.get("/clickedButton", function (req, res){
-    console.log("f");
-    //update mongo
-    <a href="http://localhost:3001/clickedButton"> </a>
-});
-
 app.get('/getOpportunitiesListing', function (req, res) {
     if (req.body.corsKey != corsKey){
         res.status(403).send("Access forbidden");
