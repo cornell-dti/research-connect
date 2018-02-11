@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",
+    "async": "^2.6.0",
     "aws-sdk": "^2.188.0",
     "axios": "^0.14.0",
     "body-parser": "~1.17.1",

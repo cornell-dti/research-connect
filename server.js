@@ -1,7 +1,10 @@
+//import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
+
 //server.js
 'use strict'
 
 //import dependencies
+const async = require('async');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -17,6 +20,12 @@ if (fs.existsSync('./S3Config2.json')) {
     AWS.config.loadFromPath('./S3Config2.json');
     AWS.config.update({region: 'us-east-2'});
     s3 = new AWS.S3();
+}
+
+let corsKey = null;
+if (fs.existsSync('./CorsKey.json')) {
+    corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
+    corsKey = corsKey.key;
 }
 
 //create instances
@@ -176,7 +185,10 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 });*/
 
 app.post('/getOpportunity', function (req, res) {
-    const id = req.body.id;
+    getOpportunity(req.body.id, res);
+});
+
+function getOpportunity(id, res) {
     opportunityModel.findById(id, function (err, opportunities) {
         if (err) {
             res.send(err);
@@ -185,21 +197,67 @@ app.post('/getOpportunity', function (req, res) {
         }
         res.send(opportunities);
     });
+
+}
+
+app.post('/getLabAdmin', function (req, res) {
+    var response = getLabAdmin(req.body.id);
+    res.send(response);
 });
 
-app.post('/getApplications', function (req, res) {
-    const labAdminId = req.body.id;
-    opportunityModel.findById("5a07b18e541d103834836eeb", function (err, opportunities) {
+function getLabAdmin(id, res){
+    labAdministratorModel.findById(id, function (err, labAdmin) {
         if (err) {
-            res.send(err);
-            return; // instead of putting an else
-            //handle the error appropriately
+            return err;
         }
-        res.send(opportunities.applications);
+        console.log(labAdmin.labId);
+
+        return labAdmin;
     });
+}
+
+app.post('/getApplications', function (req, res) {
+
+
+    function callbackHandler(err, results) {
+        console.log('It came back with this ' + results);
+    }
+
+    const labAdminId = req.body.id;
+    function labAdmin (callbackHandler) {
+        var labAdmin = getLabAdmin(labAdminId, res);
+    }
+
+    function lab (callbackHandler) {
+        var lab = getLab(labAdmin.labId, res);
+    }
+
+    //function
+
+    /*
+    var labAdmin = getLabAdmin(labAdminId, res);
+    var lab = getLab(labAdmin.labId, res);
+    var labOpportunities = lab.opportunities;
+
+    var applicationsInOpportunities = {};
+
+    for(var opportunityID in labOpportunities) {
+
+        var opportunity = getOpportunity(opportunityID, res);
+        applicationsInOpportunities[opportunity.title] = opportunity.applications;
+    }
+
+    console.log(applicationsInOpportunities);
+
+    */
+
 });
 
 app.get('/getOpportunitiesListing', function (req, res) {
+    if (req.body.corsKey != corsKey){
+        res.status(403).send("Access forbidden");
+        return;
+    }
     opportunityModel.find({
             // opens: {
             //     $lte: new Date()
@@ -219,6 +277,7 @@ app.get('/getOpportunitiesListing', function (req, res) {
         });
 });
 
+//get all the labs
 app.get('/getLabs', function (req, res) {
     labModel.find({}, function (err, labs) {
         if (err) {
@@ -230,6 +289,23 @@ app.get('/getLabs', function (req, res) {
 
     });
 });
+
+//get one lab by id
+app.get('/getLab', function (req, res) {
+    var response = getLab(req.body.id, res);
+    res.send(response);
+});
+
+function getLab(id, res){
+    labModel.findById(id, function (err, lab) {
+        if (err) {
+            return err;
+        }
+        console.log(lab.name);
+        return lab;
+    });
+}
+
 
 /**
  * Example of code for receiving a request from the front end that sends data with its requests,
@@ -285,18 +361,17 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
-    console.log(data.title);
 
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
-        gradYear: data.year,    //number
+        gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.gpa,
-        netID: data.netID
+        netId: data.netId
     });
+    console.log(undergrad);
     undergrad.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -336,6 +411,31 @@ app.post('/createLabAdmin', function (req, res) {
             res.send("success!");
         }
         // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+});
+
+app.post('/createLab', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data);
+
+
+    var lab = new labModel({
+        name: data.name,
+        labPage: data.labPage,
+        labDescription: data.labDescription,
+        labAdmins: data.labAdmins,
+        opportunities: data.opportunities
+    });
+
+    lab.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
     });
 });
 
@@ -382,7 +482,8 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    let id = req.query.id;
+    let id = req.body.id;
+    console.log(id);
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
@@ -400,6 +501,33 @@ app.post('/updateUndergrad', function (req, res) {
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                res.status(200).send(todo);
+            });
+        }
+    });
+});
+
+app.post('/updateLab', function (req, res) {
+    let id = req.body.id;
+    labModel.findById(id, function (err, lab) {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        else {
+            // Update each attribute with any possible attribute that may have been submitted in the body of the request
+            // If that attribute isn't in the request body, default back to whatever it was before.
+            lab.name = req.body.name || lab.name;
+            lab.labPage = req.body.labPage || lab.labPage;
+            lab.labDescription = req.body.labDescription || lab.labDescription;
+            lab.labAdmins = req.body.labAdmins || lab.labAdmins;
+            lab.opportunities = req.body.opportunities || lab.opportunities;
+
+            // Save the updated document back to the database
+            lab.save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
@@ -491,6 +619,24 @@ app.post('/deleteLabAdmin', function (req, res) {
 
     });
 });
+
+app.post('/deleteLab', function (req, res) {
+    var id = req.body.id;
+    console.log("delete lab");
+    console.log(id);
+
+    labModel.findByIdAndRemove(id, function (err, lab) {
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        let response = {
+            message: "Lab successfully deleted",
+            id: id
+        };
+        res.status(200).send(response);
+
+    });
+});
+
 
 function base64ArrayBuffer(arrayBuffer) {
     var base64    = ''

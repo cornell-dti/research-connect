@@ -34,3 +34,10 @@ form {
 .createOppLabel input {
   margin: 5px;
 }
+.autoOp{
+  font-size: 15px;
+  margin: 0px;
+  padding: 2px;
+  border: solid gray 1px;
+  width: 150px;
+}
