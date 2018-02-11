@@ -580,8 +580,8 @@ app.post('/storeResume', function(req, res) {
 //site url and endpoint
 
 let siteUrl = "localhost:3001"
-var messsgeContent = "";
-messageContent += createButton(siteUrl, );
+var messsgeContent = '';
+messsgeContent += createButton(siteUrl, 'storeResume' );
 
 
 
@@ -593,10 +593,16 @@ const msg = {
     from: 'ayeshagrocks@gmail.com',
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js </strong> ',
+    html: '<form action="http://localhost:3001/buttonClicked?id=Ayesha"> <input type="submit" value="Click this to go to buttonClicked Endpoint" /></form>',
 };
 
 sgMail.send(msg);
+
+app.get('/buttonClicked',function(req,res){
+    var id = req.query.id;
+    res.send('id: ' + id);
+    console.log('hello');
+});
 
 
 
@@ -607,9 +613,7 @@ sgMail.send(msg);
 
         var s = '<a href="siteUrl/endpoint" target="_blank" input type="button" value="Link-button"></a>'
 
-        app.get("/"+endpoint,function(req,res){
-            var id = req.query.id;
-        });
+
 
         return s;
 
