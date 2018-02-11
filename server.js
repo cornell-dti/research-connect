@@ -22,8 +22,11 @@ if (fs.existsSync('./S3Config2.json')) {
     s3 = new AWS.S3();
 }
 
-let corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
-corsKey = corsKey.key;
+let corsKey = null;
+if (fs.existsSync('./CorsKey.json')) {
+    corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
+    corsKey = corsKey.key;
+}
 
 //create instances
 const app = express();
