@@ -8,12 +8,16 @@ const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const AWS = require('aws-sdk');
-AWS.config.loadFromPath('./S3Config.json');
-AWS.config.update({region: 'us-east-2'});
-const s3 = new AWS.S3();
-
+let s3;
+if (fs.existsSync('./S3Config2.json')) {
+    // Do something
+    AWS.config.loadFromPath('./S3Config2.json');
+    AWS.config.update({region: 'us-east-2'});
+    s3 = new AWS.S3();
+}
 
 //create instances
 const app = express();
