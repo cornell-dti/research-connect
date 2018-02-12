@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic');
+
+
+.searchDiv{
+  text-align: center;
+}
+.searchDiv input{
+  width: 86%;
+  padding: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+body{
+  background-color: #f6f6f6;
+}
+.horizontal-flex{
+  margin-left: 7%;
+  display: flex;
+  width: 86%;
+  flex-direction: row;
+}
+.opp-flex{
+  order: 2;
+
+}
+.filter-flex{
+  order: 1;
+  margin-top: 10px;
+  padding: 5px;
+  padding-top: 10px;
+  padding-left: 15px;
+  height: 600px;
+  border: solid 2px #979797;
+  background-color: white;
+    border-radius: 2px;
+    margin-right: 15px;
+}
+.oppBox{
+  margin: 10px;
+  background-color: white;
+  border: solid 2px #979797;
+  width: 700px;
+  padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.oppBox h3{
+  font-size: 22px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.oppBox:hover{
+  border: #4a90e2 solid 2px;
+   box-shadow: 0 0 10px #9ecaed;
+}
+h3, h2{
+  margin-top: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+.oppBox p{
+  color: #4a4a4a;
+}
+.viewDetails{
+  color: #4a90e2;
+  text-decoration: underline;
+}
+.greenCheck{
+  color: #417505;
+}
+.redX{
+  color: #d0021b;
+}
+.cal{
+  color: #f5a623;
+}
+.header{
+  background-color: #b31b1b;
+  width: 100%;
+  height: 50px;
+}
