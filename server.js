@@ -216,6 +216,22 @@ function getLabAdmin(id, res){
     });
 }
 
+app.post('/getUndergrad', function (req, res) {
+    var response = getUndergrad(req.body.id);
+    res.send(response);
+});
+
+function getUndergrad(id, res){
+    undergradModel.findById(id, function (err, undergrad) {
+        if (err) {
+            return err;
+        }
+        console.log(undergrad.netId);
+
+        return undergrad;
+    });
+}
+
 app.post('/getApplications', function (req, res) {
 
 
@@ -253,29 +269,48 @@ app.post('/getApplications', function (req, res) {
 
 });
 
-app.get('/getOpportunitiesListing', function (req, res) {
+app.post('/getOpportunitiesListing', function (req, res) {
+
     if (req.body.corsKey != corsKey){
         res.status(403).send("Access forbidden");
         return;
     }
-    opportunityModel.find({
-            // opens: {
-            //     $lte: new Date()
-            // },
-            // closes: {
-            //     $gte: new Date()
-            // }
-        },
-        function (err, opportunities) {
+
+    var undergradNetId = req.body.netId;
+    var opportunitiesSuitable = {};
+
+    // opens: {
+    //     $lte: new Date()
+    // },
+    // closes: {
+    //     $gte: new Date()
+    // }
+
+    undergradModel.find({netId: undergradNetId}, function(err, undergrad) {
+
+        opportunityModel.find({}, function (err, opportunities) {
+
+            for (var i = 0; i < opportunities.length; i++) {
+                let prereqsMatch = false;
+                if (opportunities.minGPA <= undergrad.gpa) {
+                    prereqsMatch = true;
+                }
+
+                opportunities[i]["prereqsMatch"] = prereqsMatch;
+            }
+
             if (err) {
                 res.send(err);
                 return;
                 //handle the error appropriately
             }
+            console.log(opportunities);
             res.send(opportunities);
 
         });
+    });
 });
+
 
 //get all the labs
 app.get('/getLabs', function (req, res) {
