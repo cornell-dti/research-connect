@@ -253,28 +253,32 @@ app.post('/getApplications', function (req, res) {
 
 });
 
-app.get('/getOpportunitiesListing', function (req, res) {
+app.post('/getOpportunitiesListing', function (req, res) {
+    let netId = req.body.undergradNetId;
     if (req.body.corsKey != corsKey){
         res.status(403).send("Access forbidden");
         return;
     }
-    opportunityModel.find({
-            // opens: {
-            //     $lte: new Date()
-            // },
-            // closes: {
-            //     $gte: new Date()
-            // }
-        },
-        function (err, opportunities) {
-            if (err) {
-                res.send(err);
-                return;
-                //handle the error appropriately
-            }
-            res.send(opportunities);
+    undergradModel.find({}, function(err, undergradDate){
+        opportunityModel.find({
+                // opens: {
+                //     $lte: new Date()
+                // },
+                // closes: {
+                //     $gte: new Date()
+                // }
+            },
+            function (err, opportunities) {
+                if (err) {
+                    res.send(err);
+                    return;
+                    //handle the error appropriately
+                }
+                res.send(opportunities);
 
-        });
+            });
+    });
+
 });
 
 //get all the labs
@@ -325,7 +329,6 @@ app.post('/createOpportunity', function (req, res) {
     console.log(data);
 
     let opportunity = new opportunityModel({
-
         creatorNetId: data.creatorNetId,
         labPage: data.labPage,
         title: data.title,
@@ -346,6 +349,8 @@ app.post('/createOpportunity', function (req, res) {
         closes: data.closes,
         areas: data.areas
     });
+
+    labModel.find();
 
     opportunity.save(function (err) {
         if (err) {
