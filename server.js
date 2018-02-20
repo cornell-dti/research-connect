@@ -119,7 +119,9 @@ const labAdministratorSchema = new Schema({
     netId: {type: String, required: true},
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
-    verified: {type: Boolean, default: false}
+    verified: {type: Boolean, default: false},
+    //emailTime: {type, Number}
+
 });
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 
@@ -347,6 +349,7 @@ app.post('/createOpportunity', function (req, res) {
         areas: data.areas
     });
 
+    //
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -400,6 +403,7 @@ app.post('/createLabAdmin', function (req, res) {
         lastName: data.lastName,
         verified: data.verified
 
+
     });
 
     labAdmin.save(function (err) {
@@ -426,6 +430,7 @@ app.post('/createLab', function (req, res) {
         labDescription: data.labDescription,
         labAdmins: data.labAdmins,
         opportunities: data.opportunities
+
     });
 
     lab.save(function (err) {
@@ -727,7 +732,7 @@ app.post('/storeResume', function(req, res) {
 
 let siteUrl = "localhost:3001"
 var messsgeContent = '';
-messsgeContent += createButton(siteUrl, 'storeResume' );
+//messsgeContent += createButton(siteUrl, 'storeResume' );
 
 
 
@@ -739,7 +744,7 @@ const msg = {
     from: 'ayeshagrocks@gmail.com',
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
-    html: '<form action="http://localhost:3001/buttonClicked?id=Ayesha"> <input type="submit" value="Click this to go to buttonClicked Endpoint" /></form>',
+    html: '<form action="http://localhost:3001/buttonClicked?id=Ayesha"> <input type="submit" value="Click this to go to buttonClicked Endpoint" /></form>'
 };
 
 sgMail.send(msg);
@@ -750,6 +755,19 @@ app.get('/buttonClicked',function(req,res){
     console.log('hello');
 });
 
+
+app.get('/createUndergrad', function(req, res){
+    //labModel.find({labAdmin: {$elemMatch: {netID:''}}});
+   // var l  = req.body.creatorNetId
+    labModel.find({ labAdmins: req.body.creatorNetId }), function( err, createUndergrad){
+        res.send(createUndergrad);
+    }
+});
+
+
+
+
+//post when u need data
 
 
     function createButton(siteUrl, endpoint){
