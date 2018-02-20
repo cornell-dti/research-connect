@@ -33,28 +33,9 @@ class OpportunityList extends Component {
             )
         });
         return (
-            <table><thead><tr>
-                <th>Title</th>
-                <th>Area</th>
-                <th>Lab Name</th>
-                <th>PI</th>
-                <th>Supervisor</th>
-                <th>Project Description</th>
-                <th>Undergrad Tasks</th>
-                <th>Opens</th>
-                <th>Closes</th>
-                <th>Start Date</th>
-                <th>Min Semesters</th>
-                <th>Min Hours</th>
-                <th>Max Hours</th>
-                <th>Qualifications</th>
-                <th>Min GPA</th>
-                <th>Required Classes</th>
-                <th>Questions</th>
-                <th>Years Allowed</th>
-                <th>Spots</th></tr></thead>
-                <tbody>{ oppNodes }</tbody>
-            </table>
+          <div>
+            { oppNodes }
+            </div>
         )
     }
 }

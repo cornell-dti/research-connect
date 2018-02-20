@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import '../index.css';
 import {BrowserRouter as Router} from 'react-router-dom'
 import OpportunityJSON from './Opportunity.json'
+import '../opportunities.css';
+ import CheckBox from 'react-icons/lib/fa/check-square-o';
+ import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
+ import Calendar from 'react-icons/lib/fa/calendar-check-o';
 
 class Opportunity extends Component {
     constructor(props) {
@@ -90,8 +94,15 @@ class Opportunity extends Component {
             let area = this.props.area;
             if (csSelected && area.indexOf("Computer Science") !== -1 ||
                 bioSelected && area.indexOf("Biology") !== -1 ||
-                !csSelected && ! bioSelected)
-                return true;
+                !csSelected && ! bioSelected){
+
+                let minGPA = filteredOptions.gpaSelect.val;
+
+                if ((minGPA==null)||(minGPA >= this.props.minGPA)){
+                  return true;
+                }
+                }
+
         }
         return false;
     }
@@ -103,7 +114,37 @@ class Opportunity extends Component {
 
     convertDate(dateString) {
         var dateObj = new Date(dateString);
-        return dateObj.toString().slice(0, 15);
+        var month = dateObj.getUTCMonth()+1;
+        var day = dateObj.getUTCDay();
+        var month0 = '';
+        var day0 = '';
+        if (month<10){
+          month0 = '0';
+        }
+        if (day0<10){
+          day0='0';
+        }
+
+        return(month0+ (month).toString()+"/"+day0+(day).toString());
+    }
+
+    convertDescription(str){
+      if (str.length > 250){
+        str = str.slice(0,250)+"... ";
+        return(<p>{str}<span className="viewDetails">View Details</span> </p>);
+      }else{
+        return(<p>{str} </p>);
+      }
+    }
+
+    checkPrereqs(){
+
+      if(this.props.title==='Project1'){
+        return(<div><CheckBox className="greenCheck"/> <span>All Prereqs Met</span></div>);
+      }else{
+          return(<div><CrossCircle className="redX"/> <span>Some Prereqs Missing</span></div>);
+      }
+
     }
 
     checkOpen() {
@@ -120,28 +161,39 @@ class Opportunity extends Component {
     }
 
     render() {
+
         return (
-            <tr onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
-                <td>{ this.props.title }</td>
-                <td>{ this.props.area }</td>
-                <td>{ this.props.labName }</td>
-                <td>{ this.props.pi }</td>
-                <td>{ this.props.supervisor }</td>
-                <td>{ this.props.projectDescription }</td>
-                <td>{ this.props.undergradTasks }</td>
-                <td>{ this.props.opens }</td>
-                <td>{ this.props.closes }</td>
-                <td>{ this.props.startDate }</td>
-                <td>{ this.props.minSemesters }</td>
-                <td>{ this.props.minHours }</td>
-                <td>{ this.props.maxHours }</td>
-                <td>{ this.props.qualifications }</td>
-                <td>{ this.props.minGPA }</td>
-                <td>{ this.props.requiredClasses }</td>
-                {/*<td>{ this.props.questions }</td>*/}
-                <td>{ this.props.yearsAllowed }</td>
-                <td>{ this.props.spots }</td>
-            </tr>
+            <div className="oppBox" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
+                <h3>{ this.props.title }</h3>
+                {/*}  <p>{ this.props.labName }</p> */}
+                <p>Lab Name</p>
+                  { this.convertDescription(this.props.projectDescription) }
+                  <Calendar className="cal"/>
+                  <span> Deadline { this.convertDate(this.props.closes) }</span>
+
+                  {this.checkPrereqs()}
+
+
+
+            {/*
+               <p>{ this.props.area }</p>
+              <p>{ this.props.pi }</p>
+                <p>{ this.props.supervisor }</p>
+
+                <p>{ this.props.undergradTasks }</p>
+                <p>{ this.props.opens }</p>
+
+                <p>{ this.props.starpate }</p>
+                <p>{ this.props.minSemesters }</p>
+                <p>{ this.props.minHours }</p>
+                <p>{ this.props.maxHours }</p>
+               <p>{ this.props.qualifications }</p>
+               <p>{ this.props.minGPA }</p>
+                <p>{ this.props.requiredClasses }</p>
+                /*<p>{ this.props.questions }</p>
+                <p>{ this.props.yearsAllowed }</p>
+                <p>{ this.props.spots }</p> */ }
+            </div>
 
         )
     }
