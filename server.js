@@ -42,7 +42,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -60,8 +60,8 @@ app.use(function (req, res, next) {
 });
 
 
-router.get('/', function(req, res) {
-    res.json({ message: 'API Initialized!'});
+router.get('/', function (req, res) {
+    res.json({message: 'API Initialized!'});
 });
 
 //app.use('/users', users);
@@ -180,9 +180,9 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 //Example code for receiving a request from the front end that doesn't send any data,
 /*app.get('/something', function (req, res) {
-    //res is used to send the result
-    res.send("hello");
-});*/
+ //res is used to send the result
+ res.send("hello");
+ });*/
 
 app.post('/getOpportunity', function (req, res) {
     getOpportunity(req.body.id, res);
@@ -205,7 +205,7 @@ app.post('/getLabAdmin', function (req, res) {
     res.send(response);
 });
 
-function getLabAdmin(id, res){
+function getLabAdmin(id, res) {
     labAdministratorModel.findById(id, function (err, labAdmin) {
         if (err) {
             return err;
@@ -218,37 +218,79 @@ function getLabAdmin(id, res){
 
 app.post('/getApplications', function (req, res) {
 
-    function callbackHandler(err, results) {
-        console.log('It came back with this ' + results);
-    }
-
-    const labAdminId = req.body.id;
-    function labAdmin (callbackHandler) {
-        var labAdmin = getLabAdmin(labAdminId, res);
-    }
-
-    function lab (callbackHandler) {
-        var lab = getLab(labAdmin.labId, res);
-    }
+    // function callbackHandler(err, results) {
+    //     console.log('It came back with this ' + results);
+    // }
+    //
+    // const labAdminId = req.body.id;
+    // function labAdmin (callbackHandler) {
+    //     var labAdmin = getLabAdmin(labAdminId, res);
+    // }
+    //
+    // function lab (callbackHandler) {
+    //     var lab = getLab(labAdmin.labId, res);
+    // }
 
     //function
 
+    const labAdminId = req.body.id;
+    console.log(labAdminId + "");
+    labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
+        if (err) {
+            res.send(err);
+            return;
+        }
+        console.log(labAdmin.labId);
+        labModel.findById(labAdmin.labId, function (err, lab) {
+            if (err) {
+                res.send(err);
+                return;
+            }
+            console.log("lab");
+            console.log(lab.opportunities);
+            let mongooseLabIds = [];
+            for (let i = 0; i < lab.opportunities.length; i++) {
+                mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
+            }
+            console.log(mongooseLabIds);
+            opportunityModel.find({
+                '_id': {
+                    $in: mongooseLabIds
+                }
+            }, function (err, docs) {
+                console.log("docs");
+                console.log(docs);
+                let applicationsArray = [];
+                let allApplications = {};
+                for (let i = 0; i < docs.length; i++){
+                    let opportunityObject = docs[i];
+                    for (let j = 0; j < opportunityObject.applications.length; j++) {
+                        applicationsArray.push(opportunityObject.applications[j]);
+                    }
+                    allApplications[opportunityObject.title] = applicationsArray;
+                    applicationsArray = [];
+                }
+                res.send(allApplications);
+            });
+
+        })
+    });
     /*
-    var labAdmin = getLabAdmin(labAdminId, res);
-    var lab = getLab(labAdmin.labId, res);
-    var labOpportunities = lab.opportunities;
+     var labAdmin = getLabAdmin(labAdminId, res);
+     var lab = getLab(labAdmin.labId, res);
+     var labOpportunities = lab.opportunities;
 
-    var applicationsInOpportunities = {};
+     var applicationsInOpportunities = {};
 
-    for(var opportunityID in labOpportunities) {
+     for(var opportunityID in labOpportunities) {
 
-        var opportunity = getOpportunity(opportunityID, res);
-        applicationsInOpportunities[opportunity.title] = opportunity.applications;
-    }
+     var opportunity = getOpportunity(opportunityID, res);
+     applicationsInOpportunities[opportunity.title] = opportunity.applications;
+     }
 
-    console.log(applicationsInOpportunities);
+     console.log(applicationsInOpportunities);
 
-    */
+     */
 
 });
 
@@ -258,7 +300,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
     //     res.status(403).send("Access forbidden");
     //     return;
     // }
-    undergradModel.find({}, function(err, undergradDate){
+    undergradModel.find({}, function (err, undergradDate) {
         opportunityModel.find({
                 // opens: {
                 //     $lte: new Date()
@@ -299,7 +341,7 @@ app.get('/getLab', function (req, res) {
     res.send(response);
 });
 
-function getLab(id, res){
+function getLab(id, res) {
     labModel.findById(id, function (err, lab) {
         if (err) {
             return err;
@@ -465,10 +507,10 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.startYear = req.body.startYear || opportunity.startYear;
             opportunity.applications = req.body.applications || opportunity.applications;
             opportunity.questions = req.body.questions || opportunity.questions;
-            opportunity.requiredClasses= req.body.requiredClasses || opportunity.requiredClasses;
+            opportunity.requiredClasses = req.body.requiredClasses || opportunity.requiredClasses;
             opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
             opportunity.minHours = req.body.minHours || opportunity.minHours;
-            opportunity.maxHours = req.body.maxHours|| opportunity.maxHours;
+            opportunity.maxHours = req.body.maxHours || opportunity.maxHours;
             opportunity.opens = req.body.opens || opportunity.opens;
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;
@@ -553,10 +595,10 @@ app.post('/updateLabAdmin', function (req, res) {
             // If that attribute isn't in the request body, default back to whatever it was before.
             labAdmin.role = req.body.role || labAdmin.role;
             labAdmin.labId = req.body.labId || labAdmin.labId;
-            labAdmin.netId  = req.body.netId || labAdmin.netId;
+            labAdmin.netId = req.body.netId || labAdmin.netId;
             labAdmin.firstName = req.body.firstName || labAdmin.firstName;
-            labAdmin.lastName = req.body.lastName|| labAdmin.lastName;
-            labAdmin.verified = req.body.verified|| labAdmin.verified;
+            labAdmin.lastName = req.body.lastName || labAdmin.lastName;
+            labAdmin.verified = req.body.verified || labAdmin.verified;
 
             // Save the updated document back to the database
             labAdmin.save((err, todo) => {
@@ -641,13 +683,13 @@ app.post('/deleteLab', function (req, res) {
 
 
 function base64ArrayBuffer(arrayBuffer) {
-    var base64    = ''
+    var base64 = ''
     var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-    var bytes         = new Uint8Array(arrayBuffer)
-    var byteLength    = bytes.byteLength
+    var bytes = new Uint8Array(arrayBuffer)
+    var byteLength = bytes.byteLength
     var byteRemainder = byteLength % 3
-    var mainLength    = byteLength - byteRemainder
+    var mainLength = byteLength - byteRemainder
 
     var a, b, c, d
     var chunk
@@ -659,8 +701,8 @@ function base64ArrayBuffer(arrayBuffer) {
 
         // Use bitmasks to extract 6-bit segments from the triplet
         a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
-        b = (chunk & 258048)   >> 12 // 258048   = (2^6 - 1) << 12
-        c = (chunk & 4032)     >>  6 // 4032     = (2^6 - 1) << 6
+        b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
+        c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
         d = chunk & 63               // 63       = 2^6 - 1
 
         // Convert the raw binary segments to the appropriate ASCII encoding
@@ -674,17 +716,17 @@ function base64ArrayBuffer(arrayBuffer) {
         a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
 
         // Set the 4 least significant bits to zero
-        b = (chunk & 3)   << 4 // 3   = 2^2 - 1
+        b = (chunk & 3) << 4 // 3   = 2^2 - 1
 
         base64 += encodings[a] + encodings[b] + '=='
     } else if (byteRemainder == 2) {
         chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
 
         a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
-        b = (chunk & 1008)  >>  4 // 1008  = (2^6 - 1) << 4
+        b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
 
         // Set the 2 least significant bits to zero
-        c = (chunk & 15)    <<  2 // 15    = 2^4 - 1
+        c = (chunk & 15) << 2 // 15    = 2^4 - 1
 
         base64 += encodings[a] + encodings[b] + encodings[c] + '='
     }
@@ -692,18 +734,18 @@ function base64ArrayBuffer(arrayBuffer) {
     return base64
 }
 
-app.post('/storeResume', function(req, res) {
+app.post('/storeResume', function (req, res) {
     if (!req.files)
         return res.status(400).send('No files were uploaded.');
     let params = {
         Bucket: "research-connect-student-files",
         Key: "1517452061886"
     };
-    s3.getObject(params, function(err, data) {
+    s3.getObject(params, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else {
             let baseString = base64ArrayBuffer(data.Body);
-            res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,'+ baseString +' />');
+            res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
         }
         // successful response
     });
@@ -755,12 +797,6 @@ module.exports = app;
 app.listen(port, function () {
     console.log(`api running on port ${port}`);
 });
-
-
-
-
-
-
 
 
 //Example code to create an instance of a model (in this case we're creating an opportunity)
