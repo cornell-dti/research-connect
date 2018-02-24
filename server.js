@@ -234,32 +234,25 @@ app.post('/getApplications', function (req, res) {
     //function
 
     const labAdminId = req.body.id;
-    console.log(labAdminId + "");
     labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
         if (err) {
             res.send(err);
             return;
         }
-        console.log(labAdmin.labId);
         labModel.findById(labAdmin.labId, function (err, lab) {
             if (err) {
                 res.send(err);
                 return;
             }
-            console.log("lab");
-            console.log(lab.opportunities);
             let mongooseLabIds = [];
             for (let i = 0; i < lab.opportunities.length; i++) {
                 mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
             }
-            console.log(mongooseLabIds);
             opportunityModel.find({
                 '_id': {
                     $in: mongooseLabIds
                 }
             }, function (err, docs) {
-                console.log("docs");
-                console.log(docs);
                 let applicationsArray = [];
                 let allApplications = {};
                 for (let i = 0; i < docs.length; i++){
