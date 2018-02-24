@@ -218,7 +218,6 @@ function getLabAdmin(id, res){
 
 app.post('/getApplications', function (req, res) {
 
-
     function callbackHandler(err, results) {
         console.log('It came back with this ' + results);
     }
@@ -255,10 +254,10 @@ app.post('/getApplications', function (req, res) {
 
 app.post('/getOpportunitiesListing', function (req, res) {
     let netId = req.body.undergradNetId;
-    if (req.body.corsKey != corsKey){
-        res.status(403).send("Access forbidden");
-        return;
-    }
+    // if (req.body.corsKey != corsKey){
+    //     res.status(403).send("Access forbidden");
+    //     return;
+    // }
     undergradModel.find({}, function(err, undergradDate){
         opportunityModel.find({
                 // opens: {
