@@ -165,7 +165,7 @@ class Opportunity extends Component {
         return (
             <div className="oppBox" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
                 <h3>{ this.props.title }</h3>
-                {/*}  <p>{ this.props.labName }</p> */}
+                {/*  <p>{ this.props.labName }</p> */}
                 <p>Lab Name</p>
                   { this.convertDescription(this.props.projectDescription) }
                   <Calendar className="cal"/>

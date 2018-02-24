@@ -45,6 +45,7 @@ class CreateOppForm extends React.Component {
     handleSubmit(event) {
         alert('NetID:' + this.state.creatorNetId + ' labName: ' + this.state.labName);
         event.preventDefault();
+        //TODO: use this https://stackoverflow.com/questions/30483645/get-file-object-from-file-input so you don't get redirected everytime and can submit all data at once
     }
 
     addQuestion(event) {
