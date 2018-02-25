@@ -10,7 +10,7 @@ class ApplicationBox extends Component {
 
 	render() {
 		return (
-			<div className="application-box">
+			<div className="prof-application-box">
 				<h3>{ this.props.data.undergradNetId }, { this.props.data.undergradNetId }</h3>
 				<h3>{ this.props.data.undergradNetId }, { this.props.data.undergradNetId }</h3>
 				<h4>GPA: { this.props.data.gpa }</h4>

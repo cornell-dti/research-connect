@@ -23,7 +23,7 @@ class FilterBox extends Component {
 
 	render() {
 		return (
-			<div className="filter-box">
+			<div className="prof-filter-box">
 				<div className="">
 					<h2>Filters</h2>
 
