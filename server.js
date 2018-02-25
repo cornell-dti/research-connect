@@ -64,8 +64,6 @@ router.get('/', function (req, res) {
     res.json({message: 'API Initialized!'});
 });
 
-//app.use('/users', users);
-
 app.use('/api', router);
 
 /*******************************/
