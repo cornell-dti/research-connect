@@ -97,7 +97,8 @@ const undergradSchema = new Schema({
     gradYear: {type: Number, required: true, min: new Date().getFullYear()},
     major: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
-    netId: {type: String, required: true}
+    netId: {type: String, required: true},
+    courses: {type: [String]}
 });
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
 
@@ -274,17 +275,18 @@ app.post('/getApplications', function (req, res) {
                             for (let i = 0; i < currentApplication.length; i++) {
                                 let currentStudent = currentApplication[i];
                                 let undergradId = currentStudent.undergradNetId;
+                                console.log("here");
+                                console.log(studentInfoArray[0]);
                                 let undergradInfo = studentInfoArray.filter(function( student ) {
                                     return student.netId === undergradId;
                                 })[0];
-                                console.log(undergradInfo["courses"]);
+                                // console.log(undergradInfo["courses"]);
                                 currentStudent.firstName = undergradInfo.firstName;
                                 currentStudent.lastName = undergradInfo.lastName;
                                 currentStudent.gradYear = undergradInfo.gradYear;
                                 currentStudent.major = undergradInfo.major;
                                 currentStudent.gpa = undergradInfo.gpa;
-                                console.log('begin');
-                                // currentStudent.courses = undergradInfo.courses;
+                                currentStudent.courses = undergradInfo.courses;
 
                             }
                         }
