@@ -1,0 +1,28 @@
+.professor-view-container {
+	width: 80%;
+	margin: auto;
+	margin-bottom: 20px;
+} 
+
+.application-list-container {
+	margin-top: 15px;
+	margin-left: 20px;
+}
+
+.application-box, .filter-box {
+  padding: 10px;
+  margin-top: 15px;
+  background-color: white;
+  border: solid #979797 1px;
+  border-radius: 2px;
+}
+
+.professor-view-container form, .opp-container form {
+	padding: 0;
+}
+
+.header {
+  background-color: #b31b1b;
+  width: 100%;
+  height: 50px;
+}
