@@ -263,8 +263,6 @@ app.post('/getApplications', function (req, res) {
                     allApplications[opportunityObject.title] = applicationsArray;
                     applicationsArray = [];
                 }
-                console.log('1');
-                console.log(netIds);
                 undergradModel.find({
                     'netId': {
                         $in: netIds
@@ -279,12 +277,15 @@ app.post('/getApplications', function (req, res) {
                                 let undergradInfo = studentInfoArray.filter(function( student ) {
                                     return student.netId === undergradId;
                                 })[0];
+                                console.log(undergradInfo["courses"]);
                                 currentStudent.firstName = undergradInfo.firstName;
                                 currentStudent.lastName = undergradInfo.lastName;
                                 currentStudent.gradYear = undergradInfo.gradYear;
                                 currentStudent.major = undergradInfo.major;
                                 currentStudent.gpa = undergradInfo.gpa;
-                                currentStudent.courses = undergradInfo.courses;
+                                console.log('begin');
+                                // currentStudent.courses = undergradInfo.courses;
+
                             }
                         }
                     }
