@@ -253,15 +253,43 @@ app.post('/getApplications', function (req, res) {
             }, function (err, docs) {
                 let applicationsArray = [];
                 let allApplications = {};
+                let netIds = [];
                 for (let i = 0; i < docs.length; i++){
                     let opportunityObject = docs[i];
                     for (let j = 0; j < opportunityObject.applications.length; j++) {
                         applicationsArray.push(opportunityObject.applications[j]);
+                        netIds.push(opportunityObject.applications[j].undergradNetId);
                     }
                     allApplications[opportunityObject.title] = applicationsArray;
                     applicationsArray = [];
                 }
-                res.send(allApplications);
+                console.log('1');
+                console.log(netIds);
+                undergradModel.find({
+                    'netId': {
+                        $in: netIds
+                    }
+                }, function (err, studentInfoArray) {
+                    for (let key in allApplications) {
+                        if (allApplications.hasOwnProperty(key)) {
+                            let currentApplication = allApplications[key];
+                            for (let i = 0; i < currentApplication.length; i++) {
+                                let currentStudent = currentApplication[i];
+                                let undergradId = currentStudent.undergradNetId;
+                                let undergradInfo = studentInfoArray.filter(function( student ) {
+                                    return student.netId === undergradId;
+                                })[0];
+                                currentStudent.firstName = undergradInfo.firstName;
+                                currentStudent.lastName = undergradInfo.lastName;
+                                currentStudent.gradYear = undergradInfo.gradYear;
+                                currentStudent.major = undergradInfo.major;
+                                currentStudent.gpa = undergradInfo.gpa;
+                                currentStudent.courses = undergradInfo.courses;
+                            }
+                        }
+                    }
+                    res.send(allApplications);
+                });
             });
 
         })
