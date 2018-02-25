@@ -12,8 +12,13 @@
 
 .search-div input {
   width: 100%;
-  border-radius: 2px;
   margin-bottom: inherit;
+  height: 50px;
+  font-size: 15px;
+  background-color: white;
+  border-radius: 5px;
+  border-color: #979797;
+  color: #9b9b9b;
 }
 
 body {
@@ -22,33 +27,33 @@ body {
 
 /*** the opportunity cards are now .application-box ***/
 
-.oppBox {
+.application-box{
   margin: 10px;
+  margin-right: 0px;
+  margin-left: 0px;
   background-color: white;
   border: solid 2px #979797;
-  width: 700px;
+
   padding: 10px;
-  border-radius: 2px;
+
   cursor: pointer;
 }
 
-.oppBox h3 {
-  font-size: 22px;
+.application-box h3 {
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-.oppBox:hover {
-  border: #4a90e2 solid 2px;
-   box-shadow: 0 0 10px #9ecaed;
-}
+
 
 h3, h2 {
   margin-top: 0px;
   font-family: 'Roboto', sans-serif;
+  color: black;
+  font-weight: 500;
 }
 
-.oppBox p{
+.application-box p{
   color: #4a4a4a;
 }
 
@@ -86,4 +91,7 @@ h3, h2 {
   background-color: #b31b1b;
   width: 100%;
   height: 50px;
+}
+.filterCheckFields input{
+  margin-left: 25px;
 }

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
+import Milligram from 'milligram-react';
+import '../opportunities.css';
 
 class MajorSelect extends React.Component {
 	constructor(props) {
@@ -20,9 +22,10 @@ class MajorSelect extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<form onSubmit={this.handleSubmit} className="filterCheckFields">
 				<input ref={(node) => {this.cs = node}}  onChange={this.handleChange.bind(this)} type="checkbox" name="cs" value="cs"/>CS
-				<input ref={(input) => {this.biology = input}} onChange={this.handleChange.bind(this)} type="checkbox" name="biology" value="biology"/>Biology
+				<br/>
+				<input ref={(input) => {this.biology = input}} onChange={this.handleChange.bind(this)} type="checkbox" name="biology" value="biology"/>Biology		
 			</form>
 		);
 	}

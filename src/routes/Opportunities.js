@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import '../App.css';
-import '../Opportunities.css';
+import axios from 'axios';
+import logo from '../logo.svg';
+import '../opportunities.css';
 import OpportunityBox from '../components/OpportunityBox';
 import YearSelect from '../components/YearSelect'
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
+import Milligram from 'milligram-react';
+
 
 class Opportunities extends Component {
 
@@ -36,6 +39,7 @@ class Opportunities extends Component {
 	}
 
 
+
 	render() {
 		return (
 			<div>
@@ -55,14 +59,20 @@ class Opportunities extends Component {
 					<div className="row">
 						<div className="column-20">
 							<div className="filter-box">
-								<h2>Filters</h2>
-								<hr />
-								<h3>Department</h3>
+							<h2>Filters</h2>
+							<hr />
+
+
+
+							<label htmlFor="depField">Department</label>
 								<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
-								<h3>School Year</h3>
+								<hr />
+								<label htmlFor="yearField">School Year</label>
 								<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-								<h3>Minimum GPA</h3>
+								<hr />
+								<label htmlFor="gpaField">GPA Requirement</label>
 								<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
+
 							</div>
 						</div>
 

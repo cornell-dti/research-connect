@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
+<<<<<<< Updated upstream
 import '../index.css';
+=======
+
+import {BrowserRouter as Router} from 'react-router-dom'
+>>>>>>> Stashed changes
 import OpportunityJSON from './Opportunity.json'
-import '../Opportunities.css';
+import '../opportunities.css';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import Calendar from 'react-icons/lib/fa/calendar-check-o';
@@ -135,11 +140,11 @@ class Opportunity extends Component {
 	  }
 	}
 
-	checkPrereqs() { 
+	checkPrereqs() {
 		if (this.props.title==='Project1') {
 			return(<div><CheckBox className="greenCheck"/> <span>All Prereqs Met</span></div>);
 		} else {
-			return(<div><CrossCircle className="redX"/> <span>Some Prereqs Missing</span></div>);
+			return(<div><CrossCircle className="redX"/> <span>Prereqs Missing</span></div>);
 		}
 	}
 
@@ -159,14 +164,22 @@ class Opportunity extends Component {
 	render() {
 		return (
 			<div className="application-box" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
+			<div className="row">
+ 				<div className="column column-75">
 				<h3>{ this.props.title }</h3>
+				</div>
+ 				<div className="column column-25">
+					<Calendar className="cal"/>
+					<span> Deadline { this.convertDate(this.props.closes) }</span>
+					{this.checkPrereqs()}
+				</div>
+ 			</div>
+
 				{/*  <p>{ this.props.labName }</p> */}
 				<p>Lab Name</p>
 				{ this.convertDescription(this.props.projectDescription) }
-				<Calendar className="cal"/>
-				<span> Deadline { this.convertDate(this.props.closes) }</span>
 
-				{this.checkPrereqs()}
+
 
 				{/*
 				<p>{ this.props.area }</p>

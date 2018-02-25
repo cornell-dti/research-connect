@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
+import Milligram from 'milligram-react';
+import '../opportunities.css';
 
 class GPASelect extends React.Component {
 	constructor(props) {
@@ -24,7 +26,7 @@ class GPASelect extends React.Component {
 		for(var i=25; i<=43; i++){
 			options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);
 		}
-		return ( 
+		return (
 			<select value={this.state.currentVal} onChange={this.handleChange.bind(this)}>
 				<option value="Select" >Select</option>
 				{options}
