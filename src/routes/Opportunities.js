@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import logo from '../logo.svg';
 import '../Opportunities.css';
+import '../index.css';
 import OpportunityBox from '../components/OpportunityBox';
 import YearSelect from '../components/YearSelect'
 import MajorSelect from '../components/MajorSelect'
@@ -57,12 +58,10 @@ class Opportunities extends Component {
 					</div>
 
 					<div className="row">
-						<div className="column-20">
+						<div className="column column-20">
 							<div className="filter-box">
 							<h2>Filters</h2>
 							<hr />
-
-
 
 							<label htmlFor="depField">Department</label>
 								<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
@@ -76,7 +75,7 @@ class Opportunities extends Component {
 							</div>
 						</div>
 
-						<div className="column">
+						<div className="column column-80">
 							<div className="opp-list-container">
 								<OpportunityBox filteredOptions = {this.state}
 								url='http://localhost:3001/getOpportunitiesListing' />

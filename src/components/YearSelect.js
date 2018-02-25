@@ -34,10 +34,11 @@ class YearSelect extends React.Component {
 				<input ref={(node) => {
 					this.sophomore = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Sophomore" value="Sophomore"/>Sophomore
+				<br/>
 				<input ref={(node) => {
 					this.junior = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Junior" value="Junior"/>Junior
-
+				<br/>
 				<input ref={(node) => {
 					this.senior = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Senior" value="Senior"/>Senior
