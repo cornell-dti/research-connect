@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../index.css';
-import {BrowserRouter as Router} from 'react-router-dom'
 import OpportunityJSON from './Opportunity.json'
 import '../Opportunities.css';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
@@ -37,8 +36,7 @@ class Opportunity extends Component {
 	}
 
 	contains(needle) {
-		// Per spec, the way to identify NaN is that it is not equal to itself
-		var findNaN = needle !== needle;
+		var findNaN = isNaN(needle);
 		var indexOf;
 
 		if (!findNaN && typeof Array.prototype.indexOf === 'function') {
@@ -50,7 +48,7 @@ class Opportunity extends Component {
 				for (i = 0; i < this.length; i++) {
 					var item = this[i];
 
-					if ((findNaN && item !== item) || item.toLowerCase() === needle.toLowerCase()) {
+					if ((findNaN && isNaN(item)) || item.toLowerCase() === needle.toLowerCase()) {
 						index = i;
 						break;
 					}
@@ -80,11 +78,11 @@ class Opportunity extends Component {
 		let juniorSelected = filteredOptions.yearSelect.Junior;
 		let seniorSelected = filteredOptions.yearSelect.Senior;
 		let yearsAllowed = this.props.yearsAllowed;
-		if (froshSelected && yearsAllowed.indexOf("freshman") !== -1 ||
-			sophSelected && yearsAllowed.indexOf("sophomore") !== -1 ||
-			juniorSelected && yearsAllowed.indexOf("junior") !== -1 ||
-			seniorSelected && yearsAllowed.indexOf("senior") !== -1 ||
-			!froshSelected && !sophSelected && !juniorSelected && !seniorSelected) {
+		if ((froshSelected && yearsAllowed.indexOf("freshman") !== -1) ||
+			(sophSelected && yearsAllowed.indexOf("sophomore") !== -1) ||
+			(juniorSelected && yearsAllowed.indexOf("junior") !== -1) ||
+			(seniorSelected && yearsAllowed.indexOf("senior") !== -1) ||
+			(!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
 			/**
 			 * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
 			 * and also checks to see if this opportunity is in the cs area.
@@ -92,9 +90,9 @@ class Opportunity extends Component {
 			let csSelected = filteredOptions.majorSelect.cs;
 			let bioSelected = filteredOptions.majorSelect.biology;
 			let area = this.props.area;
-			if (csSelected && area.indexOf("Computer Science") !== -1 ||
-				bioSelected && area.indexOf("Biology") !== -1 ||
-				!csSelected && ! bioSelected){
+			if ((csSelected && area.indexOf("Computer Science") !== -1) ||
+				(bioSelected && area.indexOf("Biology") !== -1) ||
+				(!csSelected && ! bioSelected)) {
 
 				let minGPA = filteredOptions.gpaSelect.val;
 

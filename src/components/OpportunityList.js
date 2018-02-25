@@ -6,7 +6,7 @@ class OpportunityList extends Component {
 		let oppNodes = this.props.data.map(opp => {
 			return (
 				<Opportunity filteredOptions={this.props.filteredOptions }
-					key={ opp ['_id'] }
+					key={ opp['_id'] }
 					title={ opp.title }
 					area={ opp.areas }
 					labId={ opp.labId }

@@ -22,7 +22,6 @@ class FilterBox extends Component {
 	}
 
 	render() {
-		console.log(this.props.data);
 		return (
 			<div className="filter-box">
 				<div className="">

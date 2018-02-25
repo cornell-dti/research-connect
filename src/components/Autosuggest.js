@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import axios from 'axios';
+import React from 'react';
 import '../App.css';
 
 
@@ -42,8 +41,8 @@ getSuggestions() {
 
     var arrayOfLabs = [];
 
-    for (var i = 0; i < this.props.data.length; i++) {
-        arrayOfLabs.push({"name": this.props.data[i].name});
+    for (var ind = 0; ind < this.props.data.length; ind++) {
+        arrayOfLabs.push({"name": this.props.data[ind].name});
 
     }
     console.log(arrayOfLabs);

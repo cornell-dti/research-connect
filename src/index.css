@@ -1,3 +1,5 @@
+@import url('../node_modules/milligram/dist/milligram.css');
+
 body {
   margin: 0;
   padding: 0;
@@ -21,7 +23,7 @@ td {
   white-space: nowrap;
 }
 
-.opportunityListing{
+.opportunityListing {
   padding: 20px;
   width: 70%;
   background-color: #aed6e5;

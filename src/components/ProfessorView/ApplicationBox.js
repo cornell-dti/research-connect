@@ -9,7 +9,6 @@ class ApplicationBox extends Component {
 	}
 
 	render() {
-		console.log(this.props.data);
 		return (
 			<div className="application-box">
 				<h3>{ this.props.data.undergradNetId }, { this.props.data.undergradNetId }</h3>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 class GPASelect extends React.Component {
 	constructor(props) {
@@ -20,7 +20,6 @@ class GPASelect extends React.Component {
 	}
 
 	createGpaOptions() {
-		console.log('alsdkfj');
 		var options = [];
 		for(var i=25; i<=43; i++){
 			options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);

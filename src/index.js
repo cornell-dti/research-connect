@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import milligram from 'milligram';
 import App from './routes/App';
 import Opportunities from './routes/Opportunities';
 import OpportunityPage from './routes/OpportunityPage';
