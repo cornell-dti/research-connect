@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Milligram from 'milligram-react';
-import '../opportunities.css';
+
+import '../Opportunities.css';
 
 class GPASelect extends React.Component {
 	constructor(props) {

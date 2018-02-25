@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import Milligram from 'milligram-react';
-import '../opportunities.css';
+import '../Opportunities.css';
 
 class YearSelect extends React.Component {
 	constructor(props) {
@@ -38,6 +37,7 @@ class YearSelect extends React.Component {
 				<input ref={(node) => {
 					this.junior = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Junior" value="Junior"/>Junior
+
 				<input ref={(node) => {
 					this.senior = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Senior" value="Senior"/>Senior

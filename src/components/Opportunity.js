@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-<<<<<<< Updated upstream
+
 import '../index.css';
-=======
+
 
 import {BrowserRouter as Router} from 'react-router-dom'
->>>>>>> Stashed changes
+
 import OpportunityJSON from './Opportunity.json'
 import '../opportunities.css';
 import CheckBox from 'react-icons/lib/fa/check-square-o';

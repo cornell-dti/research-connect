@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import logo from '../logo.svg';
-import '../opportunities.css';
+import '../Opportunities.css';
 import OpportunityBox from '../components/OpportunityBox';
 import YearSelect from '../components/YearSelect'
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
-import Milligram from 'milligram-react';
+
 
 
 class Opportunities extends Component {
