@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import onClickOutside from "react-onclickoutside";
+
 import '../App.css';
+import '../InstructorRegister.css';
 import Autosuggester from '../components/Autosuggest';
 
 
@@ -9,7 +12,9 @@ class InstructorRegister extends React.Component {
     super(props);
     this.state = {
       data: [],
-      newLab: false
+      newLab: false,
+      showDropdown: false,
+      addButton: "Add New Lab"
     };
 
       this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
@@ -30,7 +35,14 @@ class InstructorRegister extends React.Component {
 
 
 toggleNewLab() {
+  if (this.state.newLab){
+      this.setState({addButton: "Add New Lab"});
+  }
+  else{
+    this.setState({addButton: "Hide New Lab"});
+  }
   this.setState({newLab: !this.state.newLab});
+
 }
 
 
@@ -48,16 +60,19 @@ componentDidMount() {
 
 }
 
+
 render() {
 
     return (
-        <div>
-
-            <Autosuggester
+        <div className="row instructor-reg-form" >
+        <div className="main-form column column-70">
+            <Autosuggester showDropdown={this.state.showDropdown}
               data={this.state.data}
               />
-
-                <input type="button" value="Toggle new lab" onClick={this.toggleNewLab.bind(this)}/>
+              </div>
+              <div className="column column-30 add-lab-form">
+              <h6>{"Don't see your lab listed?"}</h6>
+                <input type="button" className="button-small" value={this.state.addButton} onClick={this.toggleNewLab.bind(this)}/>
                 {this.state.newLab ?
                 <form
                       id='create'
@@ -66,12 +81,12 @@ render() {
                       >
 
                 <label>
-                  *Lab Name:
+                  <span className="asterisk">*</span>Lab Name:
                   <input type="text" name="labName" id="labName"/>
                 </label>
                 <br/>
                 <label>
-                  *Lab URL:
+                  <span className="asterisk">*</span>Lab URL:
                   <input type="text" name="labURL" id="labURL" />
                 </label>
                 <br/>
@@ -80,10 +95,11 @@ render() {
                   <input type="text" name="labDescription" id="labDescription"/>
                 </label>
                 <br/>
-                <p> *Required fields</p>
-                <input type="submit" value="Submit" />
+                <p> <span className="asterisk">*</span>Required fields</p>
+                <input className="button-small" type="submit" value="Submit" />
                 </form>
                 : '' }
+                      </div>
         </div>
     );
 }

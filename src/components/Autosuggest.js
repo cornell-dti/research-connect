@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import '../InstructorRegister.css';
 
 
 class Autosuggester extends React.Component {
@@ -8,7 +9,8 @@ class Autosuggester extends React.Component {
 
     this.state = {
       value: '',
-      showDropdown: false
+      showDropdown: false,
+      blurred: true
 
     };
       this.handleChange = this.handleChange.bind(this);
@@ -19,20 +21,35 @@ class Autosuggester extends React.Component {
 
 
 
-
   handleChange (event) {
+    console.log("change");
       this.setState({value: event.target.value});
         this.setState({showDropdown: true});
 
   }
   handleClick(event){
+    console.log("click");
       this.setState({showDropdown: true});
 
   }
 
 clickFill(labName){
+  console.log("fill");
+
   this.setState({value: labName});
     this.setState({showDropdown: false});
+
+}
+onBlur(event) {
+  console.log("blur");
+
+  setTimeout(() => {
+            this.setState({
+            showDropdown: false
+          })
+        }, 100);
+        console.log(this.state.showDropdown);
+
 }
 
 getSuggestions() {
@@ -45,30 +62,28 @@ getSuggestions() {
         arrayOfLabs.push({"name": this.props.data[ind].name});
 
     }
-    console.log(arrayOfLabs);
+
 
 
   var inputValue = this.state.value.trim().toLowerCase();
   var inputLength = inputValue.length;
   var suggestions = arrayOfLabs;
-  console.log(suggestions);
+
 
   var suggArray = [];
   if (suggestions.length>0){
     for (var i = 0; i < suggestions.length; i++) {
       if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0,inputLength)===inputValue){
           suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name)} key={suggestions[i].name} >{suggestions[i].name}</p>);
-      } else if (inputLength === 0 && this.state.showDropdown){
+      } else if (inputLength === 0){
 
           suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name)}  key={suggestions[i].name} >{suggestions[i].name}</p>);
-      } else if (!this.state.showDropdown){
-        suggArray = [];
       }
 
     }
   }
-  console.log(suggArray);
-  return(<div>{suggArray}</div>);
+
+  return(<div className="suggestion-array">{suggArray}</div>);
 }
 
 
@@ -76,12 +91,13 @@ getSuggestions() {
   render() {
 
     return (
+
       <div>
 
-      <input name="auto" placeholder='Type your lab name' type="text" value={this.state.value}
-        onChange={this.handleChange} onClick = {this.handleClick}/>
+      <input ref="autoFill"name="auto" className="suggest-input"  placeholder='Type your lab name' type="text" value={this.state.value}
+        onBlur={this.onBlur.bind(this)} onChange={this.handleChange} onClick = {this.handleClick} />
 
-      {this.getSuggestions()}
+      {this.state.showDropdown? this.getSuggestions() : ""}
       </div>
     );
   }

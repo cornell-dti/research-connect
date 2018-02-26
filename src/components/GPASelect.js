@@ -27,7 +27,7 @@ class GPASelect extends React.Component {
 			options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);
 		}
 		return (
-			<select value={this.state.currentVal} onChange={this.handleChange.bind(this)}>
+			<select className="opp-filter-select"value={this.state.currentVal} onChange={this.handleChange.bind(this)}>
 				<option value="Select" >Select</option>
 				{options}
 			</select>
