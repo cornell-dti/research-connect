@@ -122,7 +122,6 @@ const labAdministratorSchema = new Schema({
 });
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 
-
 const opportunitySchema = new Schema({
     creatorNetId: {type: String, required: [true, "Must have NetId for the user creating the opportunity"]},
     labPage: {type: String, default: "This lab does not have a website", required: false},
@@ -280,7 +279,6 @@ app.post('/getApplications', function (req, res) {
                                 let undergradInfo = studentInfoArray.filter(function( student ) {
                                     return student.netId === undergradId;
                                 })[0];
-                                // console.log(undergradInfo["courses"]);
                                 currentStudent.firstName = undergradInfo.firstName;
                                 currentStudent.lastName = undergradInfo.lastName;
                                 currentStudent.gradYear = undergradInfo.gradYear;
@@ -429,7 +427,6 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
@@ -437,7 +434,8 @@ app.post('/createUndergrad', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.gpa,
-        netId: data.netId
+        netId: data.netId,
+        skills: data.skills,
     });
     console.log(undergrad);
     undergrad.save(function (err) {
