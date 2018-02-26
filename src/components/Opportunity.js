@@ -83,6 +83,7 @@ class Opportunity extends Component {
 		let juniorSelected = filteredOptions.yearSelect.Junior;
 		let seniorSelected = filteredOptions.yearSelect.Senior;
 		let yearsAllowed = this.props.yearsAllowed;
+
 		if ((froshSelected && yearsAllowed.indexOf("freshman") !== -1) ||
 			(sophSelected && yearsAllowed.indexOf("sophomore") !== -1) ||
 			(juniorSelected && yearsAllowed.indexOf("junior") !== -1) ||
@@ -100,9 +101,14 @@ class Opportunity extends Component {
 				(!csSelected && ! bioSelected)) {
 
 				let minGPA = filteredOptions.gpaSelect.val;
+				let season = filteredOptions.startDate.season;
+				let year = filteredOptions.startDate.year;
 
 				if ((minGPA==null)||(minGPA >= this.props.minGPA)){
-				  return true;
+					if ((season==null)|| ((season==this.props.startSeason) && (year==this.props.startYear))){
+						return true;
+					}
+
 				}
 				}
 
@@ -131,12 +137,13 @@ class Opportunity extends Component {
 		return(month0+ (month).toString()+"/"+day0+(day).toString());
 	}
 
+
 	convertDescription(str){
 	  if (str.length > 250) {
 		str = str.slice(0,250)+"... ";
-		return(<p>{str}<span className="viewDetails">View Details</span> </p>);
+		return(<h6>{str}<span className="viewDetails">View Details</span> </h6>);
 	  } else {
-		return(<p>{str} </p>);
+		return(<h6>{str} </h6>);
 	  }
 	}
 
@@ -161,14 +168,16 @@ class Opportunity extends Component {
 		}
 	}
 
+
 	render() {
 		return (
 			<div className="application-box" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
 			<div className="row">
- 				<div className="column column-75">
-				<h3>{ this.props.title }</h3>
+ 				<div className="column column-80">
+				<h4>{ this.props.title }</h4>
+					<h5>Lab Name</h5>
 				</div>
- 				<div className="column column-25">
+ 				<div className="column column-20">
 					<Calendar className="cal"/>
 					<span> Deadline { this.convertDate(this.props.closes) }</span>
 					{this.checkPrereqs()}
@@ -176,7 +185,7 @@ class Opportunity extends Component {
  			</div>
 
 				{/*  <p>{ this.props.labName }</p> */}
-				<p>Lab Name</p>
+			
 				{ this.convertDescription(this.props.projectDescription) }
 
 

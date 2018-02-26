@@ -17,7 +17,8 @@ class OpportunityList extends Component {
 					undergradTasks={ opp.undergradTasks}
 					opens={ opp.opens }
 					closes={ opp.closes }
-					startDate={ opp.startDate }
+					startSeason={ opp.startSeason }
+					startYear={ opp.startYear}
 					minSemesters={ opp.minSemesters }
 					minHours={ opp.minHours }
 					maxHours={ opp.maxHours }

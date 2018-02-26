@@ -2,7 +2,6 @@
 
 .search-div-container {
   padding: 0 !important;
-  padding-right: 10px !important;
 }
 
 .search-div {
@@ -21,6 +20,7 @@
   color: #9b9b9b;
 }
 
+
 body {
   background-color: #f6f6f6;
 }
@@ -29,12 +29,14 @@ body {
 
 .application-box{
   margin: 10px;
+  border: solid #979797 1px;
+  border-radius: 2px;
   margin-right: 0px;
   margin-left: 0px;
   background-color: white;
-  border: solid 2px #979797;
+  border: solid 1px #979797;
 
-  padding: 20px;
+  padding: 15px;
   cursor: pointer;
 }
 
@@ -45,11 +47,14 @@ body {
 
 
 
-h3, h2 {
+h3, h2{
   margin-top: 0px;
   font-family: 'Roboto', sans-serif;
   color: black;
   font-weight: 500;
+}
+h4{
+  color: black;
 }
 
 .application-box p{
@@ -92,5 +97,43 @@ h3, h2 {
   height: 50px;
 }
 .filterCheckFields input{
-  margin-left: 25px;
+  margin-left: 15px;
+  margin-bottom: 0px;
+}
+.filterCheckFields {
+    margin-bottom: 0px;
+}
+.filter-box {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: white;
+  border: solid #979797 1px;
+  border-radius: 2px;
+
+
+}
+.filter-box select{
+  margin-bottom: 0px;
+}
+.row .column{
+  padding: 0px;
+}
+.row h4{
+
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+h5, h4{
+
+  padding-left: 10px;
+}
+hr {
+  margin: 15px 0px 15px 0px;
+  border-width: 1px;
+  width: 100%;
+  padding: 0px;
+  border-color: #979797;
+}
+.filter-box label{
+  padding-left: 5px;
 }

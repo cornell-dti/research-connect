@@ -12,7 +12,7 @@ class GPASelect extends React.Component {
 	}
 
 	handleChange(e) {
-		console.log(e.target.value);
+
 		this.setState({gpaSelect: {
 			"val": e.target.value.toString()
 		},

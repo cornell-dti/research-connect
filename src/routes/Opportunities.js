@@ -7,6 +7,7 @@ import OpportunityBox from '../components/OpportunityBox';
 import YearSelect from '../components/YearSelect'
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
+import StartDate from '../components/StartDate'
 
 
 
@@ -23,6 +24,9 @@ class Opportunities extends Component {
 			},
 			majorSelect: {
 
+			},
+			startDate: {
+
 			}
 		};
 	}
@@ -38,6 +42,9 @@ class Opportunities extends Component {
 	handleUpdateMajor(majorObj) {
 		this.setState({majorSelect: majorObj});
 	}
+	handleUpdateDate(majorObj) {
+			this.setState({startDate: majorObj});
+		}
 
 
 
@@ -60,10 +67,10 @@ class Opportunities extends Component {
 					<div className="row">
 						<div className="column column-20">
 							<div className="filter-box">
-							<h2>Filters</h2>
+							<h3>Filters</h3>
 							<hr />
 
-							<label htmlFor="depField">Department</label>
+							<label htmlFor="depField">Area of Interest</label>
 								<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
 								<hr />
 								<label htmlFor="yearField">School Year</label>
@@ -71,11 +78,15 @@ class Opportunities extends Component {
 								<hr />
 								<label htmlFor="gpaField">GPA Requirement</label>
 								<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
+									<hr />
+								<label htmlFor="datesField">Start Date</label>
+								<StartDate updateDate= {this.handleUpdateDate.bind(this)}/>
+
 
 							</div>
 						</div>
 
-						<div className="column column-80">
+						<div className="column column-70">
 							<div className="opp-list-container">
 								<OpportunityBox filteredOptions = {this.state}
 								url='http://localhost:3001/getOpportunitiesListing' />
