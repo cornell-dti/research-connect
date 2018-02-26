@@ -10,7 +10,7 @@ class Autosuggester extends React.Component {
     this.state = {
       value: '',
       showDropdown: false,
-      blurred: true
+      labId: null
 
     };
       this.handleChange = this.handleChange.bind(this);
@@ -22,33 +22,37 @@ class Autosuggester extends React.Component {
 
 
   handleChange (event) {
-    console.log("change");
+
       this.setState({value: event.target.value});
         this.setState({showDropdown: true});
 
   }
   handleClick(event){
-    console.log("click");
+
       this.setState({showDropdown: true});
 
   }
 
-clickFill(labName){
-  console.log("fill");
+clickFill(labName, labId){
+
 
   this.setState({value: labName});
+  this.setState({labId: labId});
     this.setState({showDropdown: false});
+
+			this.props.updateLab(labName,labId);
+
 
 }
 onBlur(event) {
-  console.log("blur");
+
 
   setTimeout(() => {
             this.setState({
             showDropdown: false
           })
         }, 100);
-        console.log(this.state.showDropdown);
+
 
 }
 
@@ -59,7 +63,7 @@ getSuggestions() {
     var arrayOfLabs = [];
 
     for (var ind = 0; ind < this.props.data.length; ind++) {
-        arrayOfLabs.push({"name": this.props.data[ind].name});
+        arrayOfLabs.push({"name": this.props.data[ind].name, "id": this.props.data[ind]._id});
 
     }
 
@@ -74,10 +78,10 @@ getSuggestions() {
   if (suggestions.length>0){
     for (var i = 0; i < suggestions.length; i++) {
       if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0,inputLength)===inputValue){
-          suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name)} key={suggestions[i].name} >{suggestions[i].name}</p>);
+          suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name,suggestions[i].id)} key={suggestions[i].id} >{suggestions[i].name}</p>);
       } else if (inputLength === 0){
 
-          suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name)}  key={suggestions[i].name} >{suggestions[i].name}</p>);
+          suggArray.push(<p className="autoOp" onClick={this.clickFill.bind(this,suggestions[i].name,suggestions[i].id)}  key={suggestions[i].id} >{suggestions[i].name}</p>);
       }
 
     }
@@ -94,10 +98,11 @@ getSuggestions() {
 
       <div>
 
-      <input ref="autoFill"name="auto" className="suggest-input"  placeholder='Type your lab name' type="text" value={this.state.value}
+      <input ref="autoFill"name="auto" className="suggest-input"  placeholder='Type Lab Name' type="text" value={this.state.value}
         onBlur={this.onBlur.bind(this)} onChange={this.handleChange} onClick = {this.handleClick} />
 
       {this.state.showDropdown? this.getSuggestions() : ""}
+
       </div>
     );
   }
