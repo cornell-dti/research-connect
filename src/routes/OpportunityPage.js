@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import '../App.css';
+import '../OpportunityPage.css';
 
 class OpportunityPage extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ class OpportunityPage extends Component {
                 return aNum - bNum;
             });
             let questionMapping = keys.map((key) => {
-                    return <div id={key}>
+                    return <div id={key} key={key}>
                         {this.state.opportunity.questions[key]}
                         <br/>
                         <textarea />
@@ -69,9 +69,20 @@ class OpportunityPage extends Component {
     }
 
     convertDate(dateString) {
-        let dateObj = new Date(dateString);
-        return dateObj.toString().slice(0, 15);
-    }
+  		var dateObj = new Date(dateString);
+  		var month = dateObj.getUTCMonth()+1;
+  		var day = dateObj.getUTCDay();
+  		var month0 = '';
+  		var day0 = '';
+  		if (month<10){
+  		  month0 = '0';
+  		}
+  		if (day0<10){
+  		  day0='0';
+  		}
+
+  		return(month0+ (month).toString()+"/"+day0+(day).toString());
+  	}
 
     checkOpen() {
         let openDateObj = new Date(this.props.opens);
@@ -90,33 +101,53 @@ class OpportunityPage extends Component {
     render() {
         return (
             <div>
-                <div className='opportunityListing'>
-                    <h3>{this.state.opportunity.title}</h3>
-                    <h4> {this.checkOpen()}</h4>
-                    <h4> Supervisor: {this.state.opportunity.supervisor}</h4>
-                    <h4> Area: {this.state.opportunity.area}</h4>
-                    <h4> Lab Name: {this.state.opportunity.labName}</h4>
-                    <h4> PI: {this.state.opportunity.pi}</h4>
-                    <h4> Description: {this.state.opportunity.projectDescription}</h4>
-                    <h4> Tasks: {this.state.opportunity.undergradTasks}</h4>
-                    <h4> Application Window: From {this.convertDate(this.state.opportunity.opens)}
-                        to {this.convertDate(this.state.opportunity.closes)}</h4>
-                    <h4> Start Date: {this.state.opportunity.startDate}</h4>
-                    <h4> Weekly Hours: Between { this.state.opportunity.minHours }
-                        and { this.state.opportunity.maxHours } </h4>
-                    <h4> Qualifications: </h4>
-                    <ul>
-                        <li>Minimum GPA: {this.state.opportunity.minGPA}</li>
-                        <li>Required Classes: {this.state.opportunity.requiredClasses}</li>
-                        <li>Years Allowed: {this.state.opportunity.yearsAllowed}</li>
-                        <li>Required minimum semesters: {this.minSemesters}</li>
-                        <li>{this.state.opportunity.qualifications}</li>
-                    </ul>
+            <div className="header"></div>
+                <div className="opportunityListing">
+                <div className="row first-row">
 
-                    <h4>Apply Here: </h4>
-                    <div>
-                        { this.printQuestions()}
+                  <div className="column column-65">
+                  <div className="title-box">
+                    <h5>{this.state.opportunity.title}</h5>
+                    <h6> Lab Name: {this.state.opportunity.labName}</h6>
+                    <h6> PI: {this.state.opportunity.pi}</h6>
+                    <h6> Application Due {this.convertDate(this.state.opportunity.closes)}</h6>
+                    <h6> {this.checkOpen()}</h6>
+                    <input type="submit" value="Apply"/>
                     </div>
+                    <div className="about-box">
+                      <h6>About the Position</h6>
+                      <h6> Supervisor: {this.state.opportunity.supervisor}</h6>
+                      <h6>{this.state.opportunity.qualifications}</h6>
+                      <p>{this.state.opportunity.undergradTasks}</p>
+                      <h6> {this.state.opportunity.projectDescription}</h6>
+                      <h6> {this.state.opportunity.startDate}</h6>
+                      <h6> Between { this.state.opportunity.minHours }
+                          and { this.state.opportunity.maxHours } </h6>
+                      <h6>About the Lab</h6>
+                      <h6>Additional Information</h6>
+                      </div>
+                      <h4>Apply Here: </h4>
+                      <div>
+                          { this.printQuestions()}
+                      </div>
+                    </div>
+
+                      <div className="column column-25 qualifications">
+                      <h5> Preferred Qualifications</h5>
+                      <h6> {this.state.opportunity.area}</h6>
+                      <ul>
+                          <li>Minimum GPA: {this.state.opportunity.minGPA}</li>
+                          <li>Required Classes: {this.state.opportunity.requiredClasses}</li>
+                          <li>Years Allowed: {this.state.opportunity.yearsAllowed}</li>
+                          <li>Required minimum semesters: {this.minSemesters}</li>
+
+                      </ul>
+                      </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
         );
