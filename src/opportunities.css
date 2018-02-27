@@ -136,3 +136,7 @@ hr {
 .filter-box label{
   padding-left: 5px;
 }
+.row h6{
+  padding-left: 0px;
+  margin-left: 0px;
+}

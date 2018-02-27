@@ -3,11 +3,14 @@
   width: 100%;
   height: 50px;
 }
+
 .opportunityListing {
-  padding: 20px;
   width: 80%;
   background-color: #f6f6f6;
+  /*background-image: url('writing-picture.jpg');*/
   margin-left: 10%;
+  padding: 0px;
+  padding-left: 10px;
 
 }
 .row .title-box,.row .about-box,.row .qualifications{
@@ -20,18 +23,79 @@ border: solid #979797 1px;
 
     height: 300px;
 }
-.row .column{
-  padding: 0px;
+
+.row .title-container, .row .about-box{
+  margin-top: 40px;
+  width: 100%;
 }
 .title-box{
-  margin-right: 30px;
-  margin-top: 30px;
-
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
 }
-.qualifications{
-  margin-top: 30px;
+.row .qualifications{
+  margin-top: 40px;
+  margin-left: 30px;
+  height: 450px;
 }
 .about-box{
-  margin-top: 30px;
-    margin-right: 30px;
+  padding: 30px;
+
+
+}
+.row .column h5{
+  font-weight: 700;
+  padding-left: 0px;
+}
+.row .column h4{
+  font-weight: 700;
+  padding-left: 0px;
+}
+.title-first-col{
+  width: 75%;
+
+}
+.title-second-col{
+ text-align: right;
+}
+.opp-box-row{
+  padding: 10px;
+  padding-bottom: 0px;
+}
+.row .title-box h6{
+  margin-bottom: 0px;
+  padding-bottom: 5px;
+}
+.qual-title{
+  background-color: #b31b1b;
+  width: 100%;
+  text-align: center;
+  color: white;
+  margin-bottom: 0px;
+  padding: 10px;
+
+}
+.row .qual-title h5{
+  font-weight: 300;
+  margin-bottom: 0px;
+}
+.row .qualifications hr{
+  margin-top: 0px;
+}
+.row .column .button{
+  background-color: #b31b1b;
+}
+.application-box .button{
+  background-color: #b31b1b;
+}
+.row .qual-section{
+  padding: 10px;
+}
+.about-box p{
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.application-box textarea{
+  resize: none;
 }

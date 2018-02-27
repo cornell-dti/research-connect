@@ -45,10 +45,10 @@ class OpportunityPage extends Component {
                     </div>
                 }
             );
-            return <form> {questionMapping} <input type="submit" value="Submit"/></form>;
+            return <form> {questionMapping} <input className="button" type="submit" value="Submit"/></form>;
 
         } else {
-            return <form> There are no questions. <input type="submit" value="Submit"/></form>;
+            return <form> There are no questions. <input className="button" type="submit" value="Submit"/></form>;
         }
     }
 
@@ -100,48 +100,73 @@ class OpportunityPage extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page-wrapper">
             <div className="header"></div>
-                <div className="opportunityListing">
+            <div className="cover-photo"></div>
+                <div className="container opportunityListing">
                 <div className="row first-row">
 
-                  <div className="column column-65">
+                  <div className="title-container column column-65">
                   <div className="title-box">
-                    <h5>{this.state.opportunity.title}</h5>
+                    <div className="title-first-col ">
+                    <h4>{this.state.opportunity.title}</h4>
                     <h6> Lab Name: {this.state.opportunity.labName}</h6>
                     <h6> PI: {this.state.opportunity.pi}</h6>
-                    <h6> Application Due {this.convertDate(this.state.opportunity.closes)}</h6>
-                    <h6> {this.checkOpen()}</h6>
-                    <input type="submit" value="Apply"/>
+                    </div>
+                    <div className="title-second-col">
+                      <a className="button" href="#Application">Apply</a>
+                    <h6> Applications Due {this.convertDate(this.state.opportunity.closes)}</h6>
+                    {/*this.checkOpen()*/}
+
+                    </div>
                     </div>
                     <div className="about-box">
-                      <h6>About the Position</h6>
+                      <h5>About the Position</h5>
                       <h6> Supervisor: {this.state.opportunity.supervisor}</h6>
-                      <h6>{this.state.opportunity.qualifications}</h6>
+                      <p>{this.state.opportunity.qualifications}</p>
                       <p>{this.state.opportunity.undergradTasks}</p>
-                      <h6> {this.state.opportunity.projectDescription}</h6>
-                      <h6> {this.state.opportunity.startDate}</h6>
-                      <h6> Between { this.state.opportunity.minHours }
-                          and { this.state.opportunity.maxHours } </h6>
-                      <h6>About the Lab</h6>
-                      <h6>Additional Information</h6>
+                      <p> {this.state.opportunity.projectDescription}</p>
+                      <h5>About the Lab</h5>
+                      <p> Information about the lab here... alskdjf;akj;alkdjf;alksdjf;aksdjf</p>
+                      <h5>Additional Information</h5>
+                      <p> {this.state.opportunity.startDate}</p>
+                      <p> Must work between { this.state.opportunity.minHours+" " }
+                           and { this.state.opportunity.maxHours } hours a week. </p>
                       </div>
+
+
+                      <div id="Application" className="application-box">
                       <h4>Apply Here: </h4>
-                      <div>
                           { this.printQuestions()}
                       </div>
                     </div>
 
                       <div className="column column-25 qualifications">
-                      <h5> Preferred Qualifications</h5>
-                      <h6> {this.state.opportunity.area}</h6>
-                      <ul>
-                          <li>Minimum GPA: {this.state.opportunity.minGPA}</li>
-                          <li>Required Classes: {this.state.opportunity.requiredClasses}</li>
-                          <li>Years Allowed: {this.state.opportunity.yearsAllowed}</li>
-                          <li>Required minimum semesters: {this.minSemesters}</li>
+                      <div className="qual-title">
+                      <h5 > Preferred Qualifications</h5>
 
-                      </ul>
+                      </div>
+                      <hr/>
+
+                      <div className="qual-section">
+                          <h6>Graduation Years: </h6>
+                          <h6>{this.state.opportunity.yearsAllowed}</h6>
+                          </div>
+                          <hr/>
+                          <div className="qual-section">
+                          <h6> Majors: {this.state.opportunity.area}</h6>
+                          </div>
+                          <hr/>
+                            <div className="qual-section">
+                          <h6>Minimum GPA: {this.state.opportunity.minGPA}</h6>
+                          </div>
+                          <hr/>
+                            <div className="qual-section">
+                          <h6>Courses Taken: </h6>
+                          <h6>{this.state.opportunity.requiredClasses}</h6>
+                          </div>
+
+
                       </div>
 
                     </div>

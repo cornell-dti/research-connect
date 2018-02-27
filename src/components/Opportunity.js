@@ -172,7 +172,7 @@ class Opportunity extends Component {
 	render() {
 		return (
 			<div className="application-box" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
-			<div className="row">
+			<div className="row opp-box-row">
  				<div className="column column-80">
 				<h4>{ this.props.title }</h4>
 					<h5>Lab Name</h5>
@@ -185,7 +185,7 @@ class Opportunity extends Component {
  			</div>
 
 				{/*  <p>{ this.props.labName }</p> */}
-			
+
 				{ this.convertDescription(this.props.projectDescription) }
 
 
