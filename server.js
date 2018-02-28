@@ -99,7 +99,8 @@ const undergradSchema = new Schema({
     gradYear: {type: Number, required: true, min: new Date().getFullYear()},
     major: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
-    netId: {type: String, required: true}
+    netId: {type: String, required: true},
+    skills: {type: String, required: false}
 });
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
 
@@ -125,6 +126,7 @@ let labAdministratorModel = mongoose.model('LabAdministrators', labAdministrator
 
 
 const opportunitySchema = new Schema({
+
     creatorNetId: {type: String, required: [true, "Must have NetId for the user creating the opportunity"]},
     labPage: {type: String, default: "This lab does not have a website", required: false},
     title: {type: String, default: "TBD", required: [true, 'Must have title']}, //required
@@ -140,6 +142,10 @@ const opportunitySchema = new Schema({
         enum: ["freshman", "sophomore", "junior", "senior"],
         default: ["freshman", "sophomore", "junior", "senior"]
     },  //do they accept freshman, sophomores, juniors, and/or seniors
+    majorsAllowed: {
+        type: [String],
+        default: []
+    },
     applications: {type: [Schema.Types.Mixed], default: []},
     questions: Schema.Types.Mixed,    //can be empty
     requiredClasses: {type: [String], default: []}, //can be empty
@@ -269,15 +275,37 @@ app.post('/getApplications', function (req, res) {
 
 });
 
+/** Graduation Year: 2021. Given graduation year and current date, determine whether they're freshman soph junior senior
+ *  Senior: If current date is less than May 23, {Graduation Year} and greater than
+ *  Senior: Between May 24, 2020 and May 23, 2021
+ *  Junior: Between May 24, 2019 and May 23, 2020
+ *  Sophomore: Between May 24, 2018 and May 23, 2019
+ *  Freshman: Present Date is Between August 10, 2017 and May 23, 2018
+ *  new Date(year, month [, day [, hours [, minutes [, seconds [, milliseconds]]]]]);
+ */
+
+function dateIsBetween(date, lowerBound, upperBound){
+    return (lowerBound <= date && date <= upperBound);
+}
+
+function gradYearToString(gradYear) {
+    let presentDate = new Date();
+    if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return "freshman";
+    if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return "sophomore";
+    if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return "junior";
+    if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "senior";
+    return "freshman";
+}
+
 app.post('/getOpportunitiesListing', function (req, res) {
 
-    if (req.body.corsKey != corsKey){
-        res.status(403).send("Access forbidden");
-        return;
-    }
+    // if (req.body.corsKey != corsKey) {
+    //     res.status(403).send("Access forbidden");
+    //     return;
+    // }
 
     var undergradNetId = req.body.netId;
-    var opportunitiesSuitable = {};
+    // var opportunitiesSuitable = [];
 
     // opens: {
     //     $lte: new Date()
@@ -288,25 +316,41 @@ app.post('/getOpportunitiesListing', function (req, res) {
 
     undergradModel.find({netId: undergradNetId}, function(err, undergrad) {
 
+        var undergrad1 = undergrad[0];
+        console.log(undergrad1);
         opportunityModel.find({}, function (err, opportunities) {
 
             for (var i = 0; i < opportunities.length; i++) {
                 let prereqsMatch = false;
-                if (opportunities.minGPA <= undergrad.gpa) {
+                 if (opportunities[i].minGPA <= undergrad1.gpa &&
+                    opportunities[i].majorsAllowed.includes(undergrad1.major) &&
+                    opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
                     prereqsMatch = true;
                 }
 
                 opportunities[i]["prereqsMatch"] = prereqsMatch;
             }
 
+            for(var i = 0; i < opportunities.length; i++) {
+                console.log(opportunities[i].prereqsMatch);
+            }
+            // console.log(opportunities);
+            res.send(opportunities);
+
+            // for (var i = 0; i < opportunities.length; i++) {
+            //     if (opportunities[i].minGPA <= undergrad1.gpa &&
+            //         opportunities[i].includes(undergrad1.major)) {
+            //         opportunitiesSuitable.push(opportunities[i]);
+            //     }
+            // }
+
             if (err) {
                 res.send(err);
                 return;
                 //handle the error appropriately
             }
-            console.log(opportunities);
-            res.send(opportunities);
-
+            // console.log(opportunitiesSuitable);
+            // res.send(opportunitiesSuitable);
         });
     });
 });
@@ -372,6 +416,8 @@ app.post('/createOpportunity', function (req, res) {
         startSeason: data.startSeason,
         startYear: data.startYear,
         applications: data.applications,
+        yearsAllowed: data.yearsAllowed,
+        majorsAllowed: data.majorsAllowed,
         questions: data.questions,
         requiredClasses: data.requiredClasses,
         minGPA: data.minGPA,
@@ -404,7 +450,8 @@ app.post('/createUndergrad', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.gpa,
-        netId: data.netId
+        netId: data.netId,
+        skills: data.skills
     });
     console.log(undergrad);
     undergrad.save(function (err) {
@@ -495,6 +542,8 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
             opportunity.startYear = req.body.startYear || opportunity.startYear;
             opportunity.applications = req.body.applications || opportunity.applications;
+            opportunity.yearsAllowed = req.body.yearsAllowed || opportunity.yearsAllowed;
+            opportunity.majorsAllowed = req.body.majorsAllowed || opportunity.majorsAllowed;
             opportunity.questions = req.body.questions || opportunity.questions;
             opportunity.requiredClasses= req.body.requiredClasses || opportunity.requiredClasses;
             opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
@@ -533,6 +582,7 @@ app.post('/updateUndergrad', function (req, res) {
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
             undergrad.netID = req.body.netID || undergrad.netID;
+            undergrad.skills = req.body.skills || undergrad.skills;
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
