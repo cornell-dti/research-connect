@@ -322,6 +322,8 @@ app.post('/getOpportunitiesListing', function (req, res) {
 
             for (var i = 0; i < opportunities.length; i++) {
                 let prereqsMatch = false;
+
+                // checks for gpa, major, and gradYear
                  if (opportunities[i].minGPA <= undergrad1.gpa &&
                     opportunities[i].majorsAllowed.includes(undergrad1.major) &&
                     opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
