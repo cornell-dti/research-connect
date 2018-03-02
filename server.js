@@ -34,7 +34,7 @@ const router = express.Router();
 
 //set our port to either a predetermined port number if you have set
 //it up, or 3001
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
