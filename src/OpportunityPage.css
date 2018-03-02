@@ -99,3 +99,6 @@ border: solid #979797 1px;
 .application-box textarea{
   resize: none;
 }
+.application-box{
+  padding:30px;
+}

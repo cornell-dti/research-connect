@@ -14,13 +14,16 @@ class InstructorRegister extends React.Component {
       data: [],
       newLab: false,
       showDropdown: false,
-      position: "Select Position",
+      role: "Select Position",
       notifications: "Select Notification Settings",
-      adminName: "",
+      firstName: "",
+      lastName: "",
+      netId: "",
       labId: null,
-      newLabURL: null,
-      newLabName: null,
-      newLabDescription: null
+      labPage: null,
+      name: null,
+      labDescription: null,
+      pi: ''
     };
 
 
@@ -74,36 +77,42 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangePosition(event){
-    this.setState({ position: event.target.value });
+    this.setState({ role: event.target.value });
   }
   handleChangeNotifications(event){
     this.setState({ notifications: event.target.value });
   }
-  handleChangeName(event){
-    this.setState({ adminName: event.target.value });
+  handleChangeFirstName(event){
+    this.setState({ firstName: event.target.value });
+  }
+  handleChangeLastName(event){
+    this.setState({ lastName: event.target.value });
+  }
+  handleChangeNetId(event){
+    this.setState({ netId: event.target.value });
   }
 
-
-
-
 handleChangeNewLabName(event){
-  this.setState({ newLabName: event.target.value });
+  this.setState({ name: event.target.value });
 }
 
 handleChangeLabURL(event){
-  this.setState({ newLabURL: event.target.value });
+  this.setState({ labPage: event.target.value });
 }
 
 handleChangeLabDescript(event){
-  this.setState({newLabDescription: event.target.value});
+  this.setState({labDescription: event.target.value});
+}
+handleChangePI(event){
+  this.setState({pi: event.target.value});
 }
 
 render() {
 
   return (
-    <div className="row instructor-reg-form" >
-    <div className="main-form column column-60">
-
+    <div>
+    <div className="header"></div>
+    <div className=" instructor-reg-form" >
     <h3>Registration</h3>
     <form
           id='register'
@@ -111,10 +120,14 @@ render() {
           method='post'
       >
 
-    <input type="text" name="adminName" id="adminName" placeholder="Your Name"
-    value={this.state.adminName} onChange={this.handleChangeName.bind(this)}/>
+    <input className="name" type="text" name="adminFirstName" id="adminFirstName" placeholder="First Name"
+    value={this.state.firstName} onChange={this.handleChangeFirstName.bind(this)}/>
+    <input className="name" type="text" name="adminLastName" id="adminLastName" placeholder="Last Name"
+    value={this.state.lastName} onChange={this.handleChangeLastName.bind(this)}/>
+    <input className="name" type="text" name="netId" id="netId" placeholder="NetID"
+    value={this.state.netId} onChange={this.handleChangeNetId.bind(this)}/>
 
-    <select className="main-form-input" value={this.state.position}  onChange={this.handleChangePosition.bind(this)} >
+    <select className="main-form-input" value={this.state.role}  onChange={this.handleChangePosition.bind(this)} >
     <option value="Select Position">Select Your Position</option>
     <option value="Graduate Student">Graduate Student</option>
     <option value="Post-Doc">Post-Doc</option>
@@ -130,7 +143,7 @@ render() {
 
     {!this.state.newLab ? <div>
       <div className="existing-or-create">
-      <input type="button" className="button-small" value="Find Existing Lab" onClick={this.toggleNewLab.bind(this)}/>
+      <input type="button" className="button no-click button-small" value="Find Existing Lab"/>
       <span className="or">OR </span>
       <input type="button" className="button-small-clear" value="Add New Lab" onClick={this.toggleNewLab.bind(this)}/>
       </div>
@@ -145,26 +158,28 @@ render() {
       <div className="existing-or-create">
       <input type="button" className="button-small-clear"  value="Find Existing Lab" onClick={this.toggleNewLab.bind(this)}/>
       <span className="or">OR </span>
-      <input type="button" className="button-small" value="Add New Lab" onClick={this.toggleNewLab.bind(this)}/>
+      <input type="button" className="no-click button button-small" value="Add New Lab" />
       </div>
 
-      <input type="text" name="labName" id="labName" placeholder="Lab Name" value={this.newLabName}
+      <input type="text" name="labName" id="labName" placeholder="Lab Name" value={this.name}
       onChange={this.handleChangeNewLabName.bind(this)}/>
 
-      <input type="text" name="labURL" id="labURL" placeholder="Lab URL" value={this.newLabURL}
+      <input type="text" name="labURL" id="labURL" placeholder="Lab URL" value={this.labPage}
       onChange={this.handleChangeLabURL.bind(this)}/>
+      <input type="text" name="labPI" id="labPI" placeholder="Principal Investigator" value={this.pi}
+      onChange={this.handleChangePI.bind(this)}/>
 
-      <input type="text" name="labDescription" id="labDescription" value={this.newLabDescription}
+      <textarea name="labDescription" id="labDescription" value={this.labDescription}
       onChange={this.handleChangeLabDescript.bind(this)}
-      placeholder="Optional Lab Description"/>
+      placeholder="Optional Lab Description"></textarea>
       </div>
     }
 
     <br/>
-    <input className="button-small registration" type="submit" value="Register" />
+    <input className="button button-small registration" type="submit" value="Register" />
     </form>
-    </div>
 
+    </div>
     </div>
   );
 }

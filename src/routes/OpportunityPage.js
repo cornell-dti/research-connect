@@ -125,9 +125,9 @@ class OpportunityPage extends Component {
                       <h6> Supervisor: {this.state.opportunity.supervisor}</h6>
                       <p>{this.state.opportunity.qualifications}</p>
                       <p>{this.state.opportunity.undergradTasks}</p>
-                      <p> {this.state.opportunity.projectDescription}</p>
+
                       <h5>About the Lab</h5>
-                      <p> Information about the lab here... alskdjf;akj;alkdjf;alksdjf;aksdjf</p>
+                      <p> {this.state.opportunity.projectDescription}</p>
                       <h5>Additional Information</h5>
                       <p> {this.state.opportunity.startDate}</p>
                       <p> Must work between { this.state.opportunity.minHours+" " }
