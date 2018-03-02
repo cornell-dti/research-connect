@@ -96,6 +96,8 @@ const undergradSchema = new Schema({
     lastName: {type: String, required: true},
     gradYear: {type: Number, required: true, min: new Date().getFullYear()},
     major: {type: String},
+    secondMajor: {type: String},
+    minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
     courses: {type: [String]}
