@@ -98,10 +98,13 @@ const undergradSchema = new Schema({
     lastName: {type: String, required: true},
     gradYear: {type: Number, required: true, min: new Date().getFullYear()},
     major: {type: String},
+    secondMajor: {type: String},
+    minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    skills: {type: String, required: false}
+    courses: {type: [String]}
 });
+
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
 
 const labSchema = new Schema({
@@ -154,8 +157,8 @@ const opportunitySchema = new Schema({
     maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
     opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
     closes: {type: Date, default: null},  //null if rolling
-    areas: {type: [String], default: []} //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-    // howToStoreObjects: Schema.Types.Mixed
+    areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
+    prereqsMatch: {type: Boolean, default: false}
 });
 opportunitySchema.pre('validate', function (next) {
     if (this.maxHours < this.minHours) {
@@ -304,7 +307,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
     //     return;
     // }
 
-    var undergradNetId = req.body.netId;
+    let undergradNetId = req.body.netId;
     // var opportunitiesSuitable = [];
 
     // opens: {
@@ -316,24 +319,26 @@ app.post('/getOpportunitiesListing', function (req, res) {
 
     undergradModel.find({netId: undergradNetId}, function(err, undergrad) {
 
-        var undergrad1 = undergrad[0];
+        let undergrad1 = undergrad[0];
         console.log(undergrad1);
         opportunityModel.find({}, function (err, opportunities) {
 
-            for (var i = 0; i < opportunities.length; i++) {
+            for (let i = 0; i < opportunities.length; i++) {
                 let prereqsMatch = false;
 
                 // checks for gpa, major, and gradYear
                  if (opportunities[i].minGPA <= undergrad1.gpa &&
-                    opportunities[i].majorsAllowed.includes(undergrad1.major) &&
-                    opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
+                     opportunities[i].requiredClasses.every(function (val) {
+                         undergrad1.courses.includes(val)
+                     }) &&
+                     opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
                     prereqsMatch = true;
                 }
 
                 opportunities[i]["prereqsMatch"] = prereqsMatch;
             }
 
-            for(var i = 0; i < opportunities.length; i++) {
+            for(let i = 0; i < opportunities.length; i++) {
                 console.log(opportunities[i].prereqsMatch);
             }
             // console.log(opportunities);
