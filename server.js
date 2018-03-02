@@ -6,6 +6,8 @@
 //import dependencies
 const async = require('async');
 const express = require('express');
+const supportsColor = require('supports-color');
+const debug = require('debug')('http');
 const path = require('path');
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
@@ -216,7 +218,7 @@ function getLabAdmin(id, res) {
         if (err) {
             return err;
         }
-        console.log(labAdmin.labId);
+        debug(labAdmin.labId);
 
         return labAdmin;
     });
@@ -232,7 +234,7 @@ function getUndergrad(id, res) {
         if (err) {
             return err;
         }
-        console.log(undergrad.netId);
+        debug(undergrad.netId);
 
         return undergrad;
     });
@@ -241,7 +243,7 @@ function getUndergrad(id, res) {
 app.post('/getApplications', function (req, res) {
 
     // function callbackHandler(err, results) {
-    //     console.log('It came back with this ' + results);
+    //     debug('It came back with this ' + results);
     // }
     //
     // const labAdminId = req.body.id;
@@ -298,8 +300,6 @@ app.post('/getApplications', function (req, res) {
                             for (let i = 0; i < currentApplication.length; i++) {
                                 let currentStudent = currentApplication[i];
                                 let undergradId = currentStudent.undergradNetId;
-                                console.log("here");
-                                console.log(studentInfoArray[0]);
                                 let undergradInfo = studentInfoArray.filter(function( student ) {
                                     return student.netId === undergradId;
                                 })[0];
@@ -331,7 +331,7 @@ app.post('/getApplications', function (req, res) {
      applicationsInOpportunities[opportunity.title] = opportunity.applications;
      }
 
-     console.log(applicationsInOpportunities);
+     debug(applicationsInOpportunities);
 
      */
 
@@ -381,7 +381,8 @@ app.post('/getOpportunitiesListing', function (req, res) {
 
         let undergrad1 = undergrad[0];
         undergrad1.courses = undergrad1.courses.map(course => course.replace(" ", ""));
-        console.log(undergrad1);
+        debug(undergrad1);
+        debug("test");
         opportunityModel.find({
             opens: {
                 $lte: new Date()
@@ -416,25 +417,15 @@ app.post('/getOpportunitiesListing', function (req, res) {
             }
 
             for (let i = 0; i < opportunities.length; i++) {
-                console.log(opportunities[i].prereqsMatch);
+                debug(opportunities[i].prereqsMatch);
             }
-            // console.log(opportunities);
             res.send(opportunities);
-
-            // for (var i = 0; i < opportunities.length; i++) {
-            //     if (opportunities[i].minGPA <= undergrad1.gpa &&
-            //         opportunities[i].includes(undergrad1.major)) {
-            //         opportunitiesSuitable.push(opportunities[i]);
-            //     }
-            // }
 
             if (err) {
                 res.send(err);
                 return;
                 //handle the error appropriately
             }
-            // console.log(opportunitiesSuitable);
-            // res.send(opportunitiesSuitable);
         });
     });
 });
@@ -464,7 +455,7 @@ function getLab(id, res) {
         if (err) {
             return err;
         }
-        console.log(lab.name);
+        debug(lab.name);
         return lab;
     });
 }
@@ -477,7 +468,7 @@ function getLab(id, res) {
 app.post('/sendFormData', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
+    debug(data);
     //res is used to send the result, which the front end can parse
     res.send("hello");
 });
@@ -485,7 +476,7 @@ app.post('/sendFormData', function (req, res) {
 app.post('/createOpportunity', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
+    debug(data);
 
     let opportunity = new opportunityModel({
         creatorNetId: data.creatorNetId,
@@ -516,7 +507,7 @@ app.post('/createOpportunity', function (req, res) {
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
-            console.log(err);
+            debug(err);
         } else //Handle this error however you see fit
             res.send("Success!");
 
@@ -537,11 +528,11 @@ app.post('/createUndergrad', function (req, res) {
         netId: data.netId,
         skills: data.skills
     });
-    console.log(undergrad);
+    debug(undergrad);
     undergrad.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
-            console.log(err);
+            debug(err);
         } //Handle this error however you see fit
         else {
             res.send("success!");
@@ -556,7 +547,7 @@ app.post('/createUndergrad', function (req, res) {
 app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
+    debug(data);
 
     var labAdmin = new labAdministratorModel({
         role: data.role,
@@ -571,7 +562,7 @@ app.post('/createLabAdmin', function (req, res) {
     labAdmin.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
-            console.log(err);
+            debug(err);
         } //Handle this error however you see fit
         else {
             res.send("success!");
@@ -583,7 +574,7 @@ app.post('/createLabAdmin', function (req, res) {
 app.post('/createLab', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data);
+    debug(data);
 
 
     var lab = new labModel({
@@ -597,7 +588,7 @@ app.post('/createLab', function (req, res) {
     lab.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
-            console.log(err);
+            debug(err);
         } //Handle this error however you see fit
         else {
             res.send("success!");
@@ -651,7 +642,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 app.post('/updateUndergrad', function (req, res) {
     let id = req.body.id;
-    console.log(id);
+    debug(id);
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
@@ -736,8 +727,8 @@ app.post('/updateLabAdmin', function (req, res) {
 
 app.post('/deleteOpportunity', function (req, res) {
     var id = req.body.id;
-    console.log("delete opportuinty");
-    console.log(id);
+    debug("delete opportuinty");
+    debug(id);
 
     opportunityModel.findByIdAndRemove(id, function (err, opportunity) {
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -754,8 +745,8 @@ app.post('/deleteOpportunity', function (req, res) {
 
 app.post('/deleteUndergrad', function (req, res) {
     var id = req.body.id;
-    console.log("delete undergrad");
-    console.log(id);
+    debug("delete undergrad");
+    debug(id);
 
     undergradModel.findByIdAndRemove(id, function (err, undergrad) {
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -772,8 +763,8 @@ app.post('/deleteUndergrad', function (req, res) {
 
 app.post('/deleteLabAdmin', function (req, res) {
     var id = req.body.id;
-    console.log("delete lab admin");
-    console.log(id);
+    debug("delete lab admin");
+    debug(id);
 
     labAdministratorModel.findByIdAndRemove(id, function (err, labAdmin) {
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -789,8 +780,8 @@ app.post('/deleteLabAdmin', function (req, res) {
 
 app.post('/deleteLab', function (req, res) {
     var id = req.body.id;
-    console.log("delete lab");
-    console.log(id);
+    debug("delete lab");
+    debug(id);
 
     labModel.findByIdAndRemove(id, function (err, lab) {
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -865,7 +856,7 @@ app.post('/storeResume', function (req, res) {
         Key: "1517452061886"
     };
     s3.getObject(params, function (err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
+        if (err) debug(err, err.stack); // an error occurred
         else {
             let baseString = base64ArrayBuffer(data.Body);
             res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
@@ -876,12 +867,12 @@ app.post('/storeResume', function (req, res) {
     let resume = req.files.resume;
     //TODO change Key param to name of student plus date.now
     // let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
-    // console.log("yay!");
+    // debug("yay!");
     // s3.upload (uploadParams, function (err, data) {
     //     if (err) {
-    //         console.log("Error", err);
+    //         debug("Error", err);
     //     } if (data) {
-    //         console.log("Upload Success", data.Location);
+    //         debug("Upload Success", data.Location);
     //     }
     // });
 });
@@ -918,7 +909,7 @@ module.exports = app;
 
 //starts the server and listens for requests
 app.listen(port, function () {
-    console.log(`api running on port ${port}`);
+    debug(`api running on port ${port}`);
 });
 
 
@@ -953,7 +944,7 @@ app.listen(port, function () {
 /**
  opportunity.save(function (err) {
     if (err) {
-        console.log(err);
+        debug(err);
     } //Handle this error however you see fit
 
     // Now the opportunity is saved in the Opportunities collection on mlab!
@@ -964,14 +955,14 @@ app.listen(port, function () {
 //Example code for searching the database:
 /**
  opportunityModel.find({}, function (err, opportunities) {
-   console.log(opportunities);
+   debug(opportunities);
    //has to be double quotes for the search criteria ("andrew" in this case)!
    // 'students' contains the list of students that match the criteria.
    //since we only specify firstName and year, that's all the info about the students we'll get back
    if (err) {
-       console.log(err);
+       debug(err);
        //handle the error appropriately
    }
-   // console.log(students);
+   // debug(students);
 });
  */
