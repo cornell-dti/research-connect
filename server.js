@@ -34,7 +34,7 @@ const router = express.Router();
 
 //set our port to either a predetermined port number if you have set
 //it up, or 3001
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,8 +63,6 @@ app.use(function (req, res, next) {
 router.get('/', function (req, res) {
     res.json({message: 'API Initialized!'});
 });
-
-//app.use('/users', users);
 
 app.use('/api', router);
 
@@ -126,7 +124,6 @@ const labAdministratorSchema = new Schema({
     verified: {type: Boolean, default: false}
 });
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
-
 
 const opportunitySchema = new Schema({
 
@@ -243,23 +240,84 @@ function getUndergrad(id, res) {
 
 app.post('/getApplications', function (req, res) {
 
-
-    function callbackHandler(err, results) {
-        console.log('It came back with this ' + results);
-    }
-
-    const labAdminId = req.body.id;
-
-    function labAdmin(callbackHandler) {
-        var labAdmin = getLabAdmin(labAdminId, res);
-    }
-
-    function lab(callbackHandler) {
-        var lab = getLab(labAdmin.labId, res);
-    }
+    // function callbackHandler(err, results) {
+    //     console.log('It came back with this ' + results);
+    // }
+    //
+    // const labAdminId = req.body.id;
+    // function labAdmin (callbackHandler) {
+    //     var labAdmin = getLabAdmin(labAdminId, res);
+    // }
+    //
+    // function lab (callbackHandler) {
+    //     var lab = getLab(labAdmin.labId, res);
+    // }
 
     //function
 
+    const labAdminId = req.body.id;
+    labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
+        if (err) {
+            res.send(err);
+            return;
+        }
+        labModel.findById(labAdmin.labId, function (err, lab) {
+            if (err) {
+                res.send(err);
+                return;
+            }
+            let mongooseLabIds = [];
+            for (let i = 0; i < lab.opportunities.length; i++) {
+                mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
+            }
+            opportunityModel.find({
+                '_id': {
+                    $in: mongooseLabIds
+                }
+            }, function (err, docs) {
+                let applicationsArray = [];
+                let allApplications = {};
+                let netIds = [];
+                for (let i = 0; i < docs.length; i++){
+                    let opportunityObject = docs[i];
+                    for (let j = 0; j < opportunityObject.applications.length; j++) {
+                        applicationsArray.push(opportunityObject.applications[j]);
+                        netIds.push(opportunityObject.applications[j].undergradNetId);
+                    }
+                    allApplications[opportunityObject.title] = applicationsArray;
+                    applicationsArray = [];
+                }
+                undergradModel.find({
+                    'netId': {
+                        $in: netIds
+                    }
+                }, function (err, studentInfoArray) {
+                    for (let key in allApplications) {
+                        if (allApplications.hasOwnProperty(key)) {
+                            let currentApplication = allApplications[key];
+                            for (let i = 0; i < currentApplication.length; i++) {
+                                let currentStudent = currentApplication[i];
+                                let undergradId = currentStudent.undergradNetId;
+                                console.log("here");
+                                console.log(studentInfoArray[0]);
+                                let undergradInfo = studentInfoArray.filter(function( student ) {
+                                    return student.netId === undergradId;
+                                })[0];
+                                currentStudent.firstName = undergradInfo.firstName;
+                                currentStudent.lastName = undergradInfo.lastName;
+                                currentStudent.gradYear = undergradInfo.gradYear;
+                                currentStudent.major = undergradInfo.major;
+                                currentStudent.gpa = undergradInfo.gpa;
+                                currentStudent.courses = undergradInfo.courses;
+
+                            }
+                        }
+                    }
+                    res.send(allApplications);
+                });
+            });
+        })
+    });
     /*
      var labAdmin = getLabAdmin(labAdminId, res);
      var lab = getLab(labAdmin.labId, res);
@@ -430,7 +488,6 @@ app.post('/createOpportunity', function (req, res) {
     console.log(data);
 
     let opportunity = new opportunityModel({
-
         creatorNetId: data.creatorNetId,
         labPage: data.labPage,
         title: data.title,
@@ -454,6 +511,8 @@ app.post('/createOpportunity', function (req, res) {
         areas: data.areas
     });
 
+    labModel.find();
+
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -468,7 +527,6 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-
     var undergrad = new undergradModel({
 
         firstName: data.firstName,

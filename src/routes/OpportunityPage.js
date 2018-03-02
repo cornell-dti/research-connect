@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import '../App.css';
+import '../OpportunityPage.css';
 
 class OpportunityPage extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ class OpportunityPage extends Component {
                 return aNum - bNum;
             });
             let questionMapping = keys.map((key) => {
-                    return <div id={key}>
+                    return <div id={key} key={key}>
                         {this.state.opportunity.questions[key]}
                         <br/>
                         <textarea />
@@ -45,10 +45,10 @@ class OpportunityPage extends Component {
                     </div>
                 }
             );
-            return <form> {questionMapping} <input type="submit" value="Submit"/></form>;
+            return <form> {questionMapping} <input className="button" type="submit" value="Submit"/></form>;
 
         } else {
-            return <form> There are no questions. <input type="submit" value="Submit"/></form>;
+            return <form> There are no questions. <input className="button" type="submit" value="Submit"/></form>;
         }
     }
 
@@ -69,9 +69,20 @@ class OpportunityPage extends Component {
     }
 
     convertDate(dateString) {
-        let dateObj = new Date(dateString);
-        return dateObj.toString().slice(0, 15);
-    }
+  		var dateObj = new Date(dateString);
+  		var month = dateObj.getUTCMonth()+1;
+  		var day = dateObj.getUTCDay();
+  		var month0 = '';
+  		var day0 = '';
+  		if (month<10){
+  		  month0 = '0';
+  		}
+  		if (day0<10){
+  		  day0='0';
+  		}
+
+  		return(month0+ (month).toString()+"/"+day0+(day).toString());
+  	}
 
     checkOpen() {
         let openDateObj = new Date(this.props.opens);
@@ -89,34 +100,79 @@ class OpportunityPage extends Component {
 
     render() {
         return (
-            <div>
-                <div className='opportunityListing'>
-                    <h3>{this.state.opportunity.title}</h3>
-                    <h4> {this.checkOpen()}</h4>
-                    <h4> Supervisor: {this.state.opportunity.supervisor}</h4>
-                    <h4> Area: {this.state.opportunity.area}</h4>
-                    <h4> Lab Name: {this.state.opportunity.labName}</h4>
-                    <h4> PI: {this.state.opportunity.pi}</h4>
-                    <h4> Description: {this.state.opportunity.projectDescription}</h4>
-                    <h4> Tasks: {this.state.opportunity.undergradTasks}</h4>
-                    <h4> Application Window: From {this.convertDate(this.state.opportunity.opens)}
-                        to {this.convertDate(this.state.opportunity.closes)}</h4>
-                    <h4> Start Date: {this.state.opportunity.startDate}</h4>
-                    <h4> Weekly Hours: Between { this.state.opportunity.minHours }
-                        and { this.state.opportunity.maxHours } </h4>
-                    <h4> Qualifications: </h4>
-                    <ul>
-                        <li>Minimum GPA: {this.state.opportunity.minGPA}</li>
-                        <li>Required Classes: {this.state.opportunity.requiredClasses}</li>
-                        <li>Years Allowed: {this.state.opportunity.yearsAllowed}</li>
-                        <li>Required minimum semesters: {this.minSemesters}</li>
-                        <li>{this.state.opportunity.qualifications}</li>
-                    </ul>
+            <div className="page-wrapper">
+            <div className="header"></div>
+            <div className="cover-photo"></div>
+                <div className="container opportunityListing">
+                <div className="row first-row">
 
-                    <h4>Apply Here: </h4>
-                    <div>
-                        { this.printQuestions()}
+                  <div className="title-container column column-65">
+                  <div className="title-box">
+                    <div className="title-first-col ">
+                    <h4>{this.state.opportunity.title}</h4>
+                    <h6> Lab Name: {this.state.opportunity.labName}</h6>
+                    <h6> PI: {this.state.opportunity.pi}</h6>
                     </div>
+                    <div className="title-second-col">
+                      <a className="button" href="#Application">Apply</a>
+                    <h6> Applications Due {this.convertDate(this.state.opportunity.closes)}</h6>
+                    {/*this.checkOpen()*/}
+
+                    </div>
+                    </div>
+                    <div className="about-box">
+                      <h5>About the Position</h5>
+                      <h6> Supervisor: {this.state.opportunity.supervisor}</h6>
+                      <p>{this.state.opportunity.qualifications}</p>
+                      <p>{this.state.opportunity.undergradTasks}</p>
+
+                      <h5>About the Lab</h5>
+                      <p> {this.state.opportunity.projectDescription}</p>
+                      <h5>Additional Information</h5>
+                      <p> {this.state.opportunity.startDate}</p>
+                      <p> Must work between { this.state.opportunity.minHours+" " }
+                           and { this.state.opportunity.maxHours } hours a week. </p>
+                      </div>
+
+
+                      <div id="Application" className="application-box">
+                      <h4>Apply Here: </h4>
+                          { this.printQuestions()}
+                      </div>
+                    </div>
+
+                      <div className="column column-25 qualifications">
+                      <div className="qual-title">
+                      <h5 > Preferred Qualifications</h5>
+
+                      </div>
+                      <hr/>
+
+                      <div className="qual-section">
+                          <h6>Graduation Years: </h6>
+                          <h6>{this.state.opportunity.yearsAllowed}</h6>
+                          </div>
+                          <hr/>
+                          <div className="qual-section">
+                          <h6> Majors: {this.state.opportunity.area}</h6>
+                          </div>
+                          <hr/>
+                            <div className="qual-section">
+                          <h6>Minimum GPA: {this.state.opportunity.minGPA}</h6>
+                          </div>
+                          <hr/>
+                            <div className="qual-section">
+                          <h6>Courses Taken: </h6>
+                          <h6>{this.state.opportunity.requiredClasses}</h6>
+                          </div>
+
+
+                      </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
         );
