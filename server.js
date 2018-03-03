@@ -517,13 +517,60 @@ app.post('/getOpportunitiesListing', function (req, res) {
     };
     let undergradNetId = req.body.netId;
     // var opportunitiesSuitable = [];
+    if (undergradNetId != undefined) {
+        undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
 
-    undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
+            let undergrad1 = undergrad[0];
+            undergrad1.courses = undergrad1.courses.map(course => course.replace(" ", ""));
+            debug(undergrad1);
+            debug("test");
+            opportunityModel.find({
+                opens: {
+                    $lte: new Date()
+                },
+                closes: {
+                    $gte: new Date()
+                }
+            }, function (err, opportunities) {
+                for (let i = 0; i < opportunities.length; i++) {
+                    let prereqsMatch = false;
+                    opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => course.replace(" ", ""));
+                    // checks for gpa, major, and gradYear
+                    if (opportunities[i].minGPA <= undergrad1.gpa &&
+                        opportunities[i].requiredClasses.every(function (val) {
+                            //Check for synonymous courses, or courses where you can skip the prereqs
+                            if (!undergrad1.courses.includes(val)) {
+                                let courseSubs = coursePrereqs[val];
+                                if (courseSubs != false) {
+                                    return undergrad1.courses.some(function (course) {
+                                        return courseSubs.includes(course);
+                                    });
+                                }
+                                return false;
+                            }
+                            return true;    //if it's contained in the undergrad1 courses straight off the bat
+                        }) &&
+                        opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
+                        prereqsMatch = true;
+                    }
 
-        let undergrad1 = undergrad[0];
-        undergrad1.courses = undergrad1.courses.map(course => course.replace(" ", ""));
-        debug(undergrad1);
-        debug("test");
+                    opportunities[i]["prereqsMatch"] = prereqsMatch;
+                }
+
+                for (let i = 0; i < opportunities.length; i++) {
+                    debug(opportunities[i].prereqsMatch);
+                }
+                res.send(opportunities);
+
+                if (err) {
+                    res.send(err);
+                    return;
+                    //handle the error appropriately
+                }
+            });
+        });
+    }
+    else {
         opportunityModel.find({
             opens: {
                 $lte: new Date()
@@ -532,43 +579,12 @@ app.post('/getOpportunitiesListing', function (req, res) {
                 $gte: new Date()
             }
         }, function (err, opportunities) {
-            for (let i = 0; i < opportunities.length; i++) {
-                let prereqsMatch = false;
-                opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => course.replace(" ", ""));
-                // checks for gpa, major, and gradYear
-                if (opportunities[i].minGPA <= undergrad1.gpa &&
-                    opportunities[i].requiredClasses.every(function (val) {
-                        //Check for synonymous courses, or courses where you can skip the prereqs
-                        if (!undergrad1.courses.includes(val)) {
-                            let courseSubs = coursePrereqs[val];
-                            if (courseSubs != false) {
-                                return undergrad1.courses.some(function (course) {
-                                    return courseSubs.includes(course);
-                                });
-                            }
-                            return false;
-                        }
-                        return true;    //if it's contained in the undergrad1 courses straight off the bat
-                    }) &&
-                    opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
-                    prereqsMatch = true;
-                }
-
-                opportunities[i]["prereqsMatch"] = prereqsMatch;
-            }
-
-            for (let i = 0; i < opportunities.length; i++) {
-                debug(opportunities[i].prereqsMatch);
-            }
-            res.send(opportunities);
-
-            if (err) {
-                res.send(err);
-                return;
-                //handle the error appropriately
-            }
-        });
-    });
+           for (let i = 0; i < opportunities.length; i++){
+               opportunities[i]["prereqsMatch"] = true;
+           }
+           res.send(opportunities);
+        })
+    }
 });
 
 
