@@ -1,7 +1,7 @@
 //import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
 
 //server.js
-'use strict'
+'use strict';
 
 //import dependencies
 const async = require('async');
@@ -61,6 +61,43 @@ app.use(function (req, res, next) {
     next();
 });
 
+//EMAIL SENDGRID
+// using SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+    to: 'ag946@cornell.edu',
+    from: 'ayeshagrocks@gmail.com',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+//More powerful example
+/**
+ {
+ personalizations: [
+     {
+         to: [
+             {
+                 "email": ugradNetId + "@cornell.edu",
+                 "name": ugradInfo.firstName
+             }
+         ],
+         subject: "Research Connect Application Update for " + opportunity.title
+     }
+ ],
+     content: [{
+     type: "text/plain",
+     content: message
+ }],
+     from: {
+     email: "CornellDTITest@gmail.com",
+         name: "Research Connect"
+ },
+ }
+ */
+// sgMail.send(msg);
 
 router.get('/', function (req, res) {
     res.json({message: 'API Initialized!'});
@@ -150,11 +187,11 @@ const opportunitySchema = new Schema({
     },
     messages: {
         type: Schema.Types.Mixed, default: {
-            "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunity title}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
+            "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunityTitle}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
             "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
             ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
             '{yourFirstName} {yourLastName}”.',
-            "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview. Sincerely, {yourFirstName} {yourLastName}'
+            "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". Sincerely, {yourFirstName} {yourLastName}'
         }
     },
     applications: {type: [Schema.Types.Mixed], default: []},
@@ -214,6 +251,11 @@ app.get('/populate', function (req, res) {
  *  "interview": "..."
  * }
  *  When sent to the back-end, any fields in {} will be replaced with that field
+ *  Values we can replace:
+ *  {studentFirstName}, {studentLastName} --> the first or last name of the student they just clicked accept/reject/interview for
+ *  {opportunityTitle} --> the title/name of the opportunity that students see when browsing and examining opportunities.
+ *  {yourFirstName}, {yourLastName}, {yourEmail} --> first or last name or email of current lab administrator viewing applications
+ *
  * }
  */
 app.get('/messages/:opportunityId', function (req, res) {
@@ -221,6 +263,67 @@ app.get('/messages/:opportunityId', function (req, res) {
     opportunityModel.findById(opportunityId, function (err, opportunity) {
         res.send(opportunity.messages);
     })
+});
+
+/**
+ * Send an email to notify the student of their status change
+ */
+app.post('/messages/send', function (req, res) {
+    let oppId = req.body.opportunityId;
+    let profId = req.body.labAdminNetId;
+    let ugradNetId = req.body.undergradNetId;
+    let message = req.body.message;
+    /**
+     *  *  Values we can replace:
+     *  {studentFirstName}, {studentLastName} --> the first or last name of the student they just clicked accept/reject/interview for
+     *  {opportunity title} --> the title/name of the opportunity that students see when browsing and examining opportunities.
+     *  {yourFirstName}, {yourLastName}, {yourEmail} --> first or last name or email of current lab administrator viewing applications
+     *
+     */
+
+    undergradModel.findOne({netId: ugradNetId}, function (err, ugradInfo) {
+        message = message.replace("{studentFirstName}", ugradInfo.firstName);
+        message = message.replace("{studentLastName}", ugradInfo.lastName);
+        labAdministratorModel.findOne({netId: profId}, function (err, prof) {
+            message = message.replace("{yourFirstName}", prof.firstName);
+            message = message.replace("{yourLastName}", prof.lastName);
+            message = message.replace("{yourEmail}", prof.netId + "@cornell.edu");
+            opportunityModel.findById(oppId, function (err, opportunity) {
+                message = message.replace("{opportunityTitle}", opportunity.title);
+                // let msg = {
+                //     to: ugradNetId + "@cornell.edu",
+                //     from: 'CornellDTITest@gmail.com',
+                //     subject: "Research Connect Application Update for " + opportunity.title,
+                //     text: message,
+                // };
+
+                let msg = { //TODO Change the "from" email to our domain name using zoho mail
+                    personalizations: [
+                        {
+                            to: [
+                                {
+                                    "email": ugradNetId + "@cornell.edu",
+                                    "name": ugradInfo.firstName
+                                }
+                            ],
+                            subject: "Research Connect Application Update for " + opportunity.title
+                        }
+                    ],
+                    content: [{
+                        type: "text/plain",
+                        content: message
+                    }],
+                    from: {
+                        email: "CornellDTITest@gmail.com",
+                        name: "Research Connect"
+                    },
+                };
+
+                //TODO: send email here with message var and subject var to ugradNetId + "@cornell.edu".
+                res.status(200).end();
+            })
+        })
+    });
 });
 
 //Example code for receiving a request from the front end that doesn't send any data,
@@ -914,19 +1017,6 @@ app.post('/storeResume', function (req, res) {
     // });
 });
 
-//EMAIL SENDGRID
-// using SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-    to: 'ag946@cornell.edu',
-    from: 'ayeshagrocks@gmail.com',
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-};
-// sgMail.send(msg);
 /**End ENDPOINTS */
 
 
