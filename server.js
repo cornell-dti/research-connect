@@ -475,6 +475,7 @@ app.post('/getApplications', function (req, res) {
                                 currentStudent.major = undergradInfo.major;
                                 currentStudent.gpa = undergradInfo.gpa;
                                 currentStudent.courses = undergradInfo.courses;
+                                currentStudent.skills = undergradInfo.skills;
 
                             }
                         }
