@@ -13,6 +13,7 @@ class OpportunityBox extends Component {
 		axios.post(this.props.url, {undergradNetId: "ac123"})
 			.then(res => {
 				this.setState({ data: res.data });
+				console.log(res.data);
 			})
 	}
 
