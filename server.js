@@ -171,7 +171,7 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 /** Begin ADD TO DATABASE */
 
 
-/** End ADD TO DATABASE */
+/** End TO DATABASE */
 
 /** Begin SEARCHING THE DATABASE */
 
