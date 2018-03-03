@@ -140,7 +140,7 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    courses: {type: [String]}
+    courses: {type: [String],required:true}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
@@ -705,15 +705,22 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
+    console.log(data.firstName)
+    console.log(data.lastName)
+    console.log(data.gradYear)
+    console.log(data.major)
+    console.log(data.GPA)
+    console.log(data.netid)
+    console.log(data.courses)
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
         gradYear: data.gradYear,    //number
         major: data.major,
-        gpa: data.gpa,
-        netId: data.netId,
-        skills: data.skills
+        gpa: data.GPA,
+        netId: data.netid,
+        courses: data.courses
     });
     debug(undergrad);
     undergrad.save(function (err) {
@@ -894,7 +901,7 @@ app.post('/updateUndergrad', function (req, res) {
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
             undergrad.netID = req.body.netID || undergrad.netID;
-            undergrad.skills = req.body.skills || undergrad.skills;
+            undergrad.courses = req.body.courses || undergrad.courses;
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
