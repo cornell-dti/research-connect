@@ -4,6 +4,7 @@
 'use strict'
 
 //import dependencies
+require('dotenv').config({path: 'info.env'});
 const async = require('async');
 const express = require('express');
 const path = require('path');
@@ -79,7 +80,7 @@ app.use('/api', router);
 const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-const mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
+const mongoDB = process.env.MONGODB;
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
@@ -469,33 +470,78 @@ app.post('/createUndergrad', function (req, res) {
 
 });
 
-///Endpoint for researchsignup
+// during lab admin signup creating new lab as well
+function createLabAndAdmin(req, res) {
+    var data = req.body;
 
+    var lab = new labModel({
+        name: data.name,
+        labPage: data.labPage,
+        labDescription: data.labDescription,
+
+        // labAdmins and opportunities not needed during lab admin signup. so commented out.
+        // labAdmins: data.labAdmins,
+        // opportunities: data.opportunities
+    });
+
+    lab.save(function (err, labObject) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        }
+
+        var labAdmin = new labAdministratorModel({
+            role: data.role,
+            labId: labObject._id,
+            netId: data.netId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            verified: data.verified
+        });
+
+        labAdmin.save(function (err) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                console.log(err);
+            }
+        });
+    });
+}
+
+///Endpoint for lab admin signup
 app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     console.log(data);
 
-    var labAdmin = new labAdministratorModel({
-        role: data.role,
-        labId: data.labId,
-        netId: data.netId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        verified: data.verified
+    // if labId is null then there is no existing lab and creating new lab
+    if(data.labId == null) {
+        createLabAndAdmin(req, res);
+        res.send("success!");
+    }
 
-    });
+    // while labAdmin is signing up he finds existing lab
+    else {
+        var labAdmin = new labAdministratorModel({
+            role: data.role,
+            labId: data.labId,
+            netId: data.netId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            verified: data.verified
+        });
 
-    labAdmin.save(function (err) {
-        if (err) {
-            res.status(500).send({"errors": err.errors});
-            console.log(err);
-        } //Handle this error however you see fit
-        else {
-            res.send("success!");
-        }
-        // Now the opportunity is saved in the commonApp collection on mlab!
-    });
+        labAdmin.save(function (err) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                console.log(err);
+            } //Handle this error however you see fit
+            else {
+                res.send("success!");
+            }
+            // Now the opportunity is saved in the commonApp collection on mlab!
+        });
+    }
 });
 
 app.post('/createLab', function (req, res) {
