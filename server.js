@@ -392,6 +392,10 @@ function getUndergrad(id, res){
     });
 }
 
+/**
+ * Send a request to /application/:id, where "id" is the id of the application
+ * Returns the application object with that id
+ */
 app.get('/application/:id', function (req, res){
     let appId = req.params.id;
     opportunityModel.find({}, function(err, docs){
