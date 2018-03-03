@@ -67,13 +67,7 @@ app.use(function (req, res, next) {
 // https://github.com/sendgrid/sendgrid-nodejs
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-    to: 'ag946@cornell.edu',
-    from: 'ayeshagrocks@gmail.com',
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-};
+//TODO new api keyh
 //More powerful example
 /**
  {
@@ -140,7 +134,8 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    courses: {type: [String]}
+    courses: {type: [String]},
+    skills: {type: [String]}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
@@ -330,7 +325,7 @@ app.post('/messages/send', function (req, res) {
                         name: "Research Connect"
                     },
                 };
-
+                sgMail.send(msg);
                 //TODO: send email here with message var and subject var to ugradNetId + "@cornell.edu".
                 res.status(200).end();
             })
@@ -1128,8 +1123,6 @@ app.post('/storeApplication', function (req, res) {
             "timeSubmitted": Date.now(),
             "id": Date.now() + req.body.netId
         };
-
-        console.log(application);
         opportunity.applications.push(application);
         opportunity.save(function(err){});
         res.send("success!");
