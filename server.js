@@ -392,6 +392,21 @@ function getUndergrad(id, res){
     });
 }
 
+app.get('/application/:id', function (req, res){
+    let appId = req.params.id;
+    opportunityModel.find({}, function(err, docs){
+        for (let i = 0; i < docs.length; i++) {
+            let opportunityObject = docs[i];
+            for (let j = 0; j < opportunityObject.applications.length; j++) {
+                if (opportunityObject.applications[j].id === appId){
+                    res.send(opportunityObject.applications[j]);
+                    return;
+                }
+            }
+        }
+    });
+});
+
 app.post('/getApplications', function (req, res) {
 
     // function callbackHandler(err, results) {
