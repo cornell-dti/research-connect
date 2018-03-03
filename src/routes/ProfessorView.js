@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import '../App.css';
 import '../ProfessorView.css';
 import ApplicationList from '../components/ProfessorView/ApplicationList';
-import FilterBox from '../components/Shared/FilterBox';
 import YearSelect from '../components/YearSelect'
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
