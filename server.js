@@ -4,7 +4,7 @@
 'use strict';
 
 //import dependencies
-require('dotenv').config();
+require('dotenv').config({path: 'info.env'});
 const async = require('async');
 const express = require('express');
 const supportsColor = require('supports-color');
