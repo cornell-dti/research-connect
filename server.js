@@ -138,7 +138,7 @@ const opportunitySchema = new Schema({
     supervisor: {type: String, default: "TBD"}, //can be null
     spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
     startSeason: {type: String, enum: ["Summer", "Fall", "Winter", "Spring"]}, //null if start asap, string b/c it will prob be something like Fall 2018
-    startYear: {type: Number, min: new Date().getFullYear()},
+    startYear: {type: Number},
     yearsAllowed: {
         type: [String],
         enum: ["freshman", "sophomore", "junior", "senior"],
@@ -186,8 +186,8 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 app.get('/populate', function (req, res) {
     opportunityModel.find({}, function (err, opps) {
-        for (let i = 0; i = opps.length; i++) {
-            opps[i].messages = {
+        for (let i = 0; i < opps.length; i++) {
+            opps[i]["messages"] = {
                 "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunity title}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
                 "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
                 ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
@@ -195,9 +195,11 @@ app.get('/populate', function (req, res) {
                 "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview. Sincerely, {yourFirstName} {yourLastName}'
             };
             opps[i].save(function (err) {
+                debug(err);
             });
         }
-    })
+    });
+    res.end();
 });
 
 /**
