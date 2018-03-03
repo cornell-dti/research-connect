@@ -148,6 +148,15 @@ const opportunitySchema = new Schema({
         type: [String],
         default: []
     },
+    messages: {
+        type: Schema.Types.Mixed, default: {
+            "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunity title}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
+            "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
+            ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
+            '{yourFirstName} {yourLastName}”.',
+            "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview. Sincerely, {yourFirstName} {yourLastName}'
+        }
+    },
     applications: {type: [Schema.Types.Mixed], default: []},
     questions: Schema.Types.Mixed,    //can be empty
     requiredClasses: {type: [String], default: []}, //can be empty
@@ -170,21 +179,44 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 //EXAMPLE CODE AT BOTTOM OF server.js
 
-/** Begin ADD TO DATABASE */
-
-
-/** End ADD TO DATABASE */
-
-/** Begin SEARCHING THE DATABASE */
-
-
-
-/**End SEARCHING THE DATABASE */
-
 /** End MONGODB AND MONGOOSE SETUP */
 
 
 /**Begin ENDPOINTS */
+
+app.get('/populate', function (req, res) {
+    opportunityModel.find({}, function (err, opps) {
+        for (let i = 0; i = opps.length; i++) {
+            opps[i].messages = {
+                "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunity title}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
+                "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
+                ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
+                '{yourFirstName} {yourLastName}”.',
+                "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview. Sincerely, {yourFirstName} {yourLastName}'
+            };
+            opps[i].save(function (err) {
+            });
+        }
+    })
+});
+
+/**
+ * Takes the id of an opportunity as a parameter in the url
+ * Returns the messages object of the opportunity Messages object looks like so:
+ * {
+ *  "accept": "Hi {firstName}, ....",
+ *  "reject": "...",
+ *  "interview": "..."
+ * }
+ *  When sent to the back-end, any fields in {} will be replaced with that field
+ * }
+ */
+app.get('/messages/:opportunityId', function (req, res) {
+    let opportunityId = req.params.opportunityId;
+    opportunityModel.findById(opportunityId, function (err, opportunity) {
+        return opportunity.messages;
+    })
+});
 
 //Example code for receiving a request from the front end that doesn't send any data,
 /*app.get('/something', function (req, res) {
@@ -280,7 +312,7 @@ app.post('/getApplications', function (req, res) {
                 let applicationsArray = [];
                 let allApplications = {};
                 let netIds = [];
-                for (let i = 0; i < docs.length; i++){
+                for (let i = 0; i < docs.length; i++) {
                     let opportunityObject = docs[i];
                     for (let j = 0; j < opportunityObject.applications.length; j++) {
                         applicationsArray.push(opportunityObject.applications[j]);
@@ -300,7 +332,7 @@ app.post('/getApplications', function (req, res) {
                             for (let i = 0; i < currentApplication.length; i++) {
                                 let currentStudent = currentApplication[i];
                                 let undergradId = currentStudent.undergradNetId;
-                                let undergradInfo = studentInfoArray.filter(function( student ) {
+                                let undergradInfo = studentInfoArray.filter(function (student) {
                                     return student.netId === undergradId;
                                 })[0];
                                 currentStudent.firstName = undergradInfo.firstName;
