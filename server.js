@@ -184,6 +184,9 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 /**Begin ENDPOINTS */
 
+/**
+ * A method to populate fields. Feel free to change it as need be.
+ */
 app.get('/populate', function (req, res) {
     opportunityModel.find({}, function (err, opps) {
         for (let i = 0; i < opps.length; i++) {
@@ -216,7 +219,7 @@ app.get('/populate', function (req, res) {
 app.get('/messages/:opportunityId', function (req, res) {
     let opportunityId = req.params.opportunityId;
     opportunityModel.findById(opportunityId, function (err, opportunity) {
-        return opportunity.messages;
+        res.send(opportunity.messages);
     })
 });
 
