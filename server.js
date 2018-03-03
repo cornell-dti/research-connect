@@ -730,6 +730,11 @@ app.post('/createUndergrad', function (req, res) {
 });
 
 // during lab admin signup creating new lab as well
+
+/* In the addLabAdmin endpoint, check to see if the req.body.labId field is null.
+    If it is null, then create a lab with labName, labDescription, and labUrl and save it to the database.
+    All three should be in req.body. If labId is not null, then just continue with the method as usual.
+ */
 function createLabAndAdmin(req, res) {
     var data = req.body;
 
@@ -1108,6 +1113,29 @@ app.post('/storeResume', function (req, res) {
     //     }
     // });
 });
+
+
+app.post('/storeApplication', function (req, res) {
+    opportunityModel.findById(req.body.opportunityId, function (err, opportunity) {
+        if (err) {
+            return err;
+        }
+
+        var application = {
+            "undergradNetId": req.body.netId,
+            "status": "received",
+            "responses": req.body.responses,
+            "timeSubmitted": Date.now()
+        };
+
+        console.log(application);
+        opportunity.applications.push(application);
+        opportunity.save(function(err){});
+        res.send("success!");
+    });
+});
+
+
 
 /**End ENDPOINTS */
 
