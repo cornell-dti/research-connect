@@ -4,6 +4,7 @@
 'use strict';
 
 //import dependencies
+require('dotenv').config();
 const async = require('async');
 const express = require('express');
 const supportsColor = require('supports-color');
@@ -116,7 +117,7 @@ app.use('/api', router);
 const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-const mongoDB = 'mongodb://research-connect:connectresearchers4cornell@ds251245.mlab.com:51245/research-connect';
+const mongoDB = process.env.MONGODB;
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
