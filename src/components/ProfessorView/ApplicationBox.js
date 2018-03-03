@@ -37,9 +37,13 @@ class ApplicationBox extends Component {
 		return(month0+ (month).toString()+"/"+day0+(day).toString());
 	}
 
+	clickRow(rowObj) {
+		document.location.href = ('http://localhost:3000/application/' + this.props.data.id);
+	}
+
 	render() {
 		return (
-			<div className="prof-application-box" style={{ display: this.props.show ? "" : "none" }}>
+			<div className="prof-application-box" onClick={this.clickRow.bind(this)} style={{ display: this.props.show ? "" : "none" }}>
 				<div className="row">
 					<div className="column column-75">
 						<div className="name">{ this.props.data.firstName }, { this.props.data.lastName }</div>
