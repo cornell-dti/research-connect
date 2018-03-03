@@ -1125,7 +1125,8 @@ app.post('/storeApplication', function (req, res) {
             "undergradNetId": req.body.netId,
             "status": "received",
             "responses": req.body.responses,
-            "timeSubmitted": Date.now()
+            "timeSubmitted": Date.now(),
+            "id": Date.now() + req.body.netId
         };
 
         console.log(application);
