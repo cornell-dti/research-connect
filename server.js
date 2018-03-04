@@ -1096,22 +1096,23 @@ app.post('/storeResume', function (req, res) {
         if (err) debug(err, err.stack); // an error occurred
         else {
             let baseString = base64ArrayBuffer(data.Body);
-            res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
+            // res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
         }
         // successful response
     });
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let resume = req.files.resume;
     //TODO change Key param to name of student plus date.now
-    // let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
-    // debug("yay!");
-    // s3.upload (uploadParams, function (err, data) {
-    //     if (err) {
-    //         debug("Error", err);
-    //     } if (data) {
-    //         debug("Upload Success", data.Location);
-    //     }
-    // });
+    let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
+    debug("yay!");
+    s3.upload (uploadParams, function (err, data) {
+        if (err) {
+            debug("Error", err);
+        } if (data) {
+            debug("Upload Success", data.Location);
+            res.send("Success!");
+        }
+    });
 });
 
 
