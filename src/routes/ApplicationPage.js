@@ -11,7 +11,7 @@ class OpportunityPage extends Component {
 	}
 
 	componentWillMount() {
-		axios.post('http://localhost:3001/getApplications', {
+		axios.post('/getApplications', {
 			'id': '5a3c0f1df36d280c875969ed'
 		})
 		.then((response) => {

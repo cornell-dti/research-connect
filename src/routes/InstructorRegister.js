@@ -63,7 +63,7 @@ class InstructorRegister extends React.Component {
 
   loadOpportunitiesFromServer() {
 
-    axios.get('http://localhost:3001/getLabs')
+    axios.get('/getLabs')
     .then(res => {
 
       this.setState({ data: res.data });
@@ -116,7 +116,7 @@ render() {
     <h3>Registration</h3>
     <form
           id='register'
-          action='http://localhost:3001/createLabAdmin'
+          action='/createLabAdmin'
           method='post'
       >
 
