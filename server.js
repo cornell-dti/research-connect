@@ -743,6 +743,8 @@ app.post('/createUndergrad', function (req, res) {
     All three should be in req.body. If labId is not null, then just continue with the method as usual.
  */
 function createLabAndAdmin(req, res) {
+    console.log("This means we had to go somewhere else");
+
     var data = req.body;
 
     var lab = new labModel({
@@ -756,6 +758,7 @@ function createLabAndAdmin(req, res) {
     });
 
     lab.save(function (err, labObject) {
+
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -784,6 +787,13 @@ app.post('/createLabAdmin', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     debug(data);
+
+    console.log(data.role);
+    console.log(data.labId);
+    console.log(data.netId);
+    console.log(data.firstName);
+    console.log(data.lastName);
+    console.log(data.verified);
 
     // if labId is null then there is no existing lab and creating new lab
     if(data.labId == null) {

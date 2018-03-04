@@ -89,7 +89,7 @@ class StudentRegister extends React.Component {
                         </label>
                         <br/>
                         <label>
-                            *Courses (separate with commas):
+                            *Relevant Courses (separate with commas):
                             <input type="text" name="courses" value={courses} id="courses" onChange={this.onChange}/>
                         </label>
                         <br/>

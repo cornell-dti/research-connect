@@ -107,6 +107,17 @@ handleChangePI(event){
   this.setState({pi: event.target.value});
 }
 
+onSubmit = (e) => {
+    e.preventDefault();
+    // get our form data out of state
+    const { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi } = this.state;
+
+axios.post('http://localhost:3001/createLabAdmin', { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi })
+    .then((result) => {
+    //access the results here....
+});
+}
+
 render() {
 
   return (
@@ -116,8 +127,9 @@ render() {
     <h3>Registration</h3>
     <form
           id='register'
-          action='http://localhost:3001/createLabAdmin'
-          method='post'
+          //action='http://localhost:3001/createLabAdmin'
+          onSubmit = {this.onSubmit}
+          //method='post'
       >
 
     <input className="name" type="text" name="adminFirstName" id="adminFirstName" placeholder="First Name"
