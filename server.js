@@ -228,6 +228,10 @@ let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Oppor
 
 /**Begin ENDPOINTS */
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 /**
  * A method to populate fields. Feel free to change it as need be.
  */
@@ -272,10 +276,6 @@ app.get('/messages/:opportunityId', function (req, res) {
     })
 });
 
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
-}
-
 /**
  * Send an email to notify the student of their status change
  */
@@ -293,16 +293,16 @@ app.post('/messages/send', function (req, res) {
      */
 
     undergradModel.findOne({netId: ugradNetId}, function (err, ugradInfo) {
-        message = message.replace("{studentFirstName}", ugradInfo.firstName);
-        message = message.replace("{studentLastName}", ugradInfo.lastName);
+        message = replaceAll(message, "{studentFirstName}", ugradInfo.firstName);
+        message = replaceAll(message, "{studentLastName}", ugradInfo.lastName);
         labAdministratorModel.findOne({netId: profId}, function (err, prof) {
-            message = message.replace("{yourFirstName}", prof.firstName);
-            message = message.replace("{yourLastName}", prof.lastName);
-            message = message.replace("{yourEmail}", prof.netId + "@cornell.edu");
+            message = replaceAll(message, "{yourFirstName}", prof.firstName);
+            message = replaceAll(message, "{yourLastName}", prof.lastName);
+            message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
-                message = message.replace("{opportunityTitle}", opportunity.title);
+                message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 let msg = {
-                    to: "abagh0703@gmail.com",
+                    to: ugradNetId + "@cornell.edu",
                     from: 'CornellDTITest@gmail.com',
                     subject: "Research Connect Application Update for " + opportunity.title,
                     text: message,
@@ -530,7 +530,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
         undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
 
             let undergrad1 = undergrad[0];
-            undergrad1.courses = undergrad1.courses.map(course => course.replace(" ", ""));
+            undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
             debug(undergrad1);
             debug("test");
             opportunityModel.find({
@@ -543,7 +543,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
             }, function (err, opportunities) {
                 for (let i = 0; i < opportunities.length; i++) {
                     let prereqsMatch = false;
-                    opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => course.replace(" ", ""));
+                    opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => replaceAll(course, " ", ""));
                     // checks for gpa, major, and gradYear
                     if (opportunities[i].minGPA <= undergrad1.gpa &&
                         opportunities[i].requiredClasses.every(function (val) {
