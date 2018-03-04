@@ -9,7 +9,7 @@ class ProfessorMatches extends Component {
     }
 
     componentDidMount() {
-        axios.post('http://localhost:3001/getApplications', {
+        axios.post('/getApplications', {
             'id': '5a3c0f1df36d280c875969ed'
             //this is just syntax for getting the id from the url
             //the url is outsite.com/opportunity/:id, meaning :id can be any number. So this syntax gets us that id/number

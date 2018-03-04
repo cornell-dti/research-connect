@@ -12,6 +12,7 @@ import CreateOpportunityForm from './routes/CreateOpportunityForm';
 import InstructorRegister from './routes/InstructorRegister';
 import StudentRegister from './routes/StudentRegister';
 import ProfessorView from './routes/ProfessorView';
+import ApplicationPage from './routes/ApplicationPage';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Route exact path='/' component = {App} />
             <Route exact path='/opportunities' component = {Opportunities} />
             <Route path='/opportunity/:id' component = {OpportunityPage} />
+            <Route path='/application/:id' component = {ApplicationPage} />
             <Route exact path='/reference' component = {Reference} />
             <Route exact path='/newopp' component = {CreateOpportunityForm} />
             <Route exact path='/instructorRegister' component = {InstructorRegister} />
