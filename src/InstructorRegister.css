@@ -120,3 +120,15 @@
 .active{
   background-color: #dee0e5;
 }
+.existing-or-create .left-button{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.existing-or-create .right-button{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.existing-or-create .button-small-clear:hover{
+  background-color: #c6c9ce;
+  border-color: #c6c9ce;
+}

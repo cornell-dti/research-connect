@@ -61,7 +61,7 @@ onBlur(event) {
             showDropdown: false, highlightLabId: null,
               highlightLabName: '', cursor: -1
           })
-        }, 100);
+        }, 120);
 
 
 }
