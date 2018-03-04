@@ -100,7 +100,7 @@ class OpportunityPage extends Component {
 
     render() {
         return (
-            <div className="page-wrapper">
+            <div className="opportunities-page-wrapper">
             <div className="header"></div>
             <div className="cover-photo"></div>
                 <div className="container opportunityListing">

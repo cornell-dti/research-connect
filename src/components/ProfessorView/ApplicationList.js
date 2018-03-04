@@ -2,24 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../../index.css';
 import ApplicationBox from './ApplicationBox';
+import * as Utils from '../Shared/Utils.js'
 
 class ApplicationList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { data: [] };
-	}
-
-	dateIsBetween(date, lowerBound, upperBound) {
-		return (lowerBound <= date && date <= upperBound);
-	}
-
-	gradYearToString(gradYear) {
-		let presentDate = new Date();
-		if (this.dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return "Freshman";
-		if (this.dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return "Sophomore";
-		if (this.dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return "Junior";
-		if (this.dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "Senior";
-		return "Freshman";
 	}
 
 	componentDidMount() {
@@ -38,7 +26,6 @@ class ApplicationList extends Component {
 	}
 
 	shouldShow(application) {
-
 		const filter = this.props.filter;
 
 		let froshSelected = filter.yearSelect.Freshman;
@@ -47,10 +34,10 @@ class ApplicationList extends Component {
 		let seniorSelected = filter.yearSelect.Senior;
 		let gradYear = application.gradYear;
 
-		if ((froshSelected && this.gradYearToString(gradYear) === 'Freshman') ||
-				(sophSelected && this.gradYearToString(gradYear) === 'Sophomore') ||
-				(juniorSelected && this.gradYearToString(gradYear) === 'Junior') ||
-				(seniorSelected && this.gradYearToString(gradYear) === 'Senior') ||
+		if ((froshSelected && Utils.gradYearToString(gradYear) === 'Freshman') ||
+				(sophSelected && Utils.gradYearToString(gradYear) === 'Sophomore') ||
+				(juniorSelected && Utils.gradYearToString(gradYear) === 'Junior') ||
+				(seniorSelected && Utils.gradYearToString(gradYear) === 'Senior') ||
 				(!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
 			
 			let csSelected = filter.majorSelect.cs;
