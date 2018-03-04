@@ -110,8 +110,8 @@ app.use('/api', router);
 //Require Mongoose
 const mongoose = require('mongoose');
 
-//Set up default mongoose connection
 const mongoDB = process.env.MONGODB;
+//Set up default mongoose connection
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
@@ -183,11 +183,11 @@ const opportunitySchema = new Schema({
     },
     messages: {
         type: Schema.Types.Mixed, default: {
-            "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunityTitle}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
-            "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
-            ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
-            '{yourFirstName} {yourLastName}”.',
-            "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". Sincerely, {yourFirstName} {yourLastName}'
+            "accept": 'Hi {studentFirstName}, \nI am pleased to inform you that our lab will accept you for the opportunity "{opportunityTitle}". Please email me at {yourEmail} to find out more about when you will start. \n\nSincerely, \n{yourFirstName} {yourLastName}',
+            "reject": 'Hi {studentFirstName}, \nI regret to inform you that our lab will not be able to accept you for the ' +
+            ' "{opportunityTitle}" position this time. Please consider applying in the future. \n\nRespectfully, ' +
+            '\n{yourFirstName} {yourLastName}”.',
+            "interview": 'Hi {studentFirstName}, \nWe reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". \n\nSincerely, \n{yourFirstName} {yourLastName}'
         }
     },
     applications: {type: [Schema.Types.Mixed], default: []},
@@ -235,11 +235,11 @@ app.get('/populate', function (req, res) {
     opportunityModel.find({}, function (err, opps) {
         for (let i = 0; i < opps.length; i++) {
             opps[i]["messages"] = {
-                "accept": 'Hi {studentFirstName}, I am pleased to inform you that our lab will accept you for the opportunity "{opportunity title}". Please email me at {yourEmail} to find out more about when you will start. \nSincerely, {yourFirstName} {yourLastName}',
-                "reject": 'Hi {studentFirstName}, I regret to inform you that our lab will not be able to accept you for the ' +
-                ' "{opportunityTitle}" position this time. Please consider applying in the future. Respectfully, ' +
-                '{yourFirstName} {yourLastName}”.',
-                "interview": 'Hi {studentFirstName}, We reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview. Sincerely, {yourFirstName} {yourLastName}'
+                "accept": 'Hi {studentFirstName}, \nI am pleased to inform you that our lab will accept you for the opportunity "{opportunityTitle}". Please email me at {yourEmail} to find out more about when you will start. \n\nSincerely, \n{yourFirstName} {yourLastName}',
+                "reject": 'Hi {studentFirstName}, \nI regret to inform you that our lab will not be able to accept you for the ' +
+                ' "{opportunityTitle}" position this time. Please consider applying in the future. \n\nRespectfully, ' +
+                '\n{yourFirstName} {yourLastName}”.',
+                "interview": 'Hi {studentFirstName}, \nWe reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". \n\nSincerely, \n{yourFirstName} {yourLastName}'
             };
             opps[i].save(function (err) {
                 debug(err);
@@ -272,6 +272,10 @@ app.get('/messages/:opportunityId', function (req, res) {
     })
 });
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 /**
  * Send an email to notify the student of their status change
  */
@@ -297,36 +301,15 @@ app.post('/messages/send', function (req, res) {
             message = message.replace("{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
                 message = message.replace("{opportunityTitle}", opportunity.title);
-                // let msg = {
-                //     to: ugradNetId + "@cornell.edu",
-                //     from: 'CornellDTITest@gmail.com',
-                //     subject: "Research Connect Application Update for " + opportunity.title,
-                //     text: message,
-                // };
-
-                let msg = { //TODO Change the "from" email to our domain name using zoho mail
-                    personalizations: [
-                        {
-                            to: [
-                                {
-                                    "email": ugradNetId + "@cornell.edu",
-                                    "name": ugradInfo.firstName
-                                }
-                            ],
-                            subject: "Research Connect Application Update for " + opportunity.title
-                        }
-                    ],
-                    content: [{
-                        type: "text/plain",
-                        content: message
-                    }],
-                    from: {
-                        email: "CornellDTITest@gmail.com",
-                        name: "Research Connect"
-                    },
+                let msg = {
+                    to: "abagh0703@gmail.com",
+                    from: 'CornellDTITest@gmail.com',
+                    subject: "Research Connect Application Update for " + opportunity.title,
+                    text: message,
+                    html: replaceAll(message, "\n", "<br />")
                 };
+                //TODO Change the "from" email to our domain name using zoho mail
                 sgMail.send(msg);
-                //TODO: send email here with message var and subject var to ugradNetId + "@cornell.edu".
                 res.status(200).end();
             })
         })
