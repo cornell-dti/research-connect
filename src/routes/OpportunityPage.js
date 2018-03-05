@@ -19,6 +19,7 @@ class OpportunityPage extends Component {
     }
 
     printQuestions() {
+      console.log(this.state.opportunity.questions)
         if (!this.isEmpty(this.state.opportunity.questions)) {
             let keys = [];
             //get all the keys and put them in an array
