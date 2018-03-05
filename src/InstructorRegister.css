@@ -18,6 +18,7 @@
   padding: 0 1.5rem;
 
 }
+
 .instructor-reg-form .button-small-clear{
   font-size: .8rem;
   height: 2.8rem;
@@ -88,7 +89,7 @@
 
 .instructor-reg-form .button-small-clear{
     border-color: #b31b1b;
-        color:#b31b1b;;
+    color:#b31b1b;;
 }
 .instructor-reg-form .button-small-clear:focus{
     border-color: #b31b1b;

@@ -28,7 +28,7 @@ class ApplicationBox extends Component {
 					<div className="column">
 						<div className="status">Status: { this.props.data.status }</div>
 						<div className="date-applied">Date Applied: { Utils.convertDate(this.props.data.timeSubmitted) }</div>
-						<div className="opportunity">Opportunity: { this.props.data.opportunity }</div>
+						<div className="opportunity">Opportunity: { this.props.opportunity.title }</div>
 					</div>
 				</div>
 			</div>

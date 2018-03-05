@@ -13,11 +13,8 @@ class ApplicationList extends Component {
 	componentDidMount() {
 		axios.post('/getApplications', {
 			'id': '5a3c0f1df36d280c875969ed'
-			//this is just syntax for getting the id from the url
-			//the url is outsite.com/opportunity/:id, meaning :id can be any number. So this syntax gets us that id/number
 		})
 		.then((response) => {
-			console.log(response.data);
 			this.setState({ data: response.data });
 		})
 		.catch(function (error) {
@@ -62,12 +59,13 @@ class ApplicationList extends Component {
 	render() {
 		var apps = []
 		var k = 0;
-		for (var opp in this.state.data) {
-			for (var app in opp) {
-				var curApp = this.state.data[opp][app];
+		const data = this.state.data;
+		for (var opp in data) {
+			for (var app in data[opp].applications) {
+				var curApp = data[opp].applications[app];
+				var curOpp = data[opp].opportunity;
 				if (curApp !== undefined) {
-					curApp.opportunity = opp;
-					apps.push(<ApplicationBox key={ k++ } data={ curApp } show={ this.shouldShow(curApp) } />);
+					apps.push(<ApplicationBox key={ k++ } data={ curApp } opportunity={ curOpp } show={ this.shouldShow(curApp) } />);
 				}
 			}
 		}
