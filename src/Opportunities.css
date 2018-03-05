@@ -122,9 +122,14 @@ h4{
 
   font-weight: 500;
   margin-bottom: 5px;
+  padding-left: 10px;
 }
-h5, h4{
+h5{
+  font-size: 20px;
+  font-weight: bold;
 
+  font-size: 1.6rem;
+  margin-bottom: 5px;
   padding-left: 10px;
 }
 hr {

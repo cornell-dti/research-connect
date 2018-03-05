@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../OpportunityPage.css';
+import CheckBox from 'react-icons/lib/fa/check-square-o';
+import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 
 class OpportunityPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opportunity: {}
+            opportunity: {},
+            questionAnswers: {},
+            submitted: false
+
         };
     }
 
@@ -18,8 +23,17 @@ class OpportunityPage extends Component {
         return true;
     }
 
+
+    handleChange(key){
+      let answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers))
+      answersCopy[key] = document.getElementsByName(key)[0].value;
+       this.setState({
+       questionAnswers: answersCopy
+      });
+
+    }
     printQuestions() {
-      console.log(this.state.opportunity.questions)
+
         if (!this.isEmpty(this.state.opportunity.questions)) {
             let keys = [];
             //get all the keys and put them in an array
@@ -37,22 +51,26 @@ class OpportunityPage extends Component {
                 //if a's numb is less than b's num then return a value less than 0 indicating a comes before b.
                 return aNum - bNum;
             });
+
             let questionMapping = keys.map((key) => {
                     return <div id={key} key={key}>
                         {this.state.opportunity.questions[key]}
                         <br/>
-                        <textarea />
+                        <textarea name={key} key={key} onChange={this.handleChange.bind(this, key)}/>
                         <br/>
                     </div>
                 }
             );
-            return <form> {questionMapping} <input className="button" type="submit" value="Submit"/></form>;
+            return <form onSubmit={this.handleAppSubmit.bind(this)}> {questionMapping} <input className="button" type="submit" value="Submit"/></form>;
 
         } else {
-            return <form> There are no questions. <input className="button" type="submit" value="Submit"/></form>;
+            return <form onSubmit={this.handleAppSubmit.bind(this)}> There are no questions. <input className="button" type="submit" value="Submit"/></form>;
         }
     }
 
+    handleAppSubmit(){
+      this.setState({submitted:true});
+    }
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
         //TODO make this dependent upon browser url not hardcoded
@@ -63,10 +81,27 @@ class OpportunityPage extends Component {
         })
             .then((response) => {
                 this.setState({opportunity: response.data});
+                if (!this.isEmpty(response.data)) {
+                    var obj = {}
+                    //get all the keys and put them in an array
+                    for (let k in response.data.questions){
+                        //make sure it's an actual key and not a property that all objects have by default
+                        if (response.data.questions.hasOwnProperty(k)){
+                            obj[k]='';
+                        }
+                    }
+
+                    this.setState({questionAnswers: obj});
+                  }
+
+
             })
             .catch(function (error) {
                 console.log(error);
             });
+
+
+
     }
 
     convertDate(dateString) {
@@ -98,6 +133,41 @@ class OpportunityPage extends Component {
         }
     }
 
+    parseArrayToList(yearsArray){
+
+       var yearDivArray = []
+       if (yearsArray){
+         var trackYear = false;
+      if (yearsArray.includes("freshman")){
+         yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span></div>)
+         trackYear= true;
+       }
+      if (yearsArray.includes("sophomore") ){
+      yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Sophomore</span></div>)
+      trackYear= true;
+      }
+      if (yearsArray.includes("junior")){
+        yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Junior</span></div>)
+        trackYear= true;
+      }
+      if (yearsArray.includes("senior")){
+        yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Senior</span></div>)
+        trackYear= true;
+      }
+      if (!trackYear){
+        if (yearsArray.length==0){
+            yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="none"> No Preference</span></div>);
+        }
+        for (var i=0;i<yearsArray.length;i++){
+          yearDivArray.push(<div><CheckBox className="greenCheck"/><span key={i}> {yearsArray[i]}</span></div>);
+        }
+      }
+    }
+
+
+      return <ul>{yearDivArray}</ul>;
+    }
+
 
     render() {
         return (
@@ -111,11 +181,11 @@ class OpportunityPage extends Component {
                   <div className="title-box">
                     <div className="title-first-col ">
                     <h4>{this.state.opportunity.title}</h4>
-                    <h6> Lab Name: {this.state.opportunity.labName}</h6>
-                    <h6> PI: {this.state.opportunity.pi}</h6>
+                    <h6> Lab: {this.state.opportunity.labName}</h6>
+                    <h6> Principal Investigator: {this.state.opportunity.pi}</h6>
                     </div>
                     <div className="title-second-col">
-                      <a className="button" href="#Application">Apply</a>
+                      <a className="apply-button button" href="#Application">Apply</a>
                     <h6> Applications Due {this.convertDate(this.state.opportunity.closes)}</h6>
                     {/*this.checkOpen()*/}
 
@@ -123,22 +193,25 @@ class OpportunityPage extends Component {
                     </div>
                     <div className="about-box">
                       <h5>About the Position</h5>
-                      <h6> Supervisor: {this.state.opportunity.supervisor}</h6>
-                      <p>{this.state.opportunity.qualifications}</p>
-                      <p>{this.state.opportunity.undergradTasks}</p>
-
-                      <h5>About the Lab</h5>
-                      <p> {this.state.opportunity.projectDescription}</p>
-                      <h5>Additional Information</h5>
-                      <p> {this.state.opportunity.startDate}</p>
+                      <p> Supervisor: {this.state.opportunity.supervisor}</p>
+                      <p> Qualifications: {this.state.opportunity.qualifications}</p>
+                      <p> Tasks: {this.state.opportunity.undergradTasks}</p>
+                      <p> Start Season: {this.state.opportunity.startSeason} {this.state.opportunity.startYear}</p>
                       <p> Must work between { this.state.opportunity.minHours+" " }
                            and { this.state.opportunity.maxHours } hours a week. </p>
+                           <p> Project Description: {this.state.opportunity.projectDescription}</p>
+
+                      <h5>About the Lab</h5>
+                      <a href={this.state.opportunity.labPage}>{this.state.opportunity.labPage}</a>
+                      <p>{this.state.opportunity.labDescription}</p>
+
                       </div>
 
 
                       <div id="Application" className="application-box">
                       <h4>Apply Here: </h4>
-                          { this.printQuestions()}
+                      <br/>
+                          { !this.state.submitted ? this.printQuestions(): <p>You have applied to this position.</p> }
                       </div>
                     </div>
 
@@ -150,21 +223,24 @@ class OpportunityPage extends Component {
                       <hr/>
 
                       <div className="qual-section">
-                          <h6>Graduation Years: </h6>
-                          <h6>{this.state.opportunity.yearsAllowed}</h6>
+                        {/* TODO: Have a checkmark next to qualifications that a candidate meets based on netID*/}
+                          <h6>Year: </h6>
+                          {this.parseArrayToList(this.state.opportunity.yearsAllowed)}
                           </div>
                           <hr/>
                           <div className="qual-section">
-                          <h6> Majors: {this.state.opportunity.area}</h6>
+                          <h6> Major:</h6>
+                            {this.parseArrayToList(this.state.opportunity.areas)}
                           </div>
                           <hr/>
                             <div className="qual-section">
-                          <h6>Minimum GPA: {this.state.opportunity.minGPA}</h6>
+                            <h6>GPA: </h6>
+                          <p><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA}</span></p>
                           </div>
                           <hr/>
                             <div className="qual-section">
-                          <h6>Courses Taken: </h6>
-                          <h6>{this.state.opportunity.requiredClasses}</h6>
+                          <h6>Courses: </h6>
+                          {this.parseArrayToList(this.state.opportunity.requiredClasses)}
                           </div>
 
 

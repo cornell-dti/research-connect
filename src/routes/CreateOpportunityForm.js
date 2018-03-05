@@ -2,6 +2,7 @@ import React from 'react';
 import '../CreateOpportunityForm.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class CreateOppForm extends React.Component {
@@ -9,7 +10,7 @@ class CreateOppForm extends React.Component {
 		super(props);
 		this.state = {
 			labPage: '',
-			areas: '',
+			areas: [],
 			title: '',
 			projectDescription: '',
 			undergradTasks: '',
@@ -17,9 +18,9 @@ class CreateOppForm extends React.Component {
 			spots: '',
 			startSeason: '',
 			startYear: '',
-			yearsAllowed: '',
+			yearsAllowed: [],
 			questions: {},
-			requiredClasses: '',
+			requiredClasses: [],
 			minGPA: '',
 			minHours: '',
 			maxHours: '',
@@ -33,13 +34,17 @@ class CreateOppForm extends React.Component {
 		};
 
 		this.handleChange = this.handleChange.bind(this);
-
 		this.addQuestion = this.addQuestion.bind(this);
 
 
 	}
 
 
+
+
+
+
+		//TODO: use this https://stackoverflow.com/questions/30483645/get-file-object-from-file-input so you don't get redirected everytime and can submit all data at once
 
 
 	addQuestion(event) {
@@ -95,20 +100,20 @@ class CreateOppForm extends React.Component {
 	}
 	setYears(){
 
-		var yearString = '';
+		var yearArray = [];
 		if (this.freshman.checked){
-			yearString+= 'freshman'
+			yearArray.push('freshman');
 		}
 		if (this.sophomore.checked){
-			yearString+= 'sophomore'
+			yearArray.push('sophomore');
 		}
 		if (this.junior.checked){
-			yearString+= 'junior'
+			yearArray.push('junior');
 		}
 		if (this.senior.checked){
-			yearString+= 'senior'
+			yearArray.push('senior');
 		}
-		this.setState({yearsAllowed: yearString});
+		this.setState({yearsAllowed: yearArray});
 	}
 	handleChange(event) {
 
@@ -119,7 +124,8 @@ class CreateOppForm extends React.Component {
 		} else if (event.target.name === "title") {
 			this.setState({title: event.target.value});
 		} else if (event.target.name === "areas") {
-			this.setState({areas: event.target.value});
+			var areaArray= event.target.value.split(",");
+			this.setState({areas: areaArray});
 		} else if (event.target.name === "pi") {
 			this.setState({pi: event.target.value});
 		} else if (event.target.name === "supervisor") {
@@ -133,7 +139,9 @@ class CreateOppForm extends React.Component {
 		} else if (event.target.name === "spots") {
 			this.setState({spots: event.target.value});
 		} else if (event.target.name === "classes") {
-			this.setState({requiredClasses: event.target.value});
+			var classArray= event.target.value.split(",");
+			this.setState({areas: areaArray});
+			this.setState({requiredClasses: classArray});
 		} else if (event.target.name === "startSeason") {
 			this.setState({startSeason: event.target.value});
 		} else if (event.target.name === "startYear") {
@@ -175,8 +183,8 @@ class CreateOppForm extends React.Component {
 			<h3>Create New Position</h3>
 			</div>
 			<form
-						id='createOpportunity'
-						action='/createOpportunity'
+						id='createOpp'
+						action='createOpportunity'
 						method='post'
 				>
 
@@ -196,7 +204,7 @@ class CreateOppForm extends React.Component {
 						<input className="max-hours" placeholder="Max Hours" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
 						</div>
 
-						<input placeholder="Required/Recommended Classes" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
+						<input placeholder="Required/Recommended Classes (Please separate with commas)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
 
 
 							{this.createGpaOptions()}
@@ -222,7 +230,7 @@ class CreateOppForm extends React.Component {
 							<label  className="label-inline">Seniors </label>
 							</div>
 
-							<textarea placeholder="Topics of Research" type="text" name="areas" value={this.state.areas} onChange={this.handleChange}/>
+							<textarea placeholder="Topics of Research (Please separate with commas)" type="text" name="areas" value={this.state.areas} onChange={this.handleChange}/>
 
 							<input placeholder="# Available Spots" type="text" name="spots" value={this.state.spots} onChange={this.handleChange}/>
 
@@ -232,6 +240,7 @@ class CreateOppForm extends React.Component {
 							<option value="Select" >Select Start Season</option>
 							<option value="Spring" >Spring</option>
 							<option value="Summer" >Summer</option>
+							<option value="Winter" >Winter</option>
 							<option value="Fall" >Fall</option>
 						</select>
 

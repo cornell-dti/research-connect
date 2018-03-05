@@ -80,3 +80,9 @@
 .date-pick-container{
   text-align: center;
 }
+.new-opp-form input:focus, .new-opp-form textarea:focus, .new-opp-form select:focus{
+    border-color: #b31b1b;
+}
+.years-allowed input[type=checkbox]:checked{
+  color: #b31b1b;
+}
