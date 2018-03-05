@@ -628,6 +628,9 @@ app.post('/getOpportunitiesListing', function (req, res) {
                     }
 
                     opportunities[i]["prereqsMatch"] = prereqsMatch;
+                    opportunities[i]["labName"] = "placeholderLabName";
+                    opportunities[i]["labPage"] = "placeholderLabPage";
+                    opportunities[i]["labDescription"] = "placeholderLabDesc"; //TODO use labModel.find({}, ...) to get real vals
                 }
 
                 for (let i = 0; i < opportunities.length; i++) {
