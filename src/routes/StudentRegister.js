@@ -16,7 +16,8 @@ class StudentRegister extends React.Component {
             major : "Computer Science",
             GPA : 3.3,
             netid : "zx55", //TODO currently dummy value
-            courses : ["CS 2110"]
+            courses : ["CS 2110"],
+            file : null
         };
     };
 
@@ -46,20 +47,38 @@ class StudentRegister extends React.Component {
         }
     }
 
+    onFormChange = (e) => {
+    this.setState({file : e.target.value})
+    }
+
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const { firstName, lastName, gradYear, major, GPA, netid, courses } = this.state;
+        const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
 
-        axios.post('http://localhost:3001/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses })
+        axios.post('http://localhost:3001/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, file })
             .then((result) => {
                 //access the results here....
             });
     }
 
+    previewFile() {
+        var preview = document.querySelector('img');
+        var file    = document.querySelector('input[type=file]').files[0];
+        var reader  = new FileReader();
+
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
     render() {
         console.log("Hello World");
-        const { firstName, lastName, gradYear, major, GPA, netid, courses } = this.state;
+        const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
         return (
             <div>
                     <form id = "studentForm" onSubmit = {this.onSubmit}>
@@ -92,6 +111,12 @@ class StudentRegister extends React.Component {
                             *Relevant Courses (separate with commas):
                             <input type="text" name="courses" value={courses} id="courses" onChange={this.onChange}/>
                         </label>
+                        <br/>
+                        <form enctype="multipart/form-data" method="post" name="fileinfo">
+                            <label>File to stash:</label>
+                            <input type="file" name="file" onChange={this.onFormChange}/><br/>
+                            <input type="submit" id="formInput" value="Stash the file!"/>
+                        </form>
                         <br/>
                         <p> *Required fields</p>
                         <input type="submit" value="Submit" />
