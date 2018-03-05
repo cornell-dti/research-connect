@@ -121,7 +121,9 @@ const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+db.once('open', function() {
+   debug("connected to mongo");
+});
 /**Begin SCHEMAS*/
 let Schema = mongoose.Schema;
 
@@ -284,6 +286,7 @@ app.post('/messages/send', function (req, res) {
     let profId = req.body.labAdminNetId;
     let ugradNetId = req.body.undergradNetId;
     let message = req.body.message;
+    let status = req.body.status;
     /**
      *  *  Values we can replace:
      *  {studentFirstName}, {studentLastName} --> the first or last name of the student they just clicked accept/reject/interview for
@@ -301,6 +304,22 @@ app.post('/messages/send', function (req, res) {
             message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
                 message = replaceAll(message, "{opportunityTitle}", opportunity.title);
+                for (let i = 0; i < opportunity.applications.length; i++) {
+                    if (opportunity.applications[i].undergradNetId === ugradNetId){
+                        opportunity.applications[i].status = status;
+                        break;
+                    }
+                }
+                opportunity.messages[status] = message;
+                opportunity.save(function (err, todo) {
+                    if (err) {
+                        console.log("whoops");
+                        console.log(err);
+                        debug(err);
+                    }
+                    debug("hi");
+                    debug(todo);
+                });
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
                     from: 'CornellDTITest@gmail.com',
@@ -309,7 +328,7 @@ app.post('/messages/send', function (req, res) {
                     html: replaceAll(message, "\n", "<br />")
                 };
                 //TODO Change the "from" email to our domain name using zoho mail
-                sgMail.send(msg);
+                // sgMail.send(msg);
                 res.status(200).end();
             })
         })
@@ -693,9 +712,6 @@ app.post('/createOpportunity', function (req, res) {
         closes: data.closes,
         areas: data.areas
     });
-
-    labModel.find();
-
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
