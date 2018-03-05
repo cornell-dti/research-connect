@@ -310,15 +310,15 @@ app.post('/messages/send', function (req, res) {
                         break;
                     }
                 }
-                opportunity.messages[status] = message;
+                let temp = opportunity.messages;
+                temp[status] = message;
+                opportunity.messages = temp;
+                opportunity.markModified("messages");
+                opportunity.markModified("applications");
                 opportunity.save(function (err, todo) {
                     if (err) {
-                        console.log("whoops");
-                        console.log(err);
                         debug(err);
                     }
-                    debug("hi");
-                    debug(todo);
                 });
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
@@ -328,7 +328,7 @@ app.post('/messages/send', function (req, res) {
                     html: replaceAll(message, "\n", "<br />")
                 };
                 //TODO Change the "from" email to our domain name using zoho mail
-                // sgMail.send(msg);
+                sgMail.send(msg);
                 res.status(200).end();
             })
         })
