@@ -148,7 +148,8 @@ class Opportunity extends Component {
 	}
 
 	checkPrereqs() {
-		if (this.props.title==='Project1') {
+		console.log(this.props);
+		if (this.props.prereqsMatch === true) {
 			return(<div><CheckBox className="greenCheck"/> <span>All Prereqs Met</span></div>);
 		} else {
 			return(<div><CrossCircle className="redX"/> <span>Prereqs Missing</span></div>);
