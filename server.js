@@ -121,8 +121,8 @@ const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', function() {
-   debug("connected to mongo");
+db.once('open', function () {
+    debug("connected to mongo");
 });
 /**Begin SCHEMAS*/
 let Schema = mongoose.Schema;
@@ -201,7 +201,9 @@ const opportunitySchema = new Schema({
     opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
     closes: {type: Date, default: null},  //null if rolling
     areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-    prereqsMatch: {type: Boolean, default: false}
+    prereqsMatch: {type: Boolean, default: false},
+    labDescription: {type: String, required: false},
+    labName: {type: String, required: false}
 });
 opportunitySchema.pre('validate', function (next) {
     if (this.maxHours < this.minHours) {
@@ -305,7 +307,7 @@ app.post('/messages/send', function (req, res) {
             opportunityModel.findById(oppId, function (err, opportunity) {
                 message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 for (let i = 0; i < opportunity.applications.length; i++) {
-                    if (opportunity.applications[i].undergradNetId === ugradNetId){
+                    if (opportunity.applications[i].undergradNetId === ugradNetId) {
                         opportunity.applications[i].status = status;
                         break;
                     }
@@ -342,18 +344,35 @@ app.post('/messages/send', function (req, res) {
  });*/
 
 app.post('/getOpportunity', function (req, res) {
-    getOpportunity(req.body.id, res);
+    opportunityModel.findById(req.body.id, function (err, opportunity) {
+        if (err) {
+            debug(err);
+            res.send(err);
+        }
+        labModel.find({}, function (err2, labs) {
+            if (err2) {
+                debug(err);
+                res.send(err);
+                return;
+            }
+            for (let i = 0; i < labs.length; i++) {
+                let currentLab = labs[i];
+                for (let j = 0; j < currentLab.opportunities.length; j++){
+                    if (currentLab.opportunities[j].toString() === req.body.id){
+                        opportunity.labPage = currentLab.labPage;
+                        opportunity.labDescription = currentLab.labDescription;
+                        opportunity.labName = currentLab.name;
+                        res.send(opportunity);
+                        return;
+                    }
+                }
+            }
+            res.send(opportunity);
+        });
+    });
 });
 
 function getOpportunity(id, res) {
-    opportunityModel.findById(id, function (err, opportunities) {
-        if (err) {
-            res.send(err);
-            return; // instead of putting an else
-            //handle the error appropriately
-        }
-        res.send(opportunities);
-    });
 
 }
 
