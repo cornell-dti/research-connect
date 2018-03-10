@@ -1188,8 +1188,8 @@ var messsgeContent = '';
 
 
 
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sgMail1 = require('@sendgrid/mail');
+sgMail1.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
     to: 'ag946@cornell.edu',
     from: 'ayeshagrocks@gmail.com',
@@ -1199,7 +1199,7 @@ const msg = {
 };//email three link and takes to an endpoint
 
 
-sgMail.send(msg);
+sgMail1.send(msg);
 
 app.get('/buttonClicked',function(req,res){
     var id = req.query.id;
