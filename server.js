@@ -1196,7 +1196,8 @@ const msg = {
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
     html: '<form action="http://localhost:3001/buttonClicked?id=Ayesha"> <input type="submit" value="Click this to go to buttonClicked Endpoint" /></form>'
-};
+};//email three link and takes to an endpoint
+
 
 sgMail.send(msg);
 
@@ -1205,7 +1206,6 @@ app.get('/buttonClicked',function(req,res){
     res.send('id: ' + id);
     console.log('hello');
 });
-
 
 app.get('/createUndergrad', function(req, res){
     //labModel.find({labAdmin: {$elemMatch: {netID:''}}});
