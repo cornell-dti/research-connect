@@ -121,7 +121,9 @@ const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+db.once('open', function () {
+    debug("connected to mongo");
+});
 /**Begin SCHEMAS*/
 let Schema = mongoose.Schema;
 
@@ -198,7 +200,9 @@ const opportunitySchema = new Schema({
     opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
     closes: {type: Date, default: null},  //null if rolling
     areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-    prereqsMatch: {type: Boolean, default: false}
+    prereqsMatch: {type: Boolean, default: false},
+    labDescription: {type: String, required: false},
+    labName: {type: String, required: false}
 });
 opportunitySchema.pre('validate', function (next) {
     if (this.maxHours < this.minHours) {
@@ -283,6 +287,7 @@ app.post('/messages/send', function (req, res) {
     let profId = req.body.labAdminNetId;
     let ugradNetId = req.body.undergradNetId;
     let message = req.body.message;
+    let status = req.body.status;
     /**
      *  *  Values we can replace:
      *  {studentFirstName}, {studentLastName} --> the first or last name of the student they just clicked accept/reject/interview for
@@ -300,6 +305,22 @@ app.post('/messages/send', function (req, res) {
             message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
                 message = replaceAll(message, "{opportunityTitle}", opportunity.title);
+                for (let i = 0; i < opportunity.applications.length; i++) {
+                    if (opportunity.applications[i].undergradNetId === ugradNetId) {
+                        opportunity.applications[i].status = status;
+                        break;
+                    }
+                }
+                let temp = opportunity.messages;
+                temp[status] = message;
+                opportunity.messages = temp;
+                opportunity.markModified("messages");
+                opportunity.markModified("applications");
+                opportunity.save(function (err, todo) {
+                    if (err) {
+                        debug(err);
+                    }
+                });
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
                     from: 'CornellDTITest@gmail.com',
@@ -322,18 +343,35 @@ app.post('/messages/send', function (req, res) {
  });*/
 
 app.post('/getOpportunity', function (req, res) {
-    getOpportunity(req.body.id, res);
+    opportunityModel.findById(req.body.id, function (err, opportunity) {
+        if (err) {
+            debug(err);
+            res.send(err);
+        }
+        labModel.find({}, function (err2, labs) {
+            if (err2) {
+                debug(err);
+                res.send(err);
+                return;
+            }
+            for (let i = 0; i < labs.length; i++) {
+                let currentLab = labs[i];
+                for (let j = 0; j < currentLab.opportunities.length; j++){
+                    if (currentLab.opportunities[j].toString() === req.body.id){
+                        opportunity.labPage = currentLab.labPage;
+                        opportunity.labDescription = currentLab.labDescription;
+                        opportunity.labName = currentLab.name;
+                        res.send(opportunity);
+                        return;
+                    }
+                }
+            }
+            res.send(opportunity);
+        });
+    });
 });
 
 function getOpportunity(id, res) {
-    opportunityModel.findById(id, function (err, opportunities) {
-        if (err) {
-            res.send(err);
-            return; // instead of putting an else
-            //handle the error appropriately
-        }
-        res.send(opportunities);
-    });
 
 }
 
@@ -358,7 +396,7 @@ app.post('/getUndergrad', function (req, res) {
     res.send(response);
 });
 
-function getUndergrad(id, res){
+function getUndergrad(id, res) {
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
             return err;
@@ -373,13 +411,13 @@ function getUndergrad(id, res){
  * Send a request to /application/:id, where "id" is the id of the application
  * Returns the application object with that id
  */
-app.get('/application/:id', function (req, res){
+app.get('/application/:id', function (req, res) {
     let appId = req.params.id;
-    opportunityModel.find({}, function(err, docs){
+    opportunityModel.find({}, function (err, docs) {
         for (let i = 0; i < docs.length; i++) {
             let opportunityObject = docs[i];
             for (let j = 0; j < opportunityObject.applications.length; j++) {
-                if (opportunityObject.applications[j].id === appId){
+                if (opportunityObject.applications[j].id === appId) {
                     res.send(opportunityObject.applications[j]);
                     return;
                 }
@@ -406,6 +444,8 @@ app.post('/getApplications', function (req, res) {
     //function
 
     const labAdminId = req.body.id;
+    let opportunitiesArray = [];
+    let reformatted = {};
     labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
         if (err) {
             res.send(err);
@@ -435,6 +475,7 @@ app.post('/getApplications', function (req, res) {
                         netIds.push(opportunityObject.applications[j].undergradNetId);
                     }
                     allApplications[opportunityObject.title] = applicationsArray;
+                    opportunitiesArray.push(opportunityObject);
                     applicationsArray = [];
                 }
                 undergradModel.find({
@@ -442,6 +483,7 @@ app.post('/getApplications', function (req, res) {
                         $in: netIds
                     }
                 }, function (err, studentInfoArray) {
+                    let count = 0;
                     for (let key in allApplications) {
                         if (allApplications.hasOwnProperty(key)) {
                             let currentApplication = allApplications[key];
@@ -458,9 +500,31 @@ app.post('/getApplications', function (req, res) {
                                 currentStudent.gpa = undergradInfo.gpa;
                                 currentStudent.courses = undergradInfo.courses;
                             }
+                            //reformat it to match:
+                            /**
+                             * {
+                                "titleOpp": {
+                                    "opportunity": {},
+                                    "applications": []
+                                },
+                                ....
+                            }
+
+                             from
+
+                             {
+                                "titleOpp": [].
+                                ...
+                             }
+                             */
+                            reformatted[key] = {
+                                "opportunity": opportunitiesArray[count],
+                                "applications": allApplications[key]
+                            };
+                            count++;
                         }
                     }
-                    res.send(allApplications);
+                    res.send(reformatted);
                 });
             });
         })
@@ -561,6 +625,9 @@ app.post('/getOpportunitiesListing', function (req, res) {
                     }
 
                     opportunities[i]["prereqsMatch"] = prereqsMatch;
+                    opportunities[i]["labName"] = "placeholderLabName";
+                    opportunities[i]["labPage"] = "placeholderLabPage";
+                    opportunities[i]["labDescription"] = "placeholderLabDesc"; //TODO use labModel.find({}, ...) to get real vals
                 }
 
                 for (let i = 0; i < opportunities.length; i++) {
@@ -585,10 +652,10 @@ app.post('/getOpportunitiesListing', function (req, res) {
                 $gte: new Date()
             }
         }, function (err, opportunities) {
-           for (let i = 0; i < opportunities.length; i++){
-               opportunities[i]["prereqsMatch"] = true;
-           }
-           res.send(opportunities);
+            for (let i = 0; i < opportunities.length; i++) {
+                opportunities[i]["prereqsMatch"] = true;
+            }
+            res.send(opportunities);
         })
     }
 });
@@ -664,9 +731,6 @@ app.post('/createOpportunity', function (req, res) {
         closes: data.closes,
         areas: data.areas
     });
-
-    labModel.find();
-
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -716,8 +780,8 @@ app.post('/createUndergrad', function (req, res) {
 // during lab admin signup creating new lab as well
 
 /* In the addLabAdmin endpoint, check to see if the req.body.labId field is null.
-    If it is null, then create a lab with labName, labDescription, and labUrl and save it to the database.
-    All three should be in req.body. If labId is not null, then just continue with the method as usual.
+ If it is null, then create a lab with labName, labDescription, and labUrl and save it to the database.
+ All three should be in req.body. If labId is not null, then just continue with the method as usual.
  */
 function createLabAndAdmin(req, res) {
     console.log("This means we had to go somewhere else");
@@ -773,7 +837,7 @@ app.post('/createLabAdmin', function (req, res) {
     console.log(data.verified);
 
     // if labId is null then there is no existing lab and creating new lab
-    if(data.labId == null) {
+    if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
     }
@@ -1097,12 +1161,17 @@ app.post('/storeResume', function (req, res) {
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let resume = req.files.resume;
     //TODO change Key param to name of student plus date.now
-    let uploadParams = {Bucket: "research-connect-student-files", Key: Date.now().toString(), Body: req.files.resume.data};
+    let uploadParams = {
+        Bucket: "research-connect-student-files",
+        Key: Date.now().toString(),
+        Body: req.files.resume.data
+    };
     debug("yay!");
-    s3.upload (uploadParams, function (err, data) {
+    s3.upload(uploadParams, function (err, data) {
         if (err) {
             debug("Error", err);
-        } if (data) {
+        }
+        if (data) {
             debug("Upload Success", data.Location);
             res.send("Success!");
         }
@@ -1124,11 +1193,11 @@ app.post('/storeApplication', function (req, res) {
             "id": Date.now() + req.body.netId
         };
         opportunity.applications.push(application);
-        opportunity.save(function(err){});
+        opportunity.save(function (err) {
+        });
         res.send("success!");
     });
 });
-
 
 
 /**End ENDPOINTS */

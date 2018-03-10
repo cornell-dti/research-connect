@@ -114,16 +114,23 @@ h4{
 .filter-box select{
   margin-bottom: 0px;
 }
-.row .column{
+.opp-container .row .column, .professor-view-container .row .column {
   padding: 0px;
 }
+
 .row h4{
-
-  font-weight: 500;
+  letter-spacing: 1px;
+  font-weight: 400;
   margin-bottom: 5px;
+  padding-left: 10px;
+  font-size: 1.9rem;
 }
-h5, h4{
+.row h5{
 
+  font-weight: 100;
+  letter-spacing: 1px;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
   padding-left: 10px;
 }
 hr {

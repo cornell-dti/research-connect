@@ -148,7 +148,8 @@ class Opportunity extends Component {
 	}
 
 	checkPrereqs() {
-		if (this.props.title==='Project1') {
+		console.log(this.props);
+		if (this.props.prereqsMatch === true) {
 			return(<div><CheckBox className="greenCheck"/> <span>All Prereqs Met</span></div>);
 		} else {
 			return(<div><CrossCircle className="redX"/> <span>Prereqs Missing</span></div>);
@@ -175,7 +176,7 @@ class Opportunity extends Component {
 			<div className="row opp-box-row">
  				<div className="column column-80">
 				<h4>{ this.props.title }</h4>
-					<h5>Lab Name</h5>
+					<h5>Lab Name{this.props.labName}</h5>
 				</div>
  				<div className="column column-20">
 					<Calendar className="cal"/>
