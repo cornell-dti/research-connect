@@ -738,7 +738,7 @@ app.post('/createOpportunity', function (req, res) {
     });
 
     labModel.find();
-
+    opportunityModelgi.findById(id, function (err, undergrad) {
 
     opportunity.save(function (err) {
         if (err) {
