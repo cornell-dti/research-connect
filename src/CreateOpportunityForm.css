@@ -1,0 +1,88 @@
+.header{
+  background-color: #b31b1b;
+  width: 100%;
+  height: 50px;
+}
+
+.new-opp-form{
+    margin: 20px;
+    width:40%;
+    margin-left: 30%;
+    background-color: #f6f6f6;
+
+}
+.new-opp-form .submit{
+  margin-top: 60px;
+  margin-bottom: 100px;
+}
+.question-adder{
+  text-align: left;
+}
+.remove{
+  margin-left: 5%;
+}
+.form-title{
+  text-align: center;
+}
+.new-opp-form textarea{
+  resize: none;
+}
+.start-time select, .hours input{
+  width:48%;
+}
+.start-time .startSeason, .min-hours{
+  margin-right: 2%
+}
+.start-time .startYear, .max-hours{
+  margin-left: 2%
+}
+.label-inline{
+  margin-right: 10px;
+}
+.years-allowed{
+  text-align: center;
+  align-items: center;
+}
+.question-adder .button-small{
+  font-size: .8rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  padding: 0 1.5rem;
+
+}
+.question-boxes .question{
+  display: inline;
+  width: 90%;
+  margin-left: 10px;
+}
+.question-adder{
+  text-align: center;
+}
+.new-opp-form .button{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+
+}
+.new-opp-form .button:focus{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+
+}
+.submit-div{
+  text-align: center;
+}
+.react-datepicker__navigation{
+  all: unset;
+}
+.label-inline{
+  font: 400 11px system-ui;
+}
+.date-pick-container{
+  text-align: center;
+}
+.new-opp-form input:focus, .new-opp-form textarea:focus, .new-opp-form select:focus{
+    border-color: #b31b1b;
+}
+.years-allowed input[type=checkbox]:checked{
+  color: #b31b1b;
+}

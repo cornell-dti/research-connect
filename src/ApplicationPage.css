@@ -1,0 +1,15 @@
+.application-page-container {
+	width: 80%;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.application-page-info {
+  padding: 20px 30px;
+  margin-top: 15px;
+  background-color: white;
+  border: solid #979797 1px;
+  border-radius: 2px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
