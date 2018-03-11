@@ -113,7 +113,7 @@ render() {
     <div>
     <div className="header"></div>
     <div className=" instructor-reg-form" >
-    <h3>Registration</h3>
+    <h3>Faculty Registration</h3>
     <form
           id='register'
           action='/createLabAdmin'
