@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../OpportunityPage.css';
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 
@@ -33,7 +35,7 @@ class OpportunityPage extends Component {
 
     }
     printQuestions() {
-
+        console.log(this.state.questionAnswers)
         if (!this.isEmpty(this.state.opportunity.questions)) {
             let keys = [];
             //get all the keys and put them in an array
@@ -43,6 +45,7 @@ class OpportunityPage extends Component {
                     keys.push(k);
                 }
             }
+
             //sort the keys by their number
             keys.sort((a, b) => {
                 //remove the q from "q1" or "q5" based on number of question
@@ -139,27 +142,27 @@ class OpportunityPage extends Component {
        if (yearsArray){
          var trackYear = false;
       if (yearsArray.includes("freshman")){
-         yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span></div>)
+         yearDivArray.push(<div key="f"><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span></div>)
          trackYear= true;
        }
       if (yearsArray.includes("sophomore") ){
-      yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Sophomore</span></div>)
+      yearDivArray.push(<div key="s"><CheckBox className="greenCheck"/><span key="soph"> Sophomore</span></div>)
       trackYear= true;
       }
       if (yearsArray.includes("junior")){
-        yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Junior</span></div>)
+        yearDivArray.push(<div key="j"><CheckBox className="greenCheck"/><span key="junior"> Junior</span></div>)
         trackYear= true;
       }
       if (yearsArray.includes("senior")){
-        yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="fresh"> Senior</span></div>)
+        yearDivArray.push(<div k="s"><CheckBox className="greenCheck"/><span key="sen"> Senior</span></div>)
         trackYear= true;
       }
       if (!trackYear){
         if (yearsArray.length==0){
-            yearDivArray.push(<div><CheckBox className="greenCheck"/><span key="none"> No Preference</span></div>);
+            yearDivArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span key="n"> No Preference</span></div>);
         }
         for (var i=0;i<yearsArray.length;i++){
-          yearDivArray.push(<div><CheckBox className="greenCheck"/><span key={i}> {yearsArray[i]}</span></div>);
+          yearDivArray.push(<div key={i+yearsArray[0]+"div"}><CheckBox key={i+yearsArray[0]+"check"} className="greenCheck"/><span key={i+yearsArray[0]+"span"}> {yearsArray[i]}</span></div>);
         }
       }
     }
@@ -171,8 +174,9 @@ class OpportunityPage extends Component {
 
     render() {
         return (
+          <div>
+          <Navbar/>
             <div className="opportunities-page-wrapper">
-            <div className="header"></div>
             <div className="cover-photo"></div>
                 <div className="container opportunityListing">
                 <div className="row first-row">
@@ -251,6 +255,8 @@ class OpportunityPage extends Component {
 
 
                 </div>
+            </div>
+    
             </div>
         );
     }

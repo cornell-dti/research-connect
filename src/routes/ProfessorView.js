@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import '../App.css';
 import '../ProfessorView.css';
+import Navbar from '../components/Navbar'
 import ApplicationList from '../components/ProfessorView/ApplicationList';
 import YearSelect from '../components/YearSelect'
+import Footer from '../components/Footer';
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
 import StartDate from '../components/StartDate'
@@ -43,7 +45,7 @@ class ProfessorView extends Component {
 	render() {
 		return (
 			<div>
-				<div className='header'></div>
+				<Navbar/>
 				<div className='professor-view-container'>
 					<div className='row'>
 						<div className="column column-20">
@@ -73,6 +75,7 @@ class ProfessorView extends Component {
 						</div>
 					</div>
 				</div>
+				<Footer/>
 			</div>
 		);
 	}
