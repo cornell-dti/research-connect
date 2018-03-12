@@ -7,8 +7,9 @@
 .professor-view-container {
 	width: 80%;
 	margin: auto;
+  margin-top: 80px;
 	margin-bottom: 20px;
-} 
+}
 
 .application-list-container {
 	margin-top: 15px;

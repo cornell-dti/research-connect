@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
 import '../ApplicationPage.css';
+import Footer from '../components/Footer';
 import * as Utils from '../components/Shared/Utils.js'
 import ExternalLink from 'react-icons/lib/fa/external-link';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
@@ -68,7 +70,7 @@ class ApplicationPage extends Component {
 
 		return (
 			<div>
-				<div className="header"></div>
+				<Navbar/>
 				<div className="application-page-container">
 					<div className="button-bar-container">
 						<div className="return-to-apps">
@@ -168,6 +170,7 @@ class ApplicationPage extends Component {
 						</div>
 					</div>
 				</div>
+				<Footer/>
 			</div>
 		);
 	}

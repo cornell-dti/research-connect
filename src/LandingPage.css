@@ -95,7 +95,7 @@
  	Header
 -------------*/
 .landingPage .logo{
-  height: 70px;
+  height: 50px;
 }
 .landingPage header{
 	position: fixed;
@@ -107,10 +107,10 @@
 	justify-content: space-between;
 	align-items: center;
 	color: black;
-  height: 100px;
+  height: 80px;
   background-color: #f6f6f6;
   border-bottom:  rgb(166,57,45) 4px solid;
-	padding: 30px 100px;
+	padding: 30px 10%;
 }
 
 .landingPage header h2{

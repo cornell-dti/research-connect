@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import onClickOutside from "react-onclickoutside";
-
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import '../App.css';
 import '../InstructorRegister.css';
 import Autosuggester from '../components/Autosuggest';
@@ -111,7 +112,7 @@ render() {
 
   return (
     <div>
-    <div className="header"></div>
+    <Navbar/>
     <div className=" instructor-reg-form" >
     <h3>Faculty Registration</h3>
     <form
@@ -180,6 +181,7 @@ render() {
     </form>
 
     </div>
+    <Footer/>
     </div>
   );
 }
