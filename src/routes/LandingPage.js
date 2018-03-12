@@ -29,7 +29,7 @@ scrollTo(id){
           <div className="landingPage">
           <header>
 
-		<h2><img className="logo" src={logo}/></h2>
+		<h2><a href="/"><img className="logo" src={logo}/></a></h2>
 
 		<nav>
 			<li><a onClick={this.scrollTo.bind(this,'#home')}>Home</a></li>
