@@ -78,7 +78,7 @@ class LandingPage extends Component {
                             <img className="step-photo" src={img2}/>
                             <br /><p>Step 2: Find and apply for research opportunities</p>
                         </div>
-                        <div className="step" style={{ marginTop: '400px !important;' }}>
+                        <div className="step">
                             <img className="step-photo" src={img1}/>
                             <br /><p>Step 3: Get interview requests sent straight to your email inbox!</p>
                         </div>
