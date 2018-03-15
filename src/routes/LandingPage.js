@@ -75,11 +75,11 @@ class LandingPage extends Component {
                             <br /><p>Step 1: Upload a resume and enter some basic information about yourself</p>
                         </div>
                         <div className="step">
-                            <img className="step-photo" src={img2}/>
+                            <img className="step-photo" src={img3}/>
                             <br /><p>Step 2: Find and apply for research opportunities</p>
                         </div>
                         <div className="step">
-                            <img className="step-photo" src={img1}/>
+                            <img className="step-photo" src={img3}/>
                             <br /><p>Step 3: Get interview requests sent straight to your email inbox!</p>
                         </div>
                     </div>
