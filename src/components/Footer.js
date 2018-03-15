@@ -13,7 +13,7 @@ class Navbar extends Component {
 		return (
       <div className="footer-all">
       <p>Made by <a href="http://cornelldti.org/" target="_blank">Cornell Design and Tech Initiative</a></p>
-      <p><a href="#" target="_blank">Report a bug</a></p>
+      <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
 
       </div>
     );

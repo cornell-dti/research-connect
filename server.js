@@ -612,9 +612,10 @@ app.post('/getOpportunitiesListing', function (req, res) {
                     if (opportunities[i].minGPA <= undergrad1.gpa &&
                         opportunities[i].requiredClasses.every(function (val) {
                             //Check for synonymous courses, or courses where you can skip the prereqs
+
                             if (!undergrad1.courses.includes(val)) {
                                 let courseSubs = coursePrereqs[val];
-                                if (courseSubs != false) {
+                                if (courseSubs !== undefined) {
                                     return undergrad1.courses.some(function (course) {
                                         return courseSubs.includes(course);
                                     });

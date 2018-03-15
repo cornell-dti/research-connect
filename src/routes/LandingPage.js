@@ -50,7 +50,7 @@ class LandingPage extends Component {
                     <h3>Find and post research opportunities on campus.</h3>
                     <hr/>
                     <div className="button-div">
-                        <input className="button" type="submit" onClick={this.scrollTo.bind(this, '#    forstudents')}
+                        <input className="button" type="submit" onClick={this.scrollTo.bind(this, '#forstudents')}
                                value="For Students"/>
                         <Link to="/instructorregister">
                             <input className="button" type="submit" value="For Labs"/>
@@ -123,7 +123,7 @@ class LandingPage extends Component {
                     </ul>
                     <p>Made by <a href="http://cornelldti.org/" target="_blank">Cornell Design and Tech Initiative</a>
                     </p>
-                    <p><a href="#" target="_blank">Report a bug</a></p>
+                    <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
                 </footer>
             </div>
         );
