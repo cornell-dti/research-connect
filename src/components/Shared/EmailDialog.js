@@ -42,7 +42,7 @@ class EmailDialog extends React.Component {
 	render() {
 		return (
 			<div>
-				<button onClick={this.openModal}>Open Modal</button>
+				<a className="button" onClick={this.openModal}>{ this.props.buttonText }</a>
 				<Modal
 					isOpen={this.state.modalIsOpen}
 					onAfterOpen={this.afterOpenModal}

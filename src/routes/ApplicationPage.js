@@ -79,15 +79,15 @@ class ApplicationPage extends Component {
 						</div>
 						<div className="row button-bar">
 							<div className="column column-33 left-button">
-								<EmailDialog /><a className="button" href="#">Accept</a>
+								<EmailDialog buttonText="Accept" />
 							</div>
 
 							<div className="column column-33 center-button">
-								<a className="button" href="#">Interview</a>
+								<EmailDialog buttonText="Interview" />
 							</div>
 
 							<div className="column column-33 right-button">
-								<a className="button" href="#">Reject</a>
+								<EmailDialog buttonText="Reject" />
 							</div>
 						</div>
 					</div>
