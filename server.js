@@ -147,14 +147,14 @@ const labSchema = new Schema({
     labPage: {type: String, default: ""},
     labDescription: {type: String, default: ""},
     labAdmins: {type: [String], default: []},
-    opportunities: [Schema.Types.ObjectId]
+    opportunities: [{type: Schema.Types.ObjectId, ref: "Opportunities"}]
 });
 let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
 
 
 const labAdministratorSchema = new Schema({
     role: {type: String, enum: ["pi", "postdoc", "grad", "undergrad"], required: true},
-    labId: {type: Schema.Types.ObjectId, required: true},
+    labId: {type: Schema.Types.ObjectId, required: true, ref: "Labs"},
     netId: {type: String, required: true},
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
