@@ -4,6 +4,12 @@
 .landingPage *{
   all:unset;
 	box-sizing: border-box;
+  font: 'Roboto';
+}
+.landingPage section .get-started:hover{
+  opacity: 0.9;
+  border-color: rgb(166,57,45);
+  background-color: rgb(166,57,45);
 }
 
 .landingPage ul, .landingPage nav{
@@ -14,11 +20,11 @@
 	text-decoration: none;
 	color: inherit;
 	cursor: pointer;
-	opacity: 0.9;
+
 }
 
 .landingPage a:hover{
-	opacity: 1;
+	color: gray;
 }
 
 .landingPage a.btn{
@@ -64,7 +70,7 @@
 .landingPage section h3.title{
 	color: #414a4f;
 	text-transform: capitalize;
-	font: bold 32px 'Open Sans', sans-serif;
+	font: bold 32px 'Roboto', sans-serif;
 	margin-bottom: 35px;
 	text-align: center;
 }
@@ -89,10 +95,10 @@
  	Header
 -------------*/
 .landingPage .logo{
-  height: 70px;
+  height: 50px;
 }
 .landingPage header{
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 10;
@@ -101,13 +107,14 @@
 	justify-content: space-between;
 	align-items: center;
 	color: black;
-  height: 100px;
+  height: 80px;
   background-color: #f6f6f6;
-	padding: 30px 100px;
+  border-bottom:  rgb(166,57,45) 4px solid;
+	padding: 30px 10%;
 }
 
 .landingPage header h2{
-	font-family: 'Quicksand', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 .landingPage header nav{
@@ -116,15 +123,27 @@
 
  .landingPage header nav li{
 	margin: 0 15px;
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+
 }
 
 .landingPage header nav li:first-child{
 	margin-left: 0;
 }
 
-.landingPage header nav li:last-child{
-	margin-right: 0;
+.landingPage header .button{
+  background-color: rgb(166,57,45);
+  color: white;
+  margin-left: 10px;
+  border-color: rgb(166,57,45);
 }
+
+.landingPage header .button:hover{
+  opacity: 0.9;
+}
+
 
 
 
@@ -174,6 +193,9 @@
   height: 100px;
   color: black;
 }
+.hero .button:hover{
+  opacity: 0.8;
+}
 .hero .button-div .button{
   background-color: rgb(166,57,45);
   border-color: rgb(166,57,45);
@@ -191,14 +213,14 @@
 }
 
 .hero h1{
-  padding-top: 130px;
-	font: bold 60px 'Open Sans', sans-serif;
+  padding-top: 100px;
+	font: bold 75px 'Roboto', sans-serif;
 	margin-bottom: 15px;
   color: #f6f6f6;
 }
 
 .hero h3{
-	font: normal 28px 'Open Sans', sans-serif;
+	font: normal 28px 'Roboto', sans-serif;
 	margin-bottom: 40px;
 }
 
@@ -249,10 +271,10 @@
   margin-bottom: 0px;
 }
 .for-profs{
-  background-color: #f6f6f6;
+  background-color: white;
 }
 .for-students{
-  background-color: white;
+  background-color: #cfd2d6;
 }
 .our-work .step{
   height: 100%;
@@ -284,7 +306,8 @@
 --------------------*/
 
 .reviews{
-	background-color: #fff;
+	min-height: 100vh;
+  background-color: white;
 }
 
 .reviews .quote{

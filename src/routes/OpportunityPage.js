@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../OpportunityPage.css';
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 
@@ -172,8 +174,9 @@ class OpportunityPage extends Component {
 
     render() {
         return (
+          <div>
+          <Navbar/>
             <div className="opportunities-page-wrapper">
-            <div className="header"></div>
             <div className="cover-photo"></div>
                 <div className="container opportunityListing">
                 <div className="row first-row">
@@ -252,6 +255,8 @@ class OpportunityPage extends Component {
 
 
                 </div>
+            </div>
+    
             </div>
         );
     }

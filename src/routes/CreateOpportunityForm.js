@@ -2,7 +2,9 @@ import React from 'react';
 import '../CreateOpportunityForm.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import Navbar from '../components/Navbar'
 import axios from 'axios';
+import Footer from '../components/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class CreateOppForm extends React.Component {
@@ -177,7 +179,7 @@ class CreateOppForm extends React.Component {
 	render() {
 		return (
 			<div>
-			<div className="header"></div>
+			<Navbar/>
 	    <div className="new-opp-form" >
 			<div className="form-title">
 			<h3>Create New Position</h3>
@@ -282,6 +284,7 @@ class CreateOppForm extends React.Component {
 				</form>
 
 				</div>
+				<Footer/>
 			</div>
 		);
 	}

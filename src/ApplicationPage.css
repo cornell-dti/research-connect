@@ -2,6 +2,7 @@
 	width: 80%;
 	margin: auto;
 	margin-bottom: 20px;
+	margin-top: 90px;
 }
 
 .application-page-info, .application-page-responses {
@@ -43,7 +44,7 @@
   margin-bottom: 5px;
 }
 
-.row .app-qualifications ul { 
+.row .app-qualifications ul {
   margin-bottom: 0px;
   margin-left: 30px;
   list-style: none;
@@ -165,14 +166,14 @@
 .application-page-container .app-info-right {
 	text-align: right;
 	color: #5d5d5d;
-	font-weight: 550;
+	font-weight: 500;
 	margin-bottom: 0;
 }
 
 .application-page-container .app-info-left {
 	text-align: left;
 	color: #000000;
-	font-weight: 550;
+	font-weight: 500;
 	margin-bottom: 0;
 }
 

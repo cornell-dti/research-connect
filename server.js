@@ -1128,6 +1128,21 @@ function base64ArrayBuffer(arrayBuffer) {
     return base64
 }
 
+app.get('/resume/:id', function (req, res){
+    let params = {
+        Bucket: "research-connect-student-files",
+        Key: req.params.id
+    };
+    s3.getObject(params, function (err, data) {
+        if (err) debug(err, err.stack); // an error occurred
+        else {
+            let baseString = base64ArrayBuffer(data.Body);
+            // return res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
+            return res.send(baseString);
+        }
+    });
+});
+
 app.post('/storeResume', function (req, res) {
     if (!req.files)
         return res.status(400).send('No files were uploaded.');
