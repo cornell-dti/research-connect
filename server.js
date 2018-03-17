@@ -282,6 +282,13 @@ app.get('/messages/:opportunityId', function (req, res) {
 
 /**
  * Send an email to notify the student of their status change
+ * Body of request: {
+ *  opportunityId: xxx,
+ *  labAdminNetId: xxx,
+ *  undergradNetId: xxx,
+ *  message: xxx,
+ *  status: "accept" | "reject" | "interviewing"
+ * }
  */
 app.post('/messages/send', function (req, res) {
     let oppId = req.body.opportunityId;
@@ -298,14 +305,8 @@ app.post('/messages/send', function (req, res) {
      */
 
     undergradModel.findOne({netId: ugradNetId}, function (err, ugradInfo) {
-        message = replaceAll(message, "{studentFirstName}", ugradInfo.firstName);
-        message = replaceAll(message, "{studentLastName}", ugradInfo.lastName);
         labAdministratorModel.findOne({netId: profId}, function (err, prof) {
-            message = replaceAll(message, "{yourFirstName}", prof.firstName);
-            message = replaceAll(message, "{yourLastName}", prof.lastName);
-            message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
-                message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 for (let i = 0; i < opportunity.applications.length; i++) {
                     if (opportunity.applications[i].undergradNetId === ugradNetId) {
                         opportunity.applications[i].status = status;
@@ -322,6 +323,12 @@ app.post('/messages/send', function (req, res) {
                         debug(err);
                     }
                 });
+                message = replaceAll(message, "{studentFirstName}", ugradInfo.firstName);
+                message = replaceAll(message, "{studentLastName}", ugradInfo.lastName);
+                message = replaceAll(message, "{yourFirstName}", prof.firstName);
+                message = replaceAll(message, "{yourLastName}", prof.lastName);
+                message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
+                message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
                     from: 'CornellDTITest@gmail.com',
