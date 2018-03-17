@@ -86,6 +86,7 @@ class EmailDialog extends React.Component {
 		.catch(function (error) {
 			console.log(error);
 		})
+		window.location.href = '/professorView';
 	}
 
 	getDisabled() {
@@ -102,6 +103,11 @@ class EmailDialog extends React.Component {
 			}
 		}
 	}
+
+	handleChange(event) {
+    this.setState({emailContent: event.target.value});
+    console.log(this.state.emailContent);
+  }
 
 	render() {
 		return (
@@ -123,7 +129,7 @@ class EmailDialog extends React.Component {
 					<div className="modal">
 						<h2 ref={subtitle => this.subtitle = subtitle}>Email Student</h2>
 						<label>Message</label>
-						<div>{ this.state.emailContent }</div>
+						<textarea className="email-text" value={ this.state.emailContent } onChange={ this.handleChange.bind(this) } />
 						<button className="submit-button" onClick={this.sendEmail.bind(this)}>Submit</button>
 						<button className="close-button" onClick={this.closeModal}>Close</button>
 					</div>
