@@ -770,15 +770,42 @@ app.post('/createOpportunity', function (req, res) {
         closes: data.closes,
         areas: data.areas
     });
+
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
-        } else //Handle this error however you see fit
-            res.send("Success!");
-
-        // Now the opportunity is saved in the Opportunities collection on mlab!
+        }
     });
+
+    var opportunityMajor = req.body.majorsAllowed;
+
+    undergradModel.find({ $or:
+        [
+            {major: opportunityMajor},
+            {secondMajor: opportunityMajor},
+            {minor: opportunityMajor}
+
+        ]},
+        function(err, studentsWhoMatch) {
+            for (var undergrad1 in studentsWhoMatch) {
+                console.log(studentsWhoMatch[undergrad1].netId);
+                const msg = {
+                    to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
+                    from: 'dhruvbaijal@gmail.com',
+                    subject: 'New Research Opportunity Available!',
+                    html: 'Hi,\n' +
+                    'A new opportunity was just posted in an area you expressed interest in - ' +
+                    opportunityMajor + '. You can apply to it here: http://localhost:3000/opportunity/' + opportunity._id + '\n' +
+                    '\n' + //TODO  change localhost:3000 to our domain!!! and fix line spacing
+                    'Thanks,\n' +
+                    'The Research Connect Team\n'
+                };
+
+                sgMail.send(msg);
+        }
+            res.send("Success!");
+        });
 });
 
 app.post('/createUndergrad', function (req, res) {
@@ -891,7 +918,6 @@ app.post('/createLab', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     debug(data);
-
 
     var lab = new labModel({
         name: data.name,
