@@ -752,7 +752,7 @@ app.post('/createUndergrad', function (req, res) {
     console.log(data.GPA)
     console.log(data.netid)
     console.log(data.courses)
-    console.log(data.file)
+    console.log(data.files)
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
@@ -835,6 +835,8 @@ app.post('/createLabAdmin', function (req, res) {
     console.log(data.firstName);
     console.log(data.lastName);
     console.log(data.verified);
+    console.log(data.labDescription);
+
 
     // if labId is null then there is no existing lab and creating new lab
     if (data.labId == null) {
@@ -1178,6 +1180,10 @@ app.post('/storeResume', function (req, res) {
     });
 });
 
+app.post('/testResume', function (req, res) {
+    console.log("If the below is null, it's not working");
+    console.log(req.body.files);
+});
 
 app.post('/storeApplication', function (req, res) {
     opportunityModel.findById(req.body.opportunityId, function (err, opportunity) {
