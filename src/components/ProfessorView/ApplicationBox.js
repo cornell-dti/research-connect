@@ -10,7 +10,7 @@ class ApplicationBox extends Component {
 	}
 
 	clickRow(rowObj) {
-		document.location.href = ('http://localhost:3000/application/' + this.props.data.id);
+		document.location.href = (window.location.origin + '/application/' + this.props.data.id);
 	}
 
 	render() {

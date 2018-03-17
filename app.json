@@ -1,0 +1,29 @@
+{
+  "name": "research-connect",
+  "scripts": {
+  },
+  "env": {
+    "MONGODB": {
+      "required": true
+    },
+    "MONGODB_URI": {
+      "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
