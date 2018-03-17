@@ -789,7 +789,7 @@ app.post('/createOpportunity', function (req, res) {
         ]},
         function(err, studentsWhoMatch) {
             for (var undergrad1 in studentsWhoMatch) {
-                console.log(studentsWhoMatch[undergrad1].netId);
+                // console.log(studentsWhoMatch[undergrad1].netId);
                 const msg = {
                     to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
                     from: 'dhruvbaijal@gmail.com',
