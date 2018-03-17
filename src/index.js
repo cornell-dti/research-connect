@@ -22,7 +22,6 @@ ReactDOM.render(
             <Route exact path='/opportunities' component = {Opportunities} />
             <Route path='/opportunity/:id' component = {OpportunityPage} />
             <Route path='/application/:id' component = {ApplicationPage} />
-            <Route exact path='/reference' component = {Reference} />
             <Route exact path='/newopp' component = {CreateOpportunityForm} />
             <Route exact path='/instructorRegister' component = {InstructorRegister} />
             <Route exact path='/professorView' component = {ProfessorView} />

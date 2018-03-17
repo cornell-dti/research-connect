@@ -84,6 +84,9 @@ class OpportunityPage extends Component {
         })
             .then((response) => {
                 this.setState({opportunity: response.data});
+                console.log("test");
+                console.log(this.props.match.params.id);
+                console.log(this.state.opportunity);
                 if (!this.isEmpty(response.data)) {
                     var obj = {}
                     //get all the keys and put them in an array
