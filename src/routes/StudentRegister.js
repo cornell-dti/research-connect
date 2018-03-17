@@ -22,20 +22,21 @@ class StudentRegister extends React.Component {
         };
     };
 
+
     onDrop = acceptedFiles => {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = () => {
-            const fileAsArrayBuffer = reader.result;
-            // do whatever you want with the file content
+                var fileAsArrayBuffer = reader.result;
+                // do whatever you want with the file content
                 this.setState({files : [fileAsArrayBuffer]})
-        };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
 
-        reader.readAsBinaryString(file);
-    });
-}
+            reader.readAsArrayBuffer(file);
+        });
+    }
 
     optionify(inputArray,inputName){
         var newArray = [];
@@ -72,17 +73,17 @@ class StudentRegister extends React.Component {
         // get our form data out of state
         const { firstName, lastName, gradYear, major, GPA, netid, courses,files } = this.state;
 
-        axios.post('http://localhost:3001/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
+        axios.post('/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
             .then((result) => {
                 //access the results here....
             });
 
-        axios.post('http://localhost:3001/testResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
+        axios.post('/testResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
             .then((result) => {
                 //access the results here....
             });
 
-        axios.post('http://localhost:3001/storeResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
+        axios.post('/storeResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
             .then((result) => {
                 //access the results here....
             });

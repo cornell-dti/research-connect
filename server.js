@@ -781,7 +781,9 @@ app.post('/createUndergrad', function (req, res) {
     console.log(data.GPA)
     console.log(data.netid)
     console.log(data.courses)
-    console.log(data.files)
+    //var dataView = new DataView(data.files);
+    //console.log(dataView.getInt32(0).toString(16));
+    console.log(data.files[0])
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
