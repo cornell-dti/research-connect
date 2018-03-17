@@ -112,6 +112,29 @@
 	margin-right: -10px;
 }
 
+.application-page-container .disabled-button {
+	color: white;
+	border: 0;
+	background-color: grey;
+	width: 85%;
+	margin-right: -10px;
+}
+
+.modal .submit-button {
+	color: white;
+	background-color: green;
+	border: 0;
+	margin-top: 10px;
+}
+
+.modal .close-button {
+	color: white;
+	background-color: red;
+	border: 0;
+	margin-top: 10px;
+	margin-left: 2px;
+}
+
 .application-page-container .return-to-apps {
 	margin-left: -20px;
 	margin-top: 20px;

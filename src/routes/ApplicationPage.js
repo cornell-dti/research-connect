@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import '../ApplicationPage.css';
+import EmailDialog from '../components/Shared/EmailDialog.js';
 import Footer from '../components/Footer';
 import * as Utils from '../components/Shared/Utils.js'
 import ExternalLink from 'react-icons/lib/fa/external-link';
@@ -78,15 +79,15 @@ class ApplicationPage extends Component {
 						</div>
 						<div className="row button-bar">
 							<div className="column column-33 left-button">
-								<a className="button" href="#">Accept</a>
+								<EmailDialog buttonText="Accept" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 
 							<div className="column column-33 center-button">
-								<a className="button" href="#">Interview</a>
+								<EmailDialog buttonText="Interview" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 
 							<div className="column column-33 right-button">
-								<a className="button" href="#">Reject</a>
+								<EmailDialog buttonText="Reject" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 						</div>
 					</div>
