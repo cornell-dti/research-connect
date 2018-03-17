@@ -35,6 +35,8 @@
     "react-dom": "^16.2.0",
     "react-fontawesome": "^1.6.1",
     "react-icons": "^2.2.7",
+    "react-modal": "^3.3.1",
+    "react-modal-dialog": "^4.0.7",
     "react-moment": "^0.7.0",
     "react-onclickoutside": "^6.7.1",
     "react-router": "^4.2.0",
