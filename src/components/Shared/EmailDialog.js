@@ -60,13 +60,25 @@ class EmailDialog extends React.Component {
 		this.setState({modalIsOpen: false});
 	}
 
+	getStatusAction(str) {
+		if (str === 'accept') {
+			return 'accepted';
+		} else if (str === 'reject') {
+			return 'rejected';
+		} else if (str === 'interview') {
+			return 'interviewing';
+		} else {
+			return '';
+		}
+	}
+
 	sendEmail() {
 		axios.post('/messages/send', {
 			'opportunityId': this.props.opp._id,
 			'labAdminNetId': this.props.opp.creatorNetId,
 			'undergradNetId': this.props.app.undergradNetId,
 			'message': this.state.emailContent,
-			'status': this.props.buttonText.toLowerCase()
+			'status': this.getStatusAction(this.props.buttonText.toLowerCase())
 		}).then(function (response) {
         //handle success
         console.log(response);
