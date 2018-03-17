@@ -1,0 +1,52 @@
+.header-all{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  height: 80px;
+  background-color: #f6f6f6;
+  border-bottom:  rgb(166,57,45) 4px solid;
+  padding: 30px 10%;
+
+}
+.logo{
+  height: 50px;
+}
+
+.header-all h2{
+	font-family: 'Roboto', sans-serif;
+}
+
+.header-all nav{
+	display: flex;
+}
+.header-all nav li{
+	margin: 0 15px;
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+.header-all nav li a{
+    color: black;
+}
+.header-all nav li a:hover{
+    color: gray;
+}
+
+.header-all nav li:first-child{
+	margin-left: 0;
+}
+.header-all nav li:last-child{
+	margin-right: 0;
+}
+
+
+ .header-all .button:hover{
+  opacity: 0.9;
+}

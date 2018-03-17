@@ -7,8 +7,9 @@
 .professor-view-container {
 	width: 80%;
 	margin: auto;
+  margin-top: 80px;
 	margin-bottom: 20px;
-} 
+}
 
 .application-list-container {
 	margin-top: 15px;
@@ -102,4 +103,8 @@
   font-size: 18px;
   color: #606c76;
   text-align: right;
+}
+
+.email-text {
+  height: 250px;
 }

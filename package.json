@@ -2,13 +2,14 @@
   "name": "researchconnect",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",
     "async": "^2.6.0",
     "aws-sdk": "^2.205.0",
     "axios": "^0.14.0",
     "body-parser": "~1.17.1",
+    "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "^2.6.9",
@@ -38,12 +39,16 @@
     "react-dom": "^16.2.0",
     "react-fontawesome": "^1.6.1",
     "react-icons": "^2.2.7",
+    "react-modal": "^3.3.1",
+    "react-modal-dialog": "^4.0.7",
     "react-moment": "^0.7.0",
     "react-onclickoutside": "^6.7.1",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "react-table": "^6.8.0",
+    "scroll-element": "^1.0.0",
+    "scroll-to-element": "^2.0.0",
     "sendgrid-web": "0.0.5",
     "serve-favicon": "~2.4.2",
 
@@ -52,8 +57,13 @@
     "supports-color": "^5.3.0"
 
   },
+  "engines": {
+    "node": "6.11.3",
+    "npm": "5.7.1"
+  },
   "scripts": {
-    "start": "react-scripts start | nodemon server.js",
+    "start": "concurrently \"react-scripts start\" \"PORT=3001 node server.js\"",
+    "start-test": "react-scripts start | nodemon server.js",
     "start-dev": "set DEBUG=* & nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

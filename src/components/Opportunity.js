@@ -176,7 +176,7 @@ class Opportunity extends Component {
 			<div className="row opp-box-row">
  				<div className="column column-80">
 				<h4>{ this.props.title }</h4>
-					<h5>Lab Name{this.props.labName}</h5>
+					<h5>{this.props.labName}</h5>
 				</div>
  				<div className="column column-20">
 					<Calendar className="cal"/>

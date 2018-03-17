@@ -2,14 +2,208 @@
 	width: 80%;
 	margin: auto;
 	margin-bottom: 20px;
+	margin-top: 90px;
 }
 
-.application-page-info {
+.application-page-info, .application-page-responses {
   padding: 20px 30px;
   margin-top: 15px;
   background-color: white;
   border: solid #979797 1px;
   border-radius: 2px;
-  font-weight: 500;
   margin-bottom: 20px;
+}
+
+.application-page-container .row .app-qualifications {
+	background-color: white;
+	border: solid #979797 1px;
+	border-radius: 2px;
+	margin-top: 15px;
+  margin-left: 30px;
+}
+
+.application-page-container .app-qual-title {
+  background-color: #b31b1b;
+  width: 100%;
+  text-align: center;
+  color: white;
+  margin-bottom: 0px;
+  padding: 10px;
+}
+
+.application-page-container .row .app-qual-title h5 {
+  font-weight: 300;
+  margin-bottom: 0px;
+}
+
+.row .app-qualifications h6 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0b0b0b;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+
+.row .app-qualifications ul {
+  margin-bottom: 0px;
+  margin-left: 30px;
+  list-style: none;
+}
+
+.app-qualifications p {
+  margin-left: 30px;
+}
+
+.app-qualifications li::before {
+	content: "•"; color: #b31b1b;
+  display: inline-block; width: 1em;
+  margin-left: -1em
+}
+
+.row .app-qual-section {
+  padding: 10px;
+}
+
+.green-check {
+  color: #417505;
+}
+
+.application-page-container hr {
+	margin: 0;
+}
+
+.application-page-container .app-qualifications .no-margin {
+	margin: 0;
+}
+
+.application-page-container .red-link {
+	color: red;
+}
+
+.application-page-container .resume-link {
+	cursor: pointer;
+}
+
+.button-bar-container {
+}
+
+.application-page-container .button-bar {
+	margin-top: 20px;
+	margin-left: -20px;
+}
+
+.application-page-container .left-button {
+	text-align: left;
+}
+
+.application-page-container .right-button {
+	text-align: right;
+}
+
+.application-page-container .center-button {
+	text-align: center;
+}
+
+.application-page-container .button {
+	color: white;
+	border: 0;
+	background-color: red;
+	width: 85%;
+	margin-right: -10px;
+}
+
+.application-page-container .disabled-button {
+	color: white;
+	border: 0;
+	background-color: grey;
+	width: 85%;
+	margin-right: -10px;
+}
+
+.modal .submit-button {
+	color: white;
+	background-color: green;
+	border: 0;
+	margin-top: 10px;
+}
+
+.modal .close-button {
+	color: white;
+	background-color: red;
+	border: 0;
+	margin-top: 10px;
+	margin-left: 2px;
+}
+
+.application-page-container .return-to-apps {
+	margin-left: -20px;
+	margin-top: 20px;
+}
+
+.application-page-container .return-to-apps a {
+	color: black;
+	text-decoration: none;
+}
+
+
+.application-page-container .black-arrow {
+	color: black;
+	margin-top: -2px;
+	margin-right: 2px;
+}
+
+.application-page-container .question {
+
+}
+
+.application-page-container .responses-header {
+	color: black;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.application-page-container .question-and-response {
+	margin-top: 20px;
+}
+
+.application-page-container .question {
+	color: black;
+	font-size: 18px;
+	font-weight: 400;
+}
+
+.application-page-container .answer {
+	color: black;
+	font-size: 18px;
+	font-weight: 100;
+}
+
+.application-page-info {
+	font-size: 18px;
+}
+
+.application-page-info .email {
+	font-size: 16px;
+}
+
+.application-page-container .app-info-right {
+	text-align: right;
+	color: #5d5d5d;
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.application-page-container .app-info-left {
+	text-align: left;
+	color: #000000;
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.app-page-info-top-row {
+	margin-bottom: 20px;
+}
+
+.application-page-info .column {
+	margin-bottom: 0;
 }
