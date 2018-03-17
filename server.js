@@ -774,16 +774,19 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
-    console.log(data.firstName)
-    console.log(data.lastName)
-    console.log(data.gradYear)
-    console.log(data.major)
-    console.log(data.GPA)
-    console.log(data.netid)
-    console.log(data.courses)
+    console.log(data.firstName);
+    console.log(data.lastName);
+    console.log(data.gradYear);
+    console.log(data.major);
+    console.log(data.GPA);
+    console.log(data.netid);
+    console.log(data.courses);
     //var dataView = new DataView(data.files);
     //console.log(dataView.getInt32(0).toString(16));
-    console.log(data.files[0])
+    console.log(typeof data.files[0][0]);
+    var buffer = new ArrayBuffer();
+    console.log(typeof buffer);
+    console.log(buffer.byteLength);
     var undergrad = new undergradModel({
 
         firstName: data.firstName,

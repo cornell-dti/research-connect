@@ -26,15 +26,16 @@ class StudentRegister extends React.Component {
     onDrop = acceptedFiles => {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
-            reader.onload = () => {
-                var fileAsArrayBuffer = reader.result;
+            reader.onload = (event) => {
+                var fileAsBinaryString = reader.result;
+                var encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({files : [fileAsArrayBuffer]})
+                this.setState({files : [encodedData]})
             };
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
 
-            reader.readAsArrayBuffer(file);
+            reader.readAsBinaryString(file);
         });
     }
 
