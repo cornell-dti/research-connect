@@ -6,7 +6,7 @@ import filler from '../images/download.png';
 import img1 from '../images/img1.PNG';
 import img2 from '../images/img2.PNG';
 import img3 from '../images/img3.PNG';
-
+import GoogleLogin from 'react-google-login';
 import {Link} from 'react-router-dom';
 
 
@@ -26,6 +26,21 @@ class LandingPage extends Component {
         });
     }
 
+    loginFailure() {
+        console.log("error");
+    }
+
+    responseGoogle(response) {
+        const email = response.profileObj.email;
+        const netid = email.substring(0, email.indexOf("@"));
+        console.log(netid);
+    }
+
+    logout() {
+        console.log("logged out");
+    }
+
+
     render() {
         return (
             <div className="landingPage">
@@ -38,8 +53,13 @@ class LandingPage extends Component {
                         <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
-                        <input className="button" type="submit" value="Log In"/>
-
+                        <GoogleLogin
+                            clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                            buttonText="Log In"
+                            onSuccess={this.responseGoogle.bind(this)}
+                            onFailure={this.loginFailure.bind(this)}
+                            className="login"
+                            hostedDomain="cornell.edu" />
                     </nav>
                 </header>
 
