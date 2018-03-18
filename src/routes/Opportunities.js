@@ -15,72 +15,72 @@ import StartDate from '../components/StartDate'
 
 class Opportunities extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			yearSelect: {
+    constructor(props) {
+        super(props);
+        this.state = {
+            yearSelect: {
 
-			},
-			gpaSelect: {
+            },
+            gpaSelect: {
 
-			},
-			majorSelect: {
+            },
+            majorSelect: {
 
-			},
-			startDate: {
+            },
+            startDate: {
 
-			}
-		};
-	}
+            }
+        };
+    }
 
-	//will be called by the year component whenever the year checkboxes are updated
-	handleUpdateYear(yearObj) {
-		this.setState({yearSelect: yearObj});
-	}
-	handleUpdateGPA(gpaObj) {
-		this.setState({gpaSelect: gpaObj});
-	}
+    //will be called by the year component whenever the year checkboxes are updated
+    handleUpdateYear(yearObj) {
+        this.setState({yearSelect: yearObj});
+    }
+    handleUpdateGPA(gpaObj) {
+        this.setState({gpaSelect: gpaObj});
+    }
 
-	handleUpdateMajor(majorObj) {
-		this.setState({majorSelect: majorObj});
-	}
-	handleUpdateDate(majorObj) {
-			this.setState({startDate: majorObj});
-		}
+    handleUpdateMajor(majorObj) {
+        this.setState({majorSelect: majorObj});
+    }
+    handleUpdateDate(majorObj) {
+        this.setState({startDate: majorObj});
+    }
 
 
 
-	render() {
-		return (
+    render() {
+        return (
 			<div>
 
 				<Navbar/>
 
 				<div className="opp-container">
 
-					{/*<div className="row">*/}
-						{/*<div className="column column-100 search-div-container">*/}
-							{/*<div className="search-div">*/}
-								{/*<input type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>*/}
-							{/*</div>*/}
-						{/*</div>*/}
-					{/*</div>*/}
+                    {/*<div className="row">*/}
+                    {/*<div className="column column-100 search-div-container">*/}
+                    {/*<div className="search-div">*/}
+                    {/*<input type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>*/}
+                    {/*</div>*/}
+                    {/*</div>*/}
+                    {/*</div>*/}
 
 					<div className="row">
 						<div className="column column-20">
 							<div className="filter-box">
-							<h3>Filters</h3>
-							<hr />
+								<h3>Filters</h3>
+								<hr />
 
-							<label htmlFor="depField">Area of Interest</label>
-								{/*<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />*/}
-								{/*<hr />*/}
+                                {/*<label htmlFor="depField">Area of Interest</label>*/}
+                                {/*<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />*/}
+                                {/*<hr />*/}
 								<label htmlFor="yearField">School Year</label>
 								<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
 								<hr />
-								<label htmlFor="gpaField">GPA Requirement</label>
+								<label htmlFor="gpaField">Your GPA</label>
 								<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
-									<hr />
+								<hr />
 								<label htmlFor="datesField">Start Date</label>
 								<StartDate updateDate= {this.handleUpdateDate.bind(this)}/>
 
@@ -91,7 +91,7 @@ class Opportunities extends Component {
 						<div className="column column-70">
 							<div className="opp-list-container">
 								<OpportunityBox filteredOptions = {this.state}
-								url='/getOpportunitiesListing' />
+												url='/getOpportunitiesListing' />
 							</div>
 						</div>
 					</div>
@@ -100,8 +100,8 @@ class Opportunities extends Component {
 				<Footer/>
 			</div>
 
-		);
-	}
+        );
+    }
 }
 
 export default Opportunities;
