@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../App.css';
-import Dropzone from 'react-dropzone';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../App.css';
+import '../StudentRegister.css';
 
 var majorList = ["Africana Studies","Agricultural Sciences","American Studies","Animal Science","Anthropology","Applied Economics and Management","Archaeology","Architecture","Asian Studies","Astronomy","Atmospheric Science","Biological Engineering","Biological Sciences","Biology and Society","Biomedical Engineering","Biometry and Statistics","Chemical Engineering","Chemistry and Chemical Biology","China and Asia-Pacific Studies","Civil Engineering","Classics (Classics, Classical Civ., Greek, Latin)","College Scholar Program","Communication","Comparative Literature","Computer Science","Design and Environmental Analysis","Development Sociology","Economics","Electrical and Computer Engineering","Engineering Physics","English","Entomology","Environmental and Sustainability Sciences","Environmental Engineering","Feminist, Gender & Sexuality Studies","Fiber Science and Apparel Design","Fine Arts","Food Science","French","German","German Area Studies","Global & Public Health Sciences","Government","History","History of Architecture (transfer students only)","History of Art","Hotel Administration School of Hotel Administration","Human Biology, Health and Society","Human Development","Independent Major—Arts and Sciences","Independent Major—Engineering","Industrial and Labor Relations School of Industrial and Labor Relations","Information Science","Information Science, Systems, and Technology","Interdisciplinary Studies","International Agriculture and Rural Development","Italian","Landscape Architecture","Linguistics","Materials Science and Engineering","Mathematics","Mechanical Engineering","Music","Near Eastern Studies","Nutritional Sciences","Operations Research and Engineering","Performing and Media Arts","Philosophy","Physics","Plant Science","Policy Analysis and Management","Psychology","Religious Studies","Science and Technology Studies","Science of Earth Systems","Sociology","Spanish","Statistical Science","Urban and Regional Studies","Viticulture and Enology","Undecided"]
 var gradYears = [new Date().getFullYear(), new Date().getFullYear()+1, new Date().getFullYear()+2, new Date().getFullYear()+3]
@@ -11,33 +14,16 @@ class StudentRegister extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName : "Andy",
-            lastName : "Xiao",
-            gradYear : 2020,
-            major : "Computer Science",
-            GPA : 3.3,
-            netid : "zx55", //TODO currently dummy value
-            courses : ["CS 2110"],
-            files : []
+            firstName : "",
+            lastName : "",
+            gradYear : "",
+            major : "",
+            GPA : "",
+            netid : "", //TODO currently dummy value
+            courses : [],
+            file : null
         };
     };
-
-
-    onDrop = acceptedFiles => {
-        acceptedFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                var fileAsBinaryString = reader.result;
-                var encodedData = window.btoa(fileAsBinaryString);
-                // do whatever you want with the file content
-                this.setState({files : [encodedData]})
-            };
-            reader.onabort = () => console.log('file reading was aborted');
-            reader.onerror = () => console.log('file reading has failed');
-
-            reader.readAsBinaryString(file);
-        });
-    }
 
     optionify(inputArray,inputName){
         var newArray = [];
@@ -46,7 +32,14 @@ class StudentRegister extends React.Component {
                 {inputArray[i]}
             </option>);
         }
-        return ( <select name={inputName} value={[inputName]} onChange={this.onChange}> <option id={inputName} key="empty" value="">Select</option> {newArray} </select>);
+        var placehold = "Select";
+        if (inputName=="gradYear"){
+          placehold = "Select Graduation Year";
+        } else if (inputName=="major"){
+          placehold = "Select Major";
+        }
+
+        return ( <select name={inputName} value={inputName} onChange={this.onChange}> <option id={inputName} key="empty" value="">{placehold}</option> {newArray} </select>);
     }
 
     onChange = (e) => {
@@ -69,22 +62,26 @@ class StudentRegister extends React.Component {
     this.setState({file : e.target.value})
     }
 
+    createGpaOptions() {
+      var options = [];
+      for(var i=25; i<=43; i++){
+        options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);
+      }
+      console.log(this.state.GPA);
+      return (
+        <select name="GPA" id="GPA" className="gpa-select" value={this.state.GPA} onChange={this.onChange}>
+          <option key="" value="" >Select GPA</option>
+          {options}
+        </select>
+      );
+    }
+
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const { firstName, lastName, gradYear, major, GPA, netid, courses,files } = this.state;
+        const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
 
-        axios.post('/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
-            .then((result) => {
-                //access the results here....
-            });
-
-        axios.post('/testResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
-            .then((result) => {
-                //access the results here....
-            });
-
-        axios.post('/storeResume', { firstName, lastName, gradYear, major, GPA, netid, courses, files })
+        axios.post('http://localhost:3001/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, file })
             .then((result) => {
                 //access the results here....
             });
@@ -108,60 +105,34 @@ class StudentRegister extends React.Component {
         console.log("Hello World");
         const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
         return (
-            <div>
+          <div>
+          <Navbar/>
+            <div className="student-reg-form">
+              <h3>Student Registration</h3>
                     <form id = "studentForm" onSubmit = {this.onSubmit}>
-                        <label>
-                            *First Name:
-                            <input type="text" name="firstName" value={firstName} id="firstName" onChange={this.onChange}/>
-                        </label>
+                        <input placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName" onChange={this.onChange}/>
                         <br/>
-                        <label>
-                            *Last Name:
-                            <input type="text" name="lastName" value={lastName} id="lastName" onChange={this.onChange}/>
-                        </label>
+                            <input type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName" onChange={this.onChange}/>
                         <br/>
-                        <label>
-                            *Grad Year:
                             {this.optionify(gradYears,"gradYear")}
-                        </label>
                         <br/>
-                        <label>
-                            *Major:
                             {this.optionify(majorList,"major")}
-                        </label>
                         <br/>
+
+                        {this.createGpaOptions()}
+
                         <label>
-                            *GPA:
-                            <input type="number" step="0.01" name="GPA" value={GPA} id="GPA" onChange={this.onChange}/>
+
+                            <textarea placeholder="Relevant Courses (separate with commas)" name="courses" value={courses} id="courses" onChange={this.onChange}/>
                         </label>
                         <br/>
-                        <label>
-                            *Relevant Courses (separate with commas):
-                            <input type="text" name="courses" value={courses} id="courses" onChange={this.onChange}/>
-                        </label>
+
                         <br/>
-                        <div className="dropzone">
-                            <Dropzone onDrop={this.onDrop.bind(this)}>
-                                <p>Try dropping some files here, or click to select files to upload.</p>
-                            </Dropzone>
-                        </div>
-                        <aside>
-                            <h2>Dropped files</h2>
-                            <ul>
-                                {
-                                    this.state.files.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                                }
-                            </ul>
-                        </aside>
-                        /* <form enctype="multipart/form-data" method="post" name="fileinfo">
-                            <label>File to stash:</label>
-                            <input type="file" name="file" onChange={this.onFormChange}/><br/>
-                            <input type="submit" id="formInput" value="Stash the file!"/>
-                        </form> */
-                        <br/>
-                        <p> *Required fields</p>
-                        <input type="submit" value="Submit" />
+                        <input type="submit" className="button" onClick={console.log(this.state)} value="Submit" />
                     </form>
+
+            </div>
+              <Footer/>
             </div>
         );
     }
