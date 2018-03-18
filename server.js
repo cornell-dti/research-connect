@@ -1164,7 +1164,7 @@ function base64ArrayBuffer(arrayBuffer) {
     return base64
 }
 
-app.get('/resume/:id', function (req, res) {
+app.get('/doc/:id', function (req, res) {
     let params = {
         Bucket: "research-connect-student-files",
         Key: req.params.id
@@ -1174,6 +1174,8 @@ app.get('/resume/:id', function (req, res) {
         else {
             let baseString = base64ArrayBuffer(data.Body);
             // return res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
+            res.set('content-type', 'text/plain');
+            // res.setContentType("text/plain");
             return res.send(baseString);
         }
     });
