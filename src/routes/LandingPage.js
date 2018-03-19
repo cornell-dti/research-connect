@@ -6,6 +6,7 @@ import filler from '../images/download.png';
 import img1 from '../images/img1.PNG';
 import img2 from '../images/img2.PNG';
 import img3 from '../images/img3.PNG';
+import axios from 'axios';
 import GoogleLogin from 'react-google-login';
 import {Link} from 'react-router-dom';
 
@@ -31,15 +32,13 @@ class LandingPage extends Component {
     }
 
     responseGoogle(response) {
-        const email = response.profileObj.email;
-        const netid = email.substring(0, email.indexOf("@"));
-        console.log(netid);
+        sessionStorage.setItem('token_id', response.tokenId);
+        window.location.href = "/professorView";
     }
 
     logout() {
-        console.log("logged out");
+        sessionStorage.clear();
     }
-
 
     render() {
         return (
