@@ -412,9 +412,15 @@ function getLabAdmin(id, res) {
     });
 }
 
-app.post('/getUndergrad', function (req, res) {
-    var response = getUndergrad(req.body.id);
-    res.send(response);
+app.get('/undergrad/:netId', function (req, res) {
+    undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+        if (err) {
+            return err;
+        }
+        debug(undergrad.netId);
+
+        res.send(undergrad);
+    });
 });
 
 function getUndergrad(id, res) {
