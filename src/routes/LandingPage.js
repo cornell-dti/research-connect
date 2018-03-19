@@ -87,8 +87,9 @@ class LandingPage extends Component {
 
                 <section id="forstudents" className="our-work for-students">
                     {/*TODO fix formatting of h3 and h2 in ehre*/}
-                    <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and knocking
-                    on professor's doors are over.</h3>
+                    <h3>STUDENTS</h3>
+                    <h5>Get a research position at a Cornell lab of your choice. The days of cold emailing and knocking
+                    on professor's doors are over.</h5>
                     <div className="photo-flex">
                         <div className="step">
                             <img className="step-photo" src={img3}/>

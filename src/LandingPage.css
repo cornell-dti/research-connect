@@ -139,10 +139,10 @@
 }
 
 .landingPage header .button{
-  background-color: rgb(166,57,45);
+  background-color: rgb(179,27,27);
   color: white;
   margin-left: 10px;
-  border-color: rgb(166,57,45);
+  border-color: rgb(179,27,27);
 }
 
 .landingPage header .button:hover{
@@ -230,8 +230,8 @@
   opacity: 0.8;
 }
 .hero .button-div .button{
-  background-color: rgb(166,57,45);
-  border-color: rgb(166,57,45);
+  background-color: rgb(179,27,27);
+  border-color: rgb(179,27,27);
   color: white;
   margin: auto 10px;
 }
@@ -318,8 +318,8 @@
   border-radius: 50%;
 }
 .our-work .button{
-  background-color: rgb(166,57,45);
-  border-color: rgb(166,57,45);
+  background-color: rgb(179,27,27);
+  border-color: rgb(179,27,27);
   color: white;
 }
 .our-work .photo-flex{
