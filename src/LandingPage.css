@@ -1,351 +1,360 @@
 /*-------------
  	General
 -------------*/
-.landingPage *{
-  all:unset;
-	box-sizing: border-box;
-  font: 'Roboto';
-}
-.landingPage section .get-started:hover{
-  opacity: 0.9;
-  border-color: rgb(166,57,45);
-  background-color: rgb(166,57,45);
+.landingPage * {
+    all: unset;
+    box-sizing: border-box;
+    font: 'Roboto';
 }
 
-.landingPage ul, .landingPage nav{
-	list-style: none;
+.landingPage section .get-started:hover {
+    opacity: 0.9;
+    border-color: rgb(166, 57, 45);
+    background-color: rgb(166, 57, 45);
 }
 
-.landingPage a{
-	text-decoration: none;
-	color: inherit;
-	cursor: pointer;
+.landingPage ul, .landingPage nav {
+    list-style: none;
+}
+
+.landingPage a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 
 }
 
-.landingPage a:hover{
-	color: gray;
+.landingPage a:hover {
+    color: gray;
 }
 
-.landingPage a.btn{
-	color: #fff;
-	border-radius: 4px;
-	text-transform: uppercase;
-	background-color: #2196F3;
-	font-weight: 800;
-	text-align: center;
+.landingPage a.btn {
+    color: #fff;
+    border-radius: 4px;
+    text-transform: uppercase;
+    background-color: #2196F3;
+    font-weight: 800;
+    text-align: center;
 }
 
-.landingPage hr{
-	width: 150px;
-	height: 2px;
-	background-color: #f6f6f6;
-	border: 0;
-	margin-bottom: 40px;
+.landingPage hr {
+    width: 150px;
+    height: 2px;
+    background-color: #f6f6f6;
+    border: 0;
+    margin-bottom: 40px;
 }
 
-.landingPage section{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 125px 100px;
+.landingPage section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 125px 100px;
 }
 
 .background-image {
-	background-image: url("./images/rc-landingpagestockphoto.png");
-	background-size: 100% 100%;
+    background-image: url("./images/rc-landingpagestockphoto.png");
+    background-size: 100% 100%;
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
 
-	section{
-		padding: 100px 50px;
-	}
-
-}
-
-@media (max-width: 600px){
-
-	section{
-		padding: 80px 30px;
-	}
+    section {
+        padding: 100px 50px;
+    }
 
 }
 
-.landingPage section h3.title{
-	color: #414a4f;
-	text-transform: capitalize;
-	font: bold 32px 'Roboto', sans-serif;
-	margin-bottom: 35px;
-	text-align: center;
+@media (max-width: 600px) {
+
+    section {
+        padding: 80px 30px;
+    }
+
 }
 
-.landingPage section p{
-	max-width: 800px;
-	text-align: center;
-	margin-bottom: 35px;
-	padding: 0 20px;
-	line-height: 2;
+.landingPage section h3.title {
+    color: #414a4f;
+    text-transform: capitalize;
+    font: bold 32px 'Roboto', sans-serif;
+    margin-bottom: 35px;
+    text-align: center;
 }
 
-.landingPage ul.grid{
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
+.landingPage section p {
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 35px;
+    padding: 0 20px;
+    line-height: 2;
 }
 
+.landingPage ul.grid {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 /*-------------
  	Header
 -------------*/
-.landingPage .logo{
-  height: 50px;
-}
-.landingPage header{
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 10;
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: black;
-  height: 80px;
-  background-color: #f6f6f6;
-  border-bottom:  rgb(166,57,45) 4px solid;
-	padding: 30px 10%;
+.landingPage .logo {
+    height: 50px;
 }
 
-.landingPage header h2{
-	font-family: 'Roboto', sans-serif;
+.landingPage header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+    height: 80px;
+    background-color: #f6f6f6;
+    border-bottom: rgb(166, 57, 45) 4px solid;
+    padding: 30px 10%;
 }
 
-.landingPage header nav{
-	display: flex;
+.landingPage header h2 {
+    font-family: 'Roboto', sans-serif;
 }
 
- .landingPage header nav li{
-	margin: 0 15px;
-  display: flex;
+.landingPage header nav {
+    display: flex;
+}
+
+.landingPage header nav li {
+    margin: 0 15px;
+    display: flex;
     flex-direction: row;
     align-items: center;
 
 }
 
-.landingPage header nav li:first-child{
-	margin-left: 0;
+.landingPage header nav li:first-child {
+    margin-left: 0;
 }
 
-.landingPage header .button{
-  background-color: rgb(179,27,27);
-  color: white;
-  margin-left: 10px;
-  border-color: rgb(179,27,27);
+.landingPage header .button {
+    background-color: rgb(179, 27, 27);
+    color: white;
+    margin-left: 10px;
+    border-color: rgb(179, 27, 27);
+    height: 50px;
+    width: 210px;
 }
 
-.landingPage header .button:hover{
-  opacity: 0.9;
+.landingPage header .button:hover {
+    opacity: 0.9;
 }
 
 .login {
-	background-color: rgb(166,57,45);
-	color: white;
-	margin-left: 10px;
-	border-color: rgb(166,57,45);
-	border-radius: .4rem;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 1.1rem;
-	font-weight: 700;
-	height: 3.8rem;
-	letter-spacing: .1rem;
-	line-height: 3.8rem;
-	padding: 0 3.0rem;
-	text-align: center;
-	text-decoration: none;
-	text-transform: uppercase;
-	white-space: nowrap;
+    background-color: rgb(166, 57, 45);
+    color: white;
+    margin-left: 10px;
+    border-color: rgb(166, 57, 45);
+    border-radius: .4rem;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    height: 3.8rem;
+    letter-spacing: .1rem;
+    line-height: 3.8rem;
+    padding: 0 3.0rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .login:hover {
-	opacity: 0.9;
-	background-color: rgb(166,57,45);
+    opacity: 0.9;
+    background-color: rgb(166, 57, 45);
 }
 
 .login:focus {
-	opacity: 1;
-	background-color: rgb(166,57,45);
+    opacity: 1;
+    background-color: rgb(166, 57, 45);
 }
 
-
-@media (max-width: 1000px){
-	.landingPage header{
-		padding: 20px 50px;
-	}
+@media (max-width: 1000px) {
+    .landingPage header {
+        padding: 20px 50px;
+    }
 }
 
+@media (max-width: 700px) {
+    .landingPage header {
+        flex-direction: column;
+    }
 
-@media (max-width: 700px){
-	.landingPage header{
-		flex-direction: column;
-	}
-
-	.landingPage header h2{
-		margin-bottom: 15px;
-	}
+    .landingPage header h2 {
+        margin-bottom: 15px;
+    }
 }
-
-
 
 /*----------------
  	Hero Section
 ----------------*/
 
-.hero{
-	position: relative;
-	justify-content: center;
-	min-height: 100vh;
-	color: #fff;
-	text-align: center;
+.hero {
+    position: relative;
+    justify-content: center;
+    min-height: 100vh;
+    color: #fff;
+    text-align: center;
 }
 
-.hero .background-image{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-size: cover;
-	background-color: #525a63;
-	z-index: -1;
-}
-.hero .arrow{
-  width: 100px;
-  height: 100px;
-  color: black;
-}
-.hero .button:hover{
-  opacity: 0.8;
-}
-.hero .button-div .button{
-  background-color: rgb(179,27,27);
-  border-color: rgb(179,27,27);
-  color: white;
-  margin: auto 10px;
-}
-.hero .background-image:after{
-
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-
+.hero .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-color: #525a63;
+    z-index: -1;
 }
 
-.hero h1{
-  padding-top: 100px;
-	font: bold 75px 'Roboto', sans-serif;
-	margin-bottom: 15px;
-  color: #f6f6f6;
+.hero .arrow {
+    width: 100px;
+    height: 100px;
+    color: black;
 }
 
-.hero h3{
-	font: normal 28px 'Roboto', sans-serif;
-	margin-bottom: 40px;
+.hero .button:hover {
+    opacity: 0.8;
 }
 
-.hero a.btn{
-	padding: 20px 46px;
+.hero .button-div .button {
+    background-color: rgb(179, 27, 27);
+    border-color: rgb(179, 27, 27);
+    color: white;
+    margin: auto 10px;
+    height: 50px;
+    width: 210px;
 }
 
+.hero .background-image:after {
 
-@media (max-width: 800px){
-
-	.hero{
-		min-height: 600px;
-	}
-
-	.hero h1{
-		font-size: 48px;
-	}
-
-	.hero h3{
-		font-size: 24px;
-	}
-
-	.hero a.btn{
-		padding: 15px 40px;
-	}
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
 }
 
+.hero h1 {
+    padding-top: 100px;
+    font: bold 75px 'Roboto', sans-serif;
+    margin-bottom: 15px;
+    color: #f6f6f6;
+}
 
+.hero h3 {
+    font: normal 28px 'Roboto', sans-serif;
+    margin-bottom: 40px;
+}
+
+.hero a.btn {
+    padding: 20px 46px;
+}
+
+@media (max-width: 800px) {
+
+    .hero {
+        min-height: 600px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .hero h3 {
+        font-size: 24px;
+    }
+
+    .hero a.btn {
+        padding: 15px 40px;
+    }
+
+}
 
 /*--------------------
  	Our Work Section
 ---------------------*/
 
-.landingPage .our-work{
-  background-size: cover;
+.landingPage .our-work {
+    background-size: cover;
 }
 
-.our-work .photo-flex{
-  height: 300px;
-  width: 80%;
-}
-.our-work .step p{
-  padding: 0px;
-}
-.our-work .get-started{
-  margin-top: 100px;
-  margin-bottom: 0px;
-}
-.for-profs{
-  background-color: white;
-}
-.for-students{
-  background-color: #cfd2d6;
-}
-.our-work .step{
-  height: 100%;
-  flex-basis: 33%;
-  padding: 50px 30px;
-}
-.our-work .step-photo{
-  border-radius: 50%;
-}
-.our-work .button{
-  background-color: rgb(179,27,27);
-  border-color: rgb(179,27,27);
-  color: white;
-}
-.our-work .photo-flex{
-  display: flex;
-  flex-direction: row;
+.our-work .photo-flex {
+    height: 300px;
+    width: 80%;
 }
 
-@media (max-width: 1000px){
-
-
-
+.our-work .step p {
+    padding: 0px;
 }
 
+.our-work .get-started {
+    margin-top: 100px;
+    margin-bottom: 0px;
+}
+
+.for-profs {
+    background-color: white;
+}
+
+.for-students {
+    background-color: #cfd2d6;
+}
+
+.our-work .step {
+    height: 100%;
+    flex-basis: 33%;
+    padding: 50px 30px;
+}
+
+.our-work .step-photo {
+    border-radius: 50%;
+}
+
+.our-work .button {
+    background-color: rgb(179, 27, 27);
+    border-color: rgb(179, 27, 27);
+    color: white;
+    height: 50px;
+    width: 210px;
+}
+
+.our-work .photo-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+@media (max-width: 1000px) {
+
+}
 
 /*--------------------
  	Reviews Section
 --------------------*/
 
-.reviews{
-	min-height: 100vh;
-  background-color: white;
+.reviews {
+    min-height: 100vh;
+    background-color: white;
 }
 
-.reviews .quote{
-	text-align: center;
-	width: 80%;
+.reviews .quote {
+    text-align: center;
+    width: 80%;
     font-size: 22px;
     font-weight: 300;
     line-height: 1.5;
@@ -353,126 +362,121 @@
     padding: 0;
 }
 
-.reviews .author{
+.reviews .author {
     font-size: 18px;
     margin-bottom: 50px;
 }
 
-.reviews .author:last-child{
+.reviews .author:last-child {
     margin-bottom: 0;
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
 
-	.reviews .quote{
-		font-size: 20px;
-	}
+    .reviews .quote {
+        font-size: 20px;
+    }
 
-	.reviews .author{
-	    font-size: 16px;
-	}
+    .reviews .author {
+        font-size: 16px;
+    }
 
 }
-
-
 
 /*---------------------
  	Contact Section
 ---------------------*/
 
-.contact{
-	background-color: #f7f7f7;
+.contact {
+    background-color: #f7f7f7;
 }
 
-.contact form{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
+.contact form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 
-	max-width: 800px;
-	width: 80%;
+    max-width: 800px;
+    width: 80%;
 }
 
-.contact form input{
-	padding: 15px;
-	flex: 1;
-	margin-right: 30px;
-	font-size: 18px;
-	color: #555;
+.contact form input {
+    padding: 15px;
+    flex: 1;
+    margin-right: 30px;
+    font-size: 18px;
+    color: #555;
 }
 
-.contact form .btn{
-	padding: 18px 42px;
+.contact form .btn {
+    padding: 18px 42px;
 }
 
+@media (max-width: 800px) {
 
-@media (max-width: 800px){
-
-	.contact form input{
-		flex-basis: 100%;
-		margin: 0 0 20px 0;
-	}
+    .contact form input {
+        flex-basis: 100%;
+        margin: 0 0 20px 0;
+    }
 
 }
-
-
-
 
 /*-------------
  	Footer
 -------------*/
 
-.landingPage footer{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	color: #fff;
-	background-color: #414a4f;
-	padding: 60px 0;
+.landingPage footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    background-color: #414a4f;
+    padding: 60px 0;
 }
 
-.landingPage footer ul{
-	display: flex;
-	margin-bottom: 25px;
-	font-size: 32px;
+.landingPage footer ul {
+    display: flex;
+    margin-bottom: 25px;
+    font-size: 32px;
 }
 
-.landingPage footer ul li{
-	margin: 0 8px;
+.landingPage footer ul li {
+    margin: 0 8px;
 }
 
-.landingPage footer ul li:first-child{
-	margin-left: 0;
+.landingPage footer ul li:first-child {
+    margin-left: 0;
 }
 
-.landingPage footer ul li:last-child{
-	margin-right: 0;
+.landingPage footer ul li:last-child {
+    margin-right: 0;
 }
 
-.landingPage footer p{
-	text-transform: uppercase;
-	font-size: 14px;
-	color: rgba(255,255,255,0.6);
-	margin-bottom: 10px;
+.landingPage footer p {
+    text-transform: uppercase;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 10px;
 }
 
-.landingPage footer p a{
-	color: #fff;
+.landingPage footer p a {
+    color: #fff;
 }
 
-@media (max-width: 700px){
+@media (max-width: 700px) {
 
-	footer{
-		padding: 80px 15px;
-	}
+    footer {
+        padding: 80px 15px;
+    }
 
 }
-
 
 /* -- Demo ads -- */
 
 @media (max-width: 1200px) {
-	#bsaHolder{ display:none;}
+    #bsaHolder {
+        display: none;
+    }
 }

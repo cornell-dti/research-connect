@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../LandingPage.css';
-import logo from '../images/vectorlogo.png';
+import logo from '../images/wordlogo.png';
 import stockPhoto from '../images/writing-picture.jpg';
 import filler from '../images/download.png';
 import img1 from '../images/img1.PNG';
@@ -87,9 +87,8 @@ class LandingPage extends Component {
 
                 <section id="forstudents" className="our-work for-students">
                     {/*TODO fix formatting of h3 and h2 in ehre*/}
-                    <h3>STUDENTS</h3>
-                    <h5>Get a research position at a Cornell lab of your choice. The days of cold emailing and knocking
-                    on professor's doors are over.</h5>
+                    <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and knocking
+                    on professor's doors are over.</h3>
                     <div className="photo-flex">
                         <div className="step">
                             <img className="step-photo" src={img3}/>
@@ -128,7 +127,7 @@ class LandingPage extends Component {
                         </div>
                     </div>
                     <Link to="/instructorregister">
-                        <input className="get-started button" type="submit" value="Click Here to Get Started"/>
+                        <input className="get-started button" type="submit" value="Get Started"/>
                     </Link>
                 </section>
 
