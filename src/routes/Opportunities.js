@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../Opportunities.css';
 import '../index.css';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/StudentNavbar'
 import Footer from '../components/Footer';
 import logo from '../images/vectorlogo.png';
 import OpportunityBox from '../components/OpportunityBox';
