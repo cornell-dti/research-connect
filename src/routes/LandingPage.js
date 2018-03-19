@@ -60,10 +60,10 @@ class LandingPage extends Component {
 
                 </section>
                 {/* TODO: set up template formatting so I can edit this*/}
-                {/*<section id="about" className="why-us reviews">*/}
+                <section id="about" className="why-us reviews">
 
-                    {/*<h2>Why use Research Connect?</h2>*/}
-                {/*</section>*/}
+                    <h2>Why use Research Connect?</h2>
+                </section>
 
                 <section id="forstudents" className="our-work for-students">
                     {/*TODO fix formatting of h3 and h2 in ehre*/}

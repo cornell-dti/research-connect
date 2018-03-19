@@ -17,6 +17,7 @@ class Resume extends Component {
                 this.setState({
                     resume: response.data
                 });
+                console.log(response.data);
             })
             .catch(function (error) {
                 console.log(error);

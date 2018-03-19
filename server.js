@@ -136,7 +136,8 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    courses: {type: [String],required:true}
+    courses: {type: [String], required: true},
+    resume: {type: String}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
@@ -369,9 +370,10 @@ app.post('/getOpportunity', function (req, res) {
                 }
             }
             labAdministratorModel.findOne(
-                {$and: [
-                    {netId: {$in: labAdmins}},
-                    {role: "pi"}
+                {
+                    $and: [
+                        {netId: {$in: labAdmins}},
+                        {role: "pi"}
                     ]
                 },
                 function (err, labAdmin) {
@@ -1188,6 +1190,8 @@ app.get('/resume/:id', function (req, res) {
         if (err) debug(err, err.stack); // an error occurred
         else {
             let baseString = base64ArrayBuffer(data.Body);
+            console.log(baseString);
+            console.log("above");
             // return res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
             return res.send(baseString);
         }
@@ -1195,29 +1199,31 @@ app.get('/resume/:id', function (req, res) {
 });
 
 app.post('/storeResume', function (req, res) {
-    if (!req.files)
-        return res.status(400).send('No files were uploaded.');
-    let params = {
-        Bucket: "research-connect-student-files",
-        Key: "1517452061886"
-    };
-    s3.getObject(params, function (err, data) {
-        if (err) debug(err, err.stack); // an error occurred
-        else {
-            let baseString = base64ArrayBuffer(data.Body);
-            // res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
+    undergradModel.findById({
+        "_id": {
+            "$oid": "5a930ca8f36d286fea36d327"
         }
-        // successful response
+    }, function(err, undergrad) {
+        undergrad.resume = req.body.files[0];
+        undergrad.save((err, todo) => {
+            if (err) {
+                res.status(500).send(err)
+            }
+            res.status(200).send(todo);
+        });
     });
+
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let resume = req.files.resume;
+    let file = req.body.files[0];
     //TODO change Key param to name of student plus date.now
     let uploadParams = {
         Bucket: "research-connect-student-files",
         Key: Date.now().toString(),
-        Body: req.files.resume.data
+        Body: file
     };
     debug("yay!");
+    console.log(req.body.files[0]);
+    console.log("here");
     s3.upload(uploadParams, function (err, data) {
         if (err) {
             debug("Error", err);
@@ -1230,8 +1236,8 @@ app.post('/storeResume', function (req, res) {
 });
 
 app.post('/testResume', function (req, res) {
-    console.log("If the below is null, it's not working");
-    console.log(req.body.files);
+    // console.log("If the below is null, it's not working");
+    // console.log(req.body.files);
 });
 
 app.post('/storeApplication', function (req, res) {
