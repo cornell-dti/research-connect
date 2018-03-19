@@ -396,9 +396,25 @@ function getOpportunity(id, res) {
 
 }
 
+app.get('/labAdmin/:netId', function (req, res) {
+    labAdministratorModel.find({netId: req.params.netId}, function (err, labAdmin) {
+        if (err) {
+            return err;
+        }
+
+        res.send(labAdmin);
+    });
+});
+
 app.post('/getLabAdmin', function (req, res) {
-    var response = getLabAdmin(req.body.id);
-    res.send(response);
+    labAdministratorModel.findById(req.body.id, function (err, labAdmin) {
+        if (err) {
+            return err;
+        }
+        debug(labAdmin.labId);
+
+        res.send(labAdmin);
+    });
 });
 
 function getLabAdmin(id, res) {
@@ -412,9 +428,15 @@ function getLabAdmin(id, res) {
     });
 }
 
-app.post('/getUndergrad', function (req, res) {
-    var response = getUndergrad(req.body.id);
-    res.send(response);
+app.get('/undergrad/:netId', function (req, res) {
+    undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+        if (err) {
+            return err;
+        }
+        debug(undergrad.netId);
+
+        res.send(undergrad);
+    });
 });
 
 function getUndergrad(id, res) {
@@ -715,8 +737,12 @@ app.get('/getLabs', function (req, res) {
 
 //get one lab by id
 app.get('/getLab', function (req, res) {
-    var response = getLab(req.body.id, res);
-    res.send(response);
+    labModel.findById(req.body.id, function (err, lab) {
+        if (err) {
+            return err;
+        }
+        res.send(lab);
+    });
 });
 
 function getLab(id, res) {
