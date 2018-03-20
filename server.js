@@ -15,6 +15,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 const fileUpload = require('express-fileupload');
 const AWS = require('aws-sdk');
 let s3;
@@ -468,6 +470,21 @@ app.get('/application/:id', function (req, res) {
         }
     });
 });
+
+app.post('/testgoogle', function(req, res){
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        // If request specified a G Suite domain:
+        //const domain = payload['hd'];
+    }
+    verify().catch(console.error);});
 
 app.post('/getApplications', function (req, res) {
 
