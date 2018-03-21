@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../OpportunityPage.css';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/StudentNavbar'
 import Footer from '../components/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
