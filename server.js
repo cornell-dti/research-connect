@@ -18,6 +18,7 @@ const fs = require('fs');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 const fileUpload = require('express-fileupload');
+const request = require("request");
 const AWS = require('aws-sdk');
 let s3;
 if (fs.existsSync('./S3Config2.json')) {
@@ -471,20 +472,20 @@ app.get('/application/:id', function (req, res) {
     });
 });
 
-app.post('/testgoogle', function(req, res){
-    async function verify() {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-            // Or, if multiple clients access the backend:
-            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-        });
-        const payload = ticket.getPayload();
-        const userid = payload['sub'];
-        // If request specified a G Suite domain:
-        //const domain = payload['hd'];
-    }
-    verify().catch(console.error);});
+// app.post('/testgoogle', function(req, res){
+//     async function verify() {
+//         const ticket = await client.verifyIdToken({
+//             idToken: token,
+//             audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+//             // Or, if multiple clients access the backend:
+//             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+//         });
+//         const payload = ticket.getPayload();
+//         const userid = payload['sub'];
+//         // If request specified a G Suite domain:
+//         //const domain = payload['hd'];
+//     }
+//     verify().catch(console.error);});
 
 app.post('/getApplications', function (req, res) {
 
@@ -501,7 +502,19 @@ app.post('/getApplications', function (req, res) {
     //     var lab = getLab(labAdmin.labId, res);
     // }
 
-    //function
+    var options = {
+        url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + req.body.id,
+        method: 'GET',
+        headers: {
+            'User-Agent': 'Super Agent/0.0.1',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    };
+
+    request(options, function (error, response, body) {
+        console.log(body);;
+    });
+    // return;
 
     const labAdminId = req.body.id;
     let opportunitiesArray = [];
