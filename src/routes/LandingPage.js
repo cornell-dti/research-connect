@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../LandingPage.css';
-import logo from '../images/wordlogo.png';
+import logo from '../images/vectorlogo.png';
 import stockPhoto from '../images/writing-picture.jpg';
 import filler from '../images/download.png';
 import student1 from '../images/student-laptop.png';
