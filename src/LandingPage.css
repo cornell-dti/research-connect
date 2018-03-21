@@ -1,15 +1,19 @@
 /*-------------
  	General
 -------------*/
+.landingPage section .get-started{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+}
 .landingPage *{
-  all:unset;
+
 	box-sizing: border-box;
   font: 'Roboto';
 }
 .landingPage section .get-started:hover{
   opacity: 0.9;
-  border-color: rgb(166,57,45);
-  background-color: rgb(166,57,45);
+  border-color: #b31b1b;
+  background-color: #b31b1b;
 }
 
 .landingPage ul, .landingPage nav{
@@ -48,11 +52,20 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 125px 100px;
+	padding: 125px 12%;
 }
+.our-work .students-title h2{
+  font-size: 43px;
+  line-height: 45px;
+  font-weight: 500;
 
+}
+.our-work .students-title{
+  text-align: left;
+
+}
 .background-image {
-	background-image: url("./images/rc-landingpagestockphoto.png");
+	background-image: url("./images/stockphoto.png");
 	background-size: 100% 100%;
 }
 
@@ -101,6 +114,7 @@
 -------------*/
 .landingPage .logo{
   height: 50px;
+  margin-top: 25px;
 }
 .landingPage header{
 	position: fixed;
@@ -114,8 +128,8 @@
 	color: black;
   height: 80px;
   background-color: #f6f6f6;
-  border-bottom:  rgb(166,57,45) 4px solid;
-	padding: 30px 10%;
+  border-bottom:  #b31b1b 4px solid;
+	padding: 30px 5%;
 }
 
 .landingPage header h2{
@@ -131,6 +145,7 @@
   display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 20px;
 
 }
 
@@ -139,18 +154,19 @@
 }
 
 .landingPage header .button{
-  background-color: rgb(166,57,45);
+  background-color: #b31b1b;
   color: white;
   margin-left: 10px;
-  border-color: rgb(166,57,45);
+  border-color: #b31b1b;
 }
 
 .landingPage header .button:hover{
   opacity: 0.9;
+  border-color: #b31b1b;
 }
 
 .login {
-	background-color: rgb(166,57,45);
+	background-color: #b31b1b;
 	color: white;
 	margin-left: 10px;
 	border-color: rgb(166,57,45);
@@ -226,15 +242,13 @@
   height: 100px;
   color: black;
 }
-.hero .button:hover{
+.hero .white-button:hover{
   opacity: 0.8;
+  background-color: white;
+  border-color: white;
+  color: rgb(166,57,45);
 }
-.hero .button-div .button{
-  background-color: rgb(166,57,45);
-  border-color: rgb(166,57,45);
-  color: white;
-  margin: auto 10px;
-}
+
 .hero .background-image:after{
 
 	position: absolute;
@@ -244,7 +258,19 @@
 	height: 100%;
 
 }
-
+.hero .lab-button{
+  padding-left: 48px;
+  padding-right: 48px;
+}
+.hero h3{
+  color: white;
+}
+.hero .white-button{
+  background-color: white;
+  color: rgb(166,57,45);
+  border-color: white;
+  margin: auto 10px;
+}
 .hero h1{
   padding-top: 100px;
 	font: bold 75px 'Roboto', sans-serif;
@@ -294,25 +320,35 @@
 
 .our-work .photo-flex{
   height: 300px;
-  width: 80%;
+  width: 100%;
 }
 .our-work .step p{
   padding: 0px;
+  font-size: 22px;
+  font-weight: 100;
+  color: black;
+  line-height: 27px;
 }
 .our-work .get-started{
-  margin-top: 100px;
+  margin-top: 50px;
   margin-bottom: 0px;
+
 }
 .for-profs{
   background-color: white;
 }
 .for-students{
-  background-color: #cfd2d6;
+  background-color: rgb(246,246,246);
 }
 .our-work .step{
   height: 100%;
   flex-basis: 33%;
   padding: 50px 30px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .our-work .step-photo{
   border-radius: 50%;
@@ -342,36 +378,18 @@
 	min-height: 100vh;
   background-color: white;
 }
-
-.reviews .quote{
-	text-align: center;
-	width: 80%;
-    font-size: 22px;
-    font-weight: 300;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    padding: 0;
+section.why-us p{
+  margin-top: 50px;
+  text-align: justify;
 }
-
-.reviews .author{
-    font-size: 18px;
-    margin-bottom: 50px;
+section.why-us{
+  flex-direction: row;
 }
-
-.reviews .author:last-child{
-    margin-bottom: 0;
+section.why-us img{
+  width: 400px;
 }
-
-@media (max-width: 1000px){
-
-	.reviews .quote{
-		font-size: 20px;
-	}
-
-	.reviews .author{
-	    font-size: 16px;
-	}
-
+section.why-us .students-title{
+  width: 60%;
 }
 
 
@@ -430,7 +448,7 @@
 	text-align: center;
 	color: #fff;
 	background-color: #414a4f;
-	padding: 60px 0;
+	padding: 20px 0;
 }
 
 .landingPage footer ul{
@@ -453,13 +471,23 @@
 
 .landingPage footer p{
 	text-transform: uppercase;
-	font-size: 14px;
-	color: rgba(255,255,255,0.6);
-	margin-bottom: 10px;
+	font-size: 16px;
+	color: white;
+	margin-bottom: 0px;
+  letter-spacing: 3px;
 }
 
 .landingPage footer p a{
 	color: #fff;
+  letter-spacing: 1px;
+
+}
+.CDTIlogo{
+  width: 25%;
+  margin-bottom: 25px;
+}
+.CDTIlogo:hover{
+  opacity: 0.7
 }
 
 @media (max-width: 700px){
