@@ -51,7 +51,8 @@ class LandingPage extends Component {
             <div className="landingPage">
                 <header>
 
-                    <h2><a onClick={this.scrollTo.bind(this, '#home')}><img className="logo" src={logoWithText}/></a></h2>
+                    <h2><a onClick={this.scrollTo.bind(this, '#home')}><img className="logo" src={logoWithText}/></a>
+                    </h2>
 
                     <nav>
                         <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
@@ -63,7 +64,7 @@ class LandingPage extends Component {
                             onSuccess={this.responseGoogle.bind(this)}
                             onFailure={this.loginFailure.bind(this)}
                             className="login button"
-                            hostedDomain="cornell.edu" />
+                            hostedDomain="cornell.edu"/>
                     </nav>
                 </header>
 
@@ -84,23 +85,25 @@ class LandingPage extends Component {
 
                 </section>
                 <section id="about" className="why-us reviews">
-                <div className="students-title">
-                <h2>Why use Research Connect?</h2>
-                <h3>Getting reliable help in your research lab has never been easier.
-                Let students come to you without the hassle of contacting individuals and sifting through apps.</h3>
-                </div>
-                <div>
-                <img className="why-logo" src={logo} alt="research connect logo"/>
-                </div>
+                    <div className="students-title">
+                        <h2>Why use Research Connect?</h2>
+                        <h3>Getting reliable help in your research lab has never been easier.
+                            Let students come to you without the hassle of contacting individuals and sifting through
+                            apps.</h3>
+                    </div>
+                    <div>
+                        <img className="why-logo" src={logo} alt="research connect logo"/>
+                    </div>
 
                 </section>
 
                 <section id="forstudents" className="our-work for-students">
                     {/*TODO fix formatting of h3 and h2 in ehre*/}
                     <div className="students-title">
-                    <h2>Made for students by students.</h2>
-                    <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and knocking
-                    on professors{"'"} doors are over.</h3>
+                        <h2>Made for students by students.</h2>
+                        <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and
+                            knocking
+                            on professors{"'"} doors are over.</h3>
                     </div>
                     <div className="photo-flex">
                         <div className="step">
@@ -124,11 +127,12 @@ class LandingPage extends Component {
 
 
                 <section id="forprofs" className="our-work for-profs">
-                <div className="students-title">
-                <h2>Find passionate and qualified students for your lab.</h2>
-                <h3>Getting reliable help in your research lab has never been easier.
-                Let students come to you without the hassle of contacting individuals and sifting through apps.</h3>
-                </div>
+                    <div className="students-title">
+                        <h2>Find passionate and qualified students for your lab.</h2>
+                        <h3>Getting reliable help in your research lab has never been easier.
+                            Let students come to you without the hassle of contacting individuals and sifting through
+                            apps.</h3>
+                    </div>
                     <div className="photo-flex">
                         <div className="step">
                             <img className="step-photo" src={prof1}/>
@@ -161,9 +165,14 @@ class LandingPage extends Component {
                             className="fa fa-github-square"></i></a></li>
                     </ul>
                     <p>Created by</p>
-                     <a href="http://cornelldti.org/" target="_blank"><img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo"/></a>
+                    <a href="http://cornelldti.org/" target="_blank"><img className="CDTIlogo" src={CDTIlogo}
+                                                                          alt="CDTI logo"/></a>
 
-                    <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
+                    <div style={{"float": "left", "width": "50%"}}>
+                        <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2"
+                              target="_blank">Report a bug</a></p>
+                        <p><a href="mailto:acb352@cornell.edu">Contact</a></p>
+                    </div>
                 </footer>
             </div>
         );
