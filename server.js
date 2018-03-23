@@ -380,9 +380,10 @@ app.post('/getOpportunity', function (req, res) {
                 }
             }
             labAdministratorModel.findOne(
-                {$and: [
-                    {netId: {$in: labAdmins}},
-                    {role: "pi"}
+                {
+                    $and: [
+                        {netId: {$in: labAdmins}},
+                        {role: "pi"}
                     ]
                 },
                 function (err, labAdmin) {
@@ -487,97 +488,95 @@ app.get('/application/:id', function (req, res) {
 //     }
 //     verify().catch(console.error);});
 
-app.post('/getApplications', function (req, res) {
+let tokenRequest = {
+    url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=',
+    method: 'GET',
+    headers: {
+        'User-Agent': 'Super Agent/0.0.1',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
 
-    // function callbackHandler(err, results) {
-    //     debug('It came back with this ' + results);
-    // }
-    //
-    // const labAdminId = req.body.id;
-    // function labAdmin (callbackHandler) {
-    //     var labAdmin = getLabAdmin(labAdminId, res);
-    // }
-    //
-    // function lab (callbackHandler) {
-    //     var lab = getLab(labAdmin.labId, res);
-    // }
-
-    var options = {
-        url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + req.body.id,
-        method: 'GET',
-        headers: {
-            'User-Agent': 'Super Agent/0.0.1',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    };
-
+/**
+ * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
+ * @param token the google token hash
+ * @param callback the function to run after the token is decrypted, takes one parameter: the body object with name, email, etc.
+ */
+function decryptGoogleToken(token, callback) {
+    let options = tokenRequest;
+    options.url = options.url + token;
     request(options, function (error, response, body) {
-        console.log(body);;
+        body = JSON.parse(body);
+        callback(body);
     });
-    // return;
+}
 
-    const labAdminId = req.body.id;
-    let opportunitiesArray = [];
-    let reformatted = {};
-    labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
-        if (err) {
-            res.send(err);
-            return;
-        }
-        labModel.findById(labAdmin.labId, function (err, lab) {
+app.post('/getApplications', function (req, res) {
+    decryptGoogleToken(req.body.id, function (tokenBody) {
+        // return;
+
+        let labAdminId = tokenBody.email;
+        let opportunitiesArray = [];
+        let reformatted = {};
+        labAdministratorModel.find({netId: labAdminId}, function (err, labAdmin) {
             if (err) {
                 res.send(err);
                 return;
             }
-            let mongooseLabIds = [];
-            for (let i = 0; i < lab.opportunities.length; i++) {
-                mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
-            }
-            opportunityModel.find({
-                '_id': {
-                    $in: mongooseLabIds
+            labModel.findById(labAdmin.labId, function (err, lab) {
+                if (err) {
+                    res.send(err);
+                    return;
                 }
-            }, function (err, docs) {
-                let applicationsArray = [];
-                let allApplications = {};
-                let netIds = [];
-                for (let i = 0; i < docs.length; i++) {
-                    let opportunityObject = docs[i];
-                    for (let j = 0; j < opportunityObject.applications.length; j++) {
-                        applicationsArray.push(opportunityObject.applications[j]);
-                        netIds.push(opportunityObject.applications[j].undergradNetId);
-                    }
-                    allApplications[opportunityObject.title] = applicationsArray;
-                    opportunitiesArray.push(opportunityObject);
-                    applicationsArray = [];
+                let mongooseLabIds = [];
+                for (let i = 0; i < lab.opportunities.length; i++) {
+                    mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
                 }
-                undergradModel.find({
-                    'netId': {
-                        $in: netIds
+                opportunityModel.find({
+                    '_id': {
+                        $in: mongooseLabIds
                     }
-                }, function (err, studentInfoArray) {
-                    let count = 0;
-                    for (let key in allApplications) {
-                        if (allApplications.hasOwnProperty(key)) {
-                            let currentApplication = allApplications[key];
-                            for (let i = 0; i < currentApplication.length; i++) {
-                                let currentStudent = currentApplication[i];
-                                let undergradId = currentStudent.undergradNetId;
-                                let undergradInfo = studentInfoArray.filter(function (student) {
-                                    return student.netId === undergradId;
-                                })[0];
-                                currentStudent.firstName = undergradInfo.firstName;
-                                currentStudent.lastName = undergradInfo.lastName;
-                                currentStudent.gradYear = undergradInfo.gradYear;
-                                currentStudent.major = undergradInfo.major;
-                                currentStudent.gpa = undergradInfo.gpa;
-                                currentStudent.courses = undergradInfo.courses;
-                                currentStudent.skills = undergradInfo.skills;
+                }, function (err, docs) {
+                    let applicationsArray = [];
+                    let allApplications = {};
+                    let netIds = [];
+                    for (let i = 0; i < docs.length; i++) {
+                        let opportunityObject = docs[i];
+                        for (let j = 0; j < opportunityObject.applications.length; j++) {
+                            applicationsArray.push(opportunityObject.applications[j]);
+                            netIds.push(opportunityObject.applications[j].undergradNetId);
+                        }
+                        allApplications[opportunityObject.title] = applicationsArray;
+                        opportunitiesArray.push(opportunityObject);
+                        applicationsArray = [];
+                    }
+                    undergradModel.find({
+                        'netId': {
+                            $in: netIds
+                        }
+                    }, function (err, studentInfoArray) {
+                        let count = 0;
+                        for (let key in allApplications) {
+                            if (allApplications.hasOwnProperty(key)) {
+                                let currentApplication = allApplications[key];
+                                for (let i = 0; i < currentApplication.length; i++) {
+                                    let currentStudent = currentApplication[i];
+                                    let undergradId = currentStudent.undergradNetId;
+                                    let undergradInfo = studentInfoArray.filter(function (student) {
+                                        return student.netId === undergradId;
+                                    })[0];
+                                    currentStudent.firstName = undergradInfo.firstName;
+                                    currentStudent.lastName = undergradInfo.lastName;
+                                    currentStudent.gradYear = undergradInfo.gradYear;
+                                    currentStudent.major = undergradInfo.major;
+                                    currentStudent.gpa = undergradInfo.gpa;
+                                    currentStudent.courses = undergradInfo.courses;
+                                    currentStudent.skills = undergradInfo.skills;
 
-                            }
-                            //reformat it to match:
-                            /**
-                             * {
+                                }
+                                //reformat it to match:
+                                /**
+                                 * {
                                 "titleOpp": {
                                     "opportunity": {},
                                     "applications": []
@@ -585,42 +584,42 @@ app.post('/getApplications', function (req, res) {
                                 ....
                             }
 
-                             from
+                                 from
 
-                             {
-                                "titleOpp": [].
-                                ...
-                             }
-                             */
-                            reformatted[key] = {
-                                "opportunity": opportunitiesArray[count],
-                                "applications": allApplications[key]
-                            };
-                            count++;
+                                 {
+                                    "titleOpp": [].
+                                    ...
+                                 }
+                                 */
+                                reformatted[key] = {
+                                    "opportunity": opportunitiesArray[count],
+                                    "applications": allApplications[key]
+                                };
+                                count++;
+                            }
                         }
-                    }
-                    res.send(reformatted);
+                        res.send(reformatted);
+                    });
                 });
-            });
-        })
+            })
+        });
+        /*
+         var labAdmin = getLabAdmin(labAdminId, res);
+         var lab = getLab(labAdmin.labId, res);
+         var labOpportunities = lab.opportunities;
+
+         var applicationsInOpportunities = {};
+
+         for(var opportunityID in labOpportunities) {
+
+         var opportunity = getOpportunity(opportunityID, res);
+         applicationsInOpportunities[opportunity.title] = opportunity.applications;
+         }
+
+         debug(applicationsInOpportunities);
+
+         */
     });
-    /*
-     var labAdmin = getLabAdmin(labAdminId, res);
-     var lab = getLab(labAdmin.labId, res);
-     var labOpportunities = lab.opportunities;
-
-     var applicationsInOpportunities = {};
-
-     for(var opportunityID in labOpportunities) {
-
-     var opportunity = getOpportunity(opportunityID, res);
-     applicationsInOpportunities[opportunity.title] = opportunity.applications;
-     }
-
-     debug(applicationsInOpportunities);
-
-     */
-
 });
 
 /** Graduation Year: 2021. Given graduation year and current date, determine whether they're freshman soph junior senior
@@ -836,14 +835,15 @@ app.post('/createOpportunity', function (req, res) {
 
     var opportunityMajor = req.body.majorsAllowed;
 
-    undergradModel.find({ $or:
-        [
-            {major: opportunityMajor},
-            {secondMajor: opportunityMajor},
-            {minor: opportunityMajor}
+    undergradModel.find({
+            $or: [
+                {major: opportunityMajor},
+                {secondMajor: opportunityMajor},
+                {minor: opportunityMajor}
 
-        ]},
-        function(err, studentsWhoMatch) {
+            ]
+        },
+        function (err, studentsWhoMatch) {
             for (var undergrad1 in studentsWhoMatch) {
                 // console.log(studentsWhoMatch[undergrad1].netId);
                 const msg = {
@@ -859,7 +859,7 @@ app.post('/createOpportunity', function (req, res) {
                 };
 
                 sgMail.send(msg);
-        }
+            }
             res.send("Success!");
         });
 });
@@ -1245,6 +1245,15 @@ function base64ArrayBuffer(arrayBuffer) {
 
     return base64
 }
+
+app.get("/hasRegistered/:netId", function(req, res){
+    undergradModel.findOne({netId: req.params.netId}, function(err, undergrad){
+        if (undergrad !== null) return res.send(true);
+        labAdministratorModel.findOne({netId: req.params.netId}, function(err, labAdmin){
+            return res.send(labAdmin !== null);
+        })
+    })
+});
 
 app.get('/doc/:id', function (req, res) {
     let params = {
