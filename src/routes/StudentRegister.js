@@ -38,6 +38,7 @@ class StudentRegister extends React.Component {
 
             reader.readAsBinaryString(file);
         });
+        document.getElementById("resume").innerHTML = "Resume Dropped!";
     }
 
     onDropTranscript = acceptedFiles => {
@@ -54,6 +55,7 @@ class StudentRegister extends React.Component {
 
             reader.readAsBinaryString(file);
         });
+        document.getElementById("transcript").innerHTML = "Transcript Dropped!";
     }
 
     optionify(inputArray,inputName){
@@ -91,10 +93,17 @@ class StudentRegister extends React.Component {
         // get our form data out of state
         const { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript } = this.state;
 
-        axios.post('/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript })
+        axios.post('/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, resume })
             .then((result) => {
                 //access the results here....
             });
+
+        if (this.state.resume.length != 0){
+            axios.post('/createTranscript', { netid, transcript })
+                .then((result) => {
+                    //access the results here....
+                });
+        }
 
         axios.post('/testResume', { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript })
             .then((result) => {
@@ -145,32 +154,28 @@ class StudentRegister extends React.Component {
                     <br/>
 
                     <div className="dropzone">
+                        <h2>*Resume: </h2>
                         <Dropzone onDrop={this.onDropResume.bind(this)}>
-                            <p>Try dropping some files here, or click to select files to upload.</p>
+                            <p>Click to drop resume</p>
                         </Dropzone>
                     </div>
                     <aside>
-                        <h2>Dropped files</h2>
                         <ul>
-                            {
-                                this.state.resume.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                            }
+                            <li id="resume"></li>
                         </ul>
                     </aside>
 
                     <br/>
 
                     <div className="dropzone">
+                        <h2>Transcript:</h2>
                         <Dropzone onDrop={this.onDropTranscript.bind(this)}>
-                            <p>Try dropping some files here, or click to select files to upload.</p>
+                            <p>Click to drop transcript</p>
                         </Dropzone>
                     </div>
                     <aside>
-                        <h2>Dropped files</h2>
                         <ul>
-                            {
-                                this.state.transcript.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
-                            }
+                            <li id="transcript"></li>
                         </ul>
                     </aside>
                     <p> *Required fields</p>

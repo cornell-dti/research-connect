@@ -138,10 +138,16 @@ const undergradSchema = new Schema({
     netId: {type: String, required: true},
     courses: {type: [String],required:true},
     resume: {type: [String], required:true},
-    transcript: {type: [String]}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
+
+const transcriptSchema = new Schema({
+    netId: {type: String, required: true},
+    transcript: {type:[String]}
+});
+
+let transcriptModel = mongoose.model('Transcripts',transcriptSchema, 'Transcripts');
 
 const labSchema = new Schema({
     name: {type: String, required: true},
@@ -745,6 +751,29 @@ app.post('/createOpportunity', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("netid: " + data.creatorNetId);
+    console.log("labpage: " + data.labPage);
+    console.log("title: " + data.title);
+    console.log("projDesc: " + data.projectDescription);
+    console.log("undergradTasks: " + data.undergradTasks);
+    console.log("qualifs: " + data.qualifications);
+    console.log("supervisor: " + data.supervisor);
+    console.log("spots" + data.spots);
+    console.log("startSeason: " +data.startSeason);
+    console.log("startYear: " + data.startYear);
+    console.log("apps: " + data.applications);
+    console.log("yearsAllowed: " + data.yearsAllowed);
+    console.log("majorsAllowed: " + data.majorsAllowed);
+    console.log("question 1: " + JSON.parse(JSON.stringify(data.questions))["q0"]);
+    console.log("question 2: " + JSON.parse(JSON.stringify(data.questions))["q1"]);
+    console.log("requiredClasses: " + data.requiredClasses);
+    console.log("minGPA: " + data.minGPA);
+    console.log("minHours: " + data.minHours);
+    console.log("maxHours: " + data.maxHours);
+    console.log("opens: " + data.opens);
+    console.log("closes: " + data.closes);
+    console.log("areas: " + data.areas);
+
     let opportunity = new opportunityModel({
         creatorNetId: data.creatorNetId,
         labPage: data.labPage,
@@ -756,9 +785,9 @@ app.post('/createOpportunity', function (req, res) {
         spots: data.spots,
         startSeason: data.startSeason,
         startYear: data.startYear,
-        applications: data.applications,
+        applications: data.applications, //missing
         yearsAllowed: data.yearsAllowed,
-        majorsAllowed: data.majorsAllowed,
+        majorsAllowed: data.majorsAllowed, //missing
         questions: data.questions,
         requiredClasses: data.requiredClasses,
         minGPA: data.minGPA,
@@ -817,7 +846,7 @@ app.post('/createUndergrad', function (req, res) {
     console.log(data.netid);
     console.log(data.courses);
     console.log(data.resume);
-    console.log(data.transcript);
+    console.log("This be the resume");
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
@@ -828,10 +857,34 @@ app.post('/createUndergrad', function (req, res) {
         netId: data.netid,
         courses: data.courses,
         resume: data.resume,
-        transcript: data.transcript
     });
     debug(undergrad);
     undergrad.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            debug(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+
+});
+
+app.post('/createTranscript', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data.netid);
+    console.log(data.transcript);
+    console.log("this be the transcript");
+    var tran = new transcriptModel({
+
+        netId: data.netid,
+        transcript: data.transcript
+    });
+    debug(tran);
+    tran.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
@@ -896,6 +949,7 @@ app.post('/createLabAdmin', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("we are in createLabAdmin")
     console.log(data.role);
     console.log(data.labId);
     console.log(data.netId);
@@ -906,33 +960,36 @@ app.post('/createLabAdmin', function (req, res) {
 
 
     // if labId is null then there is no existing lab and creating new lab
+
+    /*
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
     }
+    */
 
     // while labAdmin is signing up he finds existing lab
-    else {
-        var labAdmin = new labAdministratorModel({
-            role: data.role,
-            labId: data.labId,
-            netId: data.netId,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            verified: data.verified
-        });
 
-        labAdmin.save(function (err) {
-            if (err) {
-                res.status(500).send({"errors": err.errors});
-                console.log(err);
-            } //Handle this error however you see fit
-            else {
-                res.send("success!");
-            }
-            // Now the opportunity is saved in the commonApp collection on mlab!
-        });
-    }
+    var labAdmin = new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        verified: data.verified
+    });
+
+    labAdmin.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            console.log(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+
 });
 
 app.post('/createLab', function (req, res) {
@@ -940,12 +997,17 @@ app.post('/createLab', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("We are in createLab")
+    console.log(data.name)
+    console.log(data.labPage)
+    console.log(data.labDescription)
+
     var lab = new labModel({
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-        labAdmins: data.labAdmins,
-        opportunities: data.opportunities
+        labAdmins: [],
+        opportunities: null
     });
 
     lab.save(function (err) {
@@ -1004,7 +1066,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    let id = req.body.id;
+    let id = req.body.netid;
     debug(id);
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
@@ -1019,8 +1081,9 @@ app.post('/updateUndergrad', function (req, res) {
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netID = req.body.netID || undergrad.netID;
-            undergrad.courses = req.body.courses || undergrad.courses;
+            undergrad.netID = req.body.netid || undergrad.netId;
+            undergrad.resume = req.body.resume || undergrad.resume;
+
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {

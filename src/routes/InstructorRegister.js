@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import onClickOutside from "react-onclickoutside";
-import Navbar from '../components/Navbar';
+import Navbar from '../components/ProfNavbar';
 import Footer from '../components/Footer';
 import '../App.css';
 import '../InstructorRegister.css';
@@ -20,10 +20,10 @@ class InstructorRegister extends React.Component {
             firstName: "",
             lastName: "",
             netId: "",
-            labId: null,
-            labPage: null,
-            name: null,
-            labDescription: null,
+            labId: null, //null
+            labPage: null, //null
+            name: null, //null
+            labDescription: null, //null
             pi: ''
         };
 
@@ -117,6 +117,13 @@ class InstructorRegister extends React.Component {
             .then((result) => {
                 //access the results here....
             });
+
+        if (this.state.labId==null){
+            axios.post('http://localhost:3001/createLab', { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi })
+                .then((result) => {
+                    //access the results here....
+                });
+        }
     }
 
     render() {
