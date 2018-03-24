@@ -854,7 +854,7 @@ function createLabAndAdmin(req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-
+        labAdmins: [data.netId]
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
         // labAdmins: data.labAdmins,
         // opportunities: data.opportunities
@@ -913,7 +913,16 @@ app.post('/createLabAdmin', function (req, res) {
                 console.log(err);
             } //Handle this error however you see fit
             else {
-                res.send("success!");
+                labModel.find({"labAdmins": data.netId}, function(error, lab){
+                    lab.labAdmins = lab.labAdmins.push(data.netId);
+                    lab.markModified("labAdmins");
+                    lab.save((err, todo) => {
+                        if (err) {
+                            res.status(500).send(err)
+                        }
+                        res.status(200).send("success");
+                    });
+                });
             }
             // Now the opportunity is saved in the commonApp collection on mlab!
         });
