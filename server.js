@@ -383,7 +383,7 @@ app.post('/getOpportunity', function (req, res) {
                 {
                     $and: [
                         {netId: {$in: labAdmins}},
-                        {role: "pi"}
+                        {role: {$in: ["pi","postdoc","grad"]}}
                     ]
                 },
                 function (err, labAdmin) {
@@ -517,7 +517,7 @@ app.post('/getApplications', function (req, res) {
     decryptGoogleToken(req.body.id, function (tokenBody) {
         // return;
 
-        let labAdminId = tokenBody.email;
+        let labAdminId = tokenBody.email.replace("@cornell.edu","");
         let opportunitiesArray = [];
         let reformatted = {};
         labAdministratorModel.find({netId: labAdminId}, function (err, labAdmin) {
@@ -670,7 +670,9 @@ app.post('/getOpportunitiesListing', function (req, res) {
     };
     let undergradNetId = req.body.netId;
     if (undergradNetId != undefined) {
-        //find the undergrad so we can get their info to determine the "preqreqs match" field
+        decryptGoogleToken(undergradNetId, function (tokenBody) {
+            undergradNetId = tokenBody.email.replace("@cornell.edu","");
+            //find the undergrad so we can get their info to determine the "preqreqs match" field
         undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
             let undergrad1 = undergrad[0];
             undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
@@ -734,6 +736,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
                 }
             });
         });
+    });
     }
     else {
         opportunityModel.find({

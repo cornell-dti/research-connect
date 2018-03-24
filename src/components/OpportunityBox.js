@@ -10,7 +10,7 @@ class OpportunityBox extends Component {
 	}
 
 	loadOpportunitiesFromServer() {
-		axios.post(this.props.url, {netId: "rsn55"})	//TODO redux
+		axios.post(this.props.url, {netId: sessionStorage.getItem('token_id')})	//TODO redux
 			.then(res => {
 				this.setState({ data: res.data });
 				console.log(res.data);
