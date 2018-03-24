@@ -28,13 +28,33 @@ class LandingPage extends Component {
     }
 
     loginFailure() {
-        console.log("error");
+        alert("Error logging in with Google, please ensure you used an @cornell.edu address.");
     }
 
     responseGoogle(response) {
         sessionStorage.setItem('token_id', response.tokenId);
-        window.location.href = "/professorView";
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            if (hasRegistered) {
+                window.location.href = "/professorView";
+            }
+            else {
+                window.location.href = "/instructorRegister";
+            }
+        });
     }
+
+    responseGoogleStudent(response) {
+        sessionStorage.setItem('token_id', response.tokenId);
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            if (hasRegistered) {
+                window.location.href = "/opportunities";
+            }
+            else {
+                window.location.href = "/studentRegister";
+            }
+        });
+    }
+
 
     logout() {
         sessionStorage.clear();
@@ -54,8 +74,15 @@ class LandingPage extends Component {
                         <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
                         <GoogleLogin
                             clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                            buttonText="Log In"
+                            buttonText="Lab Log In"
                             onSuccess={this.responseGoogle.bind(this)}
+                            onFailure={this.loginFailure.bind(this)}
+                            className="login"
+                            hostedDomain="cornell.edu" />
+                        <GoogleLogin
+                            clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                            buttonText="Student Log In"
+                            onSuccess={this.responseGoogleStudent.bind(this)}
                             onFailure={this.loginFailure.bind(this)}
                             className="login"
                             hostedDomain="cornell.edu" />

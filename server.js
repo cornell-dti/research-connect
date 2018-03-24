@@ -387,10 +387,12 @@ app.post('/getOpportunity', function (req, res) {
                     ]
                 },
                 function (err, labAdmin) {
-                    debug("hi");
                     debug(labAdmin);
                     opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                    res.send(opportunity);
+                    undergradModel.findOne({netId: req.body.netId}, function(error3, student){
+                        opportunity.student = student;
+                        res.send(opportunity);
+                    });
                 });
         });
     });
