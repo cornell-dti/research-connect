@@ -283,6 +283,13 @@ app.get('/messages/:opportunityId', function (req, res) {
 
 /**
  * Send an email to notify the student of their status change
+ * Body of request: {
+ *  opportunityId: xxx,
+ *  labAdminNetId: xxx,
+ *  undergradNetId: xxx,
+ *  message: xxx,
+ *  status: "accept" | "reject" | "interviewing"
+ * }
  */
 app.post('/messages/send', function (req, res) {
     let oppId = req.body.opportunityId;
@@ -299,14 +306,8 @@ app.post('/messages/send', function (req, res) {
      */
 
     undergradModel.findOne({netId: ugradNetId}, function (err, ugradInfo) {
-        message = replaceAll(message, "{studentFirstName}", ugradInfo.firstName);
-        message = replaceAll(message, "{studentLastName}", ugradInfo.lastName);
         labAdministratorModel.findOne({netId: profId}, function (err, prof) {
-            message = replaceAll(message, "{yourFirstName}", prof.firstName);
-            message = replaceAll(message, "{yourLastName}", prof.lastName);
-            message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
             opportunityModel.findById(oppId, function (err, opportunity) {
-                message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 for (let i = 0; i < opportunity.applications.length; i++) {
                     if (opportunity.applications[i].undergradNetId === ugradNetId) {
                         opportunity.applications[i].status = status;
@@ -323,6 +324,12 @@ app.post('/messages/send', function (req, res) {
                         debug(err);
                     }
                 });
+                message = replaceAll(message, "{studentFirstName}", ugradInfo.firstName);
+                message = replaceAll(message, "{studentLastName}", ugradInfo.lastName);
+                message = replaceAll(message, "{yourFirstName}", prof.firstName);
+                message = replaceAll(message, "{yourLastName}", prof.lastName);
+                message = replaceAll(message, "{yourEmail}", prof.netId + "@cornell.edu");
+                message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
                     from: 'CornellDTITest@gmail.com',
@@ -406,9 +413,15 @@ function getLabAdmin(id, res) {
     });
 }
 
-app.post('/getUndergrad', function (req, res) {
-    var response = getUndergrad(req.body.id);
-    res.send(response);
+app.get('/undergrad/:netId', function (req, res) {
+    undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+        if (err) {
+            return err;
+        }
+        debug(undergrad.netId);
+
+        res.send(undergrad);
+    });
 });
 
 function getUndergrad(id, res) {
@@ -755,15 +768,42 @@ app.post('/createOpportunity', function (req, res) {
         closes: data.closes,
         areas: data.areas
     });
+
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
-        } else //Handle this error however you see fit
-            res.send("Success!");
-
-        // Now the opportunity is saved in the Opportunities collection on mlab!
+        }
     });
+
+    var opportunityMajor = req.body.majorsAllowed;
+
+    undergradModel.find({ $or:
+        [
+            {major: opportunityMajor},
+            {secondMajor: opportunityMajor},
+            {minor: opportunityMajor}
+
+        ]},
+        function(err, studentsWhoMatch) {
+            for (var undergrad1 in studentsWhoMatch) {
+                // console.log(studentsWhoMatch[undergrad1].netId);
+                const msg = {
+                    to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
+                    from: 'dhruvbaijal@gmail.com',
+                    subject: 'New Research Opportunity Available!',
+                    html: 'Hi,\n' +
+                    'A new opportunity was just posted in an area you expressed interest in - ' +
+                    opportunityMajor + '. You can apply to it here: http://localhost:3000/opportunity/' + opportunity._id + '\n' +
+                    '\n' + //TODO  change localhost:3000 to our domain!!! and fix line spacing
+                    'Thanks,\n' +
+                    'The Research Connect Team\n'
+                };
+
+                sgMail.send(msg);
+        }
+            res.send("Success!");
+        });
 });
 
 app.post('/createUndergrad', function (req, res) {
@@ -899,7 +939,6 @@ app.post('/createLab', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
     debug(data);
-
 
     var lab = new labModel({
         name: data.name,
@@ -1172,7 +1211,7 @@ function base64ArrayBuffer(arrayBuffer) {
     return base64
 }
 
-app.get('/resume/:id', function (req, res) {
+app.get('/doc/:id', function (req, res) {
     let params = {
         Bucket: "research-connect-student-files",
         Key: req.params.id
@@ -1182,6 +1221,8 @@ app.get('/resume/:id', function (req, res) {
         else {
             let baseString = base64ArrayBuffer(data.Body);
             // return res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
+            res.set('content-type', 'text/plain');
+            // res.setContentType("text/plain");
             return res.send(baseString);
         }
     });

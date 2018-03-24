@@ -17,7 +17,7 @@ class ApplicationBox extends Component {
 		return (
 			<div className="prof-application-box" onClick={this.clickRow.bind(this)} style={{ display: this.props.show ? "" : "none" }}>
 				<div className="row">
-					<div className="column column-75">
+					<div className="column column-60">
 						<div className="name">{ this.props.data.firstName }, { this.props.data.lastName }</div>
 						<div className="email">{ this.props.data.undergradNetId }@cornell.edu</div>
 						<div className="grad-year">{ Utils.gradYearToString(this.props.data.gradYear) }, { this.props.data.major }</div>

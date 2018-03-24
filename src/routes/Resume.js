@@ -7,16 +7,19 @@ class Resume extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            resume: <p>Resume is loading...</p>
+            resume: "",
+            loaded: false
         };
     }
 
     componentWillMount() {
-        axios.get('/resume/' + this.props.match.params.id)
+        axios.get('/doc/' + this.props.match.params.id)
             .then((response) => {
-                this.setState({
-                    resume: response.data
-                });
+                this.setState(
+                    {
+                        resume: response.data,
+                        loaded: true
+                    });
             })
             .catch(function (error) {
                 console.log(error);
@@ -25,9 +28,12 @@ class Resume extends Component {
 
     render() {
 
+        let loaded = this.state.loaded;
         return (
             <div style={{height: "100%", width: "100%"}}>
-                <embed style={{height: "100%", width: "100%"}} src={"data:application/pdf;base64," + this.state.resume }/>
+                {loaded ? (<embed style={{height: window.innerHeight, width: window.innerWidth - 15}}
+                                  src={"data:application/pdf;base64," + this.state.resume }/>) :
+                    (<h1 style={{textAlign: "center"}}>Resume is loading...</h1>)}
             </div>
         );
     }

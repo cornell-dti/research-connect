@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css';
 import '../ProfessorView.css';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/ProfNavbar'
 import ApplicationList from '../components/ProfessorView/ApplicationList';
 import YearSelect from '../components/YearSelect'
 import Footer from '../components/Footer';
