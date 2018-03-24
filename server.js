@@ -520,7 +520,7 @@ app.post('/getApplications', function (req, res) {
         let labAdminId = tokenBody.email.replace("@cornell.edu","");
         let opportunitiesArray = [];
         let reformatted = {};
-        labAdministratorModel.find({netId: labAdminId}, function (err, labAdmin) {
+        labAdministratorModel.findOne({netId: labAdminId}, function (err, labAdmin) {
             if (err) {
                 res.send(err);
                 return;

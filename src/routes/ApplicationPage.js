@@ -20,7 +20,7 @@ class ApplicationPage extends Component {
 
 	componentWillMount() {
 		axios.post('/getApplications', {
-			'id': '5a3c0f1df36d280c875969ed'
+			'id': sessionStorage.getItem('token_id')
 		})
 		.then((response) => {
 			for (var opp in response.data) {
