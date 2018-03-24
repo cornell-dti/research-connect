@@ -985,6 +985,11 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;
 
+            opportunity.markModified("messages");
+            opportunity.markModified("applications");
+            opportunity.markModified("questions");
+
+
             // Save the updated document back to the database
             opportunity.save((err, todo) => {
                 if (err) {
