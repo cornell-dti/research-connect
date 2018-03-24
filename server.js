@@ -45,7 +45,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -136,7 +136,9 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    courses: {type: [String],required:true}
+    courses: {type: [String],required:true},
+    resume: {type: [String], required:true},
+    transcript: {type: [String]}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
@@ -372,7 +374,7 @@ app.post('/getOpportunity', function (req, res) {
                 {$and: [
                     {netId: {$in: labAdmins}},
                     {role: "pi"}
-                    ]
+                ]
                 },
                 function (err, labAdmin) {
                     debug("hi");
@@ -522,9 +524,7 @@ app.post('/getApplications', function (req, res) {
                                 },
                                 ....
                             }
-
                              from
-
                              {
                                 "titleOpp": [].
                                 ...
@@ -546,17 +546,12 @@ app.post('/getApplications', function (req, res) {
      var labAdmin = getLabAdmin(labAdminId, res);
      var lab = getLab(labAdmin.labId, res);
      var labOpportunities = lab.opportunities;
-
      var applicationsInOpportunities = {};
-
      for(var opportunityID in labOpportunities) {
-
      var opportunity = getOpportunity(opportunityID, res);
      applicationsInOpportunities[opportunity.title] = opportunity.applications;
      }
-
      debug(applicationsInOpportunities);
-
      */
 
 });
@@ -781,12 +776,8 @@ app.post('/createUndergrad', function (req, res) {
     console.log(data.GPA);
     console.log(data.netid);
     console.log(data.courses);
-    //var dataView = new DataView(data.files);
-    //console.log(dataView.getInt32(0).toString(16));
-    console.log(typeof data.files[0][0]);
-    var buffer = new ArrayBuffer();
-    console.log(typeof buffer);
-    console.log(buffer.byteLength);
+    console.log(data.resume);
+    console.log(data.transcript);
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
@@ -795,7 +786,9 @@ app.post('/createUndergrad', function (req, res) {
         major: data.major,
         gpa: data.GPA,
         netId: data.netid,
-        courses: data.courses
+        courses: data.courses,
+        resume: data.resume,
+        transcript: data.transcript
     });
     debug(undergrad);
     undergrad.save(function (err) {
