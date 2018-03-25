@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import onClickOutside from "react-onclickoutside";
-import Navbar from '../components/Navbar';
+import Navbar from '../components/ProfNavbar';
 import Footer from '../components/Footer';
 import '../App.css';
 import '../InstructorRegister.css';
@@ -141,7 +141,7 @@ class InstructorRegister extends React.Component {
 
         return (
             <div>
-                <Navbar/>
+                {/*<Navbar/>*/}
                 <div className=" instructor-reg-form">
                     <h3>Faculty Registration</h3>
                     <form

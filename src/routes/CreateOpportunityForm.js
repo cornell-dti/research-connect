@@ -2,7 +2,7 @@ import React from 'react';
 import '../CreateOpportunityForm.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/ProfNavbar'
 import axios from 'axios';
 import Footer from '../components/Footer';
 import 'react-datepicker/dist/react-datepicker.css';

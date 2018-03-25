@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/ProfNavbar';
 import '../ApplicationPage.css';
 import EmailDialog from '../components/Shared/EmailDialog.js';
 import Footer from '../components/Footer';
