@@ -48,7 +48,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -139,11 +139,18 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
-    courses: {type: [String]},
-    skills: {type: [String]}
+    courses: {type: [String],required:true},
+    resume: {type: [String], required:true},
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
+
+const transcriptSchema = new Schema({
+    netId: {type: String, required: true},
+    transcript: {type:[String]}
+});
+
+let transcriptModel = mongoose.model('Transcripts',transcriptSchema, 'Transcripts');
 
 const labSchema = new Schema({
     name: {type: String, required: true},
@@ -384,7 +391,7 @@ app.post('/getOpportunity', function (req, res) {
                     $and: [
                         {netId: {$in: labAdmins}},
                         {role: {$in: ["pi","postdoc","grad"]}}
-                    ]
+                ]
                 },
                 function (err, labAdmin) {
                     debug(labAdmin);
@@ -517,68 +524,68 @@ app.post('/getApplications', function (req, res) {
     decryptGoogleToken(req.body.id, function (tokenBody) {
         // return;
 
-        let labAdminId = tokenBody.email.replace("@cornell.edu","");
-        let opportunitiesArray = [];
-        let reformatted = {};
-        labAdministratorModel.findOne({netId: labAdminId}, function (err, labAdmin) {
+    let labAdminId = tokenBody.email.replace("@cornell.edu","");
+    let opportunitiesArray = [];
+    let reformatted = {};
+    labAdministratorModel.findOne({netId:labAdminId}, function (err, labAdmin) {
+        if (err) {
+            res.send(err);
+            return;
+        }
+        labModel.findById(labAdmin.labId, function (err, lab) {
             if (err) {
                 res.send(err);
                 return;
             }
-            labModel.findById(labAdmin.labId, function (err, lab) {
-                if (err) {
-                    res.send(err);
-                    return;
+            let mongooseLabIds = [];
+            for (let i = 0; i < lab.opportunities.length; i++) {
+                mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
+            }
+            opportunityModel.find({
+                '_id': {
+                    $in: mongooseLabIds
                 }
-                let mongooseLabIds = [];
-                for (let i = 0; i < lab.opportunities.length; i++) {
-                    mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
+            }, function (err, docs) {
+                let applicationsArray = [];
+                let allApplications = {};
+                let netIds = [];
+                for (let i = 0; i < docs.length; i++) {
+                    let opportunityObject = docs[i];
+                    for (let j = 0; j < opportunityObject.applications.length; j++) {
+                        applicationsArray.push(opportunityObject.applications[j]);
+                        netIds.push(opportunityObject.applications[j].undergradNetId);
+                    }
+                    allApplications[opportunityObject.title] = applicationsArray;
+                    opportunitiesArray.push(opportunityObject);
+                    applicationsArray = [];
                 }
-                opportunityModel.find({
-                    '_id': {
-                        $in: mongooseLabIds
+                undergradModel.find({
+                    'netId': {
+                        $in: netIds
                     }
-                }, function (err, docs) {
-                    let applicationsArray = [];
-                    let allApplications = {};
-                    let netIds = [];
-                    for (let i = 0; i < docs.length; i++) {
-                        let opportunityObject = docs[i];
-                        for (let j = 0; j < opportunityObject.applications.length; j++) {
-                            applicationsArray.push(opportunityObject.applications[j]);
-                            netIds.push(opportunityObject.applications[j].undergradNetId);
-                        }
-                        allApplications[opportunityObject.title] = applicationsArray;
-                        opportunitiesArray.push(opportunityObject);
-                        applicationsArray = [];
-                    }
-                    undergradModel.find({
-                        'netId': {
-                            $in: netIds
-                        }
-                    }, function (err, studentInfoArray) {
-                        let count = 0;
-                        for (let key in allApplications) {
-                            if (allApplications.hasOwnProperty(key)) {
-                                let currentApplication = allApplications[key];
-                                for (let i = 0; i < currentApplication.length; i++) {
-                                    let currentStudent = currentApplication[i];
-                                    let undergradId = currentStudent.undergradNetId;
-                                    let undergradInfo = studentInfoArray.filter(function (student) {
-                                        return student.netId === undergradId;
-                                    })[0];
-                                    currentStudent.firstName = undergradInfo.firstName;
-                                    currentStudent.lastName = undergradInfo.lastName;
-                                    currentStudent.gradYear = undergradInfo.gradYear;
-                                    currentStudent.major = undergradInfo.major;
-                                    currentStudent.gpa = undergradInfo.gpa;
-                                    currentStudent.courses = undergradInfo.courses;
-                                    currentStudent.skills = undergradInfo.skills;
+                }, function (err, studentInfoArray) {
+                    let count = 0;
+                    for (let key in allApplications) {
+                        if (allApplications.hasOwnProperty(key)) {
+                            let currentApplication = allApplications[key];
+                            for (let i = 0; i < currentApplication.length; i++) {
+                                let currentStudent = currentApplication[i];
+                                let undergradId = currentStudent.undergradNetId;
+                                let undergradInfo = studentInfoArray.filter(function (student) {
+                                    return student.netId === undergradId;
+                                })[0];
+                                currentStudent.firstName = undergradInfo.firstName;
+                                currentStudent.lastName = undergradInfo.lastName;
+                                currentStudent.gradYear = undergradInfo.gradYear;
+                                currentStudent.major = undergradInfo.major;
+                                currentStudent.gpa = undergradInfo.gpa;
+                                currentStudent.courses = undergradInfo.courses;
 
-                                }
-                                //reformat it to match:
-                                /**
-                                 * {
+
+                            }
+                            //reformat it to match:
+                            /**
+                             * {
                                 "titleOpp": {
                                     "opportunity": {},
                                     "applications": []
@@ -807,6 +814,29 @@ app.post('/createOpportunity', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("netid: " + data.creatorNetId);
+    console.log("labpage: " + data.labPage);
+    console.log("title: " + data.title);
+    console.log("projDesc: " + data.projectDescription);
+    console.log("undergradTasks: " + data.undergradTasks);
+    console.log("qualifs: " + data.qualifications);
+    console.log("supervisor: " + data.supervisor);
+    console.log("spots" + data.spots);
+    console.log("startSeason: " +data.startSeason);
+    console.log("startYear: " + data.startYear);
+    console.log("apps: " + data.applications);
+    console.log("yearsAllowed: " + data.yearsAllowed);
+    console.log("majorsAllowed: " + data.majorsAllowed);
+    console.log("question 1: " + JSON.parse(JSON.stringify(data.questions))["q0"]);
+    console.log("question 2: " + JSON.parse(JSON.stringify(data.questions))["q1"]);
+    console.log("requiredClasses: " + data.requiredClasses);
+    console.log("minGPA: " + data.minGPA);
+    console.log("minHours: " + data.minHours);
+    console.log("maxHours: " + data.maxHours);
+    console.log("opens: " + data.opens);
+    console.log("closes: " + data.closes);
+    console.log("areas: " + data.areas);
+
     let opportunity = new opportunityModel({
         creatorNetId: data.creatorNetId,
         labPage: data.labPage,
@@ -818,9 +848,9 @@ app.post('/createOpportunity', function (req, res) {
         spots: data.spots,
         startSeason: data.startSeason,
         startYear: data.startYear,
-        applications: data.applications,
+        applications: data.applications, //missing
         yearsAllowed: data.yearsAllowed,
-        majorsAllowed: data.majorsAllowed,
+        majorsAllowed: data.majorsAllowed, //missing
         questions: data.questions,
         requiredClasses: data.requiredClasses,
         minGPA: data.minGPA,
@@ -872,18 +902,53 @@ app.post('/createOpportunity', function (req, res) {
 app.post('/createUndergrad', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     var data = req.body;
+    console.log(data.firstName);
+    console.log(data.lastName);
+    console.log(data.gradYear);
+    console.log(data.major);
+    console.log(data.GPA);
+    console.log(data.netid);
+    console.log(data.courses);
+    console.log(data.resume);
+    console.log("This be the resume");
     var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
         gradYear: data.gradYear,    //number
         major: data.major,
-        gpa: data.gpa,
-        netId: data.netId,
-        skills: data.skills
+        gpa: data.GPA,
+        netId: data.netid,
+        courses: data.courses,
+        resume: data.resume,
     });
     debug(undergrad);
     undergrad.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            debug(err);
+        } //Handle this error however you see fit
+        else {
+            res.send("success!");
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+
+});
+
+app.post('/createTranscript', function (req, res) {
+    //req is json containing the stuff that was sent if there was anything
+    var data = req.body;
+    console.log(data.netid);
+    console.log(data.transcript);
+    console.log("this be the transcript");
+    var tran = new transcriptModel({
+
+        netId: data.netid,
+        transcript: data.transcript
+    });
+    debug(tran);
+    tran.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
@@ -903,6 +968,8 @@ app.post('/createUndergrad', function (req, res) {
  All three should be in req.body. If labId is not null, then just continue with the method as usual.
  */
 function createLabAndAdmin(req, res) {
+    console.log("This means we had to go somewhere else");
+
     var data = req.body;
 
     var lab = new labModel({
@@ -916,6 +983,7 @@ function createLabAndAdmin(req, res) {
     });
 
     lab.save(function (err, labObject) {
+
         if (err) {
             res.status(500).send({"errors": err.errors});
             console.log(err);
@@ -945,14 +1013,23 @@ app.post('/createLabAdmin', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("we are in createLabAdmin")
+    console.log(data.role);
+    console.log(data.labId);
+    console.log(data.netId);
+    console.log(data.firstName);
+    console.log(data.lastName);
+    console.log(data.verified);
+    console.log(data.labDescription);
+
+
     // if labId is null then there is no existing lab and creating new lab
+
+
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
-    }
-
-    // while labAdmin is signing up he finds existing lab
-    else {
+    } else {
         var labAdmin = new labAdministratorModel({
             role: data.role,
             labId: data.labId,
@@ -989,12 +1066,17 @@ app.post('/createLab', function (req, res) {
     var data = req.body;
     debug(data);
 
+    console.log("We are in createLab")
+    console.log(data.name)
+    console.log(data.labPage)
+    console.log(data.labDescription)
+
     var lab = new labModel({
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-        labAdmins: data.labAdmins,
-        opportunities: data.opportunities
+        labAdmins: [],
+        opportunities: null
     });
 
     lab.save(function (err) {
@@ -1058,7 +1140,7 @@ app.post('/updateOpportunity', function (req, res) {
 
 
 app.post('/updateUndergrad', function (req, res) {
-    let id = req.body.id;
+    let id = req.body.netid;
     debug(id);
     undergradModel.findById(id, function (err, undergrad) {
         if (err) {
@@ -1073,8 +1155,9 @@ app.post('/updateUndergrad', function (req, res) {
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netID = req.body.netID || undergrad.netID;
-            undergrad.skills = req.body.skills || undergrad.skills;
+            undergrad.netID = req.body.netid || undergrad.netId;
+            undergrad.resume = req.body.resume || undergrad.resume;
+
 
             // Save the updated document back to the database
             undergrad.save((err, todo) => {
@@ -1326,6 +1409,10 @@ app.post('/storeResume', function (req, res) {
     });
 });
 
+app.post('/testResume', function (req, res) {
+    console.log("If the below is null, it's not working");
+    console.log(req.body.files);
+});
 
 app.post('/storeApplication', function (req, res) {
     opportunityModel.findById(req.body.opportunityId, function (err, opportunity) {

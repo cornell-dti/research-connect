@@ -176,6 +176,17 @@ class CreateOppForm extends React.Component {
 	 this.setState({closes: date});
 	}
 
+    onSubmit = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const { labPage, areas, title, projectDescription, undergradTasks, qualifications, spots, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result } = this.state;
+
+        axios.post('http://localhost:3001/createOpportunity', { labPage, areas, title, projectDescription, undergradTasks, qualifications, spots, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
+            .then((result) => {
+                //access the results here....
+            });
+    }
+
 	render() {
 		return (
 			<div>
@@ -188,6 +199,7 @@ class CreateOppForm extends React.Component {
 						id='createOpp'
 						action='createOpportunity'
 						method='post'
+						onSubmit={this.onSubmit}
 				>
 
 						<input placeholder="Position Title" type="text" name="title" value={this.state.title} onChange={this.handleChange}/>

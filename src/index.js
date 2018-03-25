@@ -10,6 +10,7 @@ import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import CreateOpportunityForm from './routes/CreateOpportunityForm';
 import InstructorRegister from './routes/InstructorRegister';
+import StudentRegister from './routes/StudentRegister';
 import ProfessorView from './routes/ProfessorView';
 import ApplicationPage from './routes/ApplicationPage';
 import Resume from './routes/Resume';
@@ -24,6 +25,7 @@ ReactDOM.render(
             <Route path='/application/:id' component = {ApplicationPage} />
             <Route exact path='/newopp' component = {CreateOpportunityForm} />
             <Route exact path='/instructorRegister' component = {InstructorRegister} />
+            <Route exact path='/StudentRegister' component = {StudentRegister} />
             <Route exact path='/professorView' component = {ProfessorView} />
             <Route path = '/resume/:id' component = {Resume} />
             <Route exact path='/' component = {LandingPage} />
