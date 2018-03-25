@@ -912,7 +912,7 @@ function createLabAndAdmin(req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-
+        labAdmins: [data.netId]
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
         // labAdmins: data.labAdmins,
         // opportunities: data.opportunities
@@ -965,31 +965,39 @@ app.post('/createLabAdmin', function (req, res) {
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
+    } else {
+        var labAdmin = new labAdministratorModel({
+            role: data.role,
+            labId: data.labId,
+            netId: data.netId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            verified: data.verified
+        });
+
+        labAdmin.save(function (err) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                console.log(err);
+            } //Handle this error however you see fit
+            else {
+                labModel.find({"labAdmins": data.netId}, function(error, lab){
+                    lab.labAdmins = lab.labAdmins.push(data.netId);
+                    lab.markModified("labAdmins");
+                    lab.save((err, todo) => {
+                        if (err) {
+                            res.status(500).send(err)
+                        }
+                        res.status(200).send("success");
+                    });
+                });
+            }
+            // Now the opportunity is saved in the commonApp collection on mlab!
+        });
     }
 
 
-    // while labAdmin is signing up he finds existing lab
-
-    var labAdmin = new labAdministratorModel({
-        role: data.role,
-        labId: data.labId,
-        netId: data.netId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        verified: data.verified
-    });
-
-    labAdmin.save(function (err) {
-        if (err) {
-            res.status(500).send({"errors": err.errors});
-            console.log(err);
-        } //Handle this error however you see fit
-        else {
-            res.send("success!");
-        }
-        // Now the opportunity is saved in the commonApp collection on mlab!
-    });
-
+    Add CommentCollapse
 });
 
 app.post('/createLab', function (req, res) {
@@ -1052,6 +1060,11 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.opens = req.body.opens || opportunity.opens;
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;
+
+            opportunity.markModified("messages");
+            opportunity.markModified("applications");
+            opportunity.markModified("questions");
+
 
             // Save the updated document back to the database
             opportunity.save((err, todo) => {
