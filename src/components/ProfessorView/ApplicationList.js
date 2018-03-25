@@ -11,8 +11,9 @@ class ApplicationList extends Component {
     }
 
     componentDidMount() {
+    		console.log(sessionStorage.getItem('token_id'));
         axios.post('/getApplications', {
-            'id': '5a3c0f1df36d280c875969ed'
+            'id': sessionStorage.getItem('token_id')
         })
             .then((response) => {
                 this.setState({data: response.data});

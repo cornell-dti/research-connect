@@ -146,9 +146,9 @@ class InstructorRegister extends React.Component {
 
                         <select className="main-form-input" value={this.state.role}  onChange={this.handleChangePosition.bind(this)} >
                             <option value="Select Position">Select Your Position</option>
-                            <option value="Graduate Student">Graduate Student</option>
-                            <option value="Post-Doc">Post-Doc</option>
-                            <option value="Principal Investigator">Principal Investigator</option>
+                            <option value="grad">Graduate Student</option>
+                            <option value="postdoc">Post-Doc</option>
+                            <option value="pi">Principal Investigator</option>
                         </select>
 
                         <select className="main-form-input" value={this.state.notifications}  onChange={this.handleChangeNotifications.bind(this)} >
