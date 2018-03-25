@@ -117,13 +117,6 @@ class InstructorRegister extends React.Component {
             .then((result) => {
                 //access the results here....
             });
-
-        if (this.state.labId==null){
-            axios.post('http://localhost:3001/createLab', { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi })
-                .then((result) => {
-                    //access the results here....
-                });
-        }
     }
 
     render() {

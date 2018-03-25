@@ -961,12 +961,12 @@ app.post('/createLabAdmin', function (req, res) {
 
     // if labId is null then there is no existing lab and creating new lab
 
-    /*
+
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
     }
-    */
+
 
     // while labAdmin is signing up he finds existing lab
 
