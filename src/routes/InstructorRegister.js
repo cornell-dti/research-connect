@@ -109,6 +109,9 @@ class InstructorRegister extends React.Component {
     }
 
     onSubmit = (e) => {
+        if(this.state.newLab)
+            this.setState({labId: null});
+        
         e.preventDefault();
         // get our form data out of state
         const { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi } = this.state;

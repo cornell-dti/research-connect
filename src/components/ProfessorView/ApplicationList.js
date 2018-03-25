@@ -60,6 +60,9 @@ class ApplicationList extends Component {
         var apps = []
         var k = 0;
         const data = this.state.data;
+        if (data.length == 0){
+            return (<div>There are currently no applications.</div>);
+        }
         for (var opp in data) {
             for (var app in data[opp].applications) {
                 var curApp = data[opp].applications[app];
