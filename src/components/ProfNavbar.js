@@ -10,6 +10,11 @@ class ProfNavbar extends Component {
 		this.state = {
     };
   }
+
+    logout() {
+        sessionStorage.clear();
+        window.location.href = "/";
+    }
   render() {
 		return (
       <div className="header-all">
@@ -18,7 +23,7 @@ class ProfNavbar extends Component {
       <nav>
         <li><a href="/newopp">Post New Opportunity</a></li>
           <li><a href="/professorView">View Applications</a></li>
-        <li><a href="#">Sign Out</a></li>
+        <li><a onClick={this.logout.bind(this)}>Sign Out</a></li>
 
 
       </nav>
