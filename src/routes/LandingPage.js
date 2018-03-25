@@ -35,8 +35,9 @@ class LandingPage extends Component {
         });
     }
 
-    loginFailure() {
-        alert("Error logging in with Google, please ensure you used an @cornell.edu address.");
+    loginFailure(a) {
+        console.log(a);
+        console.log("Error logging in with Google, please ensure you used an @cornell.edu address.");
     }
 
     responseGoogle(response) {
