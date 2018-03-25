@@ -28,7 +28,6 @@ border: solid #979797 1px;
   width: 100%;
 }
 .title-box{
-  width: 100%;
   display: flex;
   flex-direction: row;
   padding: 30px;
@@ -59,6 +58,7 @@ border: solid #979797 1px;
 }
 .title-second-col{
  text-align: right;
+
 }
 .opp-box-row{
   padding: 10px;
