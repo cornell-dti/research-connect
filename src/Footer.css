@@ -17,3 +17,10 @@
 .footer-all p a{
 	color: #fff;
 }
+.CDTIlogo{
+	width: 25%;
+	margin-bottom: 25px;
+}
+.CDTIlogo:hover{
+	opacity: 0.7
+}
