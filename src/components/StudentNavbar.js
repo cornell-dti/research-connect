@@ -10,14 +10,19 @@ class StudentNavbar extends Component {
 		this.state = {
     };
   }
-  render() {
+  logout() {
+        sessionStorage.clear();
+        window.location.href = "/";
+  }
+
+    render() {
 		return (
       <div className="header-all">
       <Link to="/opportunities"><img className="logo" src={logo}/></Link>
 
       <nav>
         <li><a href="/opportunities">Opportunities</a></li>
-        <li><a href="#">Sign Out</a></li>
+        <li><a onClick={this.logout.bind(this)}>Sign Out</a></li>
         {/*<li><a href="#">Placeholder</a></li>*/}
 
 

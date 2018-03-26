@@ -15,7 +15,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 const fileUpload = require('express-fileupload');
+const request = require("request");
 const AWS = require('aws-sdk');
 let s3;
 if (fs.existsSync('./S3Config2.json')) {
@@ -387,14 +390,16 @@ app.post('/getOpportunity', function (req, res) {
                 {
                     $and: [
                         {netId: {$in: labAdmins}},
-                        {role: "pi"}
+                        {role: {$in: ["pi","postdoc","grad"]}}
                 ]
                 },
                 function (err, labAdmin) {
-                    debug("hi");
                     debug(labAdmin);
                     opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                    res.send(opportunity);
+                    undergradModel.findOne({netId: req.body.netId}, function(error3, student){
+                        opportunity.student = student;
+                        res.send(opportunity);
+                    });
                 });
         });
     });
@@ -404,9 +409,25 @@ function getOpportunity(id, res) {
 
 }
 
+app.get('/labAdmin/:netId', function (req, res) {
+    labAdministratorModel.find({netId: req.params.netId}, function (err, labAdmin) {
+        if (err) {
+            return err;
+        }
+
+        res.send(labAdmin);
+    });
+});
+
 app.post('/getLabAdmin', function (req, res) {
-    var response = getLabAdmin(req.body.id);
-    res.send(response);
+    labAdministratorModel.findById(req.body.id, function (err, labAdmin) {
+        if (err) {
+            return err;
+        }
+        debug(labAdmin.labId);
+
+        res.send(labAdmin);
+    });
 });
 
 function getLabAdmin(id, res) {
@@ -461,27 +482,52 @@ app.get('/application/:id', function (req, res) {
     });
 });
 
+// app.post('/testgoogle', function(req, res){
+//     async function verify() {
+//         const ticket = await client.verifyIdToken({
+//             idToken: token,
+//             audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+//             // Or, if multiple clients access the backend:
+//             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+//         });
+//         const payload = ticket.getPayload();
+//         const userid = payload['sub'];
+//         // If request specified a G Suite domain:
+//         //const domain = payload['hd'];
+//     }
+//     verify().catch(console.error);});
+
+let tokenRequest = {
+    url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=',
+    method: 'GET',
+    headers: {
+        'User-Agent': 'Super Agent/0.0.1',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
+
+/**
+ * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
+ * @param token the google token hash
+ * @param callback the function to run after the token is decrypted, takes one parameter: the body object with name, email, etc.
+ */
+function decryptGoogleToken(token, callback) {
+    let options = tokenRequest;
+    options.url = options.url + token;
+    request(options, function (error, response, body) {
+        body = JSON.parse(body);
+        callback(body);
+    });
+}
+
 app.post('/getApplications', function (req, res) {
+    decryptGoogleToken(req.body.id, function (tokenBody) {
+        // return;
 
-    // function callbackHandler(err, results) {
-    //     debug('It came back with this ' + results);
-    // }
-    //
-    // const labAdminId = req.body.id;
-    // function labAdmin (callbackHandler) {
-    //     var labAdmin = getLabAdmin(labAdminId, res);
-    // }
-    //
-    // function lab (callbackHandler) {
-    //     var lab = getLab(labAdmin.labId, res);
-    // }
-
-    //function
-
-    const labAdminId = req.body.id;
+    let labAdminId = tokenBody.email.replace("@cornell.edu","");
     let opportunitiesArray = [];
     let reformatted = {};
-    labAdministratorModel.findById(labAdminId, function (err, labAdmin) {
+    labAdministratorModel.findOne({netId:labAdminId}, function (err, labAdmin) {
         if (err) {
             res.send(err);
             return;
@@ -534,6 +580,8 @@ app.post('/getApplications', function (req, res) {
                                 currentStudent.major = undergradInfo.major;
                                 currentStudent.gpa = undergradInfo.gpa;
                                 currentStudent.courses = undergradInfo.courses;
+
+
                             }
                             //reformat it to match:
                             /**
@@ -544,36 +592,43 @@ app.post('/getApplications', function (req, res) {
                                 },
                                 ....
                             }
-                             from
-                             {
-                                "titleOpp": [].
-                                ...
-                             }
-                             */
-                            reformatted[key] = {
-                                "opportunity": opportunitiesArray[count],
-                                "applications": allApplications[key]
-                            };
-                            count++;
-                        }
-                    }
-                    res.send(reformatted);
-                });
-            });
-        })
-    });
-    /*
-     var labAdmin = getLabAdmin(labAdminId, res);
-     var lab = getLab(labAdmin.labId, res);
-     var labOpportunities = lab.opportunities;
-     var applicationsInOpportunities = {};
-     for(var opportunityID in labOpportunities) {
-     var opportunity = getOpportunity(opportunityID, res);
-     applicationsInOpportunities[opportunity.title] = opportunity.applications;
-     }
-     debug(applicationsInOpportunities);
-     */
 
+                                 from
+
+                                 {
+                                    "titleOpp": [].
+                                    ...
+                                 }
+                                 */
+                                reformatted[key] = {
+                                    "opportunity": opportunitiesArray[count],
+                                    "applications": allApplications[key]
+                                };
+                                count++;
+                            }
+                        }
+                        res.send(reformatted);
+                    });
+                });
+            })
+        });
+        /*
+         var labAdmin = getLabAdmin(labAdminId, res);
+         var lab = getLab(labAdmin.labId, res);
+         var labOpportunities = lab.opportunities;
+
+         var applicationsInOpportunities = {};
+
+         for(var opportunityID in labOpportunities) {
+
+         var opportunity = getOpportunity(opportunityID, res);
+         applicationsInOpportunities[opportunity.title] = opportunity.applications;
+         }
+
+         debug(applicationsInOpportunities);
+
+         */
+    });
 });
 
 /** Graduation Year: 2021. Given graduation year and current date, determine whether they're freshman soph junior senior
@@ -622,7 +677,9 @@ app.post('/getOpportunitiesListing', function (req, res) {
     };
     let undergradNetId = req.body.netId;
     if (undergradNetId != undefined) {
-        //find the undergrad so we can get their info to determine the "preqreqs match" field
+        decryptGoogleToken(undergradNetId, function (tokenBody) {
+            undergradNetId = tokenBody.email.replace("@cornell.edu","");
+            //find the undergrad so we can get their info to determine the "preqreqs match" field
         undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
             let undergrad1 = undergrad[0];
             undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
@@ -686,6 +743,7 @@ app.post('/getOpportunitiesListing', function (req, res) {
                 }
             });
         });
+    });
     }
     else {
         opportunityModel.find({
@@ -720,8 +778,12 @@ app.get('/getLabs', function (req, res) {
 
 //get one lab by id
 app.get('/getLab', function (req, res) {
-    var response = getLab(req.body.id, res);
-    res.send(response);
+    labModel.findById(req.body.id, function (err, lab) {
+        if (err) {
+            return err;
+        }
+        res.send(lab);
+    });
 });
 
 function getLab(id, res) {
@@ -808,14 +870,15 @@ app.post('/createOpportunity', function (req, res) {
 
     var opportunityMajor = req.body.majorsAllowed;
 
-    undergradModel.find({ $or:
-        [
-            {major: opportunityMajor},
-            {secondMajor: opportunityMajor},
-            {minor: opportunityMajor}
+    undergradModel.find({
+            $or: [
+                {major: opportunityMajor},
+                {secondMajor: opportunityMajor},
+                {minor: opportunityMajor}
 
-        ]},
-        function(err, studentsWhoMatch) {
+            ]
+        },
+        function (err, studentsWhoMatch) {
             for (var undergrad1 in studentsWhoMatch) {
                 // console.log(studentsWhoMatch[undergrad1].netId);
                 const msg = {
@@ -831,7 +894,7 @@ app.post('/createOpportunity', function (req, res) {
                 };
 
                 sgMail.send(msg);
-        }
+            }
             res.send("Success!");
         });
 });
@@ -913,7 +976,7 @@ function createLabAndAdmin(req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-
+        labAdmins: [data.netId]
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
         // labAdmins: data.labAdmins,
         // opportunities: data.opportunities
@@ -950,7 +1013,7 @@ app.post('/createLabAdmin', function (req, res) {
     var data = req.body;
     debug(data);
 
-    console.log("we are in createLabAdmin")
+    console.log("we are in createLabAdmin");
     console.log(data.role);
     console.log(data.labId);
     console.log(data.netId);
@@ -966,31 +1029,36 @@ app.post('/createLabAdmin', function (req, res) {
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         res.send("success!");
+    } else {
+        var labAdmin = new labAdministratorModel({
+            role: data.role,
+            labId: data.labId,
+            netId: data.netId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            verified: data.verified
+        });
+
+        labAdmin.save(function (err) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                console.log(err);
+            } //Handle this error however you see fit
+            else {
+                labModel.findById(data.labId, function(error, lab){
+                    lab.labAdmins = lab.labAdmins.push(data.netId);
+                    lab.markModified("labAdmins");
+                    lab.save((err, todo) => {
+                        if (err) {
+                            res.status(500).send(err)
+                        }
+                        res.status(200).send("success");
+                    });
+                });
+            }
+            // Now the opportunity is saved in the commonApp collection on mlab!
+        });
     }
-
-
-    // while labAdmin is signing up he finds existing lab
-
-    var labAdmin = new labAdministratorModel({
-        role: data.role,
-        labId: data.labId,
-        netId: data.netId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        verified: data.verified
-    });
-
-    labAdmin.save(function (err) {
-        if (err) {
-            res.status(500).send({"errors": err.errors});
-            console.log(err);
-        } //Handle this error however you see fit
-        else {
-            res.send("success!");
-        }
-        // Now the opportunity is saved in the commonApp collection on mlab!
-    });
-
 });
 
 app.post('/createLab', function (req, res) {
@@ -1053,6 +1121,11 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.opens = req.body.opens || opportunity.opens;
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;
+
+            opportunity.markModified("messages");
+            opportunity.markModified("applications");
+            opportunity.markModified("questions");
+
 
             // Save the updated document back to the database
             opportunity.save((err, todo) => {
@@ -1274,6 +1347,15 @@ function base64ArrayBuffer(arrayBuffer) {
 
     return base64
 }
+
+app.get("/hasRegistered/:netId", function(req, res){
+    undergradModel.findOne({netId: req.params.netId}, function(err, undergrad){
+        if (undergrad !== null) return res.send(true);
+        labAdministratorModel.findOne({netId: req.params.netId}, function(err, labAdmin){
+            return res.send(labAdmin !== null);
+        })
+    })
+});
 
 app.get('/doc/:id', function (req, res) {
     let params = {

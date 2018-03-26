@@ -11,8 +11,9 @@ class ApplicationList extends Component {
     }
 
     componentDidMount() {
+    		console.log(sessionStorage.getItem('token_id'));
         axios.post('/getApplications', {
-            'id': '5a3c0f1df36d280c875969ed'
+            'id': sessionStorage.getItem('token_id')
         })
             .then((response) => {
                 this.setState({data: response.data});
@@ -60,6 +61,9 @@ class ApplicationList extends Component {
         var apps = []
         var k = 0;
         const data = this.state.data;
+        if (data.length == 0){
+            return (<div>There are currently no applications.</div>);
+        }
         for (var opp in data) {
             for (var app in data[opp].applications) {
                 var curApp = data[opp].applications[app];

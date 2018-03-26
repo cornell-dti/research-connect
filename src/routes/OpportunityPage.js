@@ -4,7 +4,11 @@ import '../OpportunityPage.css';
 import Navbar from '../components/StudentNavbar'
 import Footer from '../components/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
-import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
+import CrossCircle from 'react-icons/lib/fa/minus-circle';
+import * as Utils from '../components/Shared/Utils.js'
+
+//Utils.gradYearToString(2020) == "Sophomore"
+
 
 class OpportunityPage extends Component {
     constructor(props) {
@@ -12,9 +16,16 @@ class OpportunityPage extends Component {
         this.state = {
             opportunity: {},
             questionAnswers: {},
-            submitted: false
+            submitted: false,
+            student: null
 
         };
+
+        this.parseClasses = this.parseClasses.bind(this);
+        this.parseMajors = this.parseMajors.bind(this);
+        this.parseYears = this.parseYears.bind(this);
+        this.parseGPA = this.parseGPA.bind(this);
+
     }
 
     isEmpty(obj) {
@@ -35,7 +46,6 @@ class OpportunityPage extends Component {
 
     }
     printQuestions() {
-        console.log(this.state.questionAnswers)
         if (!this.isEmpty(this.state.opportunity.questions)) {
             let keys = [];
             //get all the keys and put them in an array
@@ -76,17 +86,16 @@ class OpportunityPage extends Component {
     }
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
-        //TODO make this dependent upon browser url not hardcoded
         axios.post('/getOpportunity', {
-            id: this.props.match.params.id
+            id: this.props.match.params.id,
             //this is just syntax for getting the id from the url
             //the url is outsite.com/opportunity/:id, meaning :id can be any number. So this syntax gets us that id/number
+            netId: 'rsn55'//sessionStorage.getItem('token_id')
         })
             .then((response) => {
                 this.setState({opportunity: response.data});
-                console.log("test");
-                console.log(this.props.match.params.id);
-                console.log(this.state.opportunity);
+                this.setState({student: response.data.student});
+                console.log(response.data.student);
                 if (!this.isEmpty(response.data)) {
                     var obj = {}
                     //get all the keys and put them in an array
@@ -139,40 +148,102 @@ class OpportunityPage extends Component {
         }
     }
 
-    parseArrayToList(yearsArray){
+    parseYears(yearsArray){
 
        var yearDivArray = []
-       if (yearsArray){
+      if (yearsArray){
          var trackYear = false;
       if (yearsArray.includes("freshman")){
+        if (this.state.student!=null && Utils.gradYearToString(this.state.student.gradYear) == "Freshman"){
          yearDivArray.push(<div key="f"><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span></div>)
+       }
+       else{
+         yearDivArray.push(<div key="f"><CrossCircle className="cross"/><span key="fresh"> Freshman</span></div>)
+       }
          trackYear= true;
        }
       if (yearsArray.includes("sophomore") ){
-      yearDivArray.push(<div key="s"><CheckBox className="greenCheck"/><span key="soph"> Sophomore</span></div>)
+        if (this.state.student!=null && Utils.gradYearToString(this.state.student.gradYear) == "Sophomore"){
+            yearDivArray.push(<div key="so"><CheckBox className="greenCheck"/><span > Sophomore</span></div>)
+         }
+         else {
+           yearDivArray.push(<div key="so"><CrossCircle className="cross"/><span > Sophomore</span></div>)
+         }
       trackYear= true;
       }
       if (yearsArray.includes("junior")){
-        yearDivArray.push(<div key="j"><CheckBox className="greenCheck"/><span key="junior"> Junior</span></div>)
+        if (this.state.student!=null && Utils.gradYearToString(this.state.student.gradYear) == "Junior"){
+          yearDivArray.push(<div key="j"><CheckBox className="greenCheck"/><span > Junior</span></div>)
+        }else{
+          yearDivArray.push(<div key="j"><CrossCircle className="cross"/><span > Junior</span></div>)
+
+        }
         trackYear= true;
       }
       if (yearsArray.includes("senior")){
-        yearDivArray.push(<div k="s"><CheckBox className="greenCheck"/><span key="sen"> Senior</span></div>)
+        if (this.state.student!=null && Utils.gradYearToString(this.state.student.gradYear) == "Senior"){
+        yearDivArray.push(<div k="se"><CheckBox className="greenCheck"/><span > Senior</span></div>)
+      }else{
+        yearDivArray.push(<div k="se"><CrossCircle className="cross"/><span > Senior</span></div>)
+
+      }
         trackYear= true;
       }
-      if (!trackYear){
-        if (yearsArray.length==0){
-            yearDivArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span key="n"> No Preference</span></div>);
-        }
-        for (var i=0;i<yearsArray.length;i++){
-          yearDivArray.push(<div key={i+yearsArray[0]+"div"}><CheckBox key={i+yearsArray[0]+"check"} className="greenCheck"/><span key={i+yearsArray[0]+"span"}> {yearsArray[i]}</span></div>);
-        }
+      if (trackYear){
+          return <ul>{yearDivArray}</ul>;
+      }
+      else{
+        return <ul><div key="n"><CheckBox className="greenCheck"/><span> No Preference</span></div></ul>
       }
     }
 
-
-      return <ul>{yearDivArray}</ul>;
     }
+parseMajors(arrayIn){
+    var returnArray = []
+    if (arrayIn){
+      if (arrayIn.length==0){
+          returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span key="n"> No Preference</span></div>);
+      }
+      for (var i=0;i<arrayIn.length;i++){
+        if (this.state.student!=null && this.state.student.major.indexOf(arrayIn[i])!=-1){
+          returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span > {arrayIn[i]}</span></div>);
+        }
+        else{
+          returnArray.push(<div key={i}><CrossCircle className="cross"/><span > {arrayIn[i]}</span></div>);
+
+        }
+      }
+      return <ul>{returnArray}</ul>;
+    }
+}
+parseClasses(arrayIn){
+    var returnArray = []
+    if (arrayIn){
+      if (arrayIn.length==0){
+          returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span key="n"> No Preference</span></div>);
+      }
+      for (var i=0;i<arrayIn.length;i++){
+        if (this.state.student!=null && this.state.student.courses.indexOf(arrayIn[i])!=-1){
+        returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span> {arrayIn[i]}</span></div>);
+      }
+      else{
+        returnArray.push(<div key={i}><CrossCircle  className="cross"/><span> {arrayIn[i]}</span></div>);
+      }
+      }
+      return <ul>{returnArray}</ul>;
+    }
+}
+parseGPA(gpa){
+
+  if(this.state.student && this.state.opportunity && this.state.opportunity.minGPA<=this.state.student.gpa){
+    return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA}</span></p>;
+  }
+  else{
+    return  <p key={1}><CrossCircle className="cross"/><span> {this.state.opportunity.minGPA}</span></p>;
+ }
+
+}
+
 
 
     render() {
@@ -230,24 +301,23 @@ class OpportunityPage extends Component {
                       <hr/>
 
                       <div className="qual-section">
-                        {/* TODO: Have a checkmark next to qualifications that a candidate meets based on netID*/}
                           <h6>Year: </h6>
-                          {this.parseArrayToList(this.state.opportunity.yearsAllowed)}
+                          {this.parseYears(this.state.opportunity.yearsAllowed)}
                           </div>
                           <hr/>
                           <div className="qual-section">
                           <h6> Major:</h6>
-                            {this.parseArrayToList(this.state.opportunity.areas)}
+                            {this.parseMajors(this.state.opportunity.majorsAllowed)}
                           </div>
                           <hr/>
                             <div className="qual-section">
                             <h6>GPA: </h6>
-                          <p><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA}</span></p>
+                            { this.parseGPA(this.state.opportunity.minGPA)}
                           </div>
                           <hr/>
                             <div className="qual-section">
                           <h6>Courses: </h6>
-                          {this.parseArrayToList(this.state.opportunity.requiredClasses)}
+                          {this.parseClasses(this.state.opportunity.requiredClasses)}
                           </div>
 
 
@@ -259,7 +329,7 @@ class OpportunityPage extends Component {
 
                 </div>
             </div>
-    
+
             </div>
         );
     }
