@@ -147,17 +147,17 @@ let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads')
 
 const transcriptSchema = new Schema({
     netId: {type: String, required: true},
-    transcript: {type:[String]}
+    transcript: {type: [String]}
 });
 
-let transcriptModel = mongoose.model('Transcripts',transcriptSchema, 'Transcripts');
+let transcriptModel = mongoose.model('Transcripts', transcriptSchema, 'Transcripts');
 
 const labSchema = new Schema({
     name: {type: String, required: true},
     labPage: {type: String, default: ""},
     labDescription: {type: String, default: ""},
     labAdmins: {type: [String], default: []},
-    opportunities: [{type: Schema.Types.ObjectId, ref: "Opportunities"}]
+    opportunities: {type: [Schema.Types.ObjectId], ref: "Opportunities"}
 });
 let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
 
@@ -166,6 +166,7 @@ const labAdministratorSchema = new Schema({
     role: {type: String, enum: ["pi", "postdoc", "grad", "undergrad"], required: true},
     labId: {type: Schema.Types.ObjectId, required: true, ref: "Labs"},
     netId: {type: String, required: true},
+    pi: {type: String, required: false},
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     verified: {type: Boolean, default: false}
@@ -181,7 +182,7 @@ const opportunitySchema = new Schema({
     undergradTasks: {type: String, default: "TBD"},  //what the undergrad would be doing, can be null
     qualifications: {type: String, default: "TBD"}, //can be null/empty
     supervisor: {type: String, default: "TBD"}, //can be null
-    spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
+    // spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
     startSeason: {type: String, enum: ["Summer", "Fall", "Winter", "Spring"]}, //null if start asap, string b/c it will prob be something like Fall 2018
     startYear: {type: Number},
     yearsAllowed: {
@@ -195,11 +196,10 @@ const opportunitySchema = new Schema({
     },
     messages: {
         type: Schema.Types.Mixed, default: {
-            "accept": 'Hi {studentFirstName}, \nI am pleased to inform you that our lab will accept you for the opportunity "{opportunityTitle}". Please email me at {yourEmail} to find out more about when you will start. \n\nSincerely, \n{yourFirstName} {yourLastName}',
-            "reject": 'Hi {studentFirstName}, \nI regret to inform you that our lab will not be able to accept you for the ' +
-            ' "{opportunityTitle}" position this time. Please consider applying in the future. \n\nRespectfully, ' +
-            '\n{yourFirstName} {yourLastName}”.',
-            "interview": 'Hi {studentFirstName}, \nWe reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". \n\nSincerely, \n{yourFirstName} {yourLastName}'
+            "accept": 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. Please email me to find out more about when you will start.',
+            "reject": 'Hi, \nI regret to inform you that our lab will not be able to accept you for the position ' +
+            ' you applied for at our lab. Please consider applying again in the future.',
+            "interview": 'Hi, \nWe reviewed your application and would love to learn more about you. Please email me with times in the next seven days that work for you for an interview regarding this opportunity.'
         }
     },
     applications: {type: [Schema.Types.Mixed], default: []},
@@ -386,18 +386,40 @@ app.post('/getOpportunity', function (req, res) {
                     }
                 }
             }
+            console.log("here");
+            console.log(labAdmins);
             labAdministratorModel.findOne(
                 {
                     $and: [
                         {netId: {$in: labAdmins}},
-                        {role: {$in: ["pi","postdoc","grad"]}}
-                ]
+                        {role: {$in: ["pi", "postdoc", "grad"]}}
+                    ]
                 },
                 function (err, labAdmin) {
                     debug(labAdmin);
                     opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                    undergradModel.findOne({netId: req.body.netId}, function(error3, student){
-                        opportunity.student = student;
+                    undergradModel.findOne({netId: req.body.netIdPlain}, function (error3, student) {
+                        if (student === undefined) {
+                            opportunity.student = {
+                                "firstName": "rachel",
+                                "lastName": "nash",
+                                "gradYear": 2020,
+                                "major": "Computer Science",
+                                "gpa": 4.3,
+                                "netId": "rsn55",
+                                "courses": [
+                                    "CS 1110",
+                                    "INFO 4998",
+                                    "CS 3110"
+                                ],
+                                "skills": [
+                                    "HTML"
+                                ]
+                            }
+                        }
+                        else {
+                            opportunity.student = student;
+                        }
                         res.send(opportunity);
                     });
                 });
@@ -521,13 +543,13 @@ function decryptGoogleToken(token, callback) {
 }
 
 app.post('/getApplications', function (req, res) {
-    decryptGoogleToken(req.body.id, function (tokenBody) {
-        // return;
+    // decryptGoogleToken(req.body.id, function (tokenBody) {
 
-    let labAdminId = tokenBody.email.replace("@cornell.edu","");
+    // let labAdminId = tokenBody.email.replace("@cornell.edu", "");
+    let labAdminId = req.body.netId;
     let opportunitiesArray = [];
     let reformatted = {};
-    labAdministratorModel.findOne({netId:labAdminId}, function (err, labAdmin) {
+    labAdministratorModel.findOne({netId: labAdminId}, function (err, labAdmin) {
         if (err) {
             res.send(err);
             return;
@@ -593,42 +615,42 @@ app.post('/getApplications', function (req, res) {
                                 ....
                             }
 
-                                 from
+                             from
 
-                                 {
-                                    "titleOpp": [].
-                                    ...
-                                 }
-                                 */
-                                reformatted[key] = {
-                                    "opportunity": opportunitiesArray[count],
-                                    "applications": allApplications[key]
-                                };
-                                count++;
-                            }
+                             {
+                                "titleOpp": [].
+                                ...
+                             }
+                             */
+                            reformatted[key] = {
+                                "opportunity": opportunitiesArray[count],
+                                "applications": allApplications[key]
+                            };
+                            count++;
                         }
-                        res.send(reformatted);
-                    });
+                    }
+                    res.send(reformatted);
                 });
-            })
-        });
-        /*
-         var labAdmin = getLabAdmin(labAdminId, res);
-         var lab = getLab(labAdmin.labId, res);
-         var labOpportunities = lab.opportunities;
-
-         var applicationsInOpportunities = {};
-
-         for(var opportunityID in labOpportunities) {
-
-         var opportunity = getOpportunity(opportunityID, res);
-         applicationsInOpportunities[opportunity.title] = opportunity.applications;
-         }
-
-         debug(applicationsInOpportunities);
-
-         */
+            });
+        })
     });
+    /*
+     var labAdmin = getLabAdmin(labAdminId, res);
+     var lab = getLab(labAdmin.labId, res);
+     var labOpportunities = lab.opportunities;
+
+     var applicationsInOpportunities = {};
+
+     for(var opportunityID in labOpportunities) {
+
+     var opportunity = getOpportunity(opportunityID, res);
+     applicationsInOpportunities[opportunity.title] = opportunity.applications;
+     }
+
+     debug(applicationsInOpportunities);
+
+     */
+    // });
 });
 
 /** Graduation Year: 2021. Given graduation year and current date, determine whether they're freshman soph junior senior
@@ -678,72 +700,95 @@ app.post('/getOpportunitiesListing', function (req, res) {
     let undergradNetId = req.body.netId;
     if (undergradNetId != undefined) {
         decryptGoogleToken(undergradNetId, function (tokenBody) {
-            undergradNetId = tokenBody.email.replace("@cornell.edu","");
+            if (tokenBody.email === undefined) {
+                undergradNetId = req.body.netIdPlain;
+            }
+            else {
+                undergradNetId = tokenBody.email.replace("@cornell.edu", "");
+            }
+            console.log(undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
-        undergradModel.find({netId: undergradNetId}, function (err, undergrad) {
-            let undergrad1 = undergrad[0];
-            undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
-            debug(undergrad1);
-            debug("test");
-            //only get the ones that are currenlty open
-            opportunityModel.find({
-                opens: {
-                    $lte: new Date()
-                },
-                closes: {
-                    $gte: new Date()
-                }
-            }).lean().exec(function (err, opportunities) {
-                let labs = [];
-                //get all the labs so you have the info to update
-                labModel.find({}, function (labErr, labs2) {
-                    labs = labs2;
-                    for (let i = 0; i < opportunities.length; i++) {
-                        let prereqsMatch = false;
-                        opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => replaceAll(course, " ", ""));
-                        // checks for gpa, major, and gradYear
-                        if (opportunities[i].minGPA <= undergrad1.gpa &&
-                            opportunities[i].requiredClasses.every(function (val) {
-                                //Check for synonymous courses, or courses where you can skip the prereqs
-
-                                if (!undergrad1.courses.includes(val)) {
-                                    let courseSubs = coursePrereqs[val];
-                                    if (courseSubs !== undefined) {
-                                        return undergrad1.courses.some(function (course) {
-                                            return courseSubs.includes(course);
-                                        });
-                                    }
-                                    return false;
-                                }
-                                return true;    //if it's contained in the undergrad1 courses straight off the bat
-                            }) &&
-                            opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
-                            prereqsMatch = true;
+            undergradModel.findOne({netId: undergradNetId}, function (err, undergrad) {
+                let undergrad1 = undergrad;
+                //if they're a lab admin, show them all
+                if (undergrad1 === undefined || undergrad1 === null) {
+                    opportunityModel.find({
+                        opens: {
+                            $lte: new Date()
+                        },
+                        closes: {
+                            $gte: new Date()
                         }
-                        debug("h");
-                        let thisLab = findLabWithAdmin(labs, opportunities[i].creatorNetId);
-                        //prevent "undefined" values if there's some error
-                        if (thisLab === undefined) thisLab = {name: "", labPage: "", labDescription: ""};
-                        opportunities[i]["prereqsMatch"] = prereqsMatch;
-                        opportunities[i]["labName"] = thisLab.name;
-                        opportunities[i]["labPage"] = thisLab.labPage;
-                        opportunities[i]["labDescription"] = thisLab.labDescription;
-                        debug(opportunities[i]);
-                        debug(Object.getOwnPropertyNames(opportunities[i]));
+                    }, function (err, opportunities) {
+                        for (let i = 0; i < opportunities.length; i++) {
+                            opportunities[i]["prereqsMatch"] = true;
+                        }
+                        return res.send(opportunities);
+                    })
+                } else {
+                    undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
+                    debug(undergrad1);
+                    debug("test");
+                    //only get the ones that are currenlty open
+                    opportunityModel.find({
+                        opens: {
+                            $lte: new Date()
+                        },
+                        closes: {
+                            $gte: new Date()
+                        }
+                    }).lean().exec(function (err, opportunities) {
+                        let labs = [];
+                        //get all the labs so you have the info to update
+                        labModel.find({}, function (labErr, labs2) {
+                            labs = labs2;
+                            for (let i = 0; i < opportunities.length; i++) {
+                                let prereqsMatch = false;
+                                opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => replaceAll(course, " ", ""));
+                                // checks for gpa, major, and gradYear
+                                if (opportunities[i].minGPA <= undergrad1.gpa &&
+                                    opportunities[i].requiredClasses.every(function (val) {
+                                        //Check for synonymous courses, or courses where you can skip the prereqs
 
-                    }
-                    res.send(opportunities);
-                });
-                for (let i = 0; i < opportunities.length; i++) {
-                    debug(opportunities[i].prereqsMatch);
-                }
-                if (err) {
-                    //handle the error appropriately
-                    res.send(err);
+                                        if (!undergrad1.courses.includes(val)) {
+                                            let courseSubs = coursePrereqs[val];
+                                            if (courseSubs !== undefined) {
+                                                return undergrad1.courses.some(function (course) {
+                                                    return courseSubs.includes(course);
+                                                });
+                                            }
+                                            return false;
+                                        }
+                                        return true;    //if it's contained in the undergrad1 courses straight off the bat
+                                    }) &&
+                                    opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
+                                    prereqsMatch = true;
+                                }
+                                debug("h");
+                                let thisLab = findLabWithAdmin(labs, opportunities[i].creatorNetId);
+                                //prevent "undefined" values if there's some error
+                                if (thisLab === undefined) thisLab = {name: "", labPage: "", labDescription: ""};
+                                opportunities[i]["prereqsMatch"] = prereqsMatch;
+                                opportunities[i]["labName"] = thisLab.name;
+                                opportunities[i]["labPage"] = thisLab.labPage;
+                                opportunities[i]["labDescription"] = thisLab.labDescription;
+                                debug(opportunities[i]);
+                                debug(Object.getOwnPropertyNames(opportunities[i]));
+
+                            }
+                            res.send(opportunities);
+                        });
+                        for (let i = 0; i < opportunities.length; i++) {
+                            debug(opportunities[i].prereqsMatch);
+                        }
+                        if (err) {
+                            //handle the error appropriately
+                            res.send(err);
+                        }
+                    });
                 }
             });
         });
-    });
     }
     else {
         opportunityModel.find({
@@ -821,8 +866,8 @@ app.post('/createOpportunity', function (req, res) {
     console.log("undergradTasks: " + data.undergradTasks);
     console.log("qualifs: " + data.qualifications);
     console.log("supervisor: " + data.supervisor);
-    console.log("spots" + data.spots);
-    console.log("startSeason: " +data.startSeason);
+    // console.log("spots" + data.spots);
+    console.log("startSeason: " + data.startSeason);
     console.log("startYear: " + data.startYear);
     console.log("apps: " + data.applications);
     console.log("yearsAllowed: " + data.yearsAllowed);
@@ -837,15 +882,18 @@ app.post('/createOpportunity', function (req, res) {
     console.log("closes: " + data.closes);
     console.log("areas: " + data.areas);
 
+    // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
+    //     let netId = email.replace("@cornell.edu", "");
+    let netId = data.netId;
     let opportunity = new opportunityModel({
-        creatorNetId: data.creatorNetId,
+        creatorNetId: netId,
         labPage: data.labPage,
         title: data.title,
         projectDescription: data.projectDescription,
         undergradTasks: data.undergradTasks,
         qualifications: data.qualifications,
         supervisor: data.supervisor,
-        spots: data.spots,
+        // spots: data.spots,
         startSeason: data.startSeason,
         startYear: data.startYear,
         applications: data.applications, //missing
@@ -861,25 +909,35 @@ app.post('/createOpportunity', function (req, res) {
         areas: data.areas
     });
 
-    opportunity.save(function (err) {
+    opportunity.save(function (err, response) {
         if (err) {
             res.status(500).send({"errors": err.errors});
-            debug(err);
+            console.log(err);
         }
+        let oppId = response.id;
+        labModel.findOne(
+            {labAdmins: netId}
+            , function (error, lab) {
+                let opps = lab.opportunities;
+                opps.push(mongoose.Types.ObjectId(oppId));
+                lab.opportunities = opps;
+                lab.markModified("opportunities");
+                lab.save(function (saveError, response) {
+                });
+            });
     });
 
-    var opportunityMajor = req.body.majorsAllowed;
+    let opportunityMajor = req.body.majorsAllowed;
 
     undergradModel.find({
             $or: [
                 {major: opportunityMajor},
                 {secondMajor: opportunityMajor},
                 {minor: opportunityMajor}
-
             ]
         },
         function (err, studentsWhoMatch) {
-            for (var undergrad1 in studentsWhoMatch) {
+            for (let undergrad1 in studentsWhoMatch) {
                 // console.log(studentsWhoMatch[undergrad1].netId);
                 const msg = {
                     to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
@@ -897,6 +955,7 @@ app.post('/createOpportunity', function (req, res) {
             }
             res.send("Success!");
         });
+    // });
 });
 
 app.post('/createUndergrad', function (req, res) {
@@ -976,7 +1035,8 @@ function createLabAndAdmin(req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-        labAdmins: [data.netId]
+        labAdmins: [data.netId],
+        pi: data.pi
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
         // labAdmins: data.labAdmins,
         // opportunities: data.opportunities
@@ -1028,7 +1088,7 @@ app.post('/createLabAdmin', function (req, res) {
 
     if (data.labId == null) {
         createLabAndAdmin(req, res);
-        res.send("success!");
+        return res.send("success!");
     } else {
         var labAdmin = new labAdministratorModel({
             role: data.role,
@@ -1045,7 +1105,7 @@ app.post('/createLabAdmin', function (req, res) {
                 console.log(err);
             } //Handle this error however you see fit
             else {
-                labModel.findById(data.labId, function(error, lab){
+                labModel.findById(data.labId, function (error, lab) {
                     lab.labAdmins = lab.labAdmins.push(data.netId);
                     lab.markModified("labAdmins");
                     lab.save((err, todo) => {
@@ -1107,7 +1167,7 @@ app.post('/updateOpportunity', function (req, res) {
             opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
             opportunity.qualifications = req.body.qualifications || opportunity.qualifications;
             opportunity.supervisor = req.body.supervisor || opportunity.supervisor;
-            opportunity.spots = req.body.spots || opportunity.spots;
+            // opportunity.spots = req.body.spots || opportunity.spots;
             opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
             opportunity.startYear = req.body.startYear || opportunity.startYear;
             opportunity.applications = req.body.applications || opportunity.applications;
@@ -1348,11 +1408,21 @@ function base64ArrayBuffer(arrayBuffer) {
     return base64
 }
 
-app.get("/hasRegistered/:netId", function(req, res){
-    undergradModel.findOne({netId: req.params.netId}, function(err, undergrad){
+app.get("/hasRegistered/:netId", function (req, res) {
+    undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
         if (undergrad !== null) return res.send(true);
-        labAdministratorModel.findOne({netId: req.params.netId}, function(err, labAdmin){
+        labAdministratorModel.findOne({netId: req.params.netId}, function (err, labAdmin) {
             return res.send(labAdmin !== null);
+        })
+    })
+});
+
+app.get("/role/:netId", function (req, res) {
+    undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
+        if (undergrad !== null) return res.send("undergrad");
+        labAdministratorModel.findOne({netId: req.params.netId}, function (err, labAdmin) {
+            if (labAdmin === null) return res.send("none")
+            res.send(labAdmin.role);
         })
     })
 });
@@ -1381,7 +1451,7 @@ app.post('/storeResume', function (req, res) {
         "_id": {
             "$oid": "5a930ca8f36d286fea36d327"
         }
-    }, function(err, undergrad) {
+    }, function (err, undergrad) {
         undergrad.resume = req.body.files[0];
         undergrad.save((err, todo) => {
             if (err) {

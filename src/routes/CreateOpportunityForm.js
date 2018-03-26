@@ -11,13 +11,15 @@ class CreateOppForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+		    netId: sessionStorage.getItem('netId'),
+		    creatorNetId: sessionStorage.getItem('token_id'),
 			labPage: '',
 			areas: [],
 			title: '',
 			projectDescription: '',
 			undergradTasks: '',
 			qualifications: '',
-			spots: '',
+			// spots: '',
 			startSeason: '',
 			startYear: '',
 			yearsAllowed: [],
@@ -31,8 +33,8 @@ class CreateOppForm extends React.Component {
 			labName: '',
 			supervisor: '',
 			numQuestions: 0,
+			submit: "Submit",
 			result: <div></div>
-
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -89,8 +91,9 @@ class CreateOppForm extends React.Component {
 		</div>});
 	}
 	createGpaOptions() {
-		var options = [];
-		for(var i=25; i<=43; i++){
+		let options = [];
+        options.push( <option key={0} value={(0).toString()} >{(0).toString()}</option>);
+        for(let i=25; i<=43; i++){
 			options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);
 		}
 		return (
@@ -102,7 +105,7 @@ class CreateOppForm extends React.Component {
 	}
 	setYears(){
 
-		var yearArray = [];
+		let yearArray = [];
 		if (this.freshman.checked){
 			yearArray.push('freshman');
 		}
@@ -138,8 +141,8 @@ class CreateOppForm extends React.Component {
 			this.setState({undergradTasks: event.target.value});
 		} else if (event.target.name === "qual") {
 			this.setState({qualifications: event.target.value});
-		} else if (event.target.name === "spots") {
-			this.setState({spots: event.target.value});
+		// } else if (event.target.name === "spots") {
+		// 	this.setState({spots: event.target.value});
 		} else if (event.target.name === "classes") {
 			var classArray= event.target.value.split(",");
 			this.setState({areas: areaArray});
@@ -179,13 +182,20 @@ class CreateOppForm extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const { labPage, areas, title, projectDescription, undergradTasks, qualifications, spots, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result } = this.state;
+        const { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result } = this.state;
 
-        axios.post('http://localhost:3001/createOpportunity', { labPage, areas, title, projectDescription, undergradTasks, qualifications, spots, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
+        axios.post('http://localhost:3001/createOpportunity', { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
             .then((result) => {
                 //access the results here....
+                this.setState({submit: "Submitted!"});
+                function sleep (time) {
+                    return new Promise((resolve) => setTimeout(resolve, time));
+                }
+                sleep(1200).then(() => {
+                    document.location.href = "/professorView";
+                });
             });
-    }
+    };
 
 	render() {
 		return (
@@ -225,7 +235,7 @@ class CreateOppForm extends React.Component {
 
 
 						<div className="years-allowed">
-						<label  className="label-inline">Years Allowed: </label>
+						<label  className="label-inline">Years Desired: </label>
 							<input ref={(node) => {
 								this.freshman = node
 							}} onChange={this.setYears.bind(this)} type="checkbox" name="Freshman" value="Freshman"/>
@@ -246,7 +256,7 @@ class CreateOppForm extends React.Component {
 
 							<textarea placeholder="Topics of Research (Please separate with commas)" type="text" name="areas" value={this.state.areas} onChange={this.handleChange}/>
 
-							<input placeholder="# Available Spots" type="text" name="spots" value={this.state.spots} onChange={this.handleChange}/>
+							{/*<input placeholder="# Available Spots" type="text" name="spots" value={this.state.spots} onChange={this.handleChange}/>*/}
 
 
 						<div className="start-time">
@@ -280,8 +290,9 @@ class CreateOppForm extends React.Component {
 						</div>
 
 
-						<p>You can optionally add position-specific questions that students must answer in order to apply:</p>
-
+						<p>You can optionally add position-specific questions that students must answer in order to apply.
+                We recommend asking "Why are you interested in this lab and/or position?" to gauge interest.
+                You will nonetheless able to view each student's year, GPA, resume, and major, in addition to their responses to these questions once they apply.</p>
 						<div className="question-adder">
 						<input className="button-small button" type="button" value="Add a question" onClick={this.addQuestion}/>
 						{this.state.numQuestions !== 0 ? <input className="button-small button remove" type="button" value="Remove a question"
@@ -291,7 +302,7 @@ class CreateOppForm extends React.Component {
 					</div>
 
 					<div className="submit-div">
-					<input className="button submit" type="submit" value="Submit"/>
+					<input className="button submit" type="submit" value={this.state.submit}/>
 					</div>
 				</form>
 

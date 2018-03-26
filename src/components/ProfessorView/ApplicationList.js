@@ -11,9 +11,10 @@ class ApplicationList extends Component {
     }
 
     componentDidMount() {
-    		console.log(sessionStorage.getItem('token_id'));
+        console.log(sessionStorage.getItem('token_id'));
         axios.post('/getApplications', {
-            'id': sessionStorage.getItem('token_id')
+            'id': sessionStorage.getItem('token_id'),
+            'netId': sessionStorage.getItem('netId')
         })
             .then((response) => {
                 this.setState({data: response.data});
@@ -58,25 +59,29 @@ class ApplicationList extends Component {
     }
 
     render() {
-        var apps = []
-        var k = 0;
+        let apps = [];
+        let k = 0;
         const data = this.state.data;
-        if (data.length == 0){
+        if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
             return (<div>There are currently no applications.</div>);
         }
-        for (var opp in data) {
-            for (var app in data[opp].applications) {
-                var curApp = data[opp].applications[app];
-                var curOpp = data[opp].opportunity;
-                if (curApp !== undefined) {
-                    apps.push(<ApplicationBox key={ k++ } data={ curApp } opportunity={ curOpp }
-                                              show={ this.shouldShow(curApp) }/>);
+        else {
+            console.log('not 0');
+            console.log(data);
+            for (let opp in data) {
+                for (let app in data[opp].applications) {
+                    let curApp = data[opp].applications[app];
+                    let curOpp = data[opp].opportunity;
+                    if (curApp !== undefined) {
+                        apps.push(<ApplicationBox key={ k++ } data={ curApp } opportunity={ curOpp }
+                                                  show={ this.shouldShow(curApp) }/>);
+                    }
                 }
             }
+            return (
+                <div>{ apps }</div>
+            )
         }
-        return (
-            <div>{ apps }</div>
-        )
     }
 }
 

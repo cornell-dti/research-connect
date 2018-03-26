@@ -69,7 +69,7 @@ class ProfessorView extends Component {
 						</div>
 						<div className='column'>
 							<div className='application-list-container'>
-								<div className='application-list-header'>Viewing: Applications for All Labs</div>
+								<div className='application-list-header'>Viewing: Applications for All Opportunities in your Lab</div>
 								<ApplicationList filter={ this.state } />
 							</div>
 						</div>

@@ -86,18 +86,20 @@ class OpportunityPage extends Component {
     }
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
+        console.log(this.props.match.params.id);
         axios.post('/getOpportunity', {
             id: this.props.match.params.id,
             //this is just syntax for getting the id from the url
             //the url is outsite.com/opportunity/:id, meaning :id can be any number. So this syntax gets us that id/number
-            netId: 'rsn55'//sessionStorage.getItem('token_id')
+            netId: sessionStorage.getItem('token_id'),
+            netIdPlain: sessionStorage.getItem('netId')
         })
             .then((response) => {
                 this.setState({opportunity: response.data});
                 this.setState({student: response.data.student});
                 console.log(response.data.student);
                 if (!this.isEmpty(response.data)) {
-                    var obj = {}
+                    var obj = {};
                     //get all the keys and put them in an array
                     for (let k in response.data.questions){
                         //make sure it's an actual key and not a property that all objects have by default
@@ -258,9 +260,9 @@ parseGPA(gpa){
                   <div className="title-container column column-65">
                   <div className="title-box">
                     <div className="title-first-col ">
-                    <h4>{this.state.opportunity.title}</h4>
+                    <h2>{this.state.opportunity.title}</h2>
                     <h6> Lab: {this.state.opportunity.labName}</h6>
-                    <h6> Principal Investigator: {this.state.opportunity.pi}</h6>
+                    {/*<h6> Principal Investigator: {this.state.opportunity.pi}</h6>*/}
                     </div>
                     <div className="title-second-col">
                       <a className="apply-button button" href="#Application">Apply</a>
@@ -270,17 +272,17 @@ parseGPA(gpa){
                     </div>
                     </div>
                     <div className="about-box">
-                      <h5>About the Position</h5>
-                      <p> Supervisor: {this.state.opportunity.supervisor}</p>
-                      <p> Qualifications: {this.state.opportunity.qualifications}</p>
-                      <p> Tasks: {this.state.opportunity.undergradTasks}</p>
-                      <p> Start Season: {this.state.opportunity.startSeason} {this.state.opportunity.startYear}</p>
-                      <p> Must work between { this.state.opportunity.minHours+" " }
-                           and { this.state.opportunity.maxHours } hours a week. </p>
-                           <p> Project Description: {this.state.opportunity.projectDescription}</p>
+                      <h3>About the Position</h3>
+                        <h5> Supervisor:</h5> <p>{this.state.opportunity.supervisor}</p>
+                        <h5> Qualifications:</h5> <p>{this.state.opportunity.qualifications}</p>
+                        <h5> Tasks:</h5> <p>{this.state.opportunity.undergradTasks}</p>
+                        <h5> Start Season:</h5> {this.state.opportunity.startSeason} <p>{this.state.opportunity.startYear}</p>
+                        <h5> Weekly Hours:</h5> <p>{ this.state.opportunity.minHours+" " }
+                           to { this.state.opportunity.maxHours } hours a week. </p>
+                        <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription}</p>
 
-                      <h5>About the Lab</h5>
-                      <a href={this.state.opportunity.labPage}>{this.state.opportunity.labPage}</a>
+                      <h3>About the Lab</h3>
+                      <a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>
                       <p>{this.state.opportunity.labDescription}</p>
 
                       </div>

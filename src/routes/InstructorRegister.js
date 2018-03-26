@@ -182,7 +182,7 @@ class InstructorRegister extends React.Component {
             if(newLab)
                 this.setState({labId: null});
           console.log("submitting form");
-          axios.post('http://localhost:3001/createLabAdmin', {
+          axios.post('/createLabAdmin', {
               data,
               newLab,
               showDropdown,
@@ -199,6 +199,7 @@ class InstructorRegister extends React.Component {
           })
               .then((result) => {
                   //access the results here....
+                  document.location.href = "/professorView"
               });
         }
     }
@@ -250,10 +251,12 @@ class InstructorRegister extends React.Component {
 
                         <select className="main-form-input left-input" value={this.state.notifications}
                                 onChange={this.handleChangeNotifications.bind(this)}>
-                            <option value="Select Notification Settings">Select Notification Settings</option>
-                            <option value="Every Time An Application is Submitted">Every Time An Application is Submitted</option>
-                            <option value="Weekly Update">Weekly Update</option>
-                            <option value="Monthly Update">Monthly Update</option>
+                            <option value="0">When do you want to receive emails about applications to your postings?</option>
+                            <option value="0">Every Time An Application is Submitted</option>
+                            <option value="7">Weekly Update</option>
+                            <option value="30">Monthly Update</option>
+                            <option value="-1">Never (not recommended)</option>
+
                         </select>
                         {!this.state.notifValid && this.state.triedSubmitting? <div className="error-message">
                         <span>Not a valid input.</span>
