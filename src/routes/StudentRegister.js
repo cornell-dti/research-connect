@@ -59,7 +59,7 @@ class StudentRegister extends React.Component {
     }
 
     onFormChange = (e) => {
-    this.setState({file : e.target.value})
+        this.setState({file : e.target.value})
     }
 
     createGpaOptions() {
@@ -79,31 +79,34 @@ class StudentRegister extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
+        const { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript } = this.state;
 
-        axios.post('http://localhost:3001/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, file })
+        axios.post('/createUndergrad', { firstName, lastName, gradYear, major, GPA, netid, courses, resume })
+            .then((result) => {
+                //access the results here....
+            });
+
+        if (this.state.resume.length != 0){
+            axios.post('/createTranscript', { netid, transcript })
+                .then((result) => {
+                    //access the results here....
+                });
+        }
+
+        axios.post('/testResume', { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript })
+            .then((result) => {
+                //access the results here....
+            });
+
+        axios.post('/storeResume', { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript })
             .then((result) => {
                 //access the results here....
             });
     }
 
-    previewFile() {
-        var preview = document.querySelector('img');
-        var file    = document.querySelector('input[type=file]').files[0];
-        var reader  = new FileReader();
-
-        reader.addEventListener("load", function () {
-            preview.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-
     render() {
         console.log("Hello World");
-        const { firstName, lastName, gradYear, major, GPA, netid, courses,file } = this.state;
+        const { firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript } = this.state;
         return (
           <div>
           <Navbar/>
@@ -126,7 +129,31 @@ class StudentRegister extends React.Component {
                             <textarea placeholder="Relevant Courses (separate with commas)" name="courses" value={courses} id="courses" onChange={this.onChange}/>
                         </label>
                         <br/>
+                        <div className="dropzone">
+                            <h2>*Resume: </h2>
+                            <Dropzone onDrop={this.onDropResume.bind(this)}>
+                                <p>Click to drop resume</p>
+                            </Dropzone>
+                        </div>
+                        <aside>
+                            <ul>
+                                <li id="resume"></li>
+                            </ul>
+                        </aside>
 
+                        <br/>
+
+                        <div className="dropzone">
+                            <h2>Transcript:</h2>
+                            <Dropzone onDrop={this.onDropTranscript.bind(this)}>
+                                <p>Click to drop transcript</p>
+                            </Dropzone>
+                        </div>
+                        <aside>
+                            <ul>
+                                <li id="transcript"></li>
+                            </ul>
+                        </aside>
                         <br/>
                         <input type="submit" className="button" onClick={console.log(this.state)} value="Submit" />
                     </form>
@@ -136,46 +163,6 @@ class StudentRegister extends React.Component {
             </div>
         );
     }
-
-    /*
-    updateAndSend(){
-        var serialize = require('form-serialize');
-        var form = document.querySelector('#studentForm');
-        var obj = serialize(form, { hash: true });
-        console.log("PAY ATTENTION HERE");
-        console.log(obj);
-        // this.setState({
-        //     firstName : obj.firstName,
-        // lastName : obj.lastName,
-        // gradYear : obj.gradYear,
-        // major : obj.major,
-        // GPA : obj.GPA,
-        // netid : "zx55 TODO", //TODO current dummy content
-        // courses : obj.courses
-        // }, () => {
-        //     axios.post('http://localhost:3001/createUndergrad', this.state)
-        //
-        // });
-        this.state.firstName = obj.firstName;
-        this.state.lastName = obj.lastName;
-        this.state.gradYear = obj.gradYear;
-        this.state.major = obj.major;
-        this.state.GPA = obj.GPA;
-        this.state.netid = "zx55 TODO"; //TODO current dummy content
-        this.state.courses = obj.courses;
-
-        axios.post('http://localhost:3001/createUndergrad',{
-
-            firstName : this.state.firstName,
-            lastName : this.state.lastName,
-            gradYear : this.state.gradYear,
-            major : this.state.major,
-            GPA : this.state.GPA,
-            netid : this.state.netid, //TODO current dummy content
-            courses : this.state.courses
-        })
-    }
-    */
 
 
 }
