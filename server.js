@@ -576,7 +576,7 @@ app.post('/getApplications', function (req, res) {
                     for (let j = 0; j < opportunityObject.applications.length; j++) {
                         applicationsArray.push(opportunityObject.applications[j]);
                         netIds.push(opportunityObject.applications[j].undergradNetId);
-                    }
+                     }
                     allApplications[opportunityObject.title] = applicationsArray;
                     opportunitiesArray.push(opportunityObject);
                     applicationsArray = [];
