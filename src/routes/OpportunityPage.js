@@ -86,7 +86,6 @@ class OpportunityPage extends Component {
     }
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
-        //TODO make this dependent upon browser url not hardcoded
         axios.post('/getOpportunity', {
             id: this.props.match.params.id,
             //this is just syntax for getting the id from the url

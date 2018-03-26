@@ -3,6 +3,10 @@ import '../LandingPage.css';
 import logo from '../images/vectorlogo.png';
 import stockPhoto from '../images/writing-picture.jpg';
 import filler from '../images/download.png';
+import img1 from '../images/img1.PNG';
+import img2 from '../images/img2.PNG';
+import img3 from '../images/img3.PNG';
+import axios from 'axios';
 import student1 from '../images/student-laptop.png';
 import student2 from '../images/student-magnifier.png';
 import student3 from '../images/student-lightbulb.png';
@@ -31,20 +35,39 @@ class LandingPage extends Component {
         });
     }
 
-    loginFailure() {
-        console.log("error");
+    loginFailure(a) {
+        console.log(a);
+        console.log("Error logging in with Google, please ensure you used an @cornell.edu address.");
     }
 
     responseGoogle(response) {
-        const email = response.profileObj.email;
-        const netid = email.substring(0, email.indexOf("@"));
-        console.log(netid);
+        sessionStorage.setItem('token_id', response.tokenId);
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            if (hasRegistered) {
+                window.location.href = "/professorView";
+            }
+            else {
+                window.location.href = "/instructorRegister";
+            }
+        });
     }
+
+    responseGoogleStudent(response) {
+        sessionStorage.setItem('token_id', response.tokenId);
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            if (hasRegistered) {
+                window.location.href = "/opportunities";
+            }
+            else {
+                window.location.href = "/studentRegister";
+            }
+        });
+    }
+
 
     logout() {
-        console.log("logged out");
+        sessionStorage.clear();
     }
-
 
     render() {
         return (
@@ -58,13 +81,25 @@ class LandingPage extends Component {
                         <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
-                        <GoogleLogin
+                        {sessionStorage.getItem('token_id') === null ? (
+                        <div><GoogleLogin
                             clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                            buttonText="Log In"
+                            buttonText="Lab Log In"
                             onSuccess={this.responseGoogle.bind(this)}
                             onFailure={this.loginFailure.bind(this)}
-                            className="login button"
-                            hostedDomain="cornell.edu"/>
+                            className="login"
+                            hostedDomain="cornell.edu" />
+                            <GoogleLogin
+                                clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                                buttonText="Student Log In"
+                                onSuccess={this.responseGoogleStudent.bind(this)}
+                                onFailure={this.loginFailure.bind(this)}
+                                className="login button"
+                                hostedDomain="cornell.edu"/>
+                        </div>
+                        ) : (
+                            <li><a onClick={window.location.href="/professorView"}>Manage Lab</a></li>
+                        )}
                     </nav>
                 </header>
 

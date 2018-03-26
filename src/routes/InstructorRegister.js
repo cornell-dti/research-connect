@@ -53,6 +53,7 @@ class InstructorRegister extends React.Component {
     // }
 
 
+
     toggleNewLab() {
       this.setState({labNameValid: false});
         if (this.state.newLab) {
@@ -64,8 +65,8 @@ class InstructorRegister extends React.Component {
 
     }
 
-    handleUpdateLab(labName, id) {
-        if (!this.state.newLab) {
+    handleUpdateLab(labName,id) {
+        if(!this.state.newLab){
             this.setState({labId: id});
             if (labName!="" && id){
               this.setState({labNameValid: true});
@@ -82,7 +83,7 @@ class InstructorRegister extends React.Component {
         axios.get('/getLabs')
             .then(res => {
 
-                this.setState({data: res.data});
+                this.setState({ data: res.data });
                 console.log(res.data);
             })
     }
@@ -158,11 +159,10 @@ class InstructorRegister extends React.Component {
         }
     }
 
-    handleChangeLabDescript(event) {
+    handleChangeLabDescript(event){
         this.setState({labDescription: event.target.value});
     }
-
-    handleChangePI(event) {
+    handleChangePI(event){
         this.setState({pi: event.target.value});
         if (event.target.value!=""){
           this.setState({piValid: true});
@@ -179,6 +179,8 @@ class InstructorRegister extends React.Component {
             labNameValid, labURLValid, piValid} = this.state;
         if (firstNameValid && lastNameValid && netIDValid && roleValid && notifValid && labNameValid &&
           (!newLab || (labURLValid && piValid))){
+            if(newLab)
+                this.setState({labId: null});
           console.log("submitting form");
           axios.post('http://localhost:3001/createLabAdmin', {
               data,
@@ -205,13 +207,13 @@ class InstructorRegister extends React.Component {
 
         return (
             <div>
-                {/*<Navbar/>*/}
-                <div className=" instructor-reg-form">
+                <Navbar/>
+                <div className=" instructor-reg-form" >
                     <h3>Faculty Registration</h3>
                     <form
                         id='register'
                         //action='http://localhost:3001/createLabAdmin'
-                        onSubmit={this.onSubmit}
+                        onSubmit = {this.onSubmit}
                         //method='post'
                         action='/createLabAdmin'
                         method='post'
@@ -238,9 +240,9 @@ class InstructorRegister extends React.Component {
                         <select className="main-form-input left-input" value={this.state.role}
                                 onChange={this.handleChangePosition.bind(this)}>
                             <option value="Select Position">Select Your Position</option>
-                            <option value="Graduate Student">Graduate Student</option>
-                            <option value="Post-Doc">Post-Doc</option>
-                            <option value="Principal Investigator">Principal Investigator</option>
+                            <option value="grad">Graduate Student</option>
+                            <option value="postdoc">Post-Doc</option>
+                            <option value="pi">Principal Investigator</option>
                         </select>
                         {!this.state.roleValid && this.state.triedSubmitting? <div className="error-message">
                         <span>Not a valid input.</span>
@@ -249,10 +251,9 @@ class InstructorRegister extends React.Component {
                         <select className="main-form-input left-input" value={this.state.notifications}
                                 onChange={this.handleChangeNotifications.bind(this)}>
                             <option value="Select Notification Settings">Select Notification Settings</option>
-                            <option value="-1">Never</option>
-                            <option value="0">Every Time An Application is Submitted</option>
-                            <option value="7">Weekly Update</option>
-                            <option value="30">Monthly Update</option>
+                            <option value="Every Time An Application is Submitted">Every Time An Application is Submitted</option>
+                            <option value="Weekly Update">Weekly Update</option>
+                            <option value="Monthly Update">Monthly Update</option>
                         </select>
                         {!this.state.notifValid && this.state.triedSubmitting? <div className="error-message">
                         <span>Not a valid input.</span>
@@ -280,11 +281,9 @@ class InstructorRegister extends React.Component {
 
                             : <div>
                                 <div className="existing-or-create">
-                                    <input type="button" className="left-button button-small-clear"
-                                           value="Find Existing Lab" onClick={this.toggleNewLab.bind(this)}/>
+                                    <input type="button" className="left-button button-small-clear"  value="Find Existing Lab" onClick={this.toggleNewLab.bind(this)}/>
 
-                                    <input type="button" className="right-button no-click button button-small"
-                                           value="Add New Lab"/>
+                                    <input type="button" className="right-button no-click button button-small" value="Add New Lab" />
                                 </div>
 
                                 <input className="left-input" type="text" name="labName" id="labName" placeholder="Lab Name" value={this.name}
