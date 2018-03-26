@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../App.css';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/StudentNavbar';
 import Footer from '../components/Footer';
 import '../App.css';
+import Dropzone from 'react-dropzone';
 import '../StudentRegister.css';
 
 var majorList = ["Africana Studies","Agricultural Sciences","American Studies","Animal Science","Anthropology","Applied Economics and Management","Archaeology","Architecture","Asian Studies","Astronomy","Atmospheric Science","Biological Engineering","Biological Sciences","Biology and Society","Biomedical Engineering","Biometry and Statistics","Chemical Engineering","Chemistry and Chemical Biology","China and Asia-Pacific Studies","Civil Engineering","Classics (Classics, Classical Civ., Greek, Latin)","College Scholar Program","Communication","Comparative Literature","Computer Science","Design and Environmental Analysis","Development Sociology","Economics","Electrical and Computer Engineering","Engineering Physics","English","Entomology","Environmental and Sustainability Sciences","Environmental Engineering","Feminist, Gender & Sexuality Studies","Fiber Science and Apparel Design","Fine Arts","Food Science","French","German","German Area Studies","Global & Public Health Sciences","Government","History","History of Architecture (transfer students only)","History of Art","Hotel Administration School of Hotel Administration","Human Biology, Health and Society","Human Development","Independent Major—Arts and Sciences","Independent Major—Engineering","Industrial and Labor Relations School of Industrial and Labor Relations","Information Science","Information Science, Systems, and Technology","Interdisciplinary Studies","International Agriculture and Rural Development","Italian","Landscape Architecture","Linguistics","Materials Science and Engineering","Mathematics","Mechanical Engineering","Music","Near Eastern Studies","Nutritional Sciences","Operations Research and Engineering","Performing and Media Arts","Philosophy","Physics","Plant Science","Policy Analysis and Management","Psychology","Religious Studies","Science and Technology Studies","Science of Earth Systems","Sociology","Spanish","Statistical Science","Urban and Regional Studies","Viticulture and Enology","Undecided"]
@@ -40,6 +41,39 @@ class StudentRegister extends React.Component {
         }
 
         return ( <select name={inputName} value={inputName} onChange={this.onChange}> <option id={inputName} key="empty" value="">{placehold}</option> {newArray} </select>);
+    }
+    onDropResume = acceptedFiles => {
+        acceptedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                var fileAsBinaryString = reader.result;
+                var encodedData = window.btoa(fileAsBinaryString);
+                // do whatever you want with the file content
+                this.setState({resume : [encodedData]})
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+
+            reader.readAsBinaryString(file);
+        });
+        document.getElementById("resume").innerHTML = "Resume Dropped!";
+    }
+
+    onDropTranscript = acceptedFiles => {
+        acceptedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                var fileAsBinaryString = reader.result;
+                var encodedData = window.btoa(fileAsBinaryString);
+                // do whatever you want with the file content
+                this.setState({transcript : [encodedData]})
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+
+            reader.readAsBinaryString(file);
+        });
+        document.getElementById("transcript").innerHTML = "Transcript Dropped!";
     }
 
     onChange = (e) => {
