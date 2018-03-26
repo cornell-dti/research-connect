@@ -103,7 +103,7 @@ class InstructorRegister extends React.Component {
     }
 
     handleChangeNotifications(event) {
-      if (event.target.value!="Select Notification Settings"){
+      if (event.target.value!="When do you want to receive emails about applications to your postings?"){
         this.setState({notifValid: true})
       }else{
         this.setState({notifValid: false})
