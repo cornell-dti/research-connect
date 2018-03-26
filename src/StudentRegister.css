@@ -23,6 +23,13 @@
   background-color: #b31b1b;
   border-color: #b31b1b;
 }
+.student-reg-form aside ul{
+  list-style: none;
+}
+.dropzone{
+  text-align: center;
+  align-items: center;
+}
 
 
 .student-reg-form textarea{
