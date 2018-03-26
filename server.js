@@ -1045,7 +1045,7 @@ app.post('/createLabAdmin', function (req, res) {
                 console.log(err);
             } //Handle this error however you see fit
             else {
-                labModel.find({"labAdmins": data.netId}, function(error, lab){
+                labModel.findById(data.labId, function(error, lab){
                     lab.labAdmins = lab.labAdmins.push(data.netId);
                     lab.markModified("labAdmins");
                     lab.save((err, todo) => {
