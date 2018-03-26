@@ -117,9 +117,10 @@ class LandingPage extends Component {
                     <div className="button-div">
                         <input className="white-button" type="submit" onClick={this.scrollTo.bind(this, '#forstudents')}
                                value="For Students"/>
-                        <Link to="/instructorregister">
-                            <input className="white-button lab-button" type="submit" value="For Labs"/>
-                        </Link>
+                        {/*<Link to="/instructorregister">*/}
+                            <input className="white-button lab-button" type="submit" value="For Labs"
+                                   onClick={this.scrollTo.bind(this, '#forprofs')}/>
+                        {/*</Link>*/}
                     </div>
 
 
@@ -127,9 +128,7 @@ class LandingPage extends Component {
                 <section id="about" className="why-us reviews">
                     <div className="students-title">
                         <h2>Why use Research Connect?</h2>
-                        <h3>Getting reliable help in your research lab has never been easier.
-                            Let students come to you without the hassle of contacting individuals and sifting through
-                            apps.</h3>
+                        <h3>The abundance of undergraduate research opportunities is one of the great things about Cornell, yet unfortunately the process of finding these opportunities is still very unstructured. One must knock on doors, send countless emails to professors, and make do with obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap by providing a structured platform where students can find opportunities, and research labs can find the students they are looking for.</h3>
                     </div>
                     <div>
                         <img className="why-logo" src={logo} alt="research connect logo"/>
