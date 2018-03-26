@@ -242,7 +242,9 @@ class InstructorRegister extends React.Component {
                                 onChange={this.handleChangePosition.bind(this)}>
                             <option value="Select Position">Select Your Position</option>
                             <option value="grad">Graduate Student</option>
+                            <option value="labtech">Graduate Student</option>
                             <option value="postdoc">Post-Doc</option>
+                            <option value="staffscientist">Staff Scientist</option>
                             <option value="pi">Principal Investigator</option>
                         </select>
                         {!this.state.roleValid && this.state.triedSubmitting? <div className="error-message">

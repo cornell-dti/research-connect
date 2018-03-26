@@ -163,7 +163,7 @@ let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a
 
 
 const labAdministratorSchema = new Schema({
-    role: {type: String, enum: ["pi", "postdoc", "grad", "undergrad"], required: true},
+    role: {type: String, enum: ["pi", "postdoc", "grad", "staffscientist", "labtech", "undergrad"], required: true},
     labId: {type: Schema.Types.ObjectId, required: true, ref: "Labs"},
     netId: {type: String, required: true},
     pi: {type: String, required: false},
@@ -392,7 +392,7 @@ app.post('/getOpportunity', function (req, res) {
                 {
                     $and: [
                         {netId: {$in: labAdmins}},
-                        {role: {$in: ["pi", "postdoc", "grad"]}}
+                        {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
                     ]
                 },
                 function (err, labAdmin) {
@@ -881,6 +881,10 @@ app.post('/createOpportunity', function (req, res) {
     console.log("opens: " + data.opens);
     console.log("closes: " + data.closes);
     console.log("areas: " + data.areas);
+    let maxHours = 168;
+    if (data.maxHours !== undefined && data.maxHours !== null){
+        maxHours = data.maxHours;
+    }
 
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
@@ -903,7 +907,7 @@ app.post('/createOpportunity', function (req, res) {
         requiredClasses: data.requiredClasses,
         minGPA: data.minGPA,
         minHours: data.minHours,
-        maxHours: data.maxHours,
+        maxHours: maxHours,
         opens: data.opens,
         closes: data.closes,
         areas: data.areas
@@ -951,7 +955,7 @@ app.post('/createOpportunity', function (req, res) {
                     'The Research Connect Team\n'
                 };
 
-                sgMail.send(msg);
+                // sgMail.send(msg); //TODO uncommetn
             }
             res.send("Success!");
         });

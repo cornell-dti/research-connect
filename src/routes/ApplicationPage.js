@@ -21,7 +21,8 @@ class ApplicationPage extends Component {
 	componentWillMount() {
 		axios.post('/getApplications', {
 			'id': sessionStorage.getItem('token_id'),
-			'netId': sessionStorage.getItem('netId')
+			// 'netId': sessionStorage.getItem('netId')
+			'netId' : 'prk57' //TODO change back to above
 		})
 		.then((response) => {
 			for (var opp in response.data) {

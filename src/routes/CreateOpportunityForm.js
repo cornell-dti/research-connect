@@ -225,7 +225,7 @@ class CreateOppForm extends React.Component {
 						<div className="hours">
 						<input className="min-hours" placeholder="Min Hours" type="text" name="min" value={this.state.minHours} onChange={this.handleChange}/>
 
-						<input className="max-hours" placeholder="Max Hours" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
+						<input className="max-hours" placeholder="Max Hours (optional)" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
 						</div>
 
 						<input placeholder="Required/Recommended Classes (Please separate with commas)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>

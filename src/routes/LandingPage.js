@@ -160,8 +160,14 @@ class LandingPage extends Component {
                             <br /><p>Apply and get in touch with researchers and labs in your field!</p>
                         </div>
                     </div>
-                    <Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>
-
+                    {/*<Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>*/}
+                    <GoogleLogin
+                        clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                        buttonText="Student Signup"
+                        onSuccess={this.responseGoogleStudent.bind(this)}
+                        onFailure={this.loginFailure.bind(this)}
+                        className="login button"
+                        hostedDomain="cornell.edu"/>
                 </section>
 
 
@@ -188,9 +194,13 @@ class LandingPage extends Component {
                             <br/>
                         </div>
                     </div>
-                    <Link to="/instructorregister">
-                        <input className="get-started button" type="submit" value="Get Started"/>
-                    </Link>
+                    <GoogleLogin
+                        clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                        buttonText="Lab Signup"
+                        onSuccess={this.responseGoogle.bind(this)}
+                        onFailure={this.loginFailure.bind(this)}
+                        className="login"
+                        hostedDomain="cornell.edu" />
                 </section>
 
 
