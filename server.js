@@ -1013,7 +1013,7 @@ app.post('/createLabAdmin', function (req, res) {
     var data = req.body;
     debug(data);
 
-    console.log("we are in createLabAdmin")
+    console.log("we are in createLabAdmin");
     console.log(data.role);
     console.log(data.labId);
     console.log(data.netId);
