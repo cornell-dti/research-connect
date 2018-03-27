@@ -87,21 +87,19 @@ class LandingPage extends Component {
                         <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
                         {sessionStorage.getItem('token_id') === null ? (
-                        <div><GoogleLogin
-                            clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                            buttonText="Lab Log In"
-                            onSuccess={this.responseGoogle.bind(this)}
-                            onFailure={this.loginFailure.bind(this)}
-                            className="login"
-                            hostedDomain="cornell.edu" />
-                            <GoogleLogin
+                            <div><GoogleLogin
                                 clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                                buttonText="Student Log In"
-                                onSuccess={this.responseGoogleStudent.bind(this)}
+                                buttonText="Lab Log In"
+                                onSuccess={this.responseGoogle.bind(this)}
                                 onFailure={this.loginFailure.bind(this)}
-                                className="login button"
-                                hostedDomain="cornell.edu"/>
-                        </div>
+                                className="login"/>
+                                <GoogleLogin
+                                    clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                                    buttonText="Student Log In"
+                                    onSuccess={this.responseGoogleStudent.bind(this)}
+                                    onFailure={this.loginFailure.bind(this)}
+                                    className="login button"/>
+                            </div>
                         ) : (
                             <li><a onClick={window.location.href="/professorView"}>Manage Lab</a></li>
                         )}
@@ -118,8 +116,8 @@ class LandingPage extends Component {
                         <input className="white-button" type="submit" onClick={this.scrollTo.bind(this, '#forstudents')}
                                value="For Students"/>
                         {/*<Link to="/instructorregister">*/}
-                            <input className="white-button lab-button" type="submit" value="For Labs"
-                                   onClick={this.scrollTo.bind(this, '#forprofs')}/>
+                        <input className="white-button lab-button" type="submit" value="For Labs"
+                               onClick={this.scrollTo.bind(this, '#forprofs')}/>
                         {/*</Link>*/}
                     </div>
 
@@ -160,14 +158,15 @@ class LandingPage extends Component {
                             <br /><p>Apply and get in touch with researchers and labs in your field!</p>
                         </div>
                     </div>
-                    {/*<Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>*/}
+                    {/*<Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>*/
+                        /* hostedDomain="cornell.edu" */}
                     <GoogleLogin
                         clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                         buttonText="Student Signup"
                         onSuccess={this.responseGoogleStudent.bind(this)}
                         onFailure={this.loginFailure.bind(this)}
-                        className="login button"
-                        hostedDomain="cornell.edu"/>
+                        className="login button"/>
+
                 </section>
 
 
@@ -199,8 +198,7 @@ class LandingPage extends Component {
                         buttonText="Lab Signup"
                         onSuccess={this.responseGoogle.bind(this)}
                         onFailure={this.loginFailure.bind(this)}
-                        className="login"
-                        hostedDomain="cornell.edu" />
+                        className="login"/>
                 </section>
 
 

@@ -223,9 +223,9 @@ class CreateOppForm extends React.Component {
 						<textarea placeholder="Position Qualifications" name="qual" type="text" value={this.state.qualifications} onChange={this.handleChange}/>
 
 						<div className="hours">
-						<input className="min-hours" placeholder="Min Hours" type="text" name="min" value={this.state.minHours} onChange={this.handleChange}/>
+						<input className="min-hours" placeholder="Min Hours/Week" type="text" name="min" value={this.state.minHours} onChange={this.handleChange}/>
 
-						<input className="max-hours" placeholder="Max Hours (optional)" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
+						<input className="max-hours" placeholder="Max Hours/Week (optional)" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
 						</div>
 
 						<input placeholder="Required/Recommended Classes (Please separate with commas)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
@@ -290,7 +290,8 @@ class CreateOppForm extends React.Component {
 						</div>
 
 
-						<p>You can optionally add position-specific questions that students must answer in order to apply.
+						<p>You can optionally add position-specific questions or requests for additional information
+							that students must respond to in order to apply.
                 We recommend asking "Why are you interested in this lab and/or position?" to gauge interest.
                 You will nonetheless able to view each student's year, GPA, resume, and major, in addition to their responses to these questions once they apply.</p>
 						<div className="question-adder">

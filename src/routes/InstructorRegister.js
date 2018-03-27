@@ -210,7 +210,7 @@ class InstructorRegister extends React.Component {
             <div>
                 <Navbar/>
                 <div className=" instructor-reg-form" >
-                    <h3>Faculty Registration</h3>
+                    <h3>Lab Administrator Registration</h3>
                     <form
                         id='register'
                         //action='http://localhost:3001/createLabAdmin'
@@ -241,8 +241,9 @@ class InstructorRegister extends React.Component {
                         <select className="main-form-input left-input" value={this.state.role}
                                 onChange={this.handleChangePosition.bind(this)}>
                             <option value="Select Position">Select Your Position</option>
+                            <option value="undergrad">Staff Scientist</option>
                             <option value="grad">Graduate Student</option>
-                            <option value="labtech">Graduate Student</option>
+                            <option value="labtech">Lab Technician</option>
                             <option value="postdoc">Post-Doc</option>
                             <option value="staffscientist">Staff Scientist</option>
                             <option value="pi">Principal Investigator</option>
@@ -253,7 +254,8 @@ class InstructorRegister extends React.Component {
 
                         <select className="main-form-input left-input" value={this.state.notifications}
                                 onChange={this.handleChangeNotifications.bind(this)}>
-                            <option value="0">When do you want to receive emails about applications to your postings?</option>
+                            <option value="0">When do you want to receive emails about applications to your postings?
+                            You can nonetheless view applications on the site at any time.</option>
                             <option value="0">Every Time An Application is Submitted</option>
                             <option value="7">Weekly Update</option>
                             <option value="30">Monthly Update</option>
@@ -264,6 +266,7 @@ class InstructorRegister extends React.Component {
                         <span>Not a valid input.</span>
                         </div>:""}
 
+                        {/*<h6><center>All members of the same lab can view all the opportunities and applications for that lab</center></h6>*/}
                         {!this.state.newLab ? <div className="existing-create-left">
                             <div className="existing-or-create">
                                 <input type="button" className="button left-button no-click button-small"

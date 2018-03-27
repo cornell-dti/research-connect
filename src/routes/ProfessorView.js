@@ -55,8 +55,8 @@ class ProfessorView extends Component {
 
 							<hr />
 
-							<label htmlFor="depField">Area of Interest</label>
-							<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
+							{/*<label htmlFor="depField">Area of Interest</label>*/}
+							{/*<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />*/}
 
 							<hr />
 							<label htmlFor="yearField">School Year</label>
