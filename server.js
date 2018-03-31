@@ -1425,7 +1425,7 @@ app.get("/role/:netId", function (req, res) {
     undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
         if (undergrad !== null) return res.send("undergrad");
         labAdministratorModel.findOne({netId: req.params.netId}, function (err, labAdmin) {
-            if (labAdmin === null) return res.send("none")
+            if (labAdmin === null) return res.send("none");
             res.send(labAdmin.role);
         })
     })
