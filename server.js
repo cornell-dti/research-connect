@@ -28,11 +28,11 @@ if (fs.existsSync('./S3Config2.json')) {
     s3 = new AWS.S3();
 }
 
-let corsKey = null;
-if (fs.existsSync('./CorsKey.json')) {
-    corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
-    corsKey = corsKey.key;
-}
+// let corsKey = null;
+// if (fs.existsSync('./CorsKey.json')) {
+//     corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
+//     corsKey = corsKey.key;
+// }
 
 //create instances
 const app = express();
@@ -48,8 +48,10 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
-app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
+// app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
@@ -140,17 +142,17 @@ const undergradSchema = new Schema({
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
     courses: {type: [String], required: true},
-    resume: {type: String}
+    resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
+    transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
 
-const transcriptSchema = new Schema({
-    netId: {type: String, required: true},
-    transcript: {type: [String]}
+const docSchema = new Schema({
+    doc: {type: String}
 });
 
-let transcriptModel = mongoose.model('Transcripts', transcriptSchema, 'Transcripts');
+let docModel = mongoose.model('Documents', docSchema, 'Documents');
 
 const labSchema = new Schema({
     name: {type: String, required: true},
@@ -576,7 +578,7 @@ app.post('/getApplications', function (req, res) {
                     for (let j = 0; j < opportunityObject.applications.length; j++) {
                         applicationsArray.push(opportunityObject.applications[j]);
                         netIds.push(opportunityObject.applications[j].undergradNetId);
-                     }
+                    }
                     allApplications[opportunityObject.title] = applicationsArray;
                     opportunitiesArray.push(opportunityObject);
                     applicationsArray = [];
@@ -882,7 +884,7 @@ app.post('/createOpportunity', function (req, res) {
     console.log("closes: " + data.closes);
     console.log("areas: " + data.areas);
     let maxHours = 168;
-    if (data.maxHours !== undefined && data.maxHours !== null){
+    if (data.maxHours !== undefined && data.maxHours !== null) {
         maxHours = data.maxHours;
     }
 
@@ -972,7 +974,6 @@ app.post('/createUndergrad', function (req, res) {
     console.log(data.GPA);
     console.log(data.netid);
     console.log(data.courses);
-    console.log(data.resume);
     console.log("This be the resume");
     var undergrad = new undergradModel({
 
@@ -982,8 +983,7 @@ app.post('/createUndergrad', function (req, res) {
         major: data.major,
         gpa: data.GPA,
         netId: data.netid,
-        courses: data.courses,
-        resume: data.resume,
+        courses: data.courses
     });
     debug(undergrad);
     undergrad.save(function (err) {
@@ -1432,64 +1432,46 @@ app.get("/role/:netId", function (req, res) {
 });
 
 app.get('/doc/:id', function (req, res) {
-    let params = {
-        Bucket: "research-connect-student-files",
-        Key: req.params.id
-    };
-    s3.getObject(params, function (err, data) {
-        if (err) debug(err, err.stack); // an error occurred
-        else {
-            let baseString = base64ArrayBuffer(data.Body);
-            console.log(baseString);
-            console.log("above");
-            // return res.send('<embed width="100%" height="100%" src=data:application/pdf;base64,' + baseString + ' />');
-            res.set('content-type', 'text/plain');
-            // res.setContentType("text/plain");
-            return res.send(baseString);
-        }
-    });
+    docModel.findById(req.params.id, function(err, document){
+        res.send(document.doc)
+    })
 });
 
-app.post('/storeResume', function (req, res) {
-    undergradModel.findById({
-        "_id": {
-            "$oid": "5a930ca8f36d286fea36d327"
-        }
-    }, function (err, undergrad) {
-        undergrad.resume = req.body.files[0];
-        undergrad.save((err, todo) => {
-            if (err) {
-                res.status(500).send(err)
+app.post('/doc', function (req, res) {
+    let netId = req.body.netid;
+    console.log("doc");
+    console.log(req.body);
+        let resume = req.body.resume;
+        //if there's no resume, so add the trasncript
+        if (resume === undefined || resume === null) {
+            let transcript = req.body.transcript;
+            if (transcript === undefined || transcript === null) {
+                res.status(500).send("No files submitted");
             }
-            res.status(200).send(todo);
-        });
-    });
-
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let file = req.body.files[0];
-    //TODO change Key param to name of student plus date.now
-    let uploadParams = {
-        Bucket: "research-connect-student-files",
-        Key: Date.now().toString(),
-        Body: file
-    };
-    debug("yay!");
-    console.log(req.body.files[0]);
-    console.log("here");
-    s3.upload(uploadParams, function (err, data) {
-        if (err) {
-            debug("Error", err);
+            else {
+                transcript = transcript[0];
+                let transcriptObj = new docModel();
+                transcriptObj.doc = transcript;
+                transcript.save(function(err, document){
+                    undergradModel.findOneAndUpdate({"netId": netId}, {transcriptId: document.id}, function(err, oldDoc){
+                        console.log("trans error: " + err);
+                    });
+                });
+                console.log('generated');
+            }
         }
-        if (data) {
-            debug("Upload Success", data.Location);
-            res.send("Success!");
+        //resume is defined
+        else {
+            resume = resume[0];
+            let resumeObj = new docModel();
+            resumeObj.doc = resume;
+            resume.save(function(err, document){
+                undergradModel.findOneAndUpdate({"netId": netId}, {resumeId: document.id}, function(err, oldDoc){
+                    console.log("resume error: " + err);
+                });
+            });
+            console.log('gend');
         }
-    });
-});
-
-app.post('/testResume', function (req, res) {
-    // console.log("If the below is null, it's not working");
-    // console.log(req.body.files);
 });
 
 app.post('/storeApplication', function (req, res) {
