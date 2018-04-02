@@ -20,7 +20,7 @@ class StudentRegister extends React.Component {
             gradYear: "",
             major: "",
             GPA: "",
-            netid: "aaa111", //TODO currently dummy value
+            netid: "aaa333", //TODO currently dummy value
             courses: [],
             file: null
         };
@@ -189,7 +189,7 @@ class StudentRegister extends React.Component {
                             </ul>
                         </aside>
                         <br/>
-                        <input type="submit" className="button" onClick={console.log(this.state)} value="Submit"/>
+                        <input type="submit" className="button" value="Submit"/>
                     </form>
 
                 </div>

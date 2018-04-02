@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../ApplicationPage.css';
+import '../Doc.css';
 import * as Utils from '../components/Shared/Utils.js'
 
 class Resume extends Component {

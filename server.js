@@ -1437,7 +1437,9 @@ app.get('/doc/:id', function (req, res) {
     })
 });
 
+//Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/doc', function (req, res) {
+    console.log('reached');
     let netId = req.body.netid;
     console.log("doc");
     console.log(req.body);
@@ -1452,7 +1454,7 @@ app.post('/doc', function (req, res) {
                 transcript = transcript[0];
                 let transcriptObj = new docModel();
                 transcriptObj.doc = transcript;
-                transcript.save(function(err, document){
+                transcriptObj.save(function(err, document){
                     undergradModel.findOneAndUpdate({"netId": netId}, {transcriptId: document.id}, function(err, oldDoc){
                         console.log("trans error: " + err);
                     });
@@ -1465,7 +1467,7 @@ app.post('/doc', function (req, res) {
             resume = resume[0];
             let resumeObj = new docModel();
             resumeObj.doc = resume;
-            resume.save(function(err, document){
+            resumeObj.save(function(err, document){
                 undergradModel.findOneAndUpdate({"netId": netId}, {resumeId: document.id}, function(err, oldDoc){
                     console.log("resume error: " + err);
                 });
