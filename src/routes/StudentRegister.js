@@ -20,7 +20,7 @@ class StudentRegister extends React.Component {
             gradYear: "",
             major: "",
             GPA: "",
-            netid: "aaa333", //TODO currently dummy value
+            netid: "bbb111", //TODO currently dummy value
             courses: [],
             file: null
         };
@@ -104,7 +104,6 @@ class StudentRegister extends React.Component {
         for (var i = 25; i <= 43; i++) {
             options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
         }
-        console.log(this.state.GPA);
         return (
             <select name="GPA" id="GPA" className="gpa-select" value={this.state.GPA} onChange={this.onChange}>
                 <option key="" value="">Select GPA</option>
@@ -120,6 +119,8 @@ class StudentRegister extends React.Component {
 
         axios.post('/createUndergrad', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
+                console.log("undergrad created, result:");
+                console.log(result);
                 //access the results here....
                 if (this.state.transcript.length != 0) {
                     axios.post('/doc', {netid, transcript})
@@ -130,13 +131,14 @@ class StudentRegister extends React.Component {
 
                 axios.post('/doc', {netid, resume})
                     .then((result) => {
+                    console.log("resume result");
+                    console.log(result);
                         //access the results here....
                     });
             });
     };
 
     render() {
-        console.log("Hello World");
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
         return (
             <div>
