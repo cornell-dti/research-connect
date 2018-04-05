@@ -261,11 +261,11 @@ class CreateOppForm extends React.Component {
 
 						<div className="start-time">
 						<select name="startSeason" className="startSeason" value={this.state.startSeason} onChange={this.handleChange}>
-							<option value="Select" >Select Start Season</option>
-							<option value="Spring" >Spring</option>
-							<option value="Summer" >Summer</option>
-							<option value="Winter" >Winter</option>
-							<option value="Fall" >Fall</option>
+							<option value="Select" >Select Start Semester</option>
+							<option value="Spring" >Spring Semester</option>
+							<option value="Summer" >Summer Semester</option>
+							{/*<option value="Winter" >Winter</option>*/}
+							<option value="Fall" >Fall Semester</option>
 						</select>
 
 						<select name="startYear" className="startYear" value={this.state.startYear} onChange={this.handleChange}>
