@@ -87,13 +87,8 @@ class OpportunityPage extends Component {
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
         console.log(this.props.match.params.id);
-        axios.post('/getOpportunity', {
-            id: this.props.match.params.id,
-            //this is just syntax for getting the id from the url
-            //the url is outsite.com/opportunity/:id, meaning :id can be any number. So this syntax gets us that id/number
-            netId: sessionStorage.getItem('token_id'),
-            netIdPlain: sessionStorage.getItem('netId')
-        })
+        axios.get('/opportunities/' + this.props.match.params.id + '?netId=' + sessionStorage.getItem('token_id') +
+            '&netIdPlain=' + sessionStorage.getItem('netId'))
             .then((response) => {
                 this.setState({opportunity: response.data});
                 this.setState({student: response.data.student});

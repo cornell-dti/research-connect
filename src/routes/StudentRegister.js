@@ -117,19 +117,19 @@ class StudentRegister extends React.Component {
         // get our form data out of state
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
 
-        axios.post('/createUndergrad', {firstName, lastName, gradYear, major, GPA, netid, courses})
+        axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
                 console.log("undergrad created, result:");
                 console.log(result);
                 //access the results here....
                 if (this.state.transcript.length != 0) {
-                    axios.post('/doc', {netid, transcript})
+                    axios.post('/docs', {netid, transcript})
                         .then((result) => {
                             //access the results here....
                         });
                 }
 
-                axios.post('/doc', {netid, resume})
+                axios.post('/docs', {netid, resume})
                     .then((result) => {
                     console.log("resume result");
                     console.log(result);

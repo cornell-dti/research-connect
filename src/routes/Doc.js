@@ -14,7 +14,7 @@ class Resume extends Component {
     }
 
     componentWillMount() {
-        axios.get('/doc/' + this.props.match.params.id)
+        axios.get('/docs/' + this.props.match.params.id)
             .then((response) => {
                 this.setState(
                     {

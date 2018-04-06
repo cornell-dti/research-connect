@@ -12,11 +12,8 @@ class ApplicationList extends Component {
 
     componentDidMount() {
         console.log(sessionStorage.getItem('token_id'));
-        axios.post('/getApplications', {
-            'id': sessionStorage.getItem('token_id'),
-            'netId': "prk57"
-            // 'netId': sessionStorage.getItem('netId')
-        })
+        // 'netId': sessionStorage.getItem('netId')
+        axios.get('/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
             .then((response) => {
                 this.setState({data: response.data});
             })

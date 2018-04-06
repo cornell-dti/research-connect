@@ -19,16 +19,14 @@ class ApplicationPage extends Component {
 	}
 
 	componentWillMount() {
-		axios.post('/getApplications', {
-			'id': sessionStorage.getItem('token_id'),
-			// 'netId': sessionStorage.getItem('netId')
-			'netId' : 'prk57' //TODO change back to above
-		})
+        // 'netId': sessionStorage.getItem('netId')
+        //'netId' : 'prk57' //TODO change back to above
+		axios.get('/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
 		.then((response) => {
-			for (var opp in response.data) {
-				for (var app in response.data[opp].applications) {
-					var curApp = response.data[opp].applications[app];
-					var curOpp = response.data[opp].opportunity;
+			for (let opp in response.data) {
+				for (let app in response.data[opp].applications) {
+					let curApp = response.data[opp].applications[app];
+					let curOpp = response.data[opp].opportunity;
 					if (curApp !== undefined) {
 						if (curApp.id === this.props.match.params.id) {
 							this.setState({ application: curApp, opportunity: curOpp });

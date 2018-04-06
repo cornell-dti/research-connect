@@ -182,7 +182,7 @@ class InstructorRegister extends React.Component {
             if(newLab)
                 this.setState({labId: null});
           console.log("submitting form");
-          axios.post('/createLabAdmin', {
+          axios.post('/labAdmins', {
               data,
               newLab,
               showDropdown,
@@ -213,10 +213,10 @@ class InstructorRegister extends React.Component {
                     <h3>Lab Administrator Registration</h3>
                     <form
                         id='register'
-                        //action='http://localhost:3001/createLabAdmin'
+                        //action='http://localhost:3001/labAdmins'
                         onSubmit = {this.onSubmit}
                         //method='post'
-                        action='/createLabAdmin'
+                        action='/labAdmins'
                         method='post'
                     >
                     <div className="form-inputs">
