@@ -67,6 +67,13 @@ app.use(function (req, res, next) {
     next();
 });
 
+const index = require('./api/index');
+const labAdmin = require('./api/labAdmin');
+
+app.use('/', index);
+app.use('/labAdmin', labAdmin);
+
+
 //EMAIL SENDGRID
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
@@ -175,7 +182,7 @@ const labAdministratorSchema = new Schema({
     lastName: {type: String, required: true},
     verified: {type: Boolean, default: false}
 });
-let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
+export let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 
 const opportunitySchema = new Schema({
 
@@ -445,6 +452,7 @@ app.get('/labAdmin/:netId', function (req, res) {
     });
 });
 
+/**
 app.post('/getLabAdmin', function (req, res) {
     labAdministratorModel.findById(req.body.id, function (err, labAdmin) {
         if (err) {
@@ -455,6 +463,7 @@ app.post('/getLabAdmin', function (req, res) {
         res.send(labAdmin);
     });
 });
+*/
 
 function getLabAdmin(id, res) {
     labAdministratorModel.findById(id, function (err, labAdmin) {
