@@ -71,7 +71,8 @@ app.post('/', function (req, res) {
                     res.send("Success!");
                 }
             });
-            undergradModel.findOneAndUpdate({"netId": netId}, {transcriptId: docId}, function(err, oldDoc){
+            //if this doessn't work, use update operators for the second param: https://docs.mongodb.com/manual/reference/operator/update/
+            undergradModel.findOneAndUpdate({"netId": netId}, {$set: {transcriptId: docId}}, function(err, oldDoc){
                 console.log("trans error: " + err);
             });
         }
@@ -105,7 +106,7 @@ app.post('/', function (req, res) {
                 res.send("Success!");
             }
         });
-        undergradModel.findOneAndUpdate({"netId": netId}, {resumeId: docId}, function(err, oldDoc){
+        undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function(err, oldDoc){
             console.log("resume error: " + err);
         });
         console.log('gend');
