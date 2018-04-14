@@ -12,7 +12,7 @@ class MajorSelect extends React.Component {
 
 	handleChange(e) {
 		this.setState({majorSelect: {
-			"cs" : this.cs.checked,
+			"computer science" : this.cs.checked,
 			"biology" : this.biology.checked,
 		}}, function() {
 			this.props.updateMajor(this.state.majorSelect);
@@ -23,7 +23,7 @@ class MajorSelect extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.handleSubmit} className="filterCheckFields">
-				<input ref={(node) => {this.cs = node}}  onChange={this.handleChange.bind(this)} type="checkbox" name="cs" value="cs"/>CS
+				<input ref={(node) => {this.cs = node}}  onChange={this.handleChange.bind(this)} type="checkbox" name="computer science" value="computer science"/>CS
 				<br/>
 				<input ref={(input) => {this.biology = input}} onChange={this.handleChange.bind(this)} type="checkbox" name="biology" value="biology"/>Biology
 			</form>

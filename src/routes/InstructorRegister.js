@@ -20,11 +20,20 @@ class InstructorRegister extends React.Component {
             firstName: "",
             lastName: "",
             netId: "",
-            labId: null, //null
-            labPage: null, //null
-            name: null, //null
-            labDescription: null, //null
-            pi: ''
+            labId: null,
+            labPage: null,
+            name: null,
+            labDescription: null,
+            pi: '',
+            firstNameValid: false,
+            lastNameValid: false,
+            netIDValid: false,
+            roleValid: false,
+            notifValid: false,
+            labNameValid: false,
+            labURLValid: false,
+            piValid: false,
+            triedSubmitting: false
         };
 
 
@@ -46,9 +55,12 @@ class InstructorRegister extends React.Component {
 
 
     toggleNewLab() {
-        if (this.state.newLab){
+      this.setState({labNameValid: false});
+        if (this.state.newLab) {
             this.setState({labId: null});
         }
+        this.setState({labURLValid: false});
+        this.setState({piValid: false});
         this.setState({newLab: !this.state.newLab});
 
     }
@@ -56,10 +68,14 @@ class InstructorRegister extends React.Component {
     handleUpdateLab(labName,id) {
         if(!this.state.newLab){
             this.setState({labId: id});
-        }
-
+            if (labName!="" && id){
+              this.setState({labNameValid: true});
+            }else{
+                this.setState({labNameValid: false});
+            }
 
     }
+  }
 
 
     loadOpportunitiesFromServer() {
@@ -77,28 +93,70 @@ class InstructorRegister extends React.Component {
 
     }
 
-    handleChangePosition(event){
-        this.setState({ role: event.target.value });
-    }
-    handleChangeNotifications(event){
-        this.setState({ notifications: event.target.value });
-    }
-    handleChangeFirstName(event){
-        this.setState({ firstName: event.target.value });
-    }
-    handleChangeLastName(event){
-        this.setState({ lastName: event.target.value });
-    }
-    handleChangeNetId(event){
-        this.setState({ netId: event.target.value });
+    handleChangePosition(event) {
+      if (event.target.value!="Select Position"){
+        this.setState({roleValid: true})
+      }else{
+        this.setState({roleValid: false})
+      }
+        this.setState({role: event.target.value});
     }
 
-    handleChangeNewLabName(event){
-        this.setState({ name: event.target.value });
+    handleChangeNotifications(event) {
+      if (event.target.value!="When do you want to receive emails about applications to your postings?"){
+        this.setState({notifValid: true})
+      }else{
+        this.setState({notifValid: false})
+      }
+        this.setState({notifications: event.target.value});
     }
 
-    handleChangeLabURL(event){
-        this.setState({ labPage: event.target.value });
+    handleChangeFirstName(event) {
+      if (event.target.value!=""){
+        this.setState({firstNameValid: true})
+      }else{
+        this.setState({firstNameValid: false})
+      }
+        this.setState({firstName: event.target.value});
+    }
+
+    handleChangeLastName(event) {
+      if (event.target.value!=""){
+        this.setState({lastNameValid: true})
+      }else{
+        this.setState({lastNameValid: false})
+      }
+        this.setState({lastName: event.target.value});
+    }
+
+    handleChangeNetId(event) {
+        if (event.target.value!="" && event.target.value.indexOf("@cornell.edu")==-1 ){
+          this.setState({netIDValid: true})
+        }else{
+          this.setState({netIDValid: false})
+        }
+        this.setState({netId: event.target.value});
+    }
+
+    handleChangeNewLabName(event) {
+      if (this.state.newLab) {
+          this.setState({name: event.target.value});
+          if (event.target.value!=""){
+            this.setState({labNameValid: true});
+          }else{
+              this.setState({labNameValid: false});
+          }
+
+        }
+    }
+
+    handleChangeLabURL(event) {
+        this.setState({labPage: event.target.value});
+        if (event.target.value!=""){
+          this.setState({labURLValid: true});
+        }else{
+            this.setState({labURLValid: false});
+        }
     }
 
     handleChangeLabDescript(event){
@@ -106,17 +164,44 @@ class InstructorRegister extends React.Component {
     }
     handleChangePI(event){
         this.setState({pi: event.target.value});
+        if (event.target.value!=""){
+          this.setState({piValid: true});
+        }else{
+            this.setState({piValid: false});
+        }
     }
 
     onSubmit = (e) => {
+        this.setState({triedSubmitting: true});
         e.preventDefault();
         // get our form data out of state
-        const { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi } = this.state;
-
-        axios.post('http://localhost:3001/createLabAdmin', { data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi })
-            .then((result) => {
-                //access the results here....
-            });
+        const {data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi, firstNameValid, lastNameValid, netIDValid, roleValid, notifValid,
+            labNameValid, labURLValid, piValid} = this.state;
+        if (firstNameValid && lastNameValid && netIDValid && roleValid && notifValid && labNameValid &&
+          (!newLab || (labURLValid && piValid))){
+            if(newLab)
+                this.setState({labId: null});
+          console.log("submitting form");
+          axios.post('/labAdmins', {
+              data,
+              newLab,
+              showDropdown,
+              role,
+              notifications,
+              firstName,
+              lastName,
+              netId,
+              labId,
+              labPage,
+              name,
+              labDescription,
+              pi
+          })
+              .then((result) => {
+                  //access the results here....
+                  document.location.href = "/professorView"
+              });
+        }
     }
 
     render() {
@@ -125,48 +210,82 @@ class InstructorRegister extends React.Component {
             <div>
                 <Navbar/>
                 <div className=" instructor-reg-form" >
-                    <h3>Faculty Registration</h3>
+                    <h3>Lab Administrator Registration</h3>
                     <form
                         id='register'
-                        //action='http://localhost:3001/createLabAdmin'
+                        //action='http://localhost:3001/labAdmins'
                         onSubmit = {this.onSubmit}
                         //method='post'
-                        action='/createLabAdmin'
+                        action='/labAdmins'
                         method='post'
                     >
-                        <input className="name" type="text" name="adminFirstName" id="adminFirstName" placeholder="First Name"
+                    <div className="form-inputs">
+                        <input className="name left-input" type="text" name="adminFirstName" id="adminFirstName"
+                               placeholder="First Name"
                                value={this.state.firstName} onChange={this.handleChangeFirstName.bind(this)}/>
-                        <input className="name" type="text" name="adminLastName" id="adminLastName" placeholder="Last Name"
+                        {!this.state.firstNameValid && this.state.triedSubmitting ? <div className="error-message">
+                        <span>Not a valid input.</span>
+                        </div>:""}
+                        <input className="name left-input" type="text" name="adminLastName" id="adminLastName"
+                               placeholder="Last Name"
                                value={this.state.lastName} onChange={this.handleChangeLastName.bind(this)}/>
-                        <input className="name" type="text" name="netId" id="netId" placeholder="NetID"
+                               {!this.state.lastNameValid && this.state.triedSubmitting ? <div className="error-message">
+                               <span>Not a valid input.</span>
+                               </div>:""}
+                        <input className="name left-input" type="text" name="netId" id="netId" placeholder="NetID"
                                value={this.state.netId} onChange={this.handleChangeNetId.bind(this)}/>
+                               {!this.state.netIDValid && this.state.triedSubmitting? <div className="error-message">
+                               <span>Not a valid input.</span>
+                               </div>:""}
 
-                        <select className="main-form-input" value={this.state.role}  onChange={this.handleChangePosition.bind(this)} >
+                        <select className="main-form-input left-input" value={this.state.role}
+                                onChange={this.handleChangePosition.bind(this)}>
                             <option value="Select Position">Select Your Position</option>
-                            <option value="Graduate Student">Graduate Student</option>
-                            <option value="Post-Doc">Post-Doc</option>
-                            <option value="Principal Investigator">Principal Investigator</option>
+                            <option value="undergrad">Staff Scientist</option>
+                            <option value="grad">Graduate Student</option>
+                            <option value="labtech">Lab Technician</option>
+                            <option value="postdoc">Post-Doc</option>
+                            <option value="staffscientist">Staff Scientist</option>
+                            <option value="pi">Principal Investigator</option>
                         </select>
+                        {!this.state.roleValid && this.state.triedSubmitting? <div className="error-message">
+                        <span>Not a valid input.</span>
+                        </div>:""}
 
-                        <select className="main-form-input" value={this.state.notifications}  onChange={this.handleChangeNotifications.bind(this)} >
-                            <option value="Select Notification Settings">Select Notification Settings</option>
-                            <option value="Every Time An Application is Submitted">Every Time An Application is Submitted</option>
-                            <option value="Weekly Update">Weekly Update</option>
-                            <option value="Monthly Update">Monthly Update</option>
+                        <select className="main-form-input left-input" value={this.state.notifications}
+                                onChange={this.handleChangeNotifications.bind(this)}>
+                            <option value="0">When do you want to receive emails about applications to your postings?
+                            You can nonetheless view applications on the site at any time.</option>
+                            <option value="0">Every Time An Application is Submitted</option>
+                            <option value="7">Weekly Update</option>
+                            <option value="30">Monthly Update</option>
+                            <option value="-1">Never (not recommended)</option>
+
                         </select>
+                        {!this.state.notifValid && this.state.triedSubmitting? <div className="error-message">
+                        <span>Not a valid input.</span>
+                        </div>:""}
 
-                        {!this.state.newLab ? <div>
-                                <div className="existing-or-create">
-                                    <input type="button" className="button left-button no-click button-small" value="Find Existing Lab"/>
+                        {/*<h6><center>All members of the same lab can view all the opportunities and applications for that lab</center></h6>*/}
+                        {!this.state.newLab ? <div className="existing-create-left">
+                            <div className="existing-or-create">
+                                <input type="button" className="button left-button no-click button-small"
+                                       value="Find Existing Lab"/>
 
-                                    <input type="button" className="right-button button-small-clear" value="Add New Lab" onClick={this.toggleNewLab.bind(this)}/>
-                                </div>
-
-                                <Autosuggester updateLab={this.handleUpdateLab.bind(this)} showDropdown={this.state.showDropdown}
-                                               data={this.state.data}
-                                />
-
+                                <input type="button" className="right-button button-small-clear" value="Add New Lab"
+                                       onClick={this.toggleNewLab.bind(this)}/>
                             </div>
+                              <div className="auto-div">
+                            <Autosuggester className="left-input" updateLab={this.handleUpdateLab.bind(this)}
+                                           showDropdown={this.state.showDropdown}
+                                           onChange = {this.handleUpdateLab.bind(this)}
+                                           data={this.state.data}
+                            />
+                            {!this.state.labNameValid && this.state.triedSubmitting ? <div className="error-message">
+                            <span>Not a valid input.</span>
+                            </div>:""}
+                            </div>
+                        </div>
 
                             : <div>
                                 <div className="existing-or-create">
@@ -175,22 +294,35 @@ class InstructorRegister extends React.Component {
                                     <input type="button" className="right-button no-click button button-small" value="Add New Lab" />
                                 </div>
 
-                                <input type="text" name="labName" id="labName" placeholder="Lab Name" value={this.name}
+                                <input className="left-input" type="text" name="labName" id="labName" placeholder="Lab Name" value={this.name}
                                        onChange={this.handleChangeNewLabName.bind(this)}/>
+                                       {!this.state.labNameValid && this.state.triedSubmitting ? <div className="error-message">
+                                       <span>Not a valid input.</span>
+                                       </div>:""}
 
-                                <input type="text" name="labURL" id="labURL" placeholder="Lab URL" value={this.labPage}
+                                <input className="left-input" type="text" name="labURL" id="labURL" placeholder="Lab URL" value={this.labPage}
                                        onChange={this.handleChangeLabURL.bind(this)}/>
-                                <input type="text" name="labPI" id="labPI" placeholder="Principal Investigator" value={this.pi}
+                                       {!this.state.labURLValid && this.state.triedSubmitting ? <div className="error-message">
+                                       <span>Not a valid input.</span>
+                                       </div>:""}
+                                <input className="left-input" type="text" name="labPI" id="labPI" placeholder="Principal Investigator"
+                                       value={this.pi}
                                        onChange={this.handleChangePI.bind(this)}/>
+                                       {!this.state.piValid && this.state.triedSubmitting ? <div className="error-message">
+                                       <span>Not a valid input.</span>
+                                       </div>:""}
 
-                                <textarea name="labDescription" id="labDescription" value={this.labDescription}
+                                <textarea className="left-input" name="labDescription" id="labDescription" value={this.labDescription}
                                           onChange={this.handleChangeLabDescript.bind(this)}
                                           placeholder="Optional Lab Description"></textarea>
                             </div>
                         }
 
                         <br/>
-                        <input className="button button-small registration" type="submit" value="Register" />
+                        </div>
+                        <div className="submit-container">
+                        <input className="button button-small registration" type="submit" value="Register"/>
+                        </div>
                     </form>
 
                 </div>

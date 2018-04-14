@@ -33,6 +33,7 @@ class Autosuggester extends React.Component {
         setTimeout(() => {
                   this.getSuggestions()
               }, 40);
+        this.props.updateLab(event.target.value,null);
 
   }
   handleClick(event){
@@ -152,7 +153,7 @@ getSuggestions() {
 
     return (
 
-      <div>
+      <div className="left-input">
 
       <input autoComplete="off" ref="autoFill" name="auto" className="suggest-input"  placeholder='Type Lab Name' type="text" value={this.state.value}
         onBlur={this.onBlur.bind(this)} onKeyDown={ this.handleKeyDown.bind(this) } onChange={this.handleChange} onClick = {this.handleClick} />

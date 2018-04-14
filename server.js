@@ -15,7 +15,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 const fileUpload = require('express-fileupload');
+const request = require("request");
 const AWS = require('aws-sdk');
 let s3;
 if (fs.existsSync('./S3Config2.json')) {
@@ -25,11 +28,11 @@ if (fs.existsSync('./S3Config2.json')) {
     s3 = new AWS.S3();
 }
 
-let corsKey = null;
-if (fs.existsSync('./CorsKey.json')) {
-    corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
-    corsKey = corsKey.key;
-}
+// let corsKey = null;
+// if (fs.existsSync('./CorsKey.json')) {
+//     corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
+//     corsKey = corsKey.key;
+// }
 
 //create instances
 const app = express();
@@ -45,8 +48,10 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
-app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
+// app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
@@ -62,43 +67,30 @@ app.use(function (req, res, next) {
     next();
 });
 
-//EMAIL SENDGRID
-// using SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-//TODO new api keyh
-//More powerful example
-/**
- {
- personalizations: [
-     {
-         to: [
-             {
-                 "email": ugradNetId + "@cornell.edu",
-                 "name": ugradInfo.firstName
-             }
-         ],
-         subject: "Research Connect Application Update for " + opportunity.title
-     }
- ],
-     content: [{
-     type: "text/plain",
-     content: message
- }],
-     from: {
-     email: "CornellDTITest@gmail.com",
-         name: "Research Connect"
- },
- }
- */
-// sgMail.send(msg);
+const index = require('./api/index');
+const labAdminsRoute = require('./api/labAdmins');
+const messagesRoute = require('./api/messages');
+const opportunityRoute = require('./api/opportunities');
+const undergradRoute = require('./api/undergrads');
+const applicationRoute = require('./api/applications');
+const labRoute = require('./api/labs');
+const docsRoute = require('./api/docs');
+
+app.use('/', index);
+app.use('/labAdmins', labAdminsRoute);
+app.use('/opportunities', opportunityRoute);
+app.use('/applications', applicationRoute);
+app.use('/undergrads', undergradRoute);
+app.use('/labs', labRoute);
+app.use('/messages', messagesRoute);
+app.use('/docs', docsRoute);
 
 router.get('/', function (req, res) {
     res.json({message: 'API Initialized!'});
 });
 
 app.use('/api', router);
+
 
 /*******************************/
 //BEGIN NON-DEFAULT CODE
@@ -1396,7 +1388,7 @@ const msg = {
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
     html: '<form action="http://localhost:3001/buttonClicked?id=Ayesha"> <input type="submit" value="Click this to go to buttonClicked Endpoint" /></form>'
-};//email three link and takes to an endpoint
+};/*email three link and takes to an endpoint
 
 
 sgMail1.send(msg);
@@ -1444,7 +1436,7 @@ app.get('/createUndergrad', function(req, res){
     /*******************************/
 
 
-// sgMail.send(msg);
+/*sgMail.send(msg);
 
 
 
@@ -1470,12 +1462,16 @@ app.post('/storeApplication', function (req, res) {
 
 
 
+
+/**Begin ENDPOINTS */
+
+
 /**End ENDPOINTS */
 
 
 /*******************************/
 
-//END NON-DEFAULT CODE
+/*END NON-DEFAULT CODE
 /*******************************/
 
 
@@ -1491,6 +1487,7 @@ module.exports = app;
 //starts the server and listens for requests
 app.listen(port, function () {
     debug(`api running on port ${port}`);
+
 
 });
 
@@ -1547,6 +1544,9 @@ app.listen(port, function () {
    // debug(students);
 });
  */
+
+});
+
 
 });
 

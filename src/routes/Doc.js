@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../ApplicationPage.css';
+import '../Doc.css';
 import * as Utils from '../components/Shared/Utils.js'
 
 class Resume extends Component {
@@ -13,13 +14,14 @@ class Resume extends Component {
     }
 
     componentWillMount() {
-        axios.get('/doc/' + this.props.match.params.id)
+        axios.get('/docs/' + this.props.match.params.id)
             .then((response) => {
                 this.setState(
                     {
                         resume: response.data,
                         loaded: true
                     });
+                console.log(response.data);
             })
             .catch(function (error) {
                 console.log(error);

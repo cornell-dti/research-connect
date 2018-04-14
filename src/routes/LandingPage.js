@@ -3,6 +3,10 @@ import '../LandingPage.css';
 import logo from '../images/vectorlogo.png';
 import stockPhoto from '../images/writing-picture.jpg';
 import filler from '../images/download.png';
+import img1 from '../images/img1.PNG';
+import img2 from '../images/img2.PNG';
+import img3 from '../images/img3.PNG';
+import axios from 'axios';
 import student1 from '../images/student-laptop.png';
 import student2 from '../images/student-magnifier.png';
 import student3 from '../images/student-lightbulb.png';
@@ -31,20 +35,44 @@ class LandingPage extends Component {
         });
     }
 
-    loginFailure() {
-        console.log("error");
+    loginFailure(a) {
+        console.log(a);
+        console.log("Error logging in with Google, please ensure you used an @cornell.edu address.");
     }
 
     responseGoogle(response) {
-        const email = response.profileObj.email;
-        const netid = email.substring(0, email.indexOf("@"));
-        console.log(netid);
+        sessionStorage.setItem('token_id', response.tokenId);
+        sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            if (hasRegistered.data) {
+                window.location.href = "/professorView";
+            }
+            else {
+                window.location.href = "/instructorRegister";
+            }
+        });
     }
+
+    responseGoogleStudent(response) {
+        sessionStorage.setItem('token_id', response.tokenId);
+        console.log("sesh");
+        console.log(sessionStorage.getItem('token_id'));
+        axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+            console.log("has registered");
+            console.log(hasRegistered);
+            if (hasRegistered.data) {
+                window.location.href = "/opportunities";
+            }
+            else {
+                window.location.href = "/studentRegister";
+            }
+        });
+    }
+
 
     logout() {
-        console.log("logged out");
+        sessionStorage.clear();
     }
-
 
     render() {
         return (
@@ -58,13 +86,23 @@ class LandingPage extends Component {
                         <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
                         <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
-                        <GoogleLogin
-                            clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                            buttonText="Log In"
-                            onSuccess={this.responseGoogle.bind(this)}
-                            onFailure={this.loginFailure.bind(this)}
-                            className="login button"
-                            hostedDomain="cornell.edu"/>
+                        {sessionStorage.getItem('token_id') === null ? (
+                            <div><GoogleLogin
+                                clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                                buttonText="Lab Log In"
+                                onSuccess={this.responseGoogle.bind(this)}
+                                onFailure={this.loginFailure.bind(this)}
+                                className="login"/>
+                                <GoogleLogin
+                                    clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                                    buttonText="Student Log In"
+                                    onSuccess={this.responseGoogleStudent.bind(this)}
+                                    onFailure={this.loginFailure.bind(this)}
+                                    className="login button"/>
+                            </div>
+                        ) : (
+                            <li><a onClick={window.location.href="/professorView"}>Manage Lab</a></li>
+                        )}
                     </nav>
                 </header>
 
@@ -77,9 +115,10 @@ class LandingPage extends Component {
                     <div className="button-div">
                         <input className="white-button" type="submit" onClick={this.scrollTo.bind(this, '#forstudents')}
                                value="For Students"/>
-                        <Link to="/instructorregister">
-                            <input className="white-button lab-button" type="submit" value="For Labs"/>
-                        </Link>
+                        {/*<Link to="/instructorregister">*/}
+                        <input className="white-button lab-button" type="submit" value="For Labs"
+                               onClick={this.scrollTo.bind(this, '#forprofs')}/>
+                        {/*</Link>*/}
                     </div>
 
 
@@ -87,9 +126,7 @@ class LandingPage extends Component {
                 <section id="about" className="why-us reviews">
                     <div className="students-title">
                         <h2>Why use Research Connect?</h2>
-                        <h3>Getting reliable help in your research lab has never been easier.
-                            Let students come to you without the hassle of contacting individuals and sifting through
-                            apps.</h3>
+                        <h3>The abundance of undergraduate research opportunities is one of the great things about Cornell, yet unfortunately the process of finding these opportunities is still very unstructured. One must knock on doors, send countless emails to professors, and make do with obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap by providing a structured platform where students can find opportunities, and research labs can find the students they are looking for.</h3>
                     </div>
                     <div>
                         <img className="why-logo" src={logo} alt="research connect logo"/>
@@ -121,7 +158,14 @@ class LandingPage extends Component {
                             <br /><p>Apply and get in touch with researchers and labs in your field!</p>
                         </div>
                     </div>
-                    <Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>
+                    {/*<Link to="/opportunities"><input className="get-started button" type="submit" value="Get Started"/></Link>*/
+                        /* hostedDomain="cornell.edu" */}
+                    <GoogleLogin
+                        clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                        buttonText="Student Signup"
+                        onSuccess={this.responseGoogleStudent.bind(this)}
+                        onFailure={this.loginFailure.bind(this)}
+                        className="login button"/>
 
                 </section>
 
@@ -149,9 +193,12 @@ class LandingPage extends Component {
                             <br/>
                         </div>
                     </div>
-                    <Link to="/instructorregister">
-                        <input className="get-started button" type="submit" value="Get Started"/>
-                    </Link>
+                    <GoogleLogin
+                        clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                        buttonText="Lab Signup"
+                        onSuccess={this.responseGoogle.bind(this)}
+                        onFailure={this.loginFailure.bind(this)}
+                        className="login"/>
                 </section>
 
 

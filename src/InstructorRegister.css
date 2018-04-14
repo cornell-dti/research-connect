@@ -6,11 +6,31 @@
 
 .instructor-reg-form{
     margin: 20px;
-    width:40%;
+    width:70%;
     margin-top: 100px;
-    margin-left: 30%;
+    margin-left: 15%;
     background-color: #f6f6f6;
-    text-align: center;
+}
+.instructor-reg-form .left-input{
+  width: 50%;
+  margin-left: 25%;
+}
+.instructor-reg-form .existing-create-left .left-input{
+  width: 50%;
+  margin-left: 25%;
+  display: inline-block;
+}
+.instructor-reg-form .auto-div .error-message, .instructor-reg-form .auto-div .error-message span{
+  vertical-align: top;
+}
+.instructor-reg-form .error-message{
+  display: inline;
+  border: solid 2px #b31b1b;
+  border-radius: 3px;
+  margin-left: 10px;
+  color: #b31b1b;
+  padding: 6px;
+
 }
 .instructor-reg-form .button-small{
   font-size: .8rem;
@@ -44,8 +64,6 @@
   width: 100%;
   height: 100%;
 
-
-
 }
 .autoOp:hover{
   background-color: #cdcfd3;
@@ -57,6 +75,10 @@
 .instructor-reg-form  .suggest-input{
   margin-bottom: 0px;
 
+}
+.instructor-reg-form h3, .instructor-reg-form .submit-container{
+  text-align: center;
+  align-items: center;
 }
 .instructor-reg-form .suggestion-array{
   border: 1px solid gray;
@@ -87,6 +109,12 @@
   background-color: #b31b1b;
   border-color: #b31b1b;
 }
+.instructor-reg-form .registration:hover, .instructor-reg-form .registration:focus{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+  opacity: .8;
+}
+
 
 .instructor-reg-form .button-small-clear{
     border-color: #b31b1b;

@@ -13,7 +13,7 @@ import InstructorRegister from './routes/InstructorRegister';
 import StudentRegister from './routes/StudentRegister';
 import ProfessorView from './routes/ProfessorView';
 import ApplicationPage from './routes/ApplicationPage';
-import Resume from './routes/Resume';
+import Doc from './routes/Doc';
 import LandingPage from './routes/LandingPage';
 
 ReactDOM.render(
@@ -27,7 +27,7 @@ ReactDOM.render(
             <Route exact path='/instructorRegister' component = {InstructorRegister} />
             <Route exact path='/StudentRegister' component = {StudentRegister} />
             <Route exact path='/professorView' component = {ProfessorView} />
-            <Route path = '/resume/:id' component = {Resume} />
+            <Route path = '/doc/:id' component = {Doc} />
             <Route exact path='/' component = {LandingPage} />
             <Route path='/' component = {Error} />
         </Switch>
