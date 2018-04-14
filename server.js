@@ -138,6 +138,8 @@ const undergradSchema = new Schema({
     netId: {type: String, required: true},
     courses: {type: [String],required:true},
     resume: {type: [String], required:true},
+    dismiss:{type: [Schema.Types.Mixed], default: [] }
+
 });
 
 let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
@@ -800,12 +802,11 @@ app.post('/createOpportunity', function (req, res) {
         areas: data.areas
     });
 
-<<<<<<< HEAD
+
     labModel.find();
     opportunityModelgi.findById(id, function (err, undergrad) {
 
-=======
->>>>>>> adce08f68901f47cb27710e33c990ab2ce173966
+
     opportunity.save(function (err) {
         if (err) {
             res.status(500).send({"errors": err.errors});
@@ -865,7 +866,22 @@ app.post('/createUndergrad', function (req, res) {
         netId: data.netid,
         courses: data.courses,
         resume: data.resume,
+        dismiss: data.dismiss
     });
+    /*const msg = {
+        to: netId + '@cornell.edu',
+        from: 'ayeshagrocks@gmail.com',
+        subject: 'New Research Opportunity Available!',
+        html: 'Hi,\n' +
+        'You have successfully signed up with research connect as a undergraduate!\n' +
+        'Thanks,\n' +
+        'The Research Connect Team\n'
+    };
+
+    sgMail.send(msg);
+*/
+    //send an email to student when they sign up
+
     debug(undergrad);
     undergrad.save(function (err) {
         if (err) {
@@ -920,12 +936,9 @@ function createLabAndAdmin(req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-<<<<<<< HEAD
 
-
-=======
         labAdmins: [data.netId]
->>>>>>> adce08f68901f47cb27710e33c990ab2ce173966
+
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
         // labAdmins: data.labAdmins,
         // opportunities: data.opportunities
@@ -1010,8 +1023,6 @@ app.post('/createLabAdmin', function (req, res) {
         });
     }
 
-
-    Add CommentCollapse
 });
 
 app.post('/createLab', function (req, res) {
@@ -1028,14 +1039,10 @@ app.post('/createLab', function (req, res) {
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
-<<<<<<< HEAD
         labAdmins: data.labAdmins,
         opportunities: data.opportunities
 
-=======
-        labAdmins: [],
-        opportunities: null
->>>>>>> adce08f68901f47cb27710e33c990ab2ce173966
+
     });
 
     lab.save(function (err) {
@@ -1366,16 +1373,18 @@ app.post('/testResume', function (req, res) {
     console.log(req.body.files);
 });
 
-//EMAIL SENDGRID
-// using SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-//create buttons email:
-//site url and endpoint
 
-let siteUrl = "localhost:3001"
-var messsgeContent = '';
-//messsgeContent += createButton(siteUrl, 'storeResume' );
+//goes though the list of undergrads to find  and updates their dismiss field.
+app.post('/dismiss', function(netId, OppID, res) {
+var data = req.body;
+var undergrad = getUndergrad(req);
+var dismissArr = undergrad.dismiss;
+    if(!dismissArr.includes(OppID)){
+        undergrad.dismiss.push(OppID);
+    }
 
+
+});
 
 
 
@@ -1482,7 +1491,7 @@ module.exports = app;
 //starts the server and listens for requests
 app.listen(port, function () {
     debug(`api running on port ${port}`);
-<<<<<<< HEAD
+
 });
 
 
@@ -1538,6 +1547,6 @@ app.listen(port, function () {
    // debug(students);
 });
  */
-=======
+
 });
->>>>>>> 2bdcf70f30f7edb323457a5cee48774ed4800107
+
