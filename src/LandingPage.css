@@ -113,6 +113,14 @@
     justify-content: center;
 }
 
+.signup {
+  margin-right: 8px;
+}
+
+.sign-out {
+  cursor: pointer;
+}
+
 /*-------------
  	Header
 -------------*/
@@ -190,6 +198,7 @@
 	text-decoration: none;
 	text-transform: uppercase;
 	white-space: nowrap;
+  margin-bottom: 0;
 }
 
 
@@ -322,8 +331,9 @@
 
 
 .our-work .photo-flex{
-  height: 300px;
+  height: 400px;
   width: 100%;
+  margin-bottom: 40px;
 }
 .our-work .step p{
   padding: 0px;
@@ -345,25 +355,18 @@
 }
 .our-work .step{
   height: 100%;
+  margin-top: 30px;
+  text-align: center;
   flex-basis: 33%;
   padding: 50px 30px;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-}
-
-
-.our-work .step {
-    height: 100%;
-    flex-basis: 33%;
-    padding: 50px 30px;
 }
 
 .our-work .step-photo {
-    border-radius: 50%;
+  border-radius: 50%;
+}
+
+.our-work .step .padding {
+  padding: 15px;
 }
 
 .our-work .button {
