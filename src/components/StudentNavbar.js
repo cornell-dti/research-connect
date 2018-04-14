@@ -7,27 +7,22 @@ class StudentNavbar extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-    };
+		this.state = {};
   }
+
   logout() {
         sessionStorage.clear();
         window.location.href = "/";
   }
 
-    render() {
+  render() {
 		return (
       <div className="header-all">
-      <Link to="/opportunities"><img className="logo" src={logo}/></Link>
-
-      <nav>
-        <li><a href="/opportunities">Opportunities</a></li>
-        <li><a onClick={this.logout.bind(this)}>Sign Out</a></li>
-        {/*<li><a href="#">Placeholder</a></li>*/}
-
-
-      </nav>
-
+        <Link to="/opportunities"><img className="logo" src={logo}/></Link>
+        <nav>
+          <li><a href="/opportunities">Opportunities</a></li>
+          <li><a class="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
+        </nav>
       </div>
     );
   }
