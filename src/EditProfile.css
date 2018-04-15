@@ -160,7 +160,7 @@
   background-color:  #f6f6f6;
   padding: 2px 0px 2px 5px;
   border-radius: 5px;
-  width: 70%;
+
 }
 .edit-container .editting p{
   display: inline;
@@ -168,7 +168,7 @@
 .display-list .addTag{
   margin-top: 10px;
   height: 29px;
-  width: 70%;
+  width: 87%;
   line-height: 1.5;
   font-weight: 300;
   font-size: 1.6rem;
