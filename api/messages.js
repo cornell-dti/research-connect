@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, mongoose} = require('../common.js');
 
 
 /**

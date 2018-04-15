@@ -42,7 +42,7 @@ class LandingPage extends Component {
 
 	responseGoogle(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
-		sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
+        sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
 		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			if (hasRegistered.data) {
 				window.location.href = "/professorView";
@@ -55,7 +55,6 @@ class LandingPage extends Component {
 
 	responseGoogleStudent(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
-		console.log("sesh");
 		console.log(sessionStorage.getItem('token_id'));
 		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			console.log("has registered");

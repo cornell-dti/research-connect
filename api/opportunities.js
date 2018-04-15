@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, verify, mongoose} = require('../common.js');
 
 //finds lab where lab admin = {adminNetId}, undefined if the id can't be fine in any lab
 function findLabWithAdmin(labs, adminNetId) {
@@ -12,66 +12,72 @@ function findLabWithAdmin(labs, adminNetId) {
 //previous POST /getOpportunity
 //gets the opportunity given its object id
 app.get('/:id', function (req, res) {
-    opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
-        if (err) {
-            debug(err);
-            res.send(err);
-        }
-        labModel.find({}, function (err2, labs) {
-            if (err2) {
+    console.log("token: " + req.query.netId);
+    verify(req.query.netId, function (tokenNetId) {
+        console.log("toke net id: " + tokenNetId);
+        opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
+            if (err) {
                 debug(err);
                 res.send(err);
-                return;
             }
-            let labAdmins = [];
-            for (let i = 0; i < labs.length; i++) {
-                let currentLab = labs[i];
-                for (let j = 0; j < currentLab.opportunities.length; j++) {
-                    if (currentLab.opportunities[j].toString() === req.params.id) {
-                        opportunity.labPage = currentLab.labPage;
-                        opportunity.labDescription = currentLab.labDescription;
-                        opportunity.labName = currentLab.name;
-                        labAdmins = currentLab.labAdmins;
+            labModel.find({}, function (err2, labs) {
+                if (err2) {
+                    debug(err);
+                    res.send(err);
+                    return;
+                }
+                let labAdmins = [];
+                for (let i = 0; i < labs.length; i++) {
+                    let currentLab = labs[i];
+                    for (let j = 0; j < currentLab.opportunities.length; j++) {
+                        if (currentLab.opportunities[j].toString() === req.params.id) {
+                            opportunity.labPage = currentLab.labPage;
+                            opportunity.labDescription = currentLab.labDescription;
+                            opportunity.labName = currentLab.name;
+                            console.log("found it");
+                            console.log(currentLab);
+                            labAdmins = currentLab.labAdmins;
+                        }
                     }
                 }
-            }
-            console.log("here");
-            console.log(labAdmins);
-            labAdministratorModel.findOne(
-                {
-                    $and: [
-                        {netId: {$in: labAdmins}},
-                        {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
-                    ]
-                },
-                function (err, labAdmin) {
-                    debug(labAdmin);
-                    opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                    undergradModel.findOne({netId: req.query.netIdPlain}, function (error3, student) {
-                        if (student === undefined) {
-                            opportunity.student = {
-                                "firstName": "rachel",
-                                "lastName": "nash",
-                                "gradYear": 2020,
-                                "major": "Computer Science",
-                                "gpa": 4.3,
-                                "netId": "rsn55",
-                                "courses": [
-                                    "CS 1110",
-                                    "INFO 4998",
-                                    "CS 3110"
-                                ],
-                                "skills": [
-                                    "HTML"
-                                ]
+                console.log("here");
+                console.log(labAdmins);
+                labAdministratorModel.findOne(
+                    {
+                        $and: [
+                            {netId: {$in: labAdmins}},
+                            {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
+                        ]
+                    },
+                    function (err, labAdmin) {
+                        debug(labAdmin);
+                        opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
+                        undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
+                            if (student === undefined) {
+                                opportunity.student = {
+                                    "firstName": "rachel",
+                                    "lastName": "nash",
+                                    "gradYear": 2020,
+                                    "major": "Computer Science",
+                                    "gpa": 4.3,
+                                    "netId": "rsn55",
+                                    "courses": [
+                                        "CS 1110",
+                                        "INFO 4998",
+                                        "CS 3110"
+                                    ],
+                                    "skills": [
+                                        "HTML"
+                                    ]
+                                }
                             }
-                        }
-                        else {
-                            opportunity.student = student;
-                        }
-                        res.send(opportunity);
+                            else {
+                                opportunity.student = student;
+                            }
+                            res.send(opportunity);
+                        });
                     });
-                });
+            });
         });
     });
 });
@@ -87,16 +93,11 @@ app.get('/', function (req, res) {
         "CS2110": ["CS2112"],
         "CHEM2090": ["CHEM2080"]
     };
-    let undergradNetId = req.query.netId;
-    if (undergradNetId != undefined) {
-        decryptGoogleToken(undergradNetId, function (tokenBody) {
-            if (tokenBody.email === undefined) {
-                undergradNetId = req.query.netIdPlain;
-            }
-            else {
-                undergradNetId = tokenBody.email.replace("@cornell.edu", "");
-            }
-            console.log(undergradNetId);
+
+    let token = req.query.netId;
+    if (token != undefined) {
+        verify(token, function (undergradNetId) {
+            console.log("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
             undergradModel.findOne({netId: undergradNetId}, function (err, undergrad) {
                 let undergrad1 = undergrad;

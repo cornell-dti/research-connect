@@ -1,7 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let common = require('../common.js');
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose} = require('../common.js');
 
 
 /**
@@ -46,6 +46,31 @@ app.get("/role/:netId", function (req, res) {
             res.send(labAdmin.role);
         })
     })
+});
+
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
+
+
+app.get("/verify/:token", function (req, res){
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: req.params.token,
+            audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        console.log('before');
+        console.log(userid);
+        console.log(payload);
+        console.log('after');
+
+        // If request specified a G Suite domain:
+        //const domain = payload['hd'];
+    }
+    verify().catch(console.error);
 });
 
 module.exports = app;

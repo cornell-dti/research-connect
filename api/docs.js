@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, s3} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, s3, mongoose} = require('../common.js');
 
 
 app.get('/:id', function (req, res) {
