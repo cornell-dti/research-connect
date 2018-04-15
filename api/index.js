@@ -1,7 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let common = require('../common.js');
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
 
 /**
@@ -26,12 +26,14 @@ app.get('/populate', function (req, res) {
 });
 
 app.get("/hasRegistered/:netId", function (req, res) {
-    undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
-        if (undergrad !== null) return res.send(true);
-        labAdministratorModel.findOne({netId: req.params.netId}, function (err, labAdmin) {
-            return res.send(labAdmin !== null);
+    verify(req.params.netId, function (netId) {
+        undergradModel.findOne({netId: netId}, function (err, undergrad) {
+            if (undergrad !== null) return res.send(true);
+            labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
+                return res.send(labAdmin !== null);
+            })
         })
-    })
+    });
 });
 
 /**
@@ -39,20 +41,22 @@ app.get("/hasRegistered/:netId", function (req, res) {
  * Can either be undergrad, none, or one of the various lab administrator roles
  */
 app.get("/role/:netId", function (req, res) {
-    undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
-        if (undergrad !== null) return res.send("undergrad");
-        labAdministratorModel.findOne({netId: req.params.netId}, function (err, labAdmin) {
-            if (labAdmin === null) return res.send("none");
-            res.send(labAdmin.role);
+    verify(req.params.netId, function (netId) {
+        undergradModel.findOne({netId: netId}, function (err, undergrad) {
+            if (undergrad !== null) return res.send("undergrad");
+            labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
+                if (labAdmin === null) return res.send("none");
+                res.send(labAdmin.role);
+            })
         })
-    })
+    });
 });
 
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 
 
-app.get("/verify/:token", function (req, res){
+app.get("/verify/:token", function (req, res) {
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: req.params.token,
@@ -70,6 +74,7 @@ app.get("/verify/:token", function (req, res){
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
     }
+
     verify().catch(console.error);
 });
 

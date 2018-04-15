@@ -47,7 +47,7 @@ class LandingPage extends Component {
 
 		let role = "";
 
-		axios.get('/role/' + /* sessionStorage.getItem('token_id') */ 'prk57').then((response) => { role = response.data });
+		axios.get('/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
 
 		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			if (hasRegistered.data) {
