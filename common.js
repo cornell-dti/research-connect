@@ -45,6 +45,22 @@ let tokenRequest = {
     }
 };
 
+
+// async function verify() {
+//     const ticket = await client.verifyIdToken({
+//         idToken: token,
+//         audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+//         // Or, if multiple clients access the backend:
+//         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+//     });
+//     const payload = ticket.getPayload();
+//     const userid = payload['sub'];
+//     // If request specified a G Suite domain:
+//     //const domain = payload['hd'];
+// }
+// verify().catch(console.error);
+
+
 /**
  * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
  * @param token the google token hash

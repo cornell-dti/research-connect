@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+const mongoose = require('mongoose');
 
 /**
  * Send a request to /applications/:id, where "id" is the id of the application

@@ -293,7 +293,7 @@ class CreateOppForm extends React.Component {
 						<p>You can optionally add position-specific questions or requests for additional information
 							that students must respond to in order to apply.
                 We recommend asking "Why are you interested in this lab and/or position?" to gauge interest.
-                You will nonetheless able to view each student's year, GPA, resume, and major, in addition to their responses to these questions once they apply.</p>
+                You will nonetheless able to view each student's cover letter for your position, year, GPA, resume, and major, in addition to their responses to these questions once they apply.</p>
 						<div className="question-adder">
 						<input className="button-small button" type="button" value="Add a question" onClick={this.addQuestion}/>
 						{this.state.numQuestions !== 0 ? <input className="button-small button remove" type="button" value="Remove a question"

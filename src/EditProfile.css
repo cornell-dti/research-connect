@@ -1,0 +1,180 @@
+.profile-page-wrapper{
+  margin-top: 80px;
+   background-color: #f6f6f6;
+}
+.row .title-box, .row .qual-box{
+  border: solid 1px #979797;
+  background-color: #ffffff;
+
+}
+.row .title-box  h6{
+  padding-bottom: 15px;
+  font-size: 15px;
+  padding-left: 5px;
+}
+.row .title-box h5{
+  padding-left: 5px;
+  padding-top: 4px;
+  padding-bottom: 0px;
+}
+.row .title-box h4{
+  padding-bottom: 0px;
+  font-size: 27px;
+  margin-bottom: 0px;
+  padding-left: 5px;
+}
+.row .title-box{
+  margin-top: 50px;
+  padding: 20px;
+}
+.row .red-box{
+  background-color: #b31b1b;
+  width: 100%;
+  margin: 0px;
+  padding: 10px;
+  padding-left: 20px;
+}
+.qual-box{
+  margin-top: 16px;
+}
+.red-box h5{
+  color: white;
+  margin-bottom: 0px;
+}
+.row .column hr{
+  margin: 0px;
+}
+.row .qual-row{
+  width: 100%;
+  margin: 0px;
+  padding: 20px;
+}
+.row .vl{
+  border-left: 1px solid #979797;
+
+}
+.row .relevant-row{
+  width: 100%;
+  margin: 0px;
+}
+.relevant-row .column{
+  padding: 20px;
+}
+.pencil-icon{
+  margin-left: 15px;
+  display: inline;
+  color: black;
+  padding-bottom: 3px;
+}
+.delete-icon{
+  color: black;
+  padding-bottom: 5px;
+  display: inline;
+  float: right;
+
+}
+.delete-icon:hover{
+  opacity: .5;
+
+}
+.pencil-icon:hover, .row .check-icon:hover, .add-icon:hover{
+  color: #979797;
+}
+
+
+.row .check-icon{
+  display: inline;
+  color: green;
+  padding-bottom: 3px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+.add-icon{
+  color:black;
+  margin-left: 5px;
+}
+.row .edit-input{
+  width: 65%;
+  border: none;
+  padding: 0px;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #606c76;
+  background-color:  #f6f6f6;
+  padding-left: 5px;
+  margin-bottom: 4px;
+  height: 29px;
+  letter-spacing: .8px;
+  display: inline;
+  line-height: 1.5;
+}
+.input-div h5, .input-div .check-icon, .input-div .gpa-error{
+  display: inline;
+}
+.input-div{
+  width: 100%;
+}
+.gpa-edit .edit-input{
+  width: 15%;
+}
+.gpa-div h5{
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-bottom: 1px;
+}
+
+.row .column .trans-resume .button{
+  margin-left: 10px;
+  border-color: #9b9999;
+  background-color: #9b9999;
+  height: 24px;
+  padding: 2px 8px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.trans-resume h5{
+  margin-top: 5px;
+}
+.row .column .trans-resume .button:hover{
+  cursor: pointer;
+  border-color: #c1bfbf;
+  background-color: #c1bfbf;
+
+}
+.clear-offset{
+  padding-right: 5px;
+}
+.display-list-item, .edit-container .editting{
+  margin-bottom: 4px;
+}
+.display-list-item{
+  padding: 2px 5px;
+  margin-left: 5px;
+}
+.display-list{
+  margin-top: 15px;
+
+}
+.edit-container .editting{
+  background-color:  #f6f6f6;
+  padding: 2px 0px 2px 5px;
+  border-radius: 5px;
+
+}
+.edit-container .editting p{
+  display: inline;
+}
+.display-list .addTag{
+  margin-top: 10px;
+  height: 29px;
+  width: 87%;
+  line-height: 1.5;
+  font-weight: 300;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  color: #606c76;
+}
+.display-list .addTag:focus{
+  border-color: gray;
+}
