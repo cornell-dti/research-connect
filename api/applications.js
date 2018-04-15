@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, verify} = require('../common.js');
 const mongoose = require('mongoose');
 
 /**
@@ -27,29 +27,8 @@ const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.a
 //previously POST /getApplications
 app.get('/', function (req, res) {
     // decryptGoogleToken(req.query.id, function (tokenBody) {
-    async function verify() {
-        const ticket = await client.verifyIdToken({
-            idToken: req.query.id,
-            audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
-            // Or, if multiple clients access the backend:
-            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-        });
-        const payload = ticket.getPayload();
-        const userid = payload['sub'];
-        console.log('before');
-        console.log(userid);
-        console.log(payload);
-        console.log('after');
-
-        // If request specified a G Suite domain:
-        //const domain = payload['hd'];
-
-
+    verify(req.query.id, function (labAdminId) {
         // let labAdminId = tokenBody.email.replace("@cornell.edu", "");
-        let labAdminId = req.query.netId;
-        labAdminId = payload["email"].replace(("@" + payload["hd"]),"");
-        console.log("success?");
-        console.log(labAdminId);
         let opportunitiesArray = [];
         let reformatted = {};
         labAdministratorModel.findOne({netId: labAdminId}, function (err, labAdmin) {
@@ -137,9 +116,7 @@ app.get('/', function (req, res) {
                 });
             })
         });
-    }
-    verify().catch(console.error);
-
+    });
 });
 
 //previously POST /storeApplication
