@@ -9,22 +9,31 @@ function findLabWithAdmin(labs, adminNetId) {
     })[0];
 }
 
-
 app.get('/check/:opportunityId', function(req, res){
     var idToCheck = req.query.netId;
-    var toSearch = opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {});
     console.log("THIS IS WHERE WE START");
-    console.log(toSearch.schema.obj.applications);
-    for (var i = 0; i<toSearch.length; i++){
-        if (toSearch[i].undergradNetId === idToCheck) {
-            console.log("You have already applied to this lab");
-            res.send(true);
+
+    opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
+        //console.log(err);
+        console.log("callback function is being run");
+        //console.log(opportunity);
+        if(opportunity==null){
+            console.log("could not find matching opportunity");
+            res.send(false);
             return;
+        }else{
+            var toSearch = opportunity.applications;
+            for (var i = 0; i<toSearch.length; i++){
+                if (toSearch[i].undergradNetId === idToCheck) {
+                    console.log("You have already applied to this lab");
+                    res.send(true);
+                    return;
+                }
+            }
+            console.log("You have not yet applied to this lab");
+            res.send(false);
         }
-    }
-    res.send(false);
-    console.log("You did not apply previously");
-    return;
+    });
 });
 
 /*
