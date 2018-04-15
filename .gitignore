@@ -82,3 +82,5 @@ crashlytics-build.properties
 fabric.properties
 
 fabric.properties
+sendgrid.env
+sendgrid.env
