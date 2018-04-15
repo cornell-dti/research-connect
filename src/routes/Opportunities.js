@@ -33,6 +33,18 @@ class Opportunities extends Component {
         };
     }
 
+    componentWillMount() {
+        axios.get('/role/' + /* sessionStorage.getItem('token_id') */ 'prk57')
+        .then((response) => {
+            if (response.data !== 'undergrad') {
+                window.location.href = "/";
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     //will be called by the year component whenever the year checkboxes are updated
     handleUpdateYear(yearObj) {
         this.setState({yearSelect: yearObj});
