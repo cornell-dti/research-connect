@@ -80,7 +80,7 @@ class InstructorRegister extends React.Component {
 
     loadOpportunitiesFromServer() {
 
-        axios.get('/getLabs')
+        axios.get('/labs')
             .then(res => {
 
                 this.setState({ data: res.data });

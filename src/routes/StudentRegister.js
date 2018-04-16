@@ -20,7 +20,7 @@ class StudentRegister extends React.Component {
             gradYear: "",
             major: "",
             GPA: "",
-            netid: "bbb111", //TODO currently dummy value
+            netid: "",
             courses: [],
             file: null
         };
@@ -140,6 +140,11 @@ class StudentRegister extends React.Component {
 
     render() {
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
+        axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
+            this.setState({ netid: res.data });
+            console.log("res.data:"); //todo check if res.data is correct
+            console.log(res.data);
+        });
         return (
             <div>
                 <Navbar/>

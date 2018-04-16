@@ -26,14 +26,13 @@ app.get('/populate', function (req, res) {
 });
 
 app.get("/hasRegistered/:netId", function (req, res) {
-    verify(req.params.netId, function (netId) {
-        undergradModel.findOne({netId: netId}, function (err, undergrad) {
-            if (undergrad !== null) return res.send(true);
-            labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
-                return res.send(labAdmin !== null);
-            })
+    let netId = req.params.netId;
+    undergradModel.findOne({netId: netId}, function (err, undergrad) {
+        if (undergrad !== null) return res.send(true);
+        labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
+            return res.send(labAdmin !== null);
         })
-    });
+    })
 });
 
 /**
@@ -49,12 +48,17 @@ app.get("/role/:netId", function (req, res) {
                 res.send(labAdmin.role);
             })
         })
-    });
+    }).catch(console.error("3"));
 });
 
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 
+app.get("/decrypt", function(req, res) {
+    verify(req.query.token, function(netId){
+        return res.send(netId);
+    })
+});
 
 app.get("/verify/:token", function (req, res) {
     async function verify() {
@@ -75,7 +79,7 @@ app.get("/verify/:token", function (req, res) {
         //const domain = payload['hd'];
     }
 
-    verify().catch(console.error);
+    verify().catch(console.error("4"));
 });
 
 module.exports = app;

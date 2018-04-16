@@ -116,7 +116,7 @@ app.get('/', function (req, res) {
                 });
             })
         });
-    });
+    }).catch(console.error("1"));
 });
 
 //previously POST /storeApplication
