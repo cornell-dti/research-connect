@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css';
 import '../ProfessorView.css';
+import axios from 'axios';
 import Navbar from '../components/ProfNavbar'
 import ApplicationList from '../components/ProfessorView/ApplicationList';
 import YearSelect from '../components/YearSelect'
@@ -40,6 +41,22 @@ class ProfessorView extends Component {
 	}
 	handleUpdateDate(majorObj) {
 		this.setState({startDate: majorObj});
+	}
+
+	componentWillMount() {
+		axios.get('/role/' + /* sessionStorage.getItem('token_id') */ 'prk57')
+		.then((response) => {
+			if (response.data !== 'grad' &&
+				  response.data !== 'labtech' &&
+				  response.data !== 'postdoc' &&
+				  response.data !== 'staffscientist' &&
+				  response.data !== 'pi') {
+				window.location.href = "/";
+			}
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 	}
 
 	render() {

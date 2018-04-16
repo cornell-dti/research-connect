@@ -20,7 +20,7 @@ class StudentRegister extends React.Component {
             gradYear: "",
             major: "",
             GPA: "",
-            netid: "bbb111", //TODO currently dummy value
+            netid: "zx55", //TODO currently dummy value
             courses: [],
             file: null
         };
@@ -116,6 +116,14 @@ class StudentRegister extends React.Component {
         e.preventDefault();
         // get our form data out of state
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
+
+        axios.get('opportunities/check/9102401rjqlfk?netId="zx55"')
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
         axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
