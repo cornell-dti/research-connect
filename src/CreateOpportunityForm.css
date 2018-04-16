@@ -5,13 +5,13 @@
 }
 
 .new-opp-form{
-    margin: 20px;
+    margin: auto;
     margin-top: 100px;
-    width:40%;
-    margin-left: 30%;
+    width: 40%;
     background-color: #f6f6f6;
 
 }
+
 .new-opp-form .submit{
   margin-top: 60px;
   margin-bottom: 100px;
@@ -28,18 +28,9 @@
 .new-opp-form textarea{
   resize: none;
 }
-.start-time select, .hours input{
-  width:48%;
-}
-.start-time .startSeason, .min-hours{
-  margin-right: 2%
-}
-.start-time .startYear, .max-hours{
-  margin-left: 2%
-}
-.label-inline{
-  margin-right: 10px;
-}
+
+
+
 .years-allowed{
   text-align: center;
   align-items: center;
@@ -53,8 +44,12 @@
 }
 .question-boxes .question{
   display: inline;
-  width: 90%;
+  width: 85%;
   margin-left: 10px;
+
+}
+.question-boxes{
+  margin: 20px 0px 20px 0px;
 }
 .question-adder{
   text-align: center;
@@ -75,15 +70,138 @@
 .react-datepicker__navigation{
   all: unset;
 }
+
 .label-inline{
   font: 400 11px system-ui;
 }
 .date-pick-container{
   text-align: center;
 }
+.datePicker{
+  display: inline;
+}
 .new-opp-form input:focus, .new-opp-form textarea:focus, .new-opp-form select:focus{
     border-color: #b31b1b;
 }
+.row .new-opp-form input,.row .new-opp-form textarea, .row .new-opp-form select{
+  padding: 10px;
+}
+.row .new-opp-form .button{
+  padding: 0 1.5rem;
+}
+
 .years-allowed input[type=checkbox]:checked{
   color: #b31b1b;
+}
+.row .startYear, .row .max-hours{
+  width: 42.5%;
+  margin-left: 5%;
+
+}
+ .row .startSeason, .row .min-hours{
+
+  width: 42.5%;
+}
+
+
+.info-icon{
+  color: #adafb2;
+  margin: 8px 0px 0px 5px;
+}
+.info-icon-title{
+  color: #adafb2;
+  margin: 0px 0px 3px 5px;
+}
+.info-icon:hover, .info-icon-title:hover{
+  color: #b31b1b;
+}
+.info-text{
+  width: 200px;
+  margin-bottom: 0px;
+}
+.question-adder p.info-text-large{
+  width: 300px;
+  margin: 0px;
+  padding: 0px;
+
+}
+
+.info-text li{
+  margin: 0;
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-left: 1em;
+
+}
+.row .input-row{
+  margin: 0px 0px 8px 0px;
+  width: 100%;
+
+}
+form{
+  padding: 0px;
+  margin-top: 10px;
+}
+.deleter-icon{
+  color: black;
+  padding: 5px 0px 0px 5px;
+  display: inline;
+  float: right;
+}
+.deleter-icon:hover{
+  opacity: .5;
+}
+.add-question .adder-icon{
+  color:white;
+  margin-left: 5px;
+  margin-bottom: 1px;
+}
+.add-question{
+  background-color: gray;
+  border-radius: 4px;
+  padding: 7px 10px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+  display: inline;
+  color: white;
+
+}
+.add-question:hover{
+  opacity: .7;
+}
+
+.add-question span{
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .1em;
+}
+.question-adder h4{
+  display: inline;
+}
+.question-adder{
+  margin-top: 30px;
+  font-family: Roboto;
+}
+.question-adder p{
+  margin: 10px 40px;
+  text-align: justify;
+}
+.required-star{
+  color: #b31b1b;
+  font-size: 30px;
+  width: 5%;
+  font-weight: 500;
+}
+.required-star-top{
+  color: #b31b1b;
+  font-weight: 500;
+  font-family: Roboto;
+}
+.new-opp-form .optional input, .new-opp-form .optional textarea, .new-opp-form .optional select{
+  margin-left: 5%;
+}
+.row .wrong textarea, .row .wrong input,  .row .wrong-select{
+  border: 3px solid #b31b1b;
 }
