@@ -129,7 +129,6 @@ app.post('/', function (req, res) {
             "status": "received",
             "responses": req.body.responses,
             "timeSubmitted": Date.now(),
-            "id": Date.now() + req.body.netId
         };
         opportunity.applications.push(application);
         opportunity.save(function (err) {

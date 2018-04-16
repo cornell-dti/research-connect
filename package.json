@@ -24,12 +24,7 @@
     "milligram": "^1.3.0",
     "mongodb": "^2.2.35",
     "milligram-react": "0.0.0",
-<<<<<<< HEAD
     "moment": "^2.22.0",
-    "mongodb": "^2.2.35",
-=======
-    "moment": "^2.21.0",
->>>>>>> 846b839f6d77632fae4d5f803a2e79336f411022
     "mongoose": "^4.13.12",
     "morgan": "~1.8.1",
     "nodemailer": "^4.6.4",
