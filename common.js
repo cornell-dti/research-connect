@@ -45,21 +45,19 @@ let tokenRequest = {
     }
 };
 
+async function verify(token, callback) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    callback(payload["email"].replace(("@" + payload["hd"]), ""));
+}
 
-// async function verify() {
-//     const ticket = await client.verifyIdToken({
-//         idToken: token,
-//         audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-//         // Or, if multiple clients access the backend:
-//         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-//     });
-//     const payload = ticket.getPayload();
-//     const userid = payload['sub'];
-//     // If request specified a G Suite domain:
-//     //const domain = payload['hd'];
-// }
-// verify().catch(console.error);
-
+module.exports.verify = verify;
 
 /**
  * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
@@ -102,6 +100,7 @@ function gradYearToString(gradYear) {
 
 /** DATABASE **/
 const mongoose = require('mongoose');
+module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
 //Set up default mongoose connection

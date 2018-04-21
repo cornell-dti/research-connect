@@ -1,5 +1,6 @@
 let express = require('express');
 let app = express.Router();
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose} = require('../common.js');
 
 
 //previously GET /getlabs

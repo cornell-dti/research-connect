@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
 app.get('/:tokenId', function (req, res) {
     verify(req.params.tokenId, function (netId) {
@@ -9,7 +9,6 @@ app.get('/:tokenId', function (req, res) {
                 return err;
             }
             debug(undergrad.netId);
-
             res.send(undergrad);
         });
     });
