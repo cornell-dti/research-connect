@@ -2,6 +2,25 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
+app.get('/la/:netId', function (req, res) {
+    verify(req.query.tokenId, function (profNetId) {
+        if (profNetId == null){
+            return res.status(401).send({});
+        }
+        labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
+            if (labAdmin === null) return res.status(403).send({});
+            undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+                if (err) {
+                    return err;
+                }
+                debug(undergrad.netId);
+                res.send(undergrad);
+            });
+        });
+    });
+});
+
+
 app.get('/:tokenId', function (req, res) {
     verify(req.params.tokenId, function (netId) {
         undergradModel.find({netId: netId}, function (err, undergrad) {
