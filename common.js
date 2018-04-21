@@ -187,6 +187,7 @@ const opportunitySchema = new Schema({
         type: [String],
         default: []
     },
+
     messages: {
         type: Schema.Types.Mixed, default: {
             "accept": 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. Please email me to find out more about when you will start.',
@@ -206,6 +207,7 @@ const opportunitySchema = new Schema({
     areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
     prereqsMatch: {type: Boolean, default: false},
     labDescription: {type: String, required: false},
+    fundOption:{type:Number, min:0, default:0},
     labName: {type: String, required: false}
 });
 opportunitySchema.pre('validate', function (next) {

@@ -32,7 +32,7 @@ app.post('/', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netid,
+        netId: data.netId,
         courses: data.courses
     });
     debug(undergrad);
@@ -61,12 +61,12 @@ app.put('/:id', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            undergrad.firstName = req.body.firstName || undergrad.firstName;
+            undergrad.firstName = firstName || undergrad.firstName;
             undergrad.lastName = req.body.lastName || undergrad.lastName;
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netID = req.body.netid || undergrad.netId;
+            undergrad.netId = req.body.netId || undergrad.netId;
             undergrad.resume = req.body.resume || undergrad.resume;
 
 
