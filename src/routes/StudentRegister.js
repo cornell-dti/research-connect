@@ -117,6 +117,14 @@ class StudentRegister extends React.Component {
         // get our form data out of state
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
 
+        // axios.get('opportunities/check/9102401rjqlfk?netId="zx55"')
+        //     .then(function (response) {
+        //         console.log(response);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+
         axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
                 console.log("undergrad created, result:");
@@ -140,11 +148,11 @@ class StudentRegister extends React.Component {
 
     render() {
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
-        axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-            this.setState({ netid: res.data });
-            console.log("res.data:"); //todo check if res.data is correct
-            console.log(res.data);
-        });
+        if (this.state.netid === "") {
+            axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
+                this.setState({netid: res.data});
+            });
+        }
         return (
             <div>
                 <Navbar/>
