@@ -36,6 +36,9 @@ app.get('/', function (req, res) {
                 res.send(err);
                 return;
             }
+            if (labAdmin === null){
+                return res.status(401).send({});
+            }
             labModel.findById(labAdmin.labId, function (err, lab) {
                 if (err) {
                     res.send(err);
