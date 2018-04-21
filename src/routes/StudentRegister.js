@@ -151,6 +151,8 @@ class StudentRegister extends React.Component {
         if (this.state.netid === "") {
             axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
                 this.setState({netid: res.data});
+                console.log("res data!");
+                console.log(res.data);
             });
         }
         return (
@@ -212,8 +214,6 @@ class StudentRegister extends React.Component {
             </div>
         );
     }
-
-
 }
 
 export default StudentRegister;

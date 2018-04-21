@@ -2,8 +2,9 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose} = require('../common.js');
 
-app.get('/:netId', function (req, res) {
-    undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+app.get('/:tokenId', function (req, res) {
+    verify(req.params.tokenId, function (netId) {
+        undergradModel.find({netId: netId}, function (err, undergrad) {
         if (err) {
             return err;
         }
