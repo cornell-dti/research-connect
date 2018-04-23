@@ -1,15 +1,35 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
-app.get('/:netId', function (req, res) {
-    undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
-        if (err) {
-            return err;
+app.get('/la/:netId', function (req, res) {
+    verify(req.query.tokenId, function (profNetId) {
+        if (profNetId == null){
+            return res.status(401).send({});
         }
-        debug(undergrad.netId);
+        labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
+            if (labAdmin === null) return res.status(403).send({});
+            undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+                if (err) {
+                    return err;
+                }
+                debug(undergrad.netId);
+                res.send(undergrad);
+            });
+        });
+    });
+});
 
-        res.send(undergrad);
+
+app.get('/:tokenId', function (req, res) {
+    verify(req.params.tokenId, function (netId) {
+        undergradModel.find({netId: netId}, function (err, undergrad) {
+            if (err) {
+                return err;
+            }
+            debug(undergrad.netId);
+            res.send(undergrad);
+        });
     });
 });
 
@@ -32,7 +52,7 @@ app.post('/', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netid,
+        netId: data.netId,
         courses: data.courses
     });
     debug(undergrad);
@@ -61,12 +81,12 @@ app.put('/:id', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            undergrad.firstName = req.body.firstName || undergrad.firstName;
+            undergrad.firstName = firstName || undergrad.firstName;
             undergrad.lastName = req.body.lastName || undergrad.lastName;
             undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
             undergrad.major = req.body.major || undergrad.major;
             undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netID = req.body.netid || undergrad.netId;
+            undergrad.netId = req.body.netId || undergrad.netId;
             undergrad.resume = req.body.resume || undergrad.resume;
 
 

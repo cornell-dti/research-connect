@@ -45,21 +45,19 @@ let tokenRequest = {
     }
 };
 
+async function verify(token, callback) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    callback(payload["email"].replace(("@" + payload["hd"]), ""));
+}
 
-// async function verify() {
-//     const ticket = await client.verifyIdToken({
-//         idToken: token,
-//         audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-//         // Or, if multiple clients access the backend:
-//         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-//     });
-//     const payload = ticket.getPayload();
-//     const userid = payload['sub'];
-//     // If request specified a G Suite domain:
-//     //const domain = payload['hd'];
-// }
-// verify().catch(console.error);
-
+module.exports.verify = verify;
 
 /**
  * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
@@ -102,6 +100,7 @@ function gradYearToString(gradYear) {
 
 /** DATABASE **/
 const mongoose = require('mongoose');
+module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
 //Set up default mongoose connection
@@ -187,6 +186,7 @@ const opportunitySchema = new Schema({
         type: [String],
         default: []
     },
+
     messages: {
         type: Schema.Types.Mixed, default: {
             "accept": 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. Please email me to find out more about when you will start.',
@@ -206,6 +206,7 @@ const opportunitySchema = new Schema({
     areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
     prereqsMatch: {type: Boolean, default: false},
     labDescription: {type: String, required: false},
+    fundOption:{type:Number, min:0, default:0},
     labName: {type: String, required: false}
 });
 opportunitySchema.pre('validate', function (next) {

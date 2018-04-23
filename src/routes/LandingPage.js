@@ -42,12 +42,14 @@ class LandingPage extends Component {
 
 	responseGoogle(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
+
 		sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
 
 		let role = "";
 
-		axios.get('/role/' + /* sessionStorage.getItem('token_id') */ 'prk57').then((response) => { role = response.data });
+		axios.get('/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
 
+		//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
 		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			if (hasRegistered.data) {
 				window.location.href = "/professorView";
