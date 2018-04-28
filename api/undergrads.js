@@ -9,7 +9,7 @@ app.get('/la/:netId', function (req, res) {
         }
         labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
             if (labAdmin === null) return res.status(403).send({});
-            undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+            undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
                 if (err) {
                     return err;
                 }
