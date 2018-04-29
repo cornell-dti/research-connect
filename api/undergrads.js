@@ -2,6 +2,8 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
+
+//professors can get the information on any student
 app.get('/la/:netId', function (req, res) {
     verify(req.query.tokenId, function (profNetId) {
         if (profNetId == null){
@@ -9,7 +11,7 @@ app.get('/la/:netId', function (req, res) {
         }
         labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
             if (labAdmin === null) return res.status(403).send({});
-            undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+            undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
                 if (err) {
                     return err;
                 }
