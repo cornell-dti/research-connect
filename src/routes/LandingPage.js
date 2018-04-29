@@ -29,15 +29,7 @@ class LandingPage extends Component {
 		if (sessionStorage.getItem('token_id') !== null) {
 			axios.get('/role/' +  sessionStorage.getItem('token_id'))
 			.then((response) => {
-				if (response.data === 'grad' &&
-					  response.data === 'labtech' &&
-					  response.data === 'postdoc' &&
-					  response.data === 'staffscientist' &&
-					  response.data === 'pi') {
-					window.location.href = "/professorView";
-				} else {
-					window.location.href = "/opportunities";
-				}
+				window.location.href = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
 			})
 			.catch(function (error) {
 				console.log(error);
