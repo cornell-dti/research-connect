@@ -125,6 +125,9 @@ class StudentRegister extends React.Component {
         //         console.log(error);
         //     });
 
+        let oneRan = false;
+        let getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host;
         axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
                 console.log("undergrad created, result:");
@@ -133,15 +136,25 @@ class StudentRegister extends React.Component {
                 if (this.state.transcript.length != 0) {
                     axios.post('/docs', {netid, transcript})
                         .then((result) => {
-                            //access the results here....
+                            if (oneRan) {
+                                window.location.replace(baseUrl + "/opportunities");
+                            }
+                            else {
+                                oneRan = true;
+                            }
                         });
                 }
 
                 axios.post('/docs', {netid, resume})
                     .then((result) => {
-                    console.log("resume result");
-                    console.log(result);
-                        //access the results here....
+                        if (oneRan) {
+                            window.location.replace(baseUrl + "/opportunities");
+                        }
+                        else {
+                            oneRan = true;
+                        }
+                        console.log("resume result");
+                        console.log(result);
                     });
             });
     };
@@ -176,7 +189,8 @@ class StudentRegister extends React.Component {
 
                         <label>
 
-                            <textarea placeholder="Relevant Courses (separate with commas)" name="courses"
+                            <textarea placeholder="Relevant courses taken and taking (separate with commas)"
+                                      name="courses"
                                       value={courses} id="courses" onChange={this.onChange}/>
                         </label>
                         <br/>

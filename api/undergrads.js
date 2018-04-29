@@ -54,7 +54,7 @@ app.post('/', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netId,
+        netId: data.netid,
         courses: data.courses
     });
     debug(undergrad);
@@ -62,7 +62,7 @@ app.post('/', function (req, res) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
-            console.log("eror in saving ugrad");
+            console.log("error in saving ugrad");
             console.log(err);
         } //Handle this error however you see fit
         else {

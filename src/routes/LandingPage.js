@@ -112,7 +112,7 @@ class LandingPage extends Component {
 									className="login button"/>
 							</div>
 						) : (
-							<li><a onClick={window.location.href="/professorView"}>Manage Lab</a></li>
+							<li></li>
 						)}
 					</nav>
 				</header>
