@@ -15,7 +15,7 @@ class Resume extends Component {
     }
 
     componentWillMount() {
-        axios.get('/docs/' + this.props.match.params.id + '?token=abc')
+        axios.get('/docs/' + this.props.match.params.id + '?token=' + sessionStorage.getItem('token_id'))
             .then((response) => {
             console.log('response!');
             console.log(response);
