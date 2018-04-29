@@ -19,8 +19,8 @@ class ApplicationPage extends Component {
 	}
 
 	componentWillMount() {
-        // 'netId': sessionStorage.getItem('netId')
-        //'netId' : 'prk57' //TODO change back to above
+    //'netId': sessionStorage.getItem('netId')
+    //'netId': 'prk57' // TODO change back to above
 		axios.get('/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
 		.then((response) => {
 			for (let opp in response.data) {
@@ -53,6 +53,14 @@ class ApplicationPage extends Component {
 			);
 		}
 		return res;
+	}
+
+	resume() {
+		axios.get('/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id'))
+		.then((response) => {
+			window.open('/doc/' + response.data.resumeId, '_blank');
+		});
+		
 	}
 
 	render() {
@@ -135,7 +143,7 @@ class ApplicationPage extends Component {
 
 								<div className="app-qual-section">
 									<div className="resume-link">
-										<h6 className="no-margin">View Resume <ExternalLink className="red-link" /></h6>
+										<h6 className="no-margin" onClick={ this.resume.bind(this) }>View Resume <ExternalLink className="red-link" /></h6>
 									</div>
 								</div>
 

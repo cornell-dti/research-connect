@@ -40,26 +40,6 @@ class LandingPage extends Component {
 		console.log("Error logging in with Google, please ensure you used an @cornell.edu address.");
 	}
 
-	responseGoogle(response) {
-		sessionStorage.setItem('token_id', response.tokenId);
-
-		sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
-
-		let role = "";
-
-		axios.get('/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
-
-		//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
-		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
-			if (hasRegistered.data) {
-				window.location.href = "/professorView";
-			}
-			else {
-				window.location.href = "/instructorRegister";
-			}
-		});
-	}
-
 	responseGoogleStudent(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
 		console.log(sessionStorage.getItem('token_id'));
@@ -71,6 +51,29 @@ class LandingPage extends Component {
 			}
 			else {
 				window.location.href = "/studentRegister";
+			}
+		});
+	}
+
+	responseGoogle(response) {
+		sessionStorage.setItem('token_id', response.tokenId);
+		sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
+
+		let role = "";
+		axios.get('/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
+
+		if (role === 'undergrad') {
+			this.responseGoogleStudent(response);
+			return;
+		}
+
+		//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
+		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+			if (hasRegistered.data) {
+				window.location.href = "/professorView";
+			}
+			else {
+				window.location.href = "/instructorRegister";
 			}
 		});
 	}

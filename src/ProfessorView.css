@@ -41,7 +41,7 @@
 }
 
 .professor-view-container form {
-	padding: 0;
+	padding-bottom: 20px;
 }
 
 .filter-box {
@@ -58,7 +58,7 @@
 }
 
 .filter-box label {
-  padding-left: 5px;
+  padding-top: 20px;
 }
 
 .prof-application-box .name, .prof-application-box .email {
