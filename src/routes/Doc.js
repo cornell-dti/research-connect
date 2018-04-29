@@ -9,13 +9,16 @@ class Resume extends Component {
         super(props);
         this.state = {
             resume: "",
-            loaded: false
+            loaded: false,
+            loadText: "Resume is loading..."
         };
     }
 
     componentWillMount() {
-        axios.get('/docs/' + this.props.match.params.id)
+        axios.get('/docs/' + this.props.match.params.id + '?token=abc')
             .then((response) => {
+            console.log('response!');
+            console.log(response);
                 this.setState(
                     {
                         resume: response.data,
@@ -23,8 +26,10 @@ class Resume extends Component {
                     });
                 console.log(response.data);
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((error) => {
+                this.setState({
+                    loadText: error.response.data
+                })
             });
     }
 
@@ -35,7 +40,7 @@ class Resume extends Component {
             <div style={{height: "100%", width: "100%"}}>
                 {loaded ? (<embed style={{height: window.innerHeight, width: window.innerWidth - 15}}
                                   src={"data:application/pdf;base64," + this.state.resume }/>) :
-                    (<h1 style={{textAlign: "center"}}>Resume is loading...</h1>)}
+                    (<h1 style={{textAlign: "center"}}>{this.state.loadText}</h1>)}
             </div>
         );
     }
