@@ -87,15 +87,15 @@ class ApplicationPage extends Component {
 						</div>
 						<div className="row button-bar">
 							<div className="column column-33 left-button">
-								<EmailDialog buttonText="Accept" opp={ this.state.opportunity } app={ this.state.application } />
+								<EmailDialog buttonText="Mark as Accepted" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 
 							<div className="column column-33 center-button">
-								<EmailDialog buttonText="Interview" opp={ this.state.opportunity } app={ this.state.application } />
+								<EmailDialog buttonText="Edit & Interview Email" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 
 							<div className="column column-33 right-button">
-								<EmailDialog buttonText="Reject" opp={ this.state.opportunity } app={ this.state.application } />
+								<EmailDialog buttonText="Mark as Rejected" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 						</div>
 					</div>
