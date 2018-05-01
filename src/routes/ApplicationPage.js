@@ -91,7 +91,7 @@ class ApplicationPage extends Component {
 							</div>
 
 							<div className="column column-33 center-button">
-								<EmailDialog buttonText="Edit & Interview Email" opp={ this.state.opportunity } app={ this.state.application } />
+								<EmailDialog buttonText="Edit & Send Interview Email" opp={ this.state.opportunity } app={ this.state.application } />
 							</div>
 
 							<div className="column column-33 right-button">
