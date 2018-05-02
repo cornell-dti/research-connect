@@ -111,5 +111,5 @@ module.exports = app;
 
 //starts the server and listens for requests
 app.listen(port, function () {
-    console.log(`api running on port ${port}`);
+    console.log(`Api running on port ${port}`);
 });

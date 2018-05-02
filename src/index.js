@@ -17,8 +17,6 @@ import EditProfile from './routes/EditProfile';
 import Doc from './routes/Doc';
 import LandingPage from './routes/LandingPage';
 
-console.log("hello there!!!!");
-
 ReactDOM.render(
     <BrowserRouter>
         <Switch>

@@ -59,7 +59,8 @@
     "npm": "5.7.1"
   },
   "scripts": {
-    "start": "PORT=3001 node server.js",
-    "start-dev": "concurrently \"cd src && npm start\" \"PORT=3001 node server.js\""
+    "build:client": "cd src && npm run build",
+    "start": "node server.js",
+    "start-dev": "concurrently \"cd src && npm start\" \"node server.js\""
   }
 }
