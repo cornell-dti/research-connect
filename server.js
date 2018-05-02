@@ -42,10 +42,6 @@ const router = express.Router();
 //it up, or 3001
 const port = process.env.PORT || 3001;
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 // uncomment after placing your favicon in /public
 // var favicon = require('serve-favicon');
 // app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
@@ -76,18 +72,21 @@ const applicationRoute = require('./api/applications');
 const labRoute = require('./api/labs');
 const docsRoute = require('./api/docs');
 
-app.use('/', index);
-app.use('/labAdmins', labAdminsRoute);
-app.use('/opportunities', opportunityRoute);
-app.use('/applications', applicationRoute);
-app.use('/undergrads', undergradRoute);
-app.use('/labs', labRoute);
-app.use('/messages', messagesRoute);
-app.use('/docs', docsRoute);
+app.use(express.static("./src/docs"));
+app.use("/app*", express.static("./src/docs"));
 
-router.get('/', function (req, res) {
-    res.json({message: 'API Initialized!'});
-});
+app.use('/api/', index);
+app.use('/api/labAdmins', labAdminsRoute);
+app.use('/api/opportunities', opportunityRoute);
+app.use('/api/applications', applicationRoute);
+app.use('/api/undergrads', undergradRoute);
+app.use('/api/labs', labRoute);
+app.use('/api/messages', messagesRoute);
+app.use('/api/docs', docsRoute);
+
+// router.get('/', function (req, res) {
+//     res.json({message: 'API Initialized!'});
+// });
 
 app.use('/api', router);
 
@@ -102,15 +101,15 @@ app.use('/api', router);
 
 
 // catch 404 and fgorward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+// app.use(function (req, res, next) {
+//     var err = new Error('Not Found');
+//     err.status = 404;
+//     next(err);
+// });
 
 module.exports = app;
 
 //starts the server and listens for requests
 app.listen(port, function () {
-    debug(`api running on port ${port}`);
+    console.log(`api running on port ${port}`);
 });
