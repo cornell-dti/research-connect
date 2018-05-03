@@ -173,7 +173,7 @@ class EditProfile extends Component {
             <Navbar current={"editprofile"}/>
               <div className="profile-page-wrapper container">
               <div className="row">
-              <div className="title-box column column-50 column-offset-25">
+              <div className="title-box-prof column column-50 column-offset-25">
                <h4>Rachel Nash</h4>
 
                <h6>rsn55@cornell.edu</h6>

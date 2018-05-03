@@ -84,9 +84,7 @@ class OpportunityPage extends Component {
 
           }
 
-
         }
-
 
 
       }
@@ -305,7 +303,7 @@ parseGPA(gpa){
                   <div className="title-container column column-65">
                   <div className="title-box">
                     <div className="title-first-col ">
-                    <h2>{this.state.opportunity.title}</h2>
+                    <h4>{this.state.opportunity.title}</h4>
                     <h6> Lab: {this.state.opportunity.labName}</h6>
                     {/*<h6> Principal Investigator: {this.state.opportunity.pi}</h6>*/}
                     </div>
@@ -317,16 +315,14 @@ parseGPA(gpa){
                     </div>
                     </div>
                     <div className="about-box">
-                      <h3>About the Position</h3>
                         <h5> Supervisor:</h5> <p>{this.state.opportunity.supervisor}</p>
                         <h5> Qualifications:</h5> <p>{this.state.opportunity.qualifications}</p>
                         <h5> Tasks:</h5> <p>{this.state.opportunity.undergradTasks}</p>
-                        <h5> Start Season:</h5> {this.state.opportunity.startSeason} <p>{this.state.opportunity.startYear}</p>
+                        <h5> Start Season:</h5> <p>{this.state.opportunity.startSeason} {this.state.opportunity.startYear}</p>
                         <h5> Weekly Hours:</h5> <p>{ this.state.opportunity.minHours+" " }
                            to { this.state.opportunity.maxHours } hours a week. </p>
                         <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription}</p>
-
-                      <h3>About the Lab</h3>
+                        <h5>Lab:</h5>
                       <a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>
                       <p>{this.state.opportunity.labDescription}</p>
 
@@ -335,9 +331,8 @@ parseGPA(gpa){
 
                       <div id="Application" className="application-box">
                       <h4>Apply Here: </h4>
-                      <br/>
                       <div className="error-div">
-                      { this.state.triedSubmitting && !this.state.submitted? <p className="error-message">Please answer all questions in order to submit.</p>: '' }
+                      { this.state.triedSubmitting && !this.state.submitted? <p className="app-error-message">Please answer all questions in order to submit.</p>: '' }
                       </div>
                           { !this.state.submitted ? this.printQuestions(): <p>You have applied to this position.</p> }
 
