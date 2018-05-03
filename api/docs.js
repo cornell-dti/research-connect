@@ -3,6 +3,7 @@ let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, s3, mongoose, verify} = require('../common.js');
 
 
+
 app.get('/:id', function (req, res) {
     /** MLAB STORAGE
      docModel.findById(req.params.id, function(err, document){
@@ -13,23 +14,27 @@ app.get('/:id', function (req, res) {
         Bucket: "research-connect-student-files",
         Key: req.params.id
     };
-    s3.getObject(params, function (err, data) {
-        if (err) {
-            console.log('err!');
-            console.log(err);
-            console.log(err.stack);
-            debug(err, err.stack);
-        } // an error occurred
-        else {
-            let baseString = Buffer.from(data.Body, 'base64').toString('ascii');
-            res.set('content-type', 'text/plain');
-            return res.send(baseString);
-        }
+    verify(req.query.token, function (netId) {
+        s3.getObject(params, function (err, data) {
+            if (err) {
+                console.log('err!');
+                console.log(err);
+                console.log(err.stack);
+                debug(err, err.stack);
+            } // an error occurred
+            else {
+                let baseString = Buffer.from(data.Body, 'base64').toString('ascii');
+                res.set('content-type', 'text/plain');
+                return res.send(baseString);
+            }
+        });
+    }).catch(function(){
+        res.status(403).send("Unauthorized");
     });
 });
 
-function generateId(){
-    return (Date.now().toString() + Math.random().toString()).replace(".","");
+function generateId() {
+    return (Date.now().toString() + Math.random().toString()).replace(".", "");
 }
 
 //Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
@@ -72,7 +77,7 @@ app.post('/', function (req, res) {
                 }
             });
             //if this doessn't work, use update operators for the second param: https://docs.mongodb.com/manual/reference/operator/update/
-            undergradModel.findOneAndUpdate({"netId": netId}, {$set: {transcriptId: docId}}, function(err, oldDoc){
+            undergradModel.findOneAndUpdate({"netId": netId}, {$set: {transcriptId: docId}}, function (err, oldDoc) {
                 console.log("trans error: " + err);
             });
         }
@@ -106,7 +111,7 @@ app.post('/', function (req, res) {
                 res.send("Success!");
             }
         });
-        undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function(err, oldDoc){
+        undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function (err, oldDoc) {
             console.log("resume error: " + err);
         });
         console.log('gend');

@@ -2,6 +2,8 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
+
+//professors can get the information on any student
 app.get('/la/:netId', function (req, res) {
     verify(req.query.tokenId, function (profNetId) {
         if (profNetId == null){
@@ -9,7 +11,7 @@ app.get('/la/:netId', function (req, res) {
         }
         labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
             if (labAdmin === null) return res.status(403).send({});
-            undergradModel.find({netId: req.params.netId}, function (err, undergrad) {
+            undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
                 if (err) {
                     return err;
                 }
@@ -52,7 +54,7 @@ app.post('/', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netId,
+        netId: data.netid,
         courses: data.courses
     });
     debug(undergrad);
@@ -60,7 +62,7 @@ app.post('/', function (req, res) {
         if (err) {
             res.status(500).send({"errors": err.errors});
             debug(err);
-            console.log("eror in saving ugrad");
+            console.log("error in saving ugrad");
             console.log(err);
         } //Handle this error however you see fit
         else {

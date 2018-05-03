@@ -61,6 +61,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"PORT=3001 node server.js\"",
     "start-test": "react-scripts start | nodemon server.js",
+    "dev": "react-scripts start | nodemon server.js",
     "start-dev": "set DEBUG=* & nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
