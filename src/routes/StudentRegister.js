@@ -22,7 +22,17 @@ class StudentRegister extends React.Component {
             GPA: "",
             netid: "",
             courses: [],
-            file: null
+            file: null,
+            resume: null,
+            transcript: null,
+            firstNameValid: false,
+            lastNameValid: false,
+            gradYearValid: false,
+            majorValid: false,
+            GPAValid: false,
+            resumeValid: false,
+            triedSubmitting: false
+
         };
     };
 
@@ -34,13 +44,17 @@ class StudentRegister extends React.Component {
             </option>);
         }
         var placehold = "Select";
+        var validName;
         if (inputName == "gradYear") {
             placehold = "Select Graduation Year";
+            validName = this.state.gradYearValid
         } else if (inputName == "major") {
             placehold = "Select Major";
+            validName = this.state.majorValid
+
         }
 
-        return (<select name={inputName} value={inputName} onChange={this.onChange}>
+        return (<select className={!validName && this.state.triedSubmitting ?"error left-input":"left-input"} name={inputName} value={inputName} onChange={this.onChange}>
             <option id={inputName} key="empty" value="">{placehold}</option>
             {newArray} </select>);
     }
@@ -52,14 +66,16 @@ class StudentRegister extends React.Component {
                 var fileAsBinaryString = reader.result;
                 var encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({resume: [encodedData]})
+                this.setState({resume: file})
+                this.setState({resumeValid: true})
             };
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
 
             reader.readAsBinaryString(file);
         });
-        document.getElementById("resume").innerHTML = "Resume Dropped!";
+
+
     }
 
     onDropTranscript = acceptedFiles => {
@@ -69,25 +85,32 @@ class StudentRegister extends React.Component {
                 var fileAsBinaryString = reader.result;
                 var encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({transcript: [encodedData]})
+                this.setState({transcript: file})
             };
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
 
             reader.readAsBinaryString(file);
         });
-        document.getElementById("transcript").innerHTML = "Transcript Dropped!";
+
     }
 
     onChange = (e) => {
         // Because we named the inputs to match their corresponding values in state, it's
         // super easy to update the state
         var state = this.state
-        if (e.target.name != "courses") {
-            this.setState({[e.target.name]: e.target.value});
-            if (e.target.name == "gradYear" || e.target.name == "major") {
-                var a = e.target.name;
-                document.getElementById(a).innerHTML = [e.target.value];
+        var name = e.target.name;
+        if (name != "courses") {
+            var validationName = name + "Valid";
+            this.setState({[name]: e.target.value});
+            if (name == "gradYear" || name == "major") {
+                document.getElementById(name).innerHTML = [e.target.value];
+
+            }
+            if (e.target.value!=""){
+              this.setState({[validationName]: true});
+            } else{
+              this.setState({[validationName]: false});
             }
         }
         else {
@@ -95,9 +118,7 @@ class StudentRegister extends React.Component {
         }
     }
 
-    onFormChange = (e) => {
-        this.setState({file: e.target.value})
-    }
+
 
     createGpaOptions() {
         var options = [];
@@ -105,7 +126,7 @@ class StudentRegister extends React.Component {
             options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
         }
         return (
-            <select name="GPA" id="GPA" className="gpa-select" value={this.state.GPA} onChange={this.onChange}>
+            <select  name="GPA" id="GPA" className={!this.state.GPAValid && this.state.triedSubmitting ?"error gpa-select left-input":"gpa-select left-input"} value={this.state.GPA} onChange={this.onChange}>
                 <option key="" value="">Select GPA</option>
                 {options}
             </select>
@@ -115,7 +136,14 @@ class StudentRegister extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
+        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript,
+        firstNameValid,
+        lastNameValid,
+        gradYearValid,
+        majorValid,
+        GPAValid,
+        resumeValid,
+        triedSubmitting} = this.state;
 
         // axios.get('opportunities/check/9102401rjqlfk?netId="zx55"')
         //     .then(function (response) {
@@ -124,39 +152,42 @@ class StudentRegister extends React.Component {
         //     .catch(function (error) {
         //         console.log(error);
         //     });
+        if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid){
+          let oneRan = false;
+          let getUrl = window.location;
+          var baseUrl = getUrl.protocol + "//" + getUrl.host;
+          axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
+              .then((result) => {
+                  console.log("undergrad created, result:");
+                  console.log(result);
+                  //access the results here....
+                  if (this.state.transcript.length != 0) {
+                      axios.post('/docs', {netid, transcript})
+                          .then((result) => {
+                              if (oneRan) {
+                                  window.location.replace(baseUrl + "/opportunities");
+                              }
+                              else {
+                                  oneRan = true;
+                              }
+                          });
+                  }
 
-        let oneRan = false;
-        let getUrl = window.location;
-        var baseUrl = getUrl.protocol + "//" + getUrl.host;
-        axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
-            .then((result) => {
-                console.log("undergrad created, result:");
-                console.log(result);
-                //access the results here....
-                if (this.state.transcript.length != 0) {
-                    axios.post('/docs', {netid, transcript})
-                        .then((result) => {
-                            if (oneRan) {
-                                window.location.replace(baseUrl + "/opportunities");
-                            }
-                            else {
-                                oneRan = true;
-                            }
-                        });
-                }
-
-                axios.post('/docs', {netid, resume})
-                    .then((result) => {
-                        if (oneRan) {
-                            window.location.replace(baseUrl + "/opportunities");
-                        }
-                        else {
-                            oneRan = true;
-                        }
-                        console.log("resume result");
-                        console.log(result);
-                    });
-            });
+                  axios.post('/docs', {netid, resume})
+                      .then((result) => {
+                          if (oneRan) {
+                              window.location.replace(baseUrl + "/opportunities");
+                          }
+                          else {
+                              oneRan = true;
+                          }
+                          console.log("resume result");
+                          console.log(result);
+                      });
+              });
+        }else{
+          this.setState({triedSubmitting: true})
+        }
     };
 
     render() {
@@ -174,53 +205,58 @@ class StudentRegister extends React.Component {
                 <div className="student-reg-form">
                     <h3>Student Registration</h3>
                     <form id="studentForm" onSubmit={this.onSubmit}>
-                        <input placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName"
+                        <input className={!this.state.firstNameValid && this.state.triedSubmitting ?"error left-input":"left-input"}
+                         placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName"
                                onChange={this.onChange}/>
-                        <br/>
-                        <input type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName"
+
+                        <input className={!this.state.lastNameValid && this.state.triedSubmitting ?"error left-input":"left-input"} type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName"
                                onChange={this.onChange}/>
-                        <br/>
+
+
                         {this.optionify(gradYears, "gradYear")}
-                        <br/>
+
                         {this.optionify(majorList, "major")}
-                        <br/>
+
 
                         {this.createGpaOptions()}
 
                         <label>
 
-                            <textarea placeholder="Relevant courses taken and taking (separate with commas)"
+                            <textarea className="left-input" placeholder="Relevant courses past and present (separate with commas, i.e. CS 1110, BIOMG 1350)"
                                       name="courses"
                                       value={courses} id="courses" onChange={this.onChange}/>
                         </label>
-                        <br/>
+
                         <div className="dropzone">
-                            <h2>*Resume: </h2>
-                            <Dropzone onDrop={this.onDropResume.bind(this)}>
-                                <p>Click to drop resume</p>
+
+                            <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 0 0 25%', border:!this.state.resumeValid && this.state.triedSubmitting ?'3px #b31b1b solid':'1px dashed black'}} onDrop={this.onDropResume.bind(this)}>
+                                <p>Click/drag to drop resume (required)</p>
+
                             </Dropzone>
+                            <div className="uploaded-message">
+                            {resume!=null ? <p>Uploaded: {resume.name}</p>:""}
+                            </div>
                         </div>
-                        <aside>
-                            <ul>
-                                <li id="resume"></li>
-                            </ul>
-                        </aside>
+
+
 
                         <br/>
 
                         <div className="dropzone">
-                            <h2>Transcript:</h2>
-                            <Dropzone onDrop={this.onDropTranscript.bind(this)}>
-                                <p>Click to drop transcript</p>
+
+                            <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 25%', border:'1px dashed black'}} onDrop={this.onDropTranscript.bind(this)}>
+                                <p>Click/drag to drop transcript (optional)</p>
+
                             </Dropzone>
+                            <div className="uploaded-message">
+                            {transcript!=null?  <p >Uploaded: {transcript.name}</p>:""}
+                            </div>
                         </div>
-                        <aside>
-                            <ul>
-                                <li id="transcript"></li>
-                            </ul>
-                        </aside>
+
                         <br/>
+                        <div className="centered">
                         <input type="submit" className="button" value="Submit"/>
+                        </div>
                     </form>
 
                 </div>

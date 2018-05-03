@@ -6,31 +6,36 @@
 
 .student-reg-form{
     margin: 20px;
-    width:40%;
-    margin-top: 100px;
-    margin-left: 30%;
+    width:70%;
+    margin-top: 120px;
+    margin-left: 15%;
     background-color: #f6f6f6;
-    text-align: center;
 }
 
-.student-reg-form .suggest-input:focus{
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-
-}
 
 .student-reg-form .button{
   background-color: #b31b1b;
   border-color: #b31b1b;
 }
-.student-reg-form aside ul{
-  list-style: none;
+.student-reg-form .button:focus{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+
 }
-.dropzone{
-  text-align: center;
-  align-items: center;
+.student-reg-form .button:hover{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+  opacity: .7;
 }
 
+.dropzone p{
+  margin-bottom: 0px;
+  text-align: center;
+}
+.dropzone .uploaded-message{
+  font-size: 12px;
+  text-align: center;
+}
 
 .student-reg-form textarea{
   resize: none;
@@ -41,3 +46,22 @@
 .student-reg-form input:focus,.student-reg-form textarea:focus,.student-reg-form select:focus, .student-reg-form .button:focus{
   border-color: #b31b1b;
 }
+
+
+
+.student-reg-form .left-input{
+  width: 50%;
+  margin-left: 25%;
+}
+.student-reg-form h3, .student-reg-form .centered{
+  text-align: center;
+}
+ .student-reg-form form{
+  margin-top: 0px;
+}
+ .student-reg-form form .error{
+   border: 3px #b31b1b solid;
+ }
+ .student-reg-form .edit-drop{
+   border-radius: 4px;
+ }
