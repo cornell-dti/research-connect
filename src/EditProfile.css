@@ -2,28 +2,27 @@
   margin-top: 80px;
    background-color: #f6f6f6;
 }
-.row .title-box, .row .qual-box{
+.row .title-box-prof, .row .qual-box{
   border: solid 1px #979797;
   background-color: #ffffff;
 
 }
-.row .title-box  h6{
-  padding-bottom: 15px;
+.row .title-box-prof  h6{
   font-size: 15px;
   padding-left: 5px;
 }
-.row .title-box h5{
+.row .title-box-prof h5{
   padding-left: 5px;
   padding-top: 4px;
   padding-bottom: 0px;
 }
-.row .title-box h4{
+.row .title-box-prof h4{
   padding-bottom: 0px;
   font-size: 27px;
   margin-bottom: 0px;
   padding-left: 5px;
 }
-.row .title-box{
+.row .title-box-prof{
   margin-top: 50px;
   padding: 20px;
 }

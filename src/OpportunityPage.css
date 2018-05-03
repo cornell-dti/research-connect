@@ -29,10 +29,11 @@
   margin-top: 40px;
   width: 100%;
 }
-.title-box{
+.row .title-box{
   display: flex;
   flex-direction: row;
   padding: 30px;
+  margin-top: 0px;
 }
 .row .qualifications{
   margin-top: 40px;
@@ -140,16 +141,17 @@
 .apply-button{
   width: 100%;
 }
-.application-box  .error-message{
+.application-box  .app-error-message{
   color: white;
   text-align: center;
   border: 1px #b31b1b solid;
   border-radius: 5px;
   background-color: #b31b1b;
   padding: 7px;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 .error-div{
-  margin-bottom: 10px;
   align-items: center;
   display: inline;
   cursor: auto;
