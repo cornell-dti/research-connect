@@ -76,8 +76,9 @@ class OpportunityPage extends Component {
           if (allQsAnswered==true){
               this.setState({submitted:true});
               console.log("submitting form");
-              var oppID = opportunity._id;
-              axios.post('/applications', {oppID, netId, questionAnswers})
+              var opportunityId = opportunity._id;
+              var responses = questionAnswers;
+              axios.post('/applications', {opportunityId, netId, responses})
                   .then((result) => {
                       console.log(result);
                   });

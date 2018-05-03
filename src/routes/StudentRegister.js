@@ -20,7 +20,7 @@ class StudentRegister extends React.Component {
             gradYear: "",
             major: "",
             GPA: "",
-            netid: "",
+            netId: "",
             courses: [],
             file: null,
             resume: null,
@@ -136,7 +136,7 @@ class StudentRegister extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript,
+        const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
         firstNameValid,
         lastNameValid,
         gradYearValid,
@@ -156,13 +156,13 @@ class StudentRegister extends React.Component {
           let oneRan = false;
           let getUrl = window.location;
           var baseUrl = getUrl.protocol + "//" + getUrl.host;
-          axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
+          axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netId, courses})
               .then((result) => {
                   console.log("undergrad created, result:");
                   console.log(result);
                   //access the results here....
                   if (this.state.transcript.length != 0) {
-                      axios.post('/docs', {netid, transcript})
+                      axios.post('/docs', {netId, transcript})
                           .then((result) => {
                               if (oneRan) {
                                   window.location.replace(baseUrl + "/opportunities");
@@ -173,7 +173,7 @@ class StudentRegister extends React.Component {
                           });
                   }
 
-                  axios.post('/docs', {netid, resume})
+                  axios.post('/docs', {netId, resume})
                       .then((result) => {
                           if (oneRan || (this.state.transcript.length === 0 && !oneRan)) {
                               window.location.replace(baseUrl + "/opportunities");
@@ -191,10 +191,10 @@ class StudentRegister extends React.Component {
     };
 
     render() {
-        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
-        if (this.state.netid === "") {
+        const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript} = this.state;
+        if (this.state.netId === "") {
             axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-                this.setState({netid: res.data});
+                this.setState({netId: res.data});
                 console.log("res data!");
                 console.log(res.data);
             });
