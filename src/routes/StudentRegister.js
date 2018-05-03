@@ -175,7 +175,7 @@ class StudentRegister extends React.Component {
 
                   axios.post('/docs', {netid, resume})
                       .then((result) => {
-                          if (oneRan) {
+                          if (oneRan || (this.state.transcript.length === 0 && !oneRan)) {
                               window.location.replace(baseUrl + "/opportunities");
                           }
                           else {
