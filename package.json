@@ -2,7 +2,7 @@
   "name": "researchconnect",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3001/api",
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",
     "async": "^2.6.0",
