@@ -27,7 +27,7 @@ class LandingPage extends Component {
 
 	componentWillMount() {
 		if (sessionStorage.getItem('token_id') !== null) {
-			axios.get('/role/' +  sessionStorage.getItem('token_id'))
+			axios.get('/api/role/' +  sessionStorage.getItem('token_id'))
 			.then((response) => {
 				window.location.href = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
 			})
@@ -55,7 +55,7 @@ class LandingPage extends Component {
 	responseGoogleStudent(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
 		console.log(sessionStorage.getItem('token_id'));
-		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+		axios.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			console.log("has registered");
 			console.log(hasRegistered);
 			if (hasRegistered.data) {
@@ -72,7 +72,7 @@ class LandingPage extends Component {
 		sessionStorage.setItem('netId', response.profileObj.email.replace("@cornell.edu",""));
 
 		let role = "";
-		axios.get('/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
+		axios.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then((response) => { role = response.data });
 
 		if (role === 'undergrad') {
 			this.responseGoogleStudent(response);
@@ -80,7 +80,7 @@ class LandingPage extends Component {
 		}
 
 		//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
-		axios.get("/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
+		axios.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			if (hasRegistered.data) {
 				window.location.href = "/professorView";
 			}

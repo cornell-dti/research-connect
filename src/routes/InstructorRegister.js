@@ -80,7 +80,7 @@ class InstructorRegister extends React.Component {
 
     loadOpportunitiesFromServer() {
 
-        axios.get('/labs')
+        axios.get('/api/labs')
             .then(res => {
 
                 this.setState({ data: res.data });
@@ -182,7 +182,7 @@ class InstructorRegister extends React.Component {
             if(newLab)
                 this.setState({labId: null});
           console.log("submitting form");
-          axios.post('/labAdmins', {
+          axios.post('/api/labAdmins', {
               data,
               newLab,
               showDropdown,

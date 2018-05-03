@@ -117,7 +117,7 @@ class StudentRegister extends React.Component {
         // get our form data out of state
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
 
-        // axios.get('opportunities/check/9102401rjqlfk?netId="zx55"')
+        // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
         //     .then(function (response) {
         //         console.log(response);
         //     })
@@ -128,13 +128,13 @@ class StudentRegister extends React.Component {
         let oneRan = false;
         let getUrl = window.location;
         var baseUrl = getUrl.protocol + "//" + getUrl.host;
-        axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
+        axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
             .then((result) => {
                 console.log("undergrad created, result:");
                 console.log(result);
                 //access the results here....
                 if (this.state.transcript.length != 0) {
-                    axios.post('/docs', {netid, transcript})
+                    axios.post('/api/docs', {netid, transcript})
                         .then((result) => {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
@@ -145,7 +145,7 @@ class StudentRegister extends React.Component {
                         });
                 }
 
-                axios.post('/docs', {netid, resume})
+                axios.post('/api/docs', {netid, resume})
                     .then((result) => {
                         if (oneRan) {
                             window.location.replace(baseUrl + "/opportunities");
@@ -162,7 +162,7 @@ class StudentRegister extends React.Component {
     render() {
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
         if (this.state.netid === "") {
-            axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
+            axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
                 this.setState({netid: res.data});
                 console.log("res data!");
                 console.log(res.data);

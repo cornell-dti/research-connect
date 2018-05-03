@@ -9,7 +9,7 @@ class ProfessorMatches extends Component {
     }
 
     componentDidMount() {
-        axios.get('/applications?id=' + '5a3c0f1df36d280c875969ed')
+        axios.get('/api/applications?id=' + '5a3c0f1df36d280c875969ed')
         .then((response) => {
             for (var opp in response.data) {
                 for (var app in opp) {

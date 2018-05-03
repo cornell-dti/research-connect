@@ -44,7 +44,7 @@ class ProfessorView extends Component {
 	}
 
 	componentWillMount() {
-		axios.get('/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
+		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
 		.then((response) => {
 			if (response.data !== 'grad' &&
 				  response.data !== 'labtech' &&

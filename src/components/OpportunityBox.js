@@ -10,7 +10,7 @@ class OpportunityBox extends Component {
 	}
 
 	loadOpportunitiesFromServer() {
-		axios.get(this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId'))
+		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId'))
 			.then(res => {
 				this.setState({ data: res.data });
 				console.log(res.data);

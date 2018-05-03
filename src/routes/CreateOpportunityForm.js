@@ -184,7 +184,7 @@ class CreateOppForm extends React.Component {
         // get our form data out of state
         const { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result } = this.state;
 
-        axios.post('/opportunities', { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
+        axios.post('/api/opportunities', { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
             .then((result) => {
                 //access the results here....
                 this.setState({submit: "Submitted!"});
