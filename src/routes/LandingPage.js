@@ -132,7 +132,7 @@ class LandingPage extends Component {
 				<section id="home" className="hero">
 					<div className="background-image"></div>
 					<h1>Research Connect</h1>
-					<h3>Find and post research opportunities on campus.</h3>
+					<h3>Find and post research opportunities on campus</h3>
 					<hr/>
 					<div className="button-div">
 						<input className="white-button" type="submit" onClick={this.scrollTo.bind(this, '#forstudents')}
