@@ -22,9 +22,9 @@ class StudentNavbar extends Component {
   render() {
 		return (
       <div className="header-all">
-        <Link to="/opportunities"><img className="logo" src={logo}/></Link>
+        <Link to="opportunities"><img className="logo" src={logo}/></Link>
         <nav>
-          <li><a href="/opportunities">Opportunities</a></li>
+          <li><a href="opportunities">Opportunities</a></li>
           <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>

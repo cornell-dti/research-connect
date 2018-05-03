@@ -21,10 +21,10 @@ class ProfNavbar extends Component {
   render() {
 		return (
       <div className="header-all">
-        <Link to="/professorView"><img className="logo" src={logo}/></Link>
+        <Link to="professorView"><img className="logo" src={logo}/></Link>
         <nav>
-          <li><a href="/newopp">Post New Opportunity</a></li>
-            <li><a href="/professorView">View Applications</a></li>
+          <li><a href="newopp">Post New Opportunity</a></li>
+            <li><a href="professorView">View Applications</a></li>
           <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>
