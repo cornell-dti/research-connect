@@ -2,7 +2,7 @@ import React from 'react';
 import '../CreateOpportunityForm.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import Navbar from '../components/ProfNavbar'
+import ProfNavbar from '../components/ProfNavbar'
 import axios from 'axios';
 import Footer from '../components/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -248,7 +248,7 @@ class CreateOppForm extends React.Component {
 	render() {
 		return (
 			<div >
-			<Navbar/>
+			<ProfNavbar current={"newopp"}/>
 			<div className="row">
 	    <div className="new-opp-form" >
 			<div className="form-title">
@@ -349,7 +349,7 @@ class CreateOppForm extends React.Component {
 
 
 									<div className="row input-row optional">
-									<textarea className="column column-90" placeholder="Preferred Qualifications" name="qual" type="text" value={this.state.qualifications} onChange={this.handleChange}/>
+									<textarea className="column column-90" placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)" name="qual" type="text" value={this.state.qualifications} onChange={this.handleChange}/>
 
 										<InfoIcon className="column column-5" data-tip data-for="info-quals" className="info-icon" size={20}/>
 										<ReactTooltip place='right' id='info-quals' aria-haspopup='true' role='example'>
@@ -380,7 +380,7 @@ class CreateOppForm extends React.Component {
 						</div>
 
 						<div className="row input-row optional">
-						<input className="column column-90" placeholder="Required/Recommended Classes (Please separate with commas)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
+						<input className="column column-90" placeholder="Required/Preferred Classes (Separate with commas, i.e. BIO 1110, MATH 1910)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
 
 							<InfoIcon className="column column-5" data-tip data-for="info-classes" className="info-icon" size={20}/>
 							<ReactTooltip place='right' id='info-classes' aria-haspopup='true' role='example'>
