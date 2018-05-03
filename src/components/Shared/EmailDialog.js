@@ -85,8 +85,8 @@ class EmailDialog extends React.Component {
     })
 		.catch(function (error) {
 			console.log(error);
-		})
-		window.location.href = '/professorView';
+		});
+		window.location.href = 'professorView';
 	}
 
 	getDisabled() {

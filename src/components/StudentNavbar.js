@@ -12,7 +12,11 @@ class StudentNavbar extends Component {
 
   logout() {
         sessionStorage.clear();
-        window.location.href = "/";
+        let homeString = "/";
+        if (window.location.toString().includes("app")){
+            homeString += "app"
+        }
+        window.location.href = homeString;
   }
 
   render() {

@@ -37,7 +37,11 @@ class Opportunities extends Component {
         axios.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/)
         .then((response) => {
             if (response.data !== 'undergrad') {
-                window.location.href = "/";
+                let homeString = "/";
+                if (window.location.toString().includes("app")){
+                    homeString += "app"
+                }
+                window.location.href = homeString;
             }
         })
         .catch(function (error) {

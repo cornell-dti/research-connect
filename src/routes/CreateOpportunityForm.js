@@ -192,7 +192,7 @@ class CreateOppForm extends React.Component {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
                 sleep(1200).then(() => {
-                    document.location.href = "/professorView";
+                    document.location.href = "professorView";
                 });
             });
     };
