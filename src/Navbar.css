@@ -26,7 +26,8 @@
 	display: flex;
 }
 .header-all nav li{
-	margin: 0 15px;
+	padding: 0 15px;
+  margin: 0;
   display: flex;
     flex-direction: row;
     align-items: center;
@@ -49,4 +50,15 @@
 
  .header-all .button:hover{
   opacity: 0.9;
+}
+
+.header-all .current-page {
+  background-color: #e8e8e8;
+
+  height: 76px;
+/*  border-radius: 5px;*/
+}
+.header-all nav .current-page a:hover{
+    color: black;
+    cursor: auto;
 }

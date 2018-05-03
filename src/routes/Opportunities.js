@@ -66,7 +66,7 @@ class Opportunities extends Component {
         return (
 			<div>
 
-				<Navbar/>
+				<Navbar current={"opportunities"}/>
 
 				<div className="opp-container">
 

@@ -62,7 +62,7 @@ class ProfessorView extends Component {
 	render() {
 		return (
 			<div>
-				<Navbar/>
+				<Navbar current="professorView"/>
 				<div className='professor-view-container'>
 					<div className='row'>
 						<div className="column column-20">

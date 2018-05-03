@@ -170,7 +170,7 @@ class EditProfile extends Component {
     render() {
         return (
             <div>
-            <Navbar/>
+            <Navbar current={"editprofile"}/>
               <div className="profile-page-wrapper container">
               <div className="row">
               <div className="title-box column column-50 column-offset-25">
