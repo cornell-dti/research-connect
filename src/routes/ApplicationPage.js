@@ -83,7 +83,7 @@ class ApplicationPage extends Component {
 				<div className="application-page-container">
 					<div className="button-bar-container">
 						<div className="return-to-apps">
-							<FaLongArrowLeft className="black-arrow" /><a href="/professorView">Return to View All Applications</a>
+							<FaLongArrowLeft className="black-arrow" /><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/professorView')}>Return to View All Applications</a>
 						</div>
 						<div className="row button-bar">
 							<div className="column column-33 left-button">

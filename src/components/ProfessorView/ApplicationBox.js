@@ -10,7 +10,7 @@ class ApplicationBox extends Component {
 	}
 
 	clickRow(rowObj) {
-		document.location.href = ('application/' + this.props.data.id);
+		window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/application/' + this.props.data.id);
 	}
 
 	render() {

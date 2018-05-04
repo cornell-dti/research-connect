@@ -61,6 +61,6 @@
   "scripts": {
     "build:client": "cd src && npm run build",
     "start": "node server.js",
-    "start-dev": "concurrently \"cd src && npm start\" \"node server.js\""
+    "start:dev": "concurrently \"cd src && npm start\" \"node server.js\""
   }
 }
