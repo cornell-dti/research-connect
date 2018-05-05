@@ -167,7 +167,7 @@ class StudentRegister extends React.Component {
                     console.log(result);
                     //access the results here....
                     if (this.state.transcript.length != 0) {
-                        axios.post('/api/docs', {netid, transcript})
+                        axios.post('/api/docs', {netId, transcript})
                             .then((result) => {
                                 if (oneRan) {
                                     window.location.replace(baseUrl + "/opportunities");
@@ -178,7 +178,7 @@ class StudentRegister extends React.Component {
                             });
                     }
 
-                    axios.post('/api/docs', {netid, resume})
+                    axios.post('/api/docs', {netId, resume})
                         .then((result) => {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
@@ -195,10 +195,10 @@ class StudentRegister extends React.Component {
 
 
     render() {
-        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
-        if (this.state.netid === "") {
+        const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript} = this.state;
+        if (this.state.netId === "") {
             axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-                this.setState({netid: res.data});
+                this.setState({netId: res.data});
                 console.log("res data!");
                 console.log(res.data);
             });
