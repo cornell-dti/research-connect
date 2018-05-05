@@ -128,6 +128,7 @@ const undergradSchema = new Schema({
     minor: {type: String},
     gpa: {type: Number, min: 0, max: 4.3},
     netId: {type: String, required: true},
+    email: {type: String},
     courses: {type: [String], required: true},
     resumeId: {type: String, required: false},
     transcriptId: {type: String, required: false}

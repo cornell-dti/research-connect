@@ -60,6 +60,7 @@ class LandingPage extends Component {
 	responseGoogleStudent(response) {
 		sessionStorage.setItem('token_id', response.tokenId);
 		console.log(sessionStorage.getItem('token_id'));
+		//goal: get netId from email they signed up with
 		axios.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			console.log("has registered");
 			console.log(hasRegistered);

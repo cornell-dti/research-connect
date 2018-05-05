@@ -55,7 +55,9 @@ const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 
 app.get("/decrypt", function(req, res) {
-    verify(req.query.token, function(netId){
+    let token = req.query.token;
+    let returnEmail = (req.query.returnEmail != null && req.query.returnEmail === "true");
+    verify(token, function(netId){
         return res.send(netId);
     })
 });

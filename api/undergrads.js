@@ -44,19 +44,21 @@ app.post('/', function (req, res) {
     console.log(data.gradYear);
     console.log(data.major);
     console.log(data.GPA);
-    console.log(data.netid);
+    console.log(data.netId);
     console.log(data.courses);
     console.log("This be the resume");
-    var undergrad = new undergradModel({
+    let undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netid,
+        netId: data.netId,
+        email: data.email,
         courses: data.courses
     });
+
     debug(undergrad);
     undergrad.save(function (err) {
         if (err) {

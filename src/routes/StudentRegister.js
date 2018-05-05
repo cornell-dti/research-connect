@@ -21,6 +21,7 @@ class StudentRegister extends React.Component {
             major: "",
             GPA: "",
             netId: "",
+            email: "",
             courses: [],
             file: null,
             resume: null,
@@ -139,7 +140,7 @@ class StudentRegister extends React.Component {
         e.preventDefault();
         // get our form data out of state
         const {
-            firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
+            firstName, lastName, gradYear, major, GPA, netId, email, courses, resume, transcript,
             firstNameValid,
             lastNameValid,
             gradYearValid,
@@ -160,13 +161,13 @@ class StudentRegister extends React.Component {
             let oneRan = false;
             let getUrl = window.location;
             var baseUrl = getUrl.protocol + "//" + getUrl.host;
-            axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netId, courses})
+            axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netId, email, courses})
                 .then((result) => {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
                     if (this.state.transcript.length != 0) {
-                        axios.post('/docs', {netId, transcript})
+                        axios.post('/api/docs', {netid, transcript})
                             .then((result) => {
                                 if (oneRan) {
                                     window.location.replace(baseUrl + "/opportunities");
@@ -176,42 +177,22 @@ class StudentRegister extends React.Component {
                                 }
                             });
                     }
-                    let oneRan = false;
-                    let getUrl = window.location;
-                    var baseUrl = getUrl.protocol + "//" + getUrl.host;
-                    axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
-                        .then((result) => {
-                            console.log("undergrad created, result:");
-                            console.log(result);
-                            //access the results here....
-                            if (this.state.transcript.length != 0) {
-                                axios.post('/api/docs', {netid, transcript})
-                                    .then((result) => {
-                                        if (oneRan) {
-                                            window.location.replace(baseUrl + "/opportunities");
-                                        }
-                                        else {
-                                            oneRan = true;
-                                        }
-                                    });
-                            }
 
-                            axios.post('/api/docs', {netid, resume})
-                                .then((result) => {
-                                    if (oneRan) {
-                                        window.location.replace(baseUrl + "/opportunities");
-                                    }
-                                    else {
-                                        oneRan = true;
-                                    }
-                                    console.log("resume result");
-                                    console.log(result);
-                                });
+                    axios.post('/api/docs', {netid, resume})
+                        .then((result) => {
+                            if (oneRan) {
+                                window.location.replace(baseUrl + "/opportunities");
+                            }
+                            else {
+                                oneRan = true;
+                            }
+                            console.log("resume result");
+                            console.log(result);
                         });
                 });
-
         }
     };
+
 
     render() {
         const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
