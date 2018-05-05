@@ -243,7 +243,27 @@ class CreateOppForm extends React.Component {
 	 this.setState({closes: date});
 	}
 
+<<<<<<< HEAD
 
+=======
+    onSubmit = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result } = this.state;
+
+        axios.post('/api/opportunities', { netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions })
+            .then((result) => {
+                //access the results here....
+                this.setState({submit: "Submitted!"});
+                function sleep (time) {
+                    return new Promise((resolve) => setTimeout(resolve, time));
+                }
+                sleep(1200).then(() => {
+                    document.location.href = "professorView";
+                });
+            });
+    };
+>>>>>>> shea_react
 
 	render() {
 		return (

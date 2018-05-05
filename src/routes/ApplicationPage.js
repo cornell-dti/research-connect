@@ -21,7 +21,7 @@ class ApplicationPage extends Component {
 	componentWillMount() {
     //'netId': sessionStorage.getItem('netId')
     //'netId': 'prk57' // TODO change back to above
-		axios.get('/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
+		axios.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
 		.then((response) => {
 			for (let opp in response.data) {
 				for (let app in response.data[opp].applications) {
@@ -56,7 +56,7 @@ class ApplicationPage extends Component {
 	}
 
 	resume() {
-		axios.get('/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id'))
+		axios.get('/api/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id'))
 		.then((response) => {
 			window.open('/doc/' + response.data.resumeId, '_blank');
 		});
@@ -83,7 +83,7 @@ class ApplicationPage extends Component {
 				<div className="application-page-container">
 					<div className="button-bar-container">
 						<div className="return-to-apps">
-							<FaLongArrowLeft className="black-arrow" /><a href="/professorView">Return to View All Applications</a>
+							<FaLongArrowLeft className="black-arrow" /><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/professorView')}>Return to View All Applications</a>
 						</div>
 						<div className="row button-bar">
 							<div className="column column-33 left-button">

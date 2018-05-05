@@ -44,15 +44,18 @@ class ProfessorView extends Component {
 	}
 
 	componentWillMount() {
-		axios.get('/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
+		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
 		.then((response) => {
 			if (response.data !== 'grad' &&
 				  response.data !== 'labtech' &&
 				  response.data !== 'postdoc' &&
 				  response.data !== 'staffscientist' &&
 				  response.data !== 'pi') {
-				window.location.href = "/";
-			}
+                let homeString = "/";
+                if (window.location.toString().includes("app")){
+                    homeString += "app"
+                }
+                window.location.href = homeString;			}
 		})
 		.catch(function (error) {
 			console.log(error);

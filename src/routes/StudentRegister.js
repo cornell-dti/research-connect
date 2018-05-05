@@ -145,7 +145,7 @@ class StudentRegister extends React.Component {
         resumeValid,
         triedSubmitting} = this.state;
 
-        // axios.get('opportunities/check/9102401rjqlfk?netId="zx55"')
+        // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
         //     .then(function (response) {
         //         console.log(response);
         //     })
@@ -173,6 +173,7 @@ class StudentRegister extends React.Component {
                           });
                   }
 
+<<<<<<< HEAD
                   axios.post('/docs', {netId, resume})
                       .then((result) => {
                           if (oneRan || (this.state.transcript.length === 0 && !oneRan)) {
@@ -195,6 +196,47 @@ class StudentRegister extends React.Component {
         if (this.state.netId === "") {
             axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
                 this.setState({netId: res.data});
+=======
+        let oneRan = false;
+        let getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host;
+        axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
+            .then((result) => {
+                console.log("undergrad created, result:");
+                console.log(result);
+                //access the results here....
+                if (this.state.transcript.length != 0) {
+                    axios.post('/api/docs', {netid, transcript})
+                        .then((result) => {
+                            if (oneRan) {
+                                window.location.replace(baseUrl + "/opportunities");
+                            }
+                            else {
+                                oneRan = true;
+                            }
+                        });
+                }
+
+                axios.post('/api/docs', {netid, resume})
+                    .then((result) => {
+                        if (oneRan) {
+                            window.location.replace(baseUrl + "/opportunities");
+                        }
+                        else {
+                            oneRan = true;
+                        }
+                        console.log("resume result");
+                        console.log(result);
+                    });
+            });
+    };
+
+    render() {
+        const {firstName, lastName, gradYear, major, GPA, netid, courses, resume, transcript} = this.state;
+        if (this.state.netid === "") {
+            axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
+                this.setState({netid: res.data});
+>>>>>>> shea_react
                 console.log("res data!");
                 console.log(res.data);
             });

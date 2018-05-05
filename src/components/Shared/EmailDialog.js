@@ -31,7 +31,7 @@ class EmailDialog extends React.Component {
 
 	openModal() {
 		this.setState({modalIsOpen: true});
-		axios.get('/messages/' + this.props.opp._id, {
+		axios.get('/api/messages/' + this.props.opp._id, {
 			'studentFirstName': this.props.app.firstName,
 			'studentLastName': this.props.app.lastName,
 			'opportunityTitle': this.props.opp.title,
@@ -73,7 +73,7 @@ class EmailDialog extends React.Component {
 	}
 
 	sendEmail() {
-		axios.post('/messages/send', {
+		axios.post('/api/messages/send', {
 			'opportunityId': this.props.opp._id,
 			'labAdminNetId': this.props.opp.creatorNetId,
 			'undergradNetId': this.props.app.undergradNetId,
@@ -85,8 +85,8 @@ class EmailDialog extends React.Component {
     })
 		.catch(function (error) {
 			console.log(error);
-		})
-		window.location.href = '/professorView';
+		});
+		window.location.href = 'professorView';
 	}
 
 	getDisabled() {

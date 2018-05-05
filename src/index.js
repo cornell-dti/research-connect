@@ -20,19 +20,18 @@ import LandingPage from './routes/LandingPage';
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
-
-            <Route exact path='/opportunities' component = {Opportunities} />
-            <Route path='/opportunity/:id' component = {OpportunityPage} />
-            <Route path='/application/:id' component = {ApplicationPage} />
-            <Route exact path='/newopp' component = {CreateOpportunityForm} />
-            <Route exact path='/instructorRegister' component = {InstructorRegister} />
-            <Route exact path='/StudentRegister' component = {StudentRegister} />
-            <Route exact path='/professorView' component = {ProfessorView} />
-            <Route path = '/doc/:id' component = {Doc} />
-            <Route exact path='/editProfile' component = {EditProfile} />
-            <Route exact path='/' component = {LandingPage} />
+            <Route exact path='/app/opportunities' component = {Opportunities} />
+            <Route path='/app/opportunity/:id' component = {OpportunityPage} />
+            <Route path='/app/application/:id' component = {ApplicationPage} />
+            <Route exact path='/app/newopp' component = {CreateOpportunityForm} />
+            <Route exact path='/app/instructorRegister' component = {InstructorRegister} />
+            <Route exact path='/app/StudentRegister' component = {StudentRegister} />
+            <Route exact path='/app/professorView' component = {ProfessorView} />
+            <Route path = '/app/doc/:id' component = {Doc} />
+            <Route exact path='/app/editProfile' component = {EditProfile} />
+            <Route exact path='/app' component = {LandingPage} />
             <Route path='/' component = {Error} />
         </Switch>
-    </BrowserRouter>
-    , document.getElementById('root'));
+    </BrowserRouter>, document.getElementById('root')
+);
 registerServiceWorker();
