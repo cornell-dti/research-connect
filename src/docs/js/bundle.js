@@ -40443,7 +40443,7 @@ var Opportunities = function (_Component) {
                                 'div',
                                 { className: 'opp-list-container' },
                                 _react2.default.createElement(_OpportunityBox2.default, { filteredOptions: this.state,
-                                    url: '/opportunities' })
+                                    url: 'opportunities' })
                             )
                         )
                     )
@@ -75711,6 +75711,7 @@ var StudentRegister = function (_React$Component) {
                 major = _this$state.major,
                 GPA = _this$state.GPA,
                 netId = _this$state.netId,
+                email = _this$state.email,
                 courses = _this$state.courses,
                 resume = _this$state.resume,
                 transcript = _this$state.transcript,
@@ -75734,12 +75735,12 @@ var StudentRegister = function (_React$Component) {
                 var oneRan = false;
                 var getUrl = window.location;
                 var baseUrl = getUrl.protocol + "//" + getUrl.host;
-                _axios2.default.post('/undergrads', { firstName: firstName, lastName: lastName, gradYear: gradYear, major: major, GPA: GPA, netId: netId, courses: courses }).then(function (result) {
+                _axios2.default.post('/api/undergrads', { firstName: firstName, lastName: lastName, gradYear: gradYear, major: major, GPA: GPA, netId: netId, email: email, courses: courses }).then(function (result) {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
                     if (_this.state.transcript.length != 0) {
-                        _axios2.default.post('/docs', { netId: netId, transcript: transcript }).then(function (result) {
+                        _axios2.default.post('/api/docs', { netid: netid, transcript: transcript }).then(function (result) {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
                             } else {
@@ -75747,32 +75748,15 @@ var StudentRegister = function (_React$Component) {
                             }
                         });
                     }
-                    var oneRan = false;
-                    var getUrl = window.location;
-                    var baseUrl = getUrl.protocol + "//" + getUrl.host;
-                    _axios2.default.post('/api/undergrads', { firstName: firstName, lastName: lastName, gradYear: gradYear, major: major, GPA: GPA, netid: netid, courses: courses }).then(function (result) {
-                        console.log("undergrad created, result:");
-                        console.log(result);
-                        //access the results here....
-                        if (_this.state.transcript.length != 0) {
-                            _axios2.default.post('/api/docs', { netid: netid, transcript: transcript }).then(function (result) {
-                                if (oneRan) {
-                                    window.location.replace(baseUrl + "/opportunities");
-                                } else {
-                                    oneRan = true;
-                                }
-                            });
-                        }
 
-                        _axios2.default.post('/api/docs', { netid: netid, resume: resume }).then(function (result) {
-                            if (oneRan) {
-                                window.location.replace(baseUrl + "/opportunities");
-                            } else {
-                                oneRan = true;
-                            }
-                            console.log("resume result");
-                            console.log(result);
-                        });
+                    _axios2.default.post('/api/docs', { netid: netid, resume: resume }).then(function (result) {
+                        if (oneRan) {
+                            window.location.replace(baseUrl + "/opportunities");
+                        } else {
+                            oneRan = true;
+                        }
+                        console.log("resume result");
+                        console.log(result);
                     });
                 });
             }
@@ -75785,6 +75769,7 @@ var StudentRegister = function (_React$Component) {
             major: "",
             GPA: "",
             netId: "",
+            email: "",
             courses: [],
             file: null,
             resume: null,
@@ -79892,6 +79877,7 @@ var LandingPage = function (_Component) {
 		value: function responseGoogleStudent(response) {
 			sessionStorage.setItem('token_id', response.tokenId);
 			console.log(sessionStorage.getItem('token_id'));
+			//goal: get netId from email they signed up with
 			_axios2.default.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu", "")).then(function (hasRegistered) {
 				console.log("has registered");
 				console.log(hasRegistered);

@@ -107,7 +107,7 @@ class Opportunities extends Component {
 						<div className="column column-70">
 							<div className="opp-list-container">
 								<OpportunityBox filteredOptions = {this.state}
-												url='/opportunities' />
+												url='opportunities' />
 							</div>
 						</div>
 					</div>
