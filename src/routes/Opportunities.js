@@ -84,9 +84,9 @@ class Opportunities extends Component {
 								<h3>Filters</h3>
 								<hr />
 
-                                {/*<label htmlFor="depField">Area of Interest</label>*/}
-                                {/*<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />*/}
-                                {/*<hr />*/}
+                                <label htmlFor="depField">Area of Interest</label>
+                                <MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
+                                <hr />
 								<label htmlFor="yearField">School Year</label>
 								<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
 								<hr />
