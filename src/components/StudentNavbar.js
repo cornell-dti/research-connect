@@ -24,12 +24,7 @@ class StudentNavbar extends Component {
       <div className="header-all">
         <Link to="opportunities"><img className="logo" src={logo}/></Link>
         <nav>
-<<<<<<< HEAD
-          <li className={this.props.current=="opportunities"? "current-page":""}><a href={this.props.current=="opportunities"?"#":"/opportunities"}>Opportunities</a></li>
-					<li className={this.props.current=="editprofile"? "current-page":""}><a href={this.props.current=="editprofile"?"#":"/editprofile"}>My Profile</a></li>
-=======
           <li><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/opportunities') : ""}>Opportunities</a></li>
->>>>>>> shea_react
           <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>

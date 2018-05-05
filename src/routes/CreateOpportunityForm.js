@@ -242,10 +242,6 @@ class CreateOppForm extends React.Component {
 	handleCloseDateChange(date){
 	 this.setState({closes: date});
 	}
-
-<<<<<<< HEAD
-
-=======
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
@@ -263,8 +259,6 @@ class CreateOppForm extends React.Component {
                 });
             });
     };
->>>>>>> shea_react
-
 	render() {
 		return (
 			<div >
@@ -287,7 +281,7 @@ class CreateOppForm extends React.Component {
 						<span className="required-star">*</span>
 
 						<input className="column column-90" placeholder="Position Title" type="text" name="title" value={this.state.title} onChange={this.handleChange}/>
-						<InfoIcon className="" data-tip data-for="info-title" className="info-icon" size={20}/>
+						<InfoIcon data-tip data-for="info-title" className="info-icon" size={20}/>
 						<ReactTooltip place='right' id='info-title' aria-haspopup='true' role='example'>
 							<div className="info-text">
 							 <span>Examples:</span>
@@ -305,7 +299,7 @@ class CreateOppForm extends React.Component {
 						<span className="required-star">*</span>
 						<textarea className="column column-90" placeholder="Undergraduate Tasks" name="tasks" type="text" value={this.state.undergradTasks} onChange={this.handleChange}/>
 
-							<InfoIcon className="column column-5" data-tip data-for="info-tasks" className="info-icon" size={20}/>
+							<InfoIcon data-tip data-for="info-tasks" className="info-icon column column-5" size={20}/>
 							<ReactTooltip place='right' id='info-tasks' aria-haspopup='true' role='example'>
 							<div className="info-text">
 							 <span>Examples:</span>
@@ -347,7 +341,7 @@ class CreateOppForm extends React.Component {
 
 						<div className="row input-row optional">
 						<input className="column column-90" placeholder="Position Supervisor" name="supervisor" type="text" value={this.state.supervisor} onChange={this.handleChange}/>
-							<InfoIcon className="" data-tip data-for="info-super" className="info-icon" size={20}/>
+							<InfoIcon data-tip data-for="info-super" className="info-icon" size={20}/>
 							<ReactTooltip place='right' id='info-super' aria-haspopup='true' role='example'>
 								 <p className="info-text"> Your name or the name of other person who would be their direct supervisor.</p>
 
@@ -356,7 +350,7 @@ class CreateOppForm extends React.Component {
 							<div className="row input-row optional">
 							<textarea className="column column-90" placeholder="Project Description and Goals" name="descript" type="text" value={this.state.projectDescription} onChange={this.handleChange}/>
 
-								<InfoIcon className="column column-5" data-tip data-for="info-descript" className="info-icon" size={20}/>
+								<InfoIcon data-tip data-for="info-descript" className="info-icon column column-5" size={20}/>
 								<ReactTooltip place='right' id='info-descript' aria-haspopup='true' role='example'>
 									<p className="info-text">Example:</p>
 									 <p className="info-text">Apprentice will conduct a genetic screen to discover
@@ -371,7 +365,7 @@ class CreateOppForm extends React.Component {
 									<div className="row input-row optional">
 									<textarea className="column column-90" placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)" name="qual" type="text" value={this.state.qualifications} onChange={this.handleChange}/>
 
-										<InfoIcon className="column column-5" data-tip data-for="info-quals" className="info-icon" size={20}/>
+										<InfoIcon data-tip data-for="info-quals" className="column column-5 info-icon" size={20}/>
 										<ReactTooltip place='right' id='info-quals' aria-haspopup='true' role='example'>
 										<div className="info-text">
 										 <span>Examples:</span>
@@ -391,7 +385,7 @@ class CreateOppForm extends React.Component {
 
 
 						<input className="max-hours" placeholder="Max Hours" type="text" name="max" value={this.state.maxHours} onChange={this.handleChange}/>
-						<InfoIcon className="column column-5" data-tip data-for="info-hours" className="info-icon" size={20}/>
+						<InfoIcon data-tip data-for="info-hours" className="info-icon column column-5" size={20}/>
 						<ReactTooltip place='right' id='info-hours' aria-haspopup='true' role='example'>
 
 						 <p className="info-text">Estimate the minimum hours you would expect the student to work each week and the maximum hours you would ever require.</p>
@@ -402,7 +396,7 @@ class CreateOppForm extends React.Component {
 						<div className="row input-row optional">
 						<input className="column column-90" placeholder="Required/Preferred Classes (Separate with commas, i.e. BIO 1110, MATH 1910)" type="text" name="classes" value={this.state.requiredClasses} onChange={this.handleChange}/>
 
-							<InfoIcon className="column column-5" data-tip data-for="info-classes" className="info-icon" size={20}/>
+							<InfoIcon data-tip data-for="info-classes" className="column column-5 info-icon" size={20}/>
 							<ReactTooltip place='right' id='info-classes' aria-haspopup='true' role='example'>
 							<div className="info-text">
 							 <span>Examples:</span>
@@ -417,7 +411,7 @@ class CreateOppForm extends React.Component {
 
 							<div className="row input-row optional">
 							{this.createGpaOptions()}
-								<InfoIcon className="column column-5" data-tip data-for="info-gpa" className="info-icon" size={20}/>
+								<InfoIcon data-tip data-for="info-gpa" className="column column-5 info-icon" size={20}/>
 								<ReactTooltip place='right' id='info-gpa' aria-haspopup='true' role='example'>
 								<div className="info-text">
 								 <span>Students with a GPA lower than this minimum will be discouraged from applying.</span>
@@ -450,7 +444,7 @@ class CreateOppForm extends React.Component {
 							<div className="row input-row optional">
 							<textarea className="column column-90" placeholder="Topics of Research (Please separate with commas)" type="text" name="areas" value={this.state.areas} onChange={this.handleChange}/>
 
-								<InfoIcon className="column column-5" data-tip data-for="info-topics" className="info-icon" size={20}/>
+								<InfoIcon data-tip data-for="info-topics" className="column column-5 info-icon" size={20}/>
 								<ReactTooltip place='right' id='info-topics' aria-haspopup='true' role='example'>
 								<div className="info-text">
 								 <span>Examples:</span>

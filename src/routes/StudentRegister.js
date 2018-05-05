@@ -54,7 +54,8 @@ class StudentRegister extends React.Component {
 
         }
 
-        return (<select className={!validName && this.state.triedSubmitting ?"error left-input":"left-input"} name={inputName} value={inputName} onChange={this.onChange}>
+        return (<select className={!validName && this.state.triedSubmitting ? "error left-input" : "left-input"}
+                        name={inputName} value={inputName} onChange={this.onChange}>
             <option id={inputName} key="empty" value="">{placehold}</option>
             {newArray} </select>);
     }
@@ -107,17 +108,16 @@ class StudentRegister extends React.Component {
                 document.getElementById(name).innerHTML = [e.target.value];
 
             }
-            if (e.target.value!=""){
-              this.setState({[validationName]: true});
-            } else{
-              this.setState({[validationName]: false});
+            if (e.target.value != "") {
+                this.setState({[validationName]: true});
+            } else {
+                this.setState({[validationName]: false});
             }
         }
         else {
             this.setState({[e.target.name]: (e.target.value).replace(/ /g, '').split(",")});
         }
-    }
-
+    };
 
 
     createGpaOptions() {
@@ -126,7 +126,9 @@ class StudentRegister extends React.Component {
             options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
         }
         return (
-            <select  name="GPA" id="GPA" className={!this.state.GPAValid && this.state.triedSubmitting ?"error gpa-select left-input":"gpa-select left-input"} value={this.state.GPA} onChange={this.onChange}>
+            <select name="GPA" id="GPA"
+                    className={!this.state.GPAValid && this.state.triedSubmitting ? "error gpa-select left-input" : "gpa-select left-input"}
+                    value={this.state.GPA} onChange={this.onChange}>
                 <option key="" value="">Select GPA</option>
                 {options}
             </select>
@@ -136,14 +138,16 @@ class StudentRegister extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         // get our form data out of state
-        const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
-        firstNameValid,
-        lastNameValid,
-        gradYearValid,
-        majorValid,
-        GPAValid,
-        resumeValid,
-        triedSubmitting} = this.state;
+        const {
+            firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
+            firstNameValid,
+            lastNameValid,
+            gradYearValid,
+            majorValid,
+            GPAValid,
+            resumeValid,
+            triedSubmitting
+        } = this.state;
 
         // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
         //     .then(function (response) {
@@ -152,83 +156,61 @@ class StudentRegister extends React.Component {
         //     .catch(function (error) {
         //         console.log(error);
         //     });
-        if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid){
-          let oneRan = false;
-          let getUrl = window.location;
-          var baseUrl = getUrl.protocol + "//" + getUrl.host;
-          axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netId, courses})
-              .then((result) => {
-                  console.log("undergrad created, result:");
-                  console.log(result);
-                  //access the results here....
-                  if (this.state.transcript.length != 0) {
-                      axios.post('/docs', {netId, transcript})
-                          .then((result) => {
-                              if (oneRan) {
-                                  window.location.replace(baseUrl + "/opportunities");
-                              }
-                              else {
-                                  oneRan = true;
-                              }
-                          });
-                  }
-
-<<<<<<< HEAD
-                  axios.post('/docs', {netId, resume})
-                      .then((result) => {
-                          if (oneRan || (this.state.transcript.length === 0 && !oneRan)) {
-                              window.location.replace(baseUrl + "/opportunities");
-                          }
-                          else {
-                              oneRan = true;
-                          }
-                          console.log("resume result");
-                          console.log(result);
-                      });
-              });
-        }else{
-          this.setState({triedSubmitting: true})
-        }
-    };
-
-    render() {
-        const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript} = this.state;
-        if (this.state.netId === "") {
-            axios.get('/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-                this.setState({netId: res.data});
-=======
-        let oneRan = false;
-        let getUrl = window.location;
-        var baseUrl = getUrl.protocol + "//" + getUrl.host;
-        axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
-            .then((result) => {
-                console.log("undergrad created, result:");
-                console.log(result);
-                //access the results here....
-                if (this.state.transcript.length != 0) {
-                    axios.post('/api/docs', {netid, transcript})
+        if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid) {
+            let oneRan = false;
+            let getUrl = window.location;
+            var baseUrl = getUrl.protocol + "//" + getUrl.host;
+            axios.post('/undergrads', {firstName, lastName, gradYear, major, GPA, netId, courses})
+                .then((result) => {
+                    console.log("undergrad created, result:");
+                    console.log(result);
+                    //access the results here....
+                    if (this.state.transcript.length != 0) {
+                        axios.post('/docs', {netId, transcript})
+                            .then((result) => {
+                                if (oneRan) {
+                                    window.location.replace(baseUrl + "/opportunities");
+                                }
+                                else {
+                                    oneRan = true;
+                                }
+                            });
+                    }
+                    let oneRan = false;
+                    let getUrl = window.location;
+                    var baseUrl = getUrl.protocol + "//" + getUrl.host;
+                    axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netid, courses})
                         .then((result) => {
-                            if (oneRan) {
-                                window.location.replace(baseUrl + "/opportunities");
+                            console.log("undergrad created, result:");
+                            console.log(result);
+                            //access the results here....
+                            if (this.state.transcript.length != 0) {
+                                axios.post('/api/docs', {netid, transcript})
+                                    .then((result) => {
+                                        if (oneRan) {
+                                            window.location.replace(baseUrl + "/opportunities");
+                                        }
+                                        else {
+                                            oneRan = true;
+                                        }
+                                    });
                             }
-                            else {
-                                oneRan = true;
-                            }
-                        });
-                }
 
-                axios.post('/api/docs', {netid, resume})
-                    .then((result) => {
-                        if (oneRan) {
-                            window.location.replace(baseUrl + "/opportunities");
-                        }
-                        else {
-                            oneRan = true;
-                        }
-                        console.log("resume result");
-                        console.log(result);
-                    });
-            });
+                            axios.post('/api/docs', {netid, resume})
+                                .then((result) => {
+                                    if (oneRan) {
+                                        window.location.replace(baseUrl + "/opportunities");
+                                    }
+                                    else {
+                                        oneRan = true;
+                                    }
+                                    console.log("resume result");
+                                    console.log(result);
+                                });
+                        });
+                });
+
+        }
     };
 
     render() {
@@ -236,7 +218,6 @@ class StudentRegister extends React.Component {
         if (this.state.netid === "") {
             axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
                 this.setState({netid: res.data});
->>>>>>> shea_react
                 console.log("res data!");
                 console.log(res.data);
             });
@@ -247,12 +228,15 @@ class StudentRegister extends React.Component {
                 <div className="student-reg-form">
                     <h3>Student Registration</h3>
                     <form id="studentForm" onSubmit={this.onSubmit}>
-                        <input className={!this.state.firstNameValid && this.state.triedSubmitting ?"error left-input":"left-input"}
-                         placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName"
-                               onChange={this.onChange}/>
+                        <input
+                            className={!this.state.firstNameValid && this.state.triedSubmitting ? "error left-input" : "left-input"}
+                            placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName"
+                            onChange={this.onChange}/>
 
-                        <input className={!this.state.lastNameValid && this.state.triedSubmitting ?"error left-input":"left-input"} type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName"
-                               onChange={this.onChange}/>
+                        <input
+                            className={!this.state.lastNameValid && this.state.triedSubmitting ? "error left-input" : "left-input"}
+                            type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName"
+                            onChange={this.onChange}/>
 
 
                         {this.optionify(gradYears, "gradYear")}
@@ -264,40 +248,54 @@ class StudentRegister extends React.Component {
 
                         <label>
 
-                            <textarea className="left-input" placeholder="Relevant courses past and present (separate with commas, i.e. CS 1110, BIOMG 1350)"
+                            <textarea className="left-input"
+                                      placeholder="Relevant courses past and present (separate with commas, i.e. CS 1110, BIOMG 1350)"
                                       name="courses"
                                       value={courses} id="courses" onChange={this.onChange}/>
                         </label>
 
                         <div className="dropzone">
 
-                            <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 0 0 25%', border:!this.state.resumeValid && this.state.triedSubmitting ?'3px #b31b1b solid':'1px dashed black'}} onDrop={this.onDropResume.bind(this)}>
+                            <Dropzone className="edit-drop" style={{
+                                position: 'relative',
+                                background: '#ededed',
+                                padding: '10px',
+                                width: '50%',
+                                margin: '0 0 0 25%',
+                                border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
+                            }} onDrop={this.onDropResume.bind(this)}>
                                 <p>Click/drag to drop resume (required)</p>
 
                             </Dropzone>
                             <div className="uploaded-message">
-                            {resume!=null ? <p>Uploaded: {resume.name}</p>:""}
+                                {resume != null ? <p>Uploaded: {resume.name}</p> : ""}
                             </div>
                         </div>
-
 
 
                         <br/>
 
                         <div className="dropzone">
 
-                            <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 25%', border:'1px dashed black'}} onDrop={this.onDropTranscript.bind(this)}>
+                            <Dropzone className="edit-drop" style={{
+                                position: 'relative',
+                                background: '#ededed',
+                                padding: '10px',
+                                width: '50%',
+                                margin: '0 25%',
+                                border: '1px dashed black'
+                            }} onDrop={this.onDropTranscript.bind(this)}>
                                 <p>Click/drag to drop transcript (optional)</p>
 
                             </Dropzone>
                             <div className="uploaded-message">
-                            {transcript!=null?  <p >Uploaded: {transcript.name}</p>:""}
+                                {transcript != null ? <p >Uploaded: {transcript.name}</p> : ""}
                             </div>
                         </div>
 
                         <br/>
                         <div className="centered">
-                        <input type="submit" className="button" value="Submit"/>
+                            <input type="submit" className="button" value="Submit"/>
                         </div>
                     </form>
 
