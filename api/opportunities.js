@@ -61,79 +61,6 @@ app.get('/check/:opportunityId', function(req, res){
 });
 */
 
-//previous POST /getOpportunity
-//gets the opportunity given its object id
-app.get('/:id', function (req, res) {
-    console.log("token: " + req.query.netId);
-    verify(req.query.netId, function (tokenNetId) {
-        console.log("toke net id: " + tokenNetId);
-        opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
-            if (err) {
-                debug(err);
-                res.send(err);
-            }
-            labModel.find({}, function (err2, labs) {
-                if (err2) {
-                    debug(err);
-                    res.send(err);
-                    return;
-                }
-                let labAdmins = [];
-                for (let i = 0; i < labs.length; i++) {
-                    let currentLab = labs[i];
-                    for (let j = 0; j < currentLab.opportunities.length; j++) {
-                        if (currentLab.opportunities[j].toString() === req.params.id) {
-                            opportunity.labPage = currentLab.labPage;
-                            opportunity.labDescription = currentLab.labDescription;
-                            opportunity.labName = currentLab.name;
-                            console.log("found it");
-                            console.log(currentLab);
-                            labAdmins = currentLab.labAdmins;
-                        }
-                    }
-                }
-                console.log("here");
-                console.log(labAdmins);
-                labAdministratorModel.findOne(
-                    {
-                        $and: [
-                            {netId: {$in: labAdmins}},
-                            {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
-                        ]
-                    },
-                    function (err, labAdmin) {
-                        debug(labAdmin);
-                        opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                        undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
-                            if (student === undefined) {
-                                opportunity.student = {
-                                    "firstName": "rachel",
-                                    "lastName": "nash",
-                                    "gradYear": 2020,
-                                    "major": "Computer Science",
-                                    "gpa": 4.3,
-                                    "netId": "rsn55",
-                                    "courses": [
-                                        "CS 1110",
-                                        "INFO 4998",
-                                        "CS 3110"
-                                    ],
-                                    "skills": [
-                                        "HTML"
-                                    ]
-                                }
-                            }
-                            else {
-                                opportunity.student = student;
-                            }
-                            res.send(opportunity);
-                        });
-                    });
-            });
-        });
-    });
-});
-
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
 
@@ -404,7 +331,7 @@ app.put('/:id', function (req, res) {
         }
     });
 });
-app.post('/search', function(req, res){
+app.get('/search', function(req, res){
 
     opportunityModel.find({$text:{$search:req.query.search}}, function(err,search){
         if(err){
@@ -437,5 +364,80 @@ app.delete('/:id', function (req, res) {
 
     });
 });
+
+
+//previous POST /getOpportunity
+//gets the opportunity given its object id
+app.get('/:id', function (req, res) {
+    console.log("token: " + req.query.netId);
+    verify(req.query.netId, function (tokenNetId) {
+        console.log("toke net id: " + tokenNetId);
+        opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
+            if (err) {
+                debug(err);
+                res.send(err);
+            }
+            labModel.find({}, function (err2, labs) {
+                if (err2) {
+                    debug(err);
+                    res.send(err);
+                    return;
+                }
+                let labAdmins = [];
+                for (let i = 0; i < labs.length; i++) {
+                    let currentLab = labs[i];
+                    for (let j = 0; j < currentLab.opportunities.length; j++) {
+                        if (currentLab.opportunities[j].toString() === req.params.id) {
+                            opportunity.labPage = currentLab.labPage;
+                            opportunity.labDescription = currentLab.labDescription;
+                            opportunity.labName = currentLab.name;
+                            console.log("found it");
+                            console.log(currentLab);
+                            labAdmins = currentLab.labAdmins;
+                        }
+                    }
+                }
+                console.log("here");
+                console.log(labAdmins);
+                labAdministratorModel.findOne(
+                    {
+                        $and: [
+                            {netId: {$in: labAdmins}},
+                            {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
+                        ]
+                    },
+                    function (err, labAdmin) {
+                        debug(labAdmin);
+                        opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
+                        undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
+                            if (student === undefined) {
+                                opportunity.student = {
+                                    "firstName": "rachel",
+                                    "lastName": "nash",
+                                    "gradYear": 2020,
+                                    "major": "Computer Science",
+                                    "gpa": 4.3,
+                                    "netId": "rsn55",
+                                    "courses": [
+                                        "CS 1110",
+                                        "INFO 4998",
+                                        "CS 3110"
+                                    ],
+                                    "skills": [
+                                        "HTML"
+                                    ]
+                                }
+                            }
+                            else {
+                                opportunity.student = student;
+                            }
+                            res.send(opportunity);
+                        });
+                    });
+            });
+        });
+    });
+});
+
 
 module.exports = app;
