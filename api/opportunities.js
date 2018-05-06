@@ -409,6 +409,7 @@ app.get('/search', function(req, res){
     opportunityModel.find({$text:{$search:req.query.search}}, function(err,search){
         if(err){
             console.log(err);
+            res.send(err);
         }
         else{
             if(search === null){
