@@ -3,8 +3,7 @@ import Opportunity from './Opportunity'
 
 class OpportunityList extends Component {
     render() {
-        console.log("DATA");
-        console.log(this.props.data);
+      
         let oppNodes = this.props.data.map(opp => {
             return (
                 <Opportunity filteredOptions={this.props.filteredOptions }

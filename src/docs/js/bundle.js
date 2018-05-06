@@ -8567,12 +8567,12 @@ var MajorSelect = function (_React$Component) {
 			return _react2.default.createElement(
 				'form',
 				{ onSubmit: this.handleSubmit, className: 'filterCheckFields' },
-				_react2.default.createElement('input', { ref: function ref(node) {
+				_react2.default.createElement('input', { className: 'opp-area-filter', ref: function ref(node) {
 						_this2.cs = node;
 					}, onChange: this.handleChange.bind(this), type: 'checkbox', name: 'computer science', value: 'computer science' }),
-				'CS',
+				'Computer Science',
 				_react2.default.createElement('br', null),
-				_react2.default.createElement('input', { ref: function ref(input) {
+				_react2.default.createElement('input', { className: 'opp-area-filter', ref: function ref(input) {
 						_this2.biology = input;
 					}, onChange: this.handleChange.bind(this), type: 'checkbox', name: 'biology', value: 'biology' }),
 				'Biology'
@@ -40319,6 +40319,10 @@ var _StartDate = __webpack_require__(68);
 
 var _StartDate2 = _interopRequireDefault(_StartDate);
 
+var _search = __webpack_require__(271);
+
+var _search2 = _interopRequireDefault(_search);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40339,7 +40343,8 @@ var Opportunities = function (_Component) {
             yearSelect: {},
             gpaSelect: {},
             majorSelect: {},
-            startDate: {}
+            startDate: {},
+            searchBar: ""
         };
         return _this;
     }
@@ -40383,6 +40388,12 @@ var Opportunities = function (_Component) {
             this.setState({ startDate: majorObj });
         }
     }, {
+        key: 'handleUpdateSearch',
+        value: function handleUpdateSearch(e) {
+            this.setState({ searchBar: e.target.value });
+            console.log(this.state.searchBar);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -40392,6 +40403,19 @@ var Opportunities = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'opp-container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'column column-100 search-div-container' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'search-div' },
+                                _react2.default.createElement('input', { onChange: this.handleUpdateSearch.bind(this), value: this.state.searchBar, type: 'text', name: 'search', placeholder: 'Search keywords (e.g. psychology, machine learning, Social Media Lab)' })
+                            )
+                        )
+                    ),
                     _react2.default.createElement(
                         'div',
                         { className: 'row' },
@@ -40413,6 +40437,7 @@ var Opportunities = function (_Component) {
                                     'Area of Interest'
                                 ),
                                 _react2.default.createElement(_MajorSelect2.default, { updateMajor: this.handleUpdateMajor.bind(this) }),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('hr', null),
                                 _react2.default.createElement(
                                     'label',
@@ -40420,6 +40445,7 @@ var Opportunities = function (_Component) {
                                     'School Year'
                                 ),
                                 _react2.default.createElement(_YearSelect2.default, { updateYear: this.handleUpdateYear.bind(this) }),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('hr', null),
                                 _react2.default.createElement(
                                     'label',
@@ -45051,7 +45077,6 @@ var OpportunityBox = function (_Component) {
 
 			_axios2.default.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId')).then(function (res) {
 				_this2.setState({ data: res.data });
-				console.log(res.data);
 			});
 		}
 	}, {
@@ -45115,8 +45140,6 @@ var OpportunityList = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            console.log("DATA");
-            console.log(this.props.data);
             var oppNodes = this.props.data.map(function (opp) {
                 return _react2.default.createElement(_Opportunity2.default, { filteredOptions: _this2.props.filteredOptions,
                     key: opp['_id'],
@@ -45365,7 +45388,6 @@ var Opportunity = function (_Component) {
 	}, {
 		key: 'checkPrereqs',
 		value: function checkPrereqs() {
-			console.log(this.props);
 			if (this.props.prereqsMatch === true) {
 				return _react2.default.createElement(
 					'div',
@@ -45535,7 +45557,44 @@ exports.default = FaCalendarCheckO;
 module.exports = exports['default'];
 
 /***/ }),
-/* 271 */,
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIconBase = __webpack_require__(5);
+
+var _reactIconBase2 = _interopRequireDefault(_reactIconBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FaSearch = function FaSearch(props) {
+    return _react2.default.createElement(
+        _reactIconBase2.default,
+        _extends({ viewBox: '0 0 40 40' }, props),
+        _react2.default.createElement(
+            'g',
+            null,
+            _react2.default.createElement('path', { d: 'm27.2 18.6q0-4.2-2.9-7.1t-7.1-2.9-7 2.9-3 7.1 2.9 7 7.1 3 7.1-3 2.9-7z m11.4 18.5q0 1.2-0.8 2.1t-2 0.8q-1.2 0-2-0.8l-7.7-7.7q-4 2.8-8.9 2.8-3.2 0-6.1-1.3t-5-3.3-3.4-5-1.2-6.1 1.2-6.1 3.4-5.1 5-3.3 6.1-1.2 6.1 1.2 5 3.3 3.4 5.1 1.2 6.1q0 4.9-2.7 8.9l7.6 7.6q0.8 0.9 0.8 2z' })
+        )
+    );
+};
+
+exports.default = FaSearch;
+module.exports = exports['default'];
+
+/***/ }),
 /* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
