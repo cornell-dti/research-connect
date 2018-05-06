@@ -45199,6 +45199,10 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _axios = __webpack_require__(6);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 __webpack_require__(12);
 
 var _reactRouterDom = __webpack_require__(17);
@@ -45313,6 +45317,7 @@ var Opportunity = function (_Component) {
 			var juniorSelected = filteredOptions.yearSelect.Junior;
 			var seniorSelected = filteredOptions.yearSelect.Senior;
 			var yearsAllowed = this.props.yearsAllowed;
+			var searchString = "transnational"; //this.props.searchBar;
 
 			if (froshSelected && yearsAllowed.indexOf("freshman") !== -1 || sophSelected && yearsAllowed.indexOf("sophomore") !== -1 || juniorSelected && yearsAllowed.indexOf("junior") !== -1 || seniorSelected && yearsAllowed.indexOf("senior") !== -1 || !froshSelected && !sophSelected && !juniorSelected && !seniorSelected) {
 				/**
@@ -45322,6 +45327,11 @@ var Opportunity = function (_Component) {
 				var csSelected = filteredOptions.majorSelect.cs;
 				var bioSelected = filteredOptions.majorSelect.biology;
 				var area = this.props.area;
+				_axios2.default.get('api/opportunities/search' + '?search' + searchString).then(function (response) {
+					console.log(response);
+				}).catch(function (error) {
+					console.log(error);
+				});
 				if (csSelected && area.indexOf("Computer Science") !== -1 || bioSelected && area.indexOf("Biology") !== -1 || !csSelected && !bioSelected) {
 
 					var minGPA = filteredOptions.gpaSelect.val;
