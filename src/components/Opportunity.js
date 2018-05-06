@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-
+import axios from 'axios';
 import '../index.css';
-
-
 import {BrowserRouter as Router} from 'react-router-dom'
 
 import OpportunityJSON from './Opportunity.json'
@@ -66,6 +64,7 @@ class Opportunity extends Component {
 		return indexOf.call(this, needle) > -1;
 	};
 
+
 	/**
 	 * takes the filteredOptions passed all the way down from Opportunities.js through the props
 	 * and compare the fileredOptions to the years allowed passed through props by the opportunity list that has all the info about opportunities
@@ -83,6 +82,7 @@ class Opportunity extends Component {
 		let juniorSelected = filteredOptions.yearSelect.Junior;
 		let seniorSelected = filteredOptions.yearSelect.Senior;
 		let yearsAllowed = this.props.yearsAllowed;
+		let searchString = "transnational";//this.props.searchBar;
 
 		if ((froshSelected && yearsAllowed.indexOf("freshman") !== -1) ||
 			(sophSelected && yearsAllowed.indexOf("sophomore") !== -1) ||
@@ -96,6 +96,13 @@ class Opportunity extends Component {
 			let csSelected = filteredOptions.majorSelect.cs;
 			let bioSelected = filteredOptions.majorSelect.biology;
 			let area = this.props.area;
+			axios.get('api/opportunities/search'+ '?search' + searchString)
+				.then((response) => {
+						console.log(response);
+				})
+				.catch(function (error) {
+						console.log(error);
+				});
 			if ((csSelected && area.indexOf("Computer Science") !== -1) ||
 				(bioSelected && area.indexOf("Biology") !== -1) ||
 				(!csSelected && ! bioSelected)) {
@@ -110,7 +117,7 @@ class Opportunity extends Component {
 					}
 
 				}
-				}
+			}
 
 		}
 		return false;
@@ -198,7 +205,7 @@ class Opportunity extends Component {
 				<p>{ this.props.undergradTasks }</p>
 				<p>{ this.props.opens }</p>
 
-				<p>{ this.props.starpate }</p>
+				<p>{ this.props.startdate }</p>
 				<p>{ this.props.minSemesters }</p>
 				<p>{ this.props.minHours }</p>
 				<p>{ this.props.maxHours }</p>
