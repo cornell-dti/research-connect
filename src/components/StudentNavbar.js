@@ -25,6 +25,7 @@ class StudentNavbar extends Component {
         <Link to="opportunities"><img className="logo" src={logo}/></Link>
         <nav>
           <li><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/opportunities') : ""}>Opportunities</a></li>
+          <li><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/editprofile') : ""}>My Profile</a></li>
           <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>

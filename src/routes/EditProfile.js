@@ -8,11 +8,15 @@ import ExternalLink from 'react-icons/lib/fa/external-link-square';
 import Delete from 'react-icons/lib/ti/delete';
 import Check from 'react-icons/lib/fa/check';
 import Add from 'react-icons/lib/md/add-circle';
+import Dropzone from 'react-dropzone';
+import axios from 'axios';
 
 class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          firstName: '',
+          lastName: '',
           year: 'Sophomore',
           major: 'Computer Science',
           gpa: 3.9,
@@ -27,11 +31,56 @@ class EditProfile extends Component {
           invalidMajor: false,
           invalidGPA: false,
           newCourse: "",
-          newSkill: ""
+          newSkill: "",
+          netId: "",
+            resumeId: '',
+            transcriptId: '',
+            resume: null,
+            transcript: null,
+            resumeValid: false
         };
 
+        this.loadInfoFromServer = this.loadInfoFromServer.bind(this);
         this.displayCourses = this.displayCourses.bind(this);
         this.displaySkills = this.displaySkills.bind(this);
+        console.log(this.state.relevantCourses);
+    }
+
+    gradYearToYear(gY){
+        if (gY==2021){return "Freshman"}
+        else if (gY==2020){return "Sophomore"}
+        else if(gY==2019){return "Junior"}
+        else {return "Senior"}
+    }
+
+    loadInfoFromServer(){
+        console.log("Begin loadInfoFromServer")
+        axios.get('/api/undergrads/' + (sessionStorage.getItem('token_id')))
+            .then(res => {
+                var info = res.data[0];
+                this.setState({ firstName: info.firstName });
+                this.setState({ lastName: info.lastName });
+                this.setState({ year: this.gradYearToYear(info.gradYear) });
+                this.setState({ major: info.major })
+                this.setState({ gpa: info.gpa });
+                this.setState({ relevantCourses: info.courses });
+                this.setState({ relevantSkills: info.skills });
+                this.setState({ netId: info.netId });
+                this.setState({ resumeId: info.resumeId });
+                this.setState({ transcriptId: info.transcriptId });
+                console.log(this.state.firstName);
+                console.log(info);
+                if (this.state.firstName == ''){
+                    console.log("Looks like we didn't load it");
+                } else {
+                    console.log("We did load it :D");
+                }
+            });
+    }
+
+    componentDidMount() {
+        this.loadInfoFromServer();
+        console.log("componentDidMount Working");
     }
 
     handleChange(event){
@@ -167,6 +216,105 @@ class EditProfile extends Component {
         return <div className="display-list">{list}</div>;
       }
     }
+
+    viewResume = (e) => {
+        console.log("We are now viewing the resume");
+        e.preventDefault();
+        window.location.href = '/api/doc/' + this.state.resumeId;
+    }
+
+    viewTranscript = (e) => {
+        console.log("We are now viewing the transcript");
+        e.preventDefault();
+        window.location.href = '/api/doc/' + this.state.transcriptId;
+    }
+
+    onDropResume = acceptedFiles => {
+        acceptedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                var fileAsBinaryString = reader.result;
+                var encodedData = window.btoa(fileAsBinaryString);
+                // do whatever you want with the file content
+                this.setState({resume: file})
+                this.setState({resumeValid: true})
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+
+            reader.readAsBinaryString(file);
+        });
+
+
+    }
+
+    onDropTranscript = acceptedFiles => {
+        acceptedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                var fileAsBinaryString = reader.result;
+                var encodedData = window.btoa(fileAsBinaryString);
+                // do whatever you want with the file content
+                this.setState({transcript: file})
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+
+            reader.readAsBinaryString(file);
+        });
+
+    }
+
+    onClick = (e) => {
+        console.log("Is this working?");
+        e.preventDefault();
+        const {firstName,
+            lastName,
+            year,
+            major,
+            gpa,
+            relevantCourses,
+            relevantSkills,
+            editYear,
+            editMajor,
+            editGPA,
+            editCourses,
+            editSkills,
+            invalidYear,
+            invalidMajor,
+            invalidGPA,
+            newCourse,
+            newSkill,
+            netId,
+            resumeId,
+            transcriptId,
+            resume,
+            transcript,
+            resumeValid
+        } = this.state;
+        axios.put('/api/undergrads/' + this.state.netId, {year,major,gpa,relevantCourses,relevantSkills})
+            .then((result) => {
+                console.log("undergrad updated, result:");
+                console.log(result);
+                //access the results here....
+            });
+
+        axios.post('/api/doc',{netId,resume})
+            .then((result) => {
+                console.log("Resume updated, result:");
+                console.log(result);
+                //access the results here....
+            });
+
+        axios.post('/api/doc',{netId,transcript})
+            .then((result) => {
+                console.log("Resume updated, result:");
+                console.log(result);
+                //access the results here....
+            });
+
+    };
+
     render() {
         return (
             <div>
@@ -174,9 +322,8 @@ class EditProfile extends Component {
               <div className="profile-page-wrapper container">
               <div className="row">
               <div className="title-box-prof column column-50 column-offset-25">
-               <h4>Rachel Nash</h4>
-
-               <h6>rsn55@cornell.edu</h6>
+                  <h4>{this.state.firstName + " " + this.state.lastName}</h4>
+                  <h6>{this.state.netId + "@cornell.edu"}</h6>
                {this.state.editYear ?
                  <div className="input-div">
                  <input className="year edit-input" type="text" name="year" id="year"
@@ -215,17 +362,27 @@ class EditProfile extends Component {
               <div className="row qual-row trans-resume">
                 <h5>Resume:</h5>
                 <input type="button" className="button viewLink"
-                       value="View"/>
-                <input type="button" className="button uploadLink"
-                              value="Upload New"/>
+                       value="View" onClick={this.viewResume}/>
+                  <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 0 0 25%', border:!this.state.resumeValid && this.state.triedSubmitting ?'3px #b31b1b solid':'1px dashed black'}} onDrop={this.onDropResume.bind(this)}>
+                      <p>Click/drag to update resume</p>
+
+                  </Dropzone>
+                  <div className="uploaded-message">
+                      {this.state.resume!=null ? <p>Uploaded: {this.state.resume.name}</p>:""}
+                  </div>
                   </div>
                 <hr/>
                 <div className="row qual-row trans-resume">
                 <h5>Transcript:</h5>
                 <input type="button" className="button viewLink"
-                       value="View"/>
-                <input type="button" className="button uploadLink"
-                              value="Upload New"/>
+                       value="View" onClick={this.viewTranscript}/>
+                    <Dropzone className="edit-drop" style={{position: 'relative',background: '#ededed',padding: '10px', width:'50%', margin: '0 25%', border:'1px dashed black'}} onDrop={this.onDropTranscript.bind(this)}>
+                        <p>Click/drag to update transcript</p>
+
+                    </Dropzone>
+                    <div className="uploaded-message">
+                        {this.state.transcript!=null?  <p >Uploaded: {this.state.transcript.name}</p>:""}
+                    </div>
                   </div>
                 <hr/>
                 <div className="row qual-row">
@@ -274,9 +431,9 @@ class EditProfile extends Component {
                   </div>
               </div>
               </div>
+                  <button onClick={this.onClick}>Submit</button>
               </div>
             <Footer/>
-
             </div>
         );
     }

@@ -1,35 +1,19 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
 
-
-//professors can get the information on any student
-app.get('/la/:netId', function (req, res) {
-    verify(req.query.tokenId, function (profNetId) {
-        if (profNetId == null){
-            return res.status(401).send({});
-        }
-        labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
-            if (labAdmin === null) return res.status(403).send({});
-            undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
-                if (err) {
-                    return err;
-                }
-                debug(undergrad.netId);
-                res.send(undergrad);
-            });
-        });
-    });
-});
-
+let {verify, undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken} = require('../common.js');
 
 app.get('/:tokenId', function (req, res) {
-    verify(req.params.tokenId, function (netId) {
-        undergradModel.find({netId: netId}, function (err, undergrad) {
+    verify(req.params.tokenId, function(decrypted){
+
+        undergradModel.find({netId: decrypted}, function (err, undergrad) {
             if (err) {
+                console.log("Not found");
                 return err;
             }
+            console.log("Found");
             debug(undergrad.netId);
+
             res.send(undergrad);
         });
     });
@@ -44,21 +28,19 @@ app.post('/', function (req, res) {
     console.log(data.gradYear);
     console.log(data.major);
     console.log(data.GPA);
-    console.log(data.netId);
+    console.log(data.netid);
     console.log(data.courses);
     console.log("This be the resume");
-    let undergrad = new undergradModel({
+    var undergrad = new undergradModel({
 
         firstName: data.firstName,
         lastName: data.lastName,
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netId,
-        email: data.email,
+        netId: data.netid,
         courses: data.courses
     });
-
     debug(undergrad);
     undergrad.save(function (err) {
         if (err) {
@@ -75,9 +57,12 @@ app.post('/', function (req, res) {
     });
 });
 
-app.put('/:id', function (req, res) {
-    let id = req.params.id;
-    undergradModel.findById(id, function (err, undergrad) {
+app.put('/:netId', function (req, res) {
+    console.log("We have reached the backend");
+    console.log(req.body);
+    var data = req.body;
+    let nId = req.params.netId;
+    undergradModel.find({netId:nId}, function (err, undergrad) {
         if (err) {
             res.status(500).send(err);
         }
@@ -85,20 +70,23 @@ app.put('/:id', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            undergrad.firstName = firstName || undergrad.firstName;
-            undergrad.lastName = req.body.lastName || undergrad.lastName;
-            undergrad.gradYear = req.body.gradYear || undergrad.gradYear;
-            undergrad.major = req.body.major || undergrad.major;
-            undergrad.gpa = req.body.gpa || undergrad.gpa;
-            undergrad.netId = req.body.netId || undergrad.netId;
-            undergrad.resume = req.body.resume || undergrad.resume;
 
+            console.log(undergrad);
+
+            undergrad[0].gradYear = data.year || undergrad[0].gradYear;
+            undergrad[0].major = data.major || undergrad[0].major;
+            undergrad[0].gpa = data.gpa || undergrad[0].gpa;
+            undergrad[0].courses = data.relevantCourses || undergrad[0].courses;
+            undergrad[0].skills = data.relevantSkills || undergrad[0].skills;
+            undergrad[0].resumeId = data.resumeId || undergrad[0].resumeId;
+            undergrad[0].transcriptId = data.transcriptId || undergrad[0].transcriptId;
 
             // Save the updated document back to the database
-            undergrad.save((err, todo) => {
+            undergrad[0].save((err, todo) => {
                 if (err) {
                     res.status(500).send(err)
                 }
+                console.log("success!");
                 res.status(200).send(todo);
             });
         }
