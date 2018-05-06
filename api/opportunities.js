@@ -406,18 +406,16 @@ app.put('/:id', function (req, res) {
 });
 app.get('/search', function(req, res){
 
-
-
     opportunityModel.find({$text:{$search:req.query.search}}, function(err,search){
         if(err){
             console.log(err);
         }
         else{
-            if(search==null){
+            if(search === null){
                 res.send("Search not found :(");
             }
             console.log(search);
-
+            res.send(search);
         }
     });
 
