@@ -6,10 +6,11 @@ import Navbar from '../components/StudentNavbar'
 import Footer from '../components/Footer';
 import logo from '../images/vectorlogo.png';
 import OpportunityBox from '../components/OpportunityBox';
-import YearSelect from '../components/YearSelect'
-import MajorSelect from '../components/MajorSelect'
-import GPASelect from '../components/GPASelect'
-import StartDate from '../components/StartDate'
+import YearSelect from '../components/YearSelect';
+import MajorSelect from '../components/MajorSelect';
+import GPASelect from '../components/GPASelect';
+import StartDate from '../components/StartDate';
+import SearchIcon from 'react-icons/lib/fa/search';
 
 
 
@@ -29,7 +30,8 @@ class Opportunities extends Component {
             },
             startDate: {
 
-            }
+            },
+            searchBar: ""
         };
     }
 
@@ -63,6 +65,10 @@ class Opportunities extends Component {
     handleUpdateDate(majorObj) {
         this.setState({startDate: majorObj});
     }
+    handleUpdateSearch(e) {
+        this.setState({searchBar: e.target.value});
+        console.log(this.state.searchBar);
+    }
 
 
 
@@ -74,13 +80,14 @@ class Opportunities extends Component {
 
 				<div className="opp-container">
 
-                    {/*<div className="row">*/}
-                    {/*<div className="column column-100 search-div-container">*/}
-                    {/*<div className="search-div">*/}
-                    {/*<input type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
+                    <div className="row">
+                    <div className="column column-100 search-div-container">
+                    <div className="search-div">
+                    <input onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar} type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>
+
+                    </div>
+                    </div>
+                    </div>
 
 					<div className="row">
 						<div className="column column-20">
@@ -88,11 +95,13 @@ class Opportunities extends Component {
 								<h3>Filters</h3>
 								<hr />
 
-                                <label htmlFor="depField">Area of Interest</label>
-                                <MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
-                                <hr />
+                <label htmlFor="depField">Area of Interest</label>
+                <MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
+                <br/>
+                <hr />
 								<label htmlFor="yearField">School Year</label>
 								<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
+                <br/>
 								<hr />
 								<label htmlFor="gpaField">Your GPA</label>
 								<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>

@@ -404,7 +404,25 @@ app.put('/:id', function (req, res) {
         }
     });
 });
+app.get('/search', function(req, res){
 
+
+
+    opportunityModel.find({$text:{$search:req.query.search}}, function(err,search){
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(search==null){
+                res.send("Search not found :(");
+            }
+            console.log(search);
+
+        }
+    });
+
+
+});
 app.delete('/:id', function (req, res) {
     let id = req.params.id;
 

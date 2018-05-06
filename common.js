@@ -210,6 +210,7 @@ const opportunitySchema = new Schema({
     fundOption:{type:Number, min:0, default:0},
     labName: {type: String, required: false}
 });
+opportunitySchema.index({'$**': 'text'});
 opportunitySchema.pre('validate', function (next) {
     if (this.maxHours < this.minHours) {
         next(new Error('Min hours must be greater than or equal to max hours.'));
