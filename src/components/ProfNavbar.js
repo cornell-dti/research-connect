@@ -21,10 +21,14 @@ class ProfNavbar extends Component {
   render() {
 		return (
       <div className="header-all">
-        <Link to="professorView"><img className="logo" src={logo}/></Link>
+			<div className="logo-div">
+				<a href={window.location.href.toString().replace(/\/[^\/]*$/, '/')}><img className="logo" src={logo}/></a>
+				<p className="partnership">in partnership with</p>
+				<a href="http://curb.cornell.edu/" target="_blank"><img className="logo" src={curblogo}/></a>
+			</div>
         <nav>
-          <li><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/newopp')}>Post New Opportunity</a></li>
-            <li><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/professorView')}>View Applications</a></li>
+          <li className={this.props.current=="newopp"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/newopp')}>Post New Opportunity</a></li>
+            <li className={this.props.current=="professorView"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/professorView')}>View Applications</a></li>
           <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>

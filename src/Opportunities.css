@@ -32,8 +32,8 @@
   background-color: #e8e8e8;
 
 }
-.filter-box .opp-area-filter:focus{
-  color: black;
+.filter-box .opp-filter-select:focus{
+  border-color: rgb(209, 209, 209);
 }
 
 body {

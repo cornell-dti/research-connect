@@ -24,13 +24,15 @@ class StudentNavbar extends Component {
 		return (
       <div className="header-all">
 				<div className="logo-div">
-        <Link to="opportunities"><img className="logo" src={logo}/></Link>
-				<p className="partnership">in partnership with</p>
-				<a href="http://curb.cornell.edu/"><img className="logo" src={curblogo}/></a>
+					<a href={window.location.href.toString().replace(/\/[^\/]*$/, '/')}><img className="logo" src={logo}/></a>
+					<p className="partnership">in partnership with</p>
+					<a href="http://curb.cornell.edu/" target="_blank"><img className="logo" src={curblogo}/></a>
 				</div>
         <nav>
-          <li><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/opportunities') : ""}>Opportunities</a></li>
-          <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
+          <li className={this.props.current=="opportunities"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities')}>Opportunities</a></li>
+					<li className={this.props.current=="editprofile"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/editprofile')}>My Profile</a></li>
+
+				  <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>
     );
