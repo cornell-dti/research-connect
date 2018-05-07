@@ -17,6 +17,19 @@
 .logo{
   height: 50px;
 }
+.logo:hover{
+  opacity: .7;
+}
+.logo-div{
+  display: flex;
+}
+.partnership{
+  color: #2d2f91;
+  font-size: 13px;
+  margin: 0px 10px;
+  padding-top: 25px;
+
+}
 
 .header-all h2{
 	font-family: 'Roboto', sans-serif;
