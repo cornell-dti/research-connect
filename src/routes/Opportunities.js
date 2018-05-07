@@ -103,54 +103,51 @@ class Opportunities extends Component {
 
 				<Navbar current={"opportunities"}/>
 
-				<div className="opp-container">
+				<div className="opp-container row">
 
-                    <div className="row">
-                    <div className="row search-div-container">
+          <div className="column column-20">
+            <div className="filter-box">
+              <h4>Filters</h4>
+              <hr />
 
-                    <input onFocus={this.onFocus.bind(this)}  onBlur={this.onBlur.bind(this)} className="column column-90 search-bar" onKeyPress={this.handleKeyPress.bind(this)} onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar} type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>
-
-                    <div className="column column-10 delete-div">
-                      {this.state.searchBar!=""?   <DeleteIcon onClick={this.clearSearch.bind(this)} className="clear-icon" size={30} />
-                      :""}
-                    </div>
-
-                    </div>
-                    </div>
-
-					<div className="row">
-						<div className="column column-20">
-							<div className="filter-box">
-								<h3>Filters</h3>
-								<hr />
-
-                <label htmlFor="depField">Area of Interest</label>
-                <MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
-                <br/>
-                <hr />
-								<label htmlFor="yearField">School Year</label>
-								<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-                <br/>
-								<hr />
-								<label htmlFor="gpaField">Your GPA</label>
-								<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
-								<hr />
-								<label htmlFor="datesField">Start Date</label>
-								<StartDate updateDate= {this.handleUpdateDate.bind(this)}/>
+              <label htmlFor="depField">Area of Interest</label>
+              <MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />
+              <br/>
+              <hr />
+              <label htmlFor="yearField">School Year</label>
+              <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
+              <br/>
+              <hr />
+              <label htmlFor="gpaField">Your GPA</label>
+              <GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
+              <hr />
+              <label htmlFor="datesField">Start Date</label>
+              <StartDate updateDate= {this.handleUpdateDate.bind(this)}/>
 
 
-							</div>
-						</div>
+            </div>
+          </div>
+          <div className="column column-80">
+            <div className="row search-div-container">
 
-						<div className="column column-70">
-							<div className="opp-list-container">
-								<OpportunityBox filteredOptions = {this.state}
+              <input onFocus={this.onFocus.bind(this)}  onBlur={this.onBlur.bind(this)} className="column column-70 search-bar" onKeyPress={this.handleKeyPress.bind(this)} onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar} type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>
+
+              <div className="column column-10 delete-div">
+                {this.state.searchBar!=""?   <DeleteIcon onClick={this.clearSearch.bind(this)} className="clear-icon" size={30} />
+                :""}
+                </div>
+            </div>
+					  <div className="row">
+						      <div className="column column-70">
+							           <div className="opp-list-container">
+								                 <OpportunityBox filteredOptions = {this.state}
 												url='opportunities' />
-							</div>
-						</div>
-					</div>
+							           </div>
+						     </div>
+					 </div>
 
-				</div>
+				 </div>
+         </div>
 				<Footer/>
 			</div>
 

@@ -5,19 +5,21 @@ import '../OpportunityList.css'
 class OpportunityList extends Component {
     constructor(props) {
     super(props);
-    this.state = {
-        oppCount: 0
-    };
 	 }
     countNodes(nodes){
       var tempCount = 0;
+      var countString = "";
       for (var k in nodes){
         if (nodes[k]!=null){
           tempCount++;
         }
       }
-      return(tempCount);
-      console.log(tempCount);
+      if (tempCount==1){
+        countString = "There is 1 result"
+      }else{
+        countString = "There are " + tempCount.toString() +" results"
+      }
+      return(countString);
     }
 
 
@@ -55,20 +57,23 @@ class OpportunityList extends Component {
           }
         }
 
-        if ((froshSelected && yearsAllowed.indexOf("freshman") == -1) ||
-          (sophSelected && yearsAllowed.indexOf("sophomore") == -1) ||
-          (juniorSelected && yearsAllowed.indexOf("junior") == -1) ||
-          (seniorSelected && yearsAllowed.indexOf("senior") == -1))  {
+        if (!((froshSelected && yearsAllowed.indexOf("freshman") != -1) ||
+          (sophSelected && yearsAllowed.indexOf("sophomore") != -1) ||
+          (juniorSelected && yearsAllowed.indexOf("junior") != -1) ||
+          (seniorSelected && yearsAllowed.indexOf("senior") != -1) ||
+          (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)))  {
             willShow = false;
           }
           /**
            * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
            * and also checks to see if this opportunity is in the cs area.
            * */
-
-          if ((csSelected && opp.areas.indexOf("Computer Science") == -1) ||
-            (bioSelected && opp.areas.indexOf("Biology") == -1)) {
+        
+          if (!((csSelected && opp.areas.indexOf("Computer Science") != -1) ||
+            (bioSelected && opp.areas.indexOf("Biology") != -1) ||
+            (!csSelected && !bioSelected))) {
               willShow = false;
+
           }
 
           if ((minGPA!=null)&&(minGPA < opp.minGPA)){
@@ -113,9 +118,11 @@ class OpportunityList extends Component {
         });
         let nodeCount = this.countNodes(oppNodes);
         return (
-          <div >
-          {nodeCount > 0 ? oppNodes
-          : <div className="node-list-div"> <p className="no-results">No results found. Try a different search.</p></div>}
+          <div>
+            <div className="node-list-div">
+            <p>{nodeCount} matching your search criteria.</p>
+              </div>
+              {oppNodes}
           </div>
 
         )

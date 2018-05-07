@@ -17,7 +17,10 @@
 .logo{
   height: 50px;
 }
-.logo:hover{
+.CURBlogo{
+  height: 50px;
+}
+.logo:hover,.CURBlogo:hover{
   opacity: .7;
 }
 .logo-div{
@@ -66,8 +69,7 @@
 }
 
 .header-all .current-page {
-  background-color: #e8e8e8;
-
+  font-weight: bold;
   height: 76px;
 /*  border-radius: 5px;*/
 }

@@ -12,7 +12,7 @@ class MajorSelect extends React.Component {
 
 	handleChange(e) {
 		this.setState({majorSelect: {
-			"computer science" : this.cs.checked,
+			"cs" : this.cs.checked,
 			"biology" : this.biology.checked,
 		}}, function() {
 			this.props.updateMajor(this.state.majorSelect);

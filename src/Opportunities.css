@@ -21,10 +21,13 @@
   background-position: 1% 50%;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  margin-left: 20px;
+  margin-top: 10px;
 
 }
 .row .search-div-container .delete-div{
   height: 50px;
+  margin-top: 10px;
   background-color: #f6f6f6;
   border-radius: 7px;
   border: solid 1px #979797;
@@ -35,6 +38,9 @@
   padding-top: 9px;
   padding-right: 5px;
 
+}
+.opp-container .filter-box h3{
+  letter-spacing: 2px;
 }
 
 

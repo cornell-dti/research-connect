@@ -26,7 +26,7 @@ class StudentNavbar extends Component {
 				<div className="logo-div">
 					<a href={window.location.href.toString().replace(/\/[^\/]*$/, '/')}><img className="logo" src={logo}/></a>
 					<p className="partnership">in partnership with</p>
-					<a href="http://curb.cornell.edu/" target="_blank"><img className="logo" src={curblogo}/></a>
+					<a href="http://curb.cornell.edu/" target="_blank"><img className="CURBlogo" src={curblogo}/></a>
 				</div>
         <nav>
           <li className={this.props.current=="opportunities"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities')}>Opportunities</a></li>

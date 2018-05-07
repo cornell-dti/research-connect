@@ -1,4 +1,15 @@
 
+.no-result-div{
+  margin-top: 25px;
+  margin-left: 15px;
+}
 .node-list-div{
-  margin-top: 30px;
+
+}
+.node-list-div p{
+  margin-bottom: 0px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 300;
+
 }
