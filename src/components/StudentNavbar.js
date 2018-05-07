@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../Navbar.css';
 import logo from '../images/wordlogo.png';
+import curblogo from '../images/CURB.png';
 import { Link } from 'react-router-dom';
 
 class StudentNavbar extends Component {
@@ -22,11 +23,16 @@ class StudentNavbar extends Component {
   render() {
 		return (
       <div className="header-all">
-        <Link to="opportunities"><img className="logo" src={logo}/></Link>
+				<div className="logo-div">
+					<a href={window.location.href.toString().replace(/\/[^\/]*$/, '/')}><img className="logo" src={logo}/></a>
+					<p className="partnership">in partnership with</p>
+					<a href="http://curb.cornell.edu/" target="_blank"><img className="logo" src={curblogo}/></a>
+				</div>
         <nav>
-          <li  className={this.props.current=="opportunities"? "current-page":""}><a href={this.props.current=="opportunities"?"#":"/opportunities"}    ><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/opportunities') : ""}>Opportunities</a></li>
-          <li className={this.props.current=="editprofile"? "current-page":""}><a href={this.props.current=="editprofile"?"#":"/editprofile"}><a href={window.location.href.toString().slice(-1) === "/" ? window.location.href.toString().substring(0, window.location.href.toString().length).replace(/\/[^\/]*$/, '/editprofile') : ""}>My Profile</a></li>
-          <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
+          <li className={this.props.current=="opportunities"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities')}>Opportunities</a></li>
+					<li className={this.props.current=="editprofile"? "current-page":""}><a href={window.location.href.toString().replace(/\/[^\/]*$/, '/editprofile')}>My Profile</a></li>
+
+				  <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
         </nav>
       </div>
     );
