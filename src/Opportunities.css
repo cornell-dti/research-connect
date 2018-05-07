@@ -1,37 +1,52 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic');
 
-.search-div-container {
+.row .search-div-container {
   padding: 0 !important;
 }
-
-.search-div {
-  text-align: center;
-  width: 100%;
+.opp-container .row{
+  margin-left: 0rem;
 }
-
-.search-div input {
-  width: 100%;
+.row .search-div-container input {
   margin-bottom: inherit;
   height: 50px;
   font-size: 15px;
-  background-color: white;
   border-radius: 7px;
   border: solid 1px #979797;
+  border-right-style: none;
   color: black;
   background:  url('../src/images/search-icon.png') no-repeat;
   /* source: http://www.clker.com/clipart-search-icon-1.html */
   padding-left:40px;
   background-size: 18px 18px;
   background-position: 1% 50%;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 
+}
+.row .search-div-container .delete-div{
+  height: 50px;
+  background-color: #f6f6f6;
+  border-radius: 7px;
+  border: solid 1px #979797;
+  border-left-style: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  text-align: right;
+  padding-top: 9px;
+  padding-right: 5px;
 
 }
 
-.search-div input:focus {
-  border: solid #979797 1px;
-  background-color: #e8e8e8;
 
+.row .delete-div .clear-icon{
+  opacity: .7;
+  cursor: pointer;
 }
+.row .delete-div .clear-icon:hover{
+  opacity: .2;
+}
+
+
 .filter-box .opp-filter-select:focus{
   border-color: rgb(209, 209, 209);
 }
@@ -125,9 +140,7 @@ h4{
 .filter-box select{
   margin-bottom: 0px;
 }
-.opp-container .row .column, .professor-view-container .row .column {
-  padding-top: 0px;
-}
+
 
 .row h4{
   letter-spacing: 1px;
@@ -157,4 +170,7 @@ hr {
 .row h6{
   padding-left: 0px;
   margin-left: 0px;
+}
+.row .opp-box-row{
+  padding-left: 0px;
 }

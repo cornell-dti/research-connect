@@ -10,7 +10,7 @@ import YearSelect from '../components/YearSelect';
 import MajorSelect from '../components/MajorSelect';
 import GPASelect from '../components/GPASelect';
 import StartDate from '../components/StartDate';
-import SearchIcon from 'react-icons/lib/fa/search';
+import DeleteIcon from 'react-icons/lib/ti/delete';
 
 
 
@@ -19,19 +19,14 @@ class Opportunities extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            yearSelect: {
-
-            },
-            gpaSelect: {
-
-            },
-            majorSelect: {
-
-            },
-            startDate: {
-
-            },
-            searchBar: ""
+            yearSelect: {},
+            gpaSelect: {},
+            majorSelect: {},
+            startDate: {},
+            searchBar: "",
+            matchingSearches: [],
+            searching: false,
+            clickedEnter: false
         };
     }
 
@@ -67,9 +62,39 @@ class Opportunities extends Component {
     }
     handleUpdateSearch(e) {
         this.setState({searchBar: e.target.value});
-        console.log(this.state.searchBar);
+        if (e.target.value==""){
+          this.setState({matchingSearches: []});
+          this.setState({clickedEnter:false});
+        }
     }
-
+    handleKeyPress(e){
+      if (e.key === 'Enter') {
+        this.setState({clickedEnter:true});
+        axios.get('/api/opportunities/search'+ '?search=' + this.state.searchBar)
+          .then((response) => {
+              var matching = [];
+              for (var i = 0; i<response.data.length; i++){
+                matching.push(response.data[i]._id);
+              }
+              this.setState({matchingSearches: matching});
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+      }
+    }
+    onFocus(){
+      this.setState({searching:true});
+    }
+    onBlur(){
+      this.setState({searching:false})
+    }
+    clearSearch(){
+      this.setState({searching:false});
+      this.setState({searchBar: ""});
+      this.setState({matchingSearches: []});
+      this.setState({clickedEnter:false});
+    }
 
 
     render() {
@@ -81,11 +106,15 @@ class Opportunities extends Component {
 				<div className="opp-container">
 
                     <div className="row">
-                    <div className="column column-100 search-div-container">
-                    <div className="search-div">
-                    <input onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar} type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>
+                    <div className="row search-div-container">
 
+                    <input onFocus={this.onFocus.bind(this)}  onBlur={this.onBlur.bind(this)} className="column column-90 search-bar" onKeyPress={this.handleKeyPress.bind(this)} onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar} type="text" name="search" placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"/>
+
+                    <div className="column column-10 delete-div">
+                      {this.state.searchBar!=""?   <DeleteIcon onClick={this.clearSearch.bind(this)} className="clear-icon" size={30} />
+                      :""}
                     </div>
+
                     </div>
                     </div>
 

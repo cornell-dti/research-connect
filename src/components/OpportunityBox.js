@@ -5,9 +5,19 @@ import OpportunityList from './OpportunityList';
 class OpportunityBox extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { data: [] };
+		this.state = {
+			data: [],
+			oppCount: 0
+		};
 		this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
+
 	}
+	countOpps(val){
+    this.setState({
+      oppCount: val
+    })
+		console.log(val);
+  }
 
 	loadOpportunitiesFromServer() {
 		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId'))
@@ -23,7 +33,7 @@ class OpportunityBox extends Component {
 
 	render() {
 		return (
-			<OpportunityList filteredOptions ={this.props.filteredOptions } data={ this.state.data } />
+			<OpportunityList countOpps={this.countOpps.bind(this)} filteredOptions ={this.props.filteredOptions } data={ this.state.data } />
 		)
 	}
 }

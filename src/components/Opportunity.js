@@ -65,63 +65,6 @@ class Opportunity extends Component {
 	};
 
 
-	/**
-	 * takes the filteredOptions passed all the way down from Opportunities.js through the props
-	 * and compare the fileredOptions to the years allowed passed through props by the opportunity list that has all the info about opportunities
-	 * @return {boolean} based on the filter paramterse, whether or not each opportunity should show
-	 */
-	shouldShow() {
-		const filteredOptions = this.props.filteredOptions;
-		/**
-		 * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
-		 so that value must either be true or false) and if this row has freshman in its array of years allowed, then
-		 we return true and should show this opportunity
-		 */
-		let froshSelected = filteredOptions.yearSelect.Freshman;
-		let sophSelected = filteredOptions.yearSelect.Sophomore;
-		let juniorSelected = filteredOptions.yearSelect.Junior;
-		let seniorSelected = filteredOptions.yearSelect.Senior;
-		let yearsAllowed = this.props.yearsAllowed;
-		let searchString = "transnational";//this.props.searchBar;
-
-		if ((froshSelected && yearsAllowed.indexOf("freshman") !== -1) ||
-			(sophSelected && yearsAllowed.indexOf("sophomore") !== -1) ||
-			(juniorSelected && yearsAllowed.indexOf("junior") !== -1) ||
-			(seniorSelected && yearsAllowed.indexOf("senior") !== -1) ||
-			(!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
-			/**
-			 * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-			 * and also checks to see if this opportunity is in the cs area.
-			 * */
-			let csSelected = filteredOptions.majorSelect.cs;
-			let bioSelected = filteredOptions.majorSelect.biology;
-			let area = this.props.area;
-			axios.get('/api/opportunities/search'+ '?search=' + searchString)
-				.then((response) => {
-						console.log(response);
-				})
-				.catch(function (error) {
-						console.log(error);
-				});
-			if ((csSelected && area.indexOf("Computer Science") !== -1) ||
-				(bioSelected && area.indexOf("Biology") !== -1) ||
-				(!csSelected && ! bioSelected)) {
-
-				let minGPA = filteredOptions.gpaSelect.val;
-				let season = filteredOptions.startDate.season;
-				let year = filteredOptions.startDate.year;
-
-				if ((minGPA==null)||(minGPA >= this.props.minGPA)){
-					if ((season==null)|| ((season==this.props.startSeason) && (year==this.props.startYear))){
-						return true;
-					}
-
-				}
-			}
-
-		}
-		return false;
-	}
 
 	clickRow(rowObj) {
 		// this.props.history.push({pathname: 'opportunity/' + this.props.opId});
@@ -178,7 +121,7 @@ class Opportunity extends Component {
 
 	render() {
 		return (
-			<div className="application-box" onClick={this.clickRow.bind(this)} style={{display: this.shouldShow() ? "" : "none"}}>
+			<div className="application-box" onClick={this.clickRow.bind(this)}>
 			<div className="row opp-box-row">
  				<div className="column column-80">
 				<h4>{ this.props.title }</h4>
@@ -191,30 +134,9 @@ class Opportunity extends Component {
 				</div>
  			</div>
 
-				{/*  <p>{ this.props.labName }</p> */}
-
 				{ this.convertDescription(this.props.projectDescription) }
 
 
-
-				{/*
-				<p>{ this.props.area }</p>
-				<p>{ this.props.pi }</p>
-				<p>{ this.props.supervisor }</p>
-
-				<p>{ this.props.undergradTasks }</p>
-				<p>{ this.props.opens }</p>
-
-				<p>{ this.props.startdate }</p>
-				<p>{ this.props.minSemesters }</p>
-				<p>{ this.props.minHours }</p>
-				<p>{ this.props.maxHours }</p>
-				<p>{ this.props.qualifications }</p>
-				<p>{ this.props.minGPA }</p>
-				<p>{ this.props.requiredClasses }</p>
-				/*<p>{ this.props.questions }</p>
-				<p>{ this.props.yearsAllowed }</p>
-				<p>{ this.props.spots }</p> */ }
 			</div>
 		)
 	}
