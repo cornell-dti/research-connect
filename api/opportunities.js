@@ -333,7 +333,7 @@ app.put('/:id', function (req, res) {
 });
 app.get('/search', function(req, res){
 
-    opportunityModel.find({$text:{$search:req.query.search}}, function(err,search){
+    opportunityModel.find({$text:{$search:req.query.search}}, '_id', function(err,search){
         if(err){
             console.log(err);
             res.send(err);

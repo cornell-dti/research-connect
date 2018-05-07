@@ -45327,7 +45327,7 @@ var Opportunity = function (_Component) {
 				var csSelected = filteredOptions.majorSelect.cs;
 				var bioSelected = filteredOptions.majorSelect.biology;
 				var area = this.props.area;
-				_axios2.default.get('api/opportunities/search' + '?search' + searchString).then(function (response) {
+				_axios2.default.get('/api/opportunities/search' + '?search=' + searchString).then(function (response) {
 					console.log(response);
 				}).catch(function (error) {
 					console.log(error);

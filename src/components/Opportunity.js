@@ -96,7 +96,7 @@ class Opportunity extends Component {
 			let csSelected = filteredOptions.majorSelect.cs;
 			let bioSelected = filteredOptions.majorSelect.biology;
 			let area = this.props.area;
-			axios.get('api/opportunities/search'+ '?search' + searchString)
+			axios.get('/api/opportunities/search'+ '?search=' + searchString)
 				.then((response) => {
 						console.log(response);
 				})
