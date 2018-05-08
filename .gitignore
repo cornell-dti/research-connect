@@ -1,8 +1,5 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
-bundle.js
-src/docs/bundle.js
-
 # dependencies
 node_modules
 src/node_modules
