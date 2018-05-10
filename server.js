@@ -72,8 +72,6 @@ const applicationRoute = require('./api/applications');
 const labRoute = require('./api/labs');
 const docsRoute = require('./api/docs');
 
-app.use(express.static("./src/docs"));
-app.use("/app*", express.static("./src/docs"));
 
 app.use('/api/', index);
 app.use('/api/labAdmins', labAdminsRoute);
@@ -89,6 +87,8 @@ app.use('/api/docs', docsRoute);
 // });
 
 app.use('/api', router);
+app.use(express.static("./src/docs"));
+app.use("/*", express.static("./src/docs"));
 
 /**Begin ENDPOINTS */
 
