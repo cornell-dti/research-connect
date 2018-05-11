@@ -86,6 +86,8 @@ app.use('/api/docs', docsRoute);
 //     res.json({message: 'API Initialized!'});
 // });
 
+
+
 app.use('/api', router);
 app.use(express.static("./src/docs"));
 app.use("/*", express.static("./src/docs"));
