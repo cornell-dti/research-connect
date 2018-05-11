@@ -77525,7 +77525,7 @@ var ApplicationPage = function (_Component) {
 							_react2.default.createElement(_longArrowLeft2.default, { className: 'black-arrow' }),
 							_react2.default.createElement(
 								'a',
-								{ href: window.location.href.toString().replace(/\/[^\/]*$/, '/professorView') },
+								{ href: '/professorView' },
 								'Return to View All Applications'
 							)
 						),
