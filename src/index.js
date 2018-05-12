@@ -30,8 +30,8 @@ ReactDOM.render(
             <Route path = '/doc/:id' component = {Doc} />
             <Route exact path='/editProfile' component = {EditProfile} />
             <Route exact path='/' component = {LandingPage} />
-            <Route path='/' component = {Error} />
+            <Route path='/*' component = {Error} />
         </Switch>
     </BrowserRouter>, document.getElementById('root')
 );
-registerServiceWorker();
+//registerServiceWorker();
