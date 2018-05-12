@@ -76564,7 +76564,7 @@ var StudentRegister = function (_React$Component) {
                     }
                     if (_this.state.resume != null && _this.state.resume.length !== 0) {
                         _axios2.default.post('/api/docs', { netId: netId, resume: resume }).then(function (result) {
-                            if (oneRan) {
+                            if (oneRan || _this.state.transcript == null) {
                                 window.location.replace(baseUrl + "/opportunities");
                             } else {
                                 oneRan = true;

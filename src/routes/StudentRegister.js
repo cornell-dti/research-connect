@@ -180,7 +180,7 @@ class StudentRegister extends React.Component {
                     if (this.state.resume != null && this.state.resume.length !== 0) {
                         axios.post('/api/docs', {netId, resume})
                             .then((result) => {
-                                if (oneRan) {
+                                if (oneRan || this.state.transcript == null) {
                                     window.location.replace(baseUrl + "/opportunities");
                                 }
                                 else {
