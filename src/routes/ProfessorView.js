@@ -51,11 +51,7 @@ class ProfessorView extends Component {
 				  response.data !== 'postdoc' &&
 				  response.data !== 'staffscientist' &&
 				  response.data !== 'pi') {
-                let homeString = "/";
-                if (window.location.toString().includes("app")){
-                    homeString += "app"
-                }
-                window.location.href = homeString;			}
+                window.location.href = "/";			}
 		})
 		.catch(function (error) {
 			console.log(error);

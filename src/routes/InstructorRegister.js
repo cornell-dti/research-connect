@@ -199,7 +199,7 @@ class InstructorRegister extends React.Component {
           })
               .then((result) => {
                   //access the results here....
-                  document.location.href = "professorView"
+                  document.location.href = "/professorView"
               });
         }
     }

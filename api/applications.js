@@ -134,6 +134,7 @@ app.post('/', function (req, res) {
             "status": "received",
             "responses": req.body.responses,
             "timeSubmitted": Date.now(),
+            "id": req.body.netId + Date.now()
         };
         opportunity.applications.push(application);
         opportunity.save(function (err) {

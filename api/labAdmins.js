@@ -99,7 +99,7 @@ app.post('/', function (req, res) {
             } //Handle this error however you see fit
             else {
                 labModel.findById(data.labId, function (error, lab) {
-                    lab.labAdmins = lab.labAdmins.push(data.netId);
+                    lab.labAdmins.push(data.netId);
                     lab.markModified("labAdmins");
                     lab.save((err, todo) => {
                         if (err) {

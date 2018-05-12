@@ -23,6 +23,8 @@ class ApplicationPage extends Component {
     //'netId': 'prk57' // TODO change back to above
 		axios.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
 		.then((response) => {
+			console.log("response.data!");
+			console.log(response.data);
 			for (let opp in response.data) {
 				for (let app in response.data[opp].applications) {
 					let curApp = response.data[opp].applications[app];

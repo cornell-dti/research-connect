@@ -75755,7 +75755,7 @@ var InstructorRegister = function (_React$Component) {
                     pi: pi
                 }).then(function (result) {
                     //access the results here....
-                    document.location.href = "professorView";
+                    document.location.href = "/professorView";
                 });
             }
         };
@@ -77002,11 +77002,7 @@ var ProfessorView = function (_Component) {
 		value: function componentWillMount() {
 			_axios2.default.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57' */).then(function (response) {
 				if (response.data !== 'grad' && response.data !== 'labtech' && response.data !== 'postdoc' && response.data !== 'staffscientist' && response.data !== 'pi') {
-					var homeString = "/";
-					if (window.location.toString().includes("app")) {
-						homeString += "app";
-					}
-					window.location.href = homeString;
+					window.location.href = "/";
 				}
 			}).catch(function (error) {
 				console.log(error);
@@ -77436,6 +77432,8 @@ var ApplicationPage = function (_Component) {
 			//'netId': sessionStorage.getItem('netId')
 			//'netId': 'prk57' // TODO change back to above
 			_axios2.default.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57').then(function (response) {
+				console.log("response.data!");
+				console.log(response.data);
 				for (var opp in response.data) {
 					for (var app in response.data[opp].applications) {
 						var curApp = response.data[opp].applications[app];
