@@ -68,7 +68,7 @@ class Opportunity extends Component {
 
 	clickRow(rowObj) {
 		// this.props.history.push({pathname: 'opportunity/' + this.props.opId});
-		document.location.href = ('opportunity/' + this.props.opId);
+		document.location.href = ('/opportunity/' + this.props.opId);
 	}
 
 	convertDate(dateString) {
