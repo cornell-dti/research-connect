@@ -213,6 +213,7 @@ app.post('/', function (req, res) {
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
     let netId = data.netId;
+    data.questions.push({"coverLetter": "Cover Letter"});
     let opportunity = new opportunityModel({
         creatorNetId: netId,
         labPage: data.labPage,

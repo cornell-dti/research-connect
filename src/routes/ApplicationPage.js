@@ -60,7 +60,7 @@ class ApplicationPage extends Component {
 	resume() {
 		axios.get('/api/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id'))
 		.then((response) => {
-			window.open('/doc/' + response.data.resumeId, '_blank');
+			document.location.href ='/doc/' + response.data.resumeId;
 		});
 		
 	}
