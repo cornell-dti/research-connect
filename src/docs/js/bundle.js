@@ -46431,7 +46431,7 @@ var OpportunityPage = function (_Component) {
                     console.log("submitting form");
                     var opportunityId = opportunity._id;
                     var responses = questionAnswers;
-                    _axios2.default.post('/applications', { opportunityId: opportunityId, netId: netId, responses: responses }).then(function (result) {
+                    _axios2.default.post('/api/applications', { opportunityId: opportunityId, netId: netId, responses: responses }).then(function (result) {
                         console.log(result);
                     });
                 }
@@ -46510,7 +46510,7 @@ var OpportunityPage = function (_Component) {
             }).catch(function (error) {
                 console.log(error);
             });
-            _axios2.default.get('/undergrads/' + sessionStorage.getItem('token_id')).then(function (response) {
+            _axios2.default.get('/api/undergrads/' + sessionStorage.getItem('token_id')).then(function (response) {
                 if (!_this2.isEmpty(response.data)) {
                     _this2.setState({ netId: response.data[0].netId });
                 }

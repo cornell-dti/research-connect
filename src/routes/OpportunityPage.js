@@ -78,7 +78,7 @@ class OpportunityPage extends Component {
               console.log("submitting form");
               var opportunityId = opportunity._id;
               var responses = questionAnswers;
-              axios.post('/applications', {opportunityId, netId, responses})
+              axios.post('/api/applications', {opportunityId, netId, responses})
                   .then((result) => {
                       console.log(result);
                   });
@@ -115,7 +115,7 @@ class OpportunityPage extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        axios.get('/undergrads/' + sessionStorage.getItem('token_id'))
+        axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
              .then((response) => {
               if (!this.isEmpty(response.data)) {
                 this.setState({netId: response.data[0].netId});
