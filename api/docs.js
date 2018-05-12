@@ -40,9 +40,12 @@ function generateId() {
 //Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/', function (req, res) {
     debug('reached');
-    let netId = req.body.netid;
+    let netId = req.body.netId;
     let resume = req.body.resume;
     let docId = generateId();
+    console.log(resume);
+    console.log("req.body below, resume above");
+    console.log(req.body);
     //if there's no resume, so add the trasncript
     if (resume === undefined || resume === null) {
         let transcript = req.body.transcript;
@@ -102,6 +105,8 @@ app.post('/', function (req, res) {
             ContentType: 'text/plain',
             Body: resume
         };
+        console.log("upload params");
+        console.log(uploadParams);
         s3.upload(uploadParams, function (err, data) {
             if (err) {
                 debug("Error", err);
