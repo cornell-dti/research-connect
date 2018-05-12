@@ -29,6 +29,7 @@ app.post('/', function (req, res) {
     console.log(data.major);
     console.log(data.GPA);
     console.log(data.netid);
+    console.log(data.netId);
     console.log(data.courses);
     console.log("This be the resume");
     var undergrad = new undergradModel({
@@ -38,7 +39,7 @@ app.post('/', function (req, res) {
         gradYear: data.gradYear,    //number
         major: data.major,
         gpa: data.GPA,
-        netId: data.netid,
+        netId: data.netId,
         courses: data.courses
     });
     debug(undergrad);
