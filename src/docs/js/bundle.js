@@ -6251,11 +6251,7 @@ var StudentNavbar = function (_Component) {
     key: 'logout',
     value: function logout() {
       sessionStorage.clear();
-      var homeString = "/";
-      if (window.location.toString().includes("app")) {
-        homeString += "app";
-      }
-      window.location.href = homeString;
+      window.location.href = '/';
     }
   }, {
     key: 'render',
@@ -6268,7 +6264,7 @@ var StudentNavbar = function (_Component) {
           { className: 'logo-div' },
           _react2.default.createElement(
             'a',
-            { href: window.location.href.toString().replace(/\/[^\/]*$/, '/') },
+            { href: '/opportunities' },
             _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
           ),
           _react2.default.createElement(
@@ -6290,7 +6286,7 @@ var StudentNavbar = function (_Component) {
             { className: this.props.current == "opportunities" ? "current-page" : "" },
             _react2.default.createElement(
               'a',
-              { href: window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities') },
+              { href: '/opportunities' },
               'Opportunities'
             )
           ),
@@ -6299,7 +6295,7 @@ var StudentNavbar = function (_Component) {
             { className: this.props.current == "editprofile" ? "current-page" : "" },
             _react2.default.createElement(
               'a',
-              { href: window.location.href.toString().replace(/\/[^\/]*$/, '/editprofile') },
+              { href: '/editprofile' },
               'My Profile'
             )
           ),
@@ -6468,7 +6464,7 @@ var ProfNavbar = function (_Component) {
           { className: 'logo-div' },
           _react2.default.createElement(
             'a',
-            { href: window.location.href.toString().replace(/\/[^\/]*$/, '/') },
+            { href: '/' },
             _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
           ),
           _react2.default.createElement(
@@ -6490,7 +6486,7 @@ var ProfNavbar = function (_Component) {
             { className: this.props.current == "newopp" ? "current-page" : "" },
             _react2.default.createElement(
               'a',
-              { href: 'newopp' },
+              { href: '/newopp' },
               'Post New Opportunity'
             )
           ),
@@ -6499,7 +6495,7 @@ var ProfNavbar = function (_Component) {
             { className: this.props.current == "professorView" ? "current-page" : "" },
             _react2.default.createElement(
               'a',
-              { href: 'professorView' },
+              { href: '/professorView' },
               'View Applications'
             )
           ),
@@ -22243,20 +22239,20 @@ _reactDom2.default.render(_react2.default.createElement(
     _react2.default.createElement(
         _reactRouterDom.Switch,
         null,
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/opportunities', component: _Opportunities2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/app/opportunity/:id', component: _OpportunityPage2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/app/application/:id', component: _ApplicationPage2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/newopp', component: _CreateOpportunityForm2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/instructorRegister', component: _InstructorRegister2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/StudentRegister', component: _StudentRegister2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/professorView', component: _ProfessorView2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/app/doc/:id', component: _Doc2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/editProfile', component: _EditProfile2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app', component: _LandingPage2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _Error2.default })
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/opportunities', component: _Opportunities2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/opportunity/:id', component: _OpportunityPage2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/application/:id', component: _ApplicationPage2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/newopp', component: _CreateOpportunityForm2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/instructorRegister', component: _InstructorRegister2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/StudentRegister', component: _StudentRegister2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/professorView', component: _ProfessorView2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/doc/:id', component: _Doc2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/editProfile', component: _EditProfile2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _LandingPage2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/*', component: _Error2.default })
     )
 ), document.getElementById('root'));
-(0, _registerServiceWorker2.default)();
+//registerServiceWorker();
 
 /***/ }),
 /* 208 */
@@ -41051,11 +41047,7 @@ var Opportunities = function (_Component) {
         value: function componentWillMount() {
             _axios2.default.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then(function (response) {
                 if (response.data !== 'undergrad') {
-                    var homeString = "/";
-                    if (window.location.toString().includes("app")) {
-                        homeString += "app";
-                    }
-                    window.location.href = homeString;
+                    window.location.href = '/';
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -41188,7 +41180,11 @@ var Opportunities = function (_Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'row search-div-container' },
-                            _react2.default.createElement('input', { onFocus: this.onFocus.bind(this), onBlur: this.onBlur.bind(this), className: 'column column-70 search-bar', onKeyPress: this.handleKeyPress.bind(this), onChange: this.handleUpdateSearch.bind(this), value: this.state.searchBar, type: 'text', name: 'search', placeholder: 'Search keywords (e.g. psychology, machine learning, Social Media Lab)' }),
+                            _react2.default.createElement('input', { onFocus: this.onFocus.bind(this), onBlur: this.onBlur.bind(this),
+                                className: 'column column-70 search-bar', onKeyPress: this.handleKeyPress.bind(this),
+                                onChange: this.handleUpdateSearch.bind(this), value: this.state.searchBar,
+                                type: 'text', name: 'search',
+                                placeholder: 'Search keywords (e.g. psychology, machine learning, Social Media Lab)' }),
                             _react2.default.createElement(
                                 'div',
                                 { className: 'column column-10 delete-div' },
@@ -46131,7 +46127,7 @@ var Opportunity = function (_Component) {
 		key: 'clickRow',
 		value: function clickRow(rowObj) {
 			// this.props.history.push({pathname: 'opportunity/' + this.props.opId});
-			document.location.href = 'opportunity/' + this.props.opId;
+			document.location.href = '/opportunity/' + this.props.opId;
 		}
 	}, {
 		key: 'convertDate',
@@ -77279,7 +77275,7 @@ var ApplicationBox = function (_Component) {
 	_createClass(ApplicationBox, [{
 		key: 'clickRow',
 		value: function clickRow(rowObj) {
-			window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/application/' + this.props.data.id);
+			window.location.href = '/application/' + this.props.data.id;
 		}
 	}, {
 		key: 'render',
@@ -79455,13 +79451,16 @@ var EditProfile = function (_Component) {
             console.log("Begin loadInfoFromServer");
             _axios2.default.get('/api/undergrads/' + sessionStorage.getItem('token_id')).then(function (res) {
                 var info = res.data[0];
+                console.log("info");
+                console.log(info);
+                var skills = info.skills === undefined ? [] : info.skills;
                 _this2.setState({ firstName: info.firstName });
                 _this2.setState({ lastName: info.lastName });
                 _this2.setState({ year: _this2.gradYearToYear(info.gradYear) });
                 _this2.setState({ major: info.major });
                 _this2.setState({ gpa: info.gpa });
                 _this2.setState({ relevantCourses: info.courses });
-                _this2.setState({ relevantSkills: info.skills });
+                _this2.setState({ relevantSkills: skills });
                 _this2.setState({ netId: info.netId });
                 _this2.setState({ resumeId: info.resumeId });
                 _this2.setState({ transcriptId: info.transcriptId });
@@ -79588,10 +79587,13 @@ var EditProfile = function (_Component) {
                             { className: 'editting' },
                             _react2.default.createElement(
                                 'p',
-                                { className: 'course editting', key: this.state.relevantCourses[i] + "edit" },
+                                { className: 'course editting',
+                                    key: this.state.relevantCourses[i] + "edit" },
                                 this.state.relevantCourses[i]
                             ),
-                            _react2.default.createElement(_delete2.default, { size: 30, id: this.state.relevantCourses[i], onClick: this.handleDeleteCourse.bind(this, this.state.relevantCourses[i]), className: 'delete-icon' })
+                            _react2.default.createElement(_delete2.default, { size: 30, id: this.state.relevantCourses[i],
+                                onClick: this.handleDeleteCourse.bind(this, this.state.relevantCourses[i]),
+                                className: 'delete-icon' })
                         )
                     ));
                 }
@@ -79599,14 +79601,16 @@ var EditProfile = function (_Component) {
                     'div',
                     { className: 'display-list' },
                     list,
-                    _react2.default.createElement('input', { className: 'addTag', onChange: this.handleChange.bind(this), id: 'new-course', type: 'text', name: 'new-course', key: 'new-course', placeholder: 'Add Course', value: this.state.newCourse }),
+                    _react2.default.createElement('input', { className: 'addTag', onChange: this.handleChange.bind(this), id: 'new-course', type: 'text',
+                        name: 'new-course', key: 'new-course', placeholder: 'Add Course', value: this.state.newCourse }),
                     _react2.default.createElement(_addCircle2.default, { className: 'add-icon', value: this.state.newCourse, size: 22, onClick: this.addCourse.bind(this) })
                 );
             } else {
                 for (var i = 0; i < this.state.relevantCourses.length; i++) {
                     list.push(_react2.default.createElement(
                         'p',
-                        { className: 'display-list-item course', key: this.state.relevantCourses[i] },
+                        { className: 'display-list-item course',
+                            key: this.state.relevantCourses[i] },
                         this.state.relevantCourses[i]
                     ));
                 }
@@ -79631,10 +79635,13 @@ var EditProfile = function (_Component) {
                             { className: 'editting' },
                             _react2.default.createElement(
                                 'p',
-                                { className: 'skill editting', key: this.state.relevantSkills[i] + "edit" },
+                                { className: 'skill editting',
+                                    key: this.state.relevantSkills[i] + "edit" },
                                 this.state.relevantSkills[i]
                             ),
-                            _react2.default.createElement(_delete2.default, { size: 30, id: this.state.relevantSkills[i], onClick: this.handleDeleteSkill.bind(this, this.state.relevantSkills[i]), className: 'delete-icon' })
+                            _react2.default.createElement(_delete2.default, { size: 30, id: this.state.relevantSkills[i],
+                                onClick: this.handleDeleteSkill.bind(this, this.state.relevantSkills[i]),
+                                className: 'delete-icon' })
                         )
                     ));
                 }
@@ -79642,14 +79649,16 @@ var EditProfile = function (_Component) {
                     'div',
                     { className: 'display-list' },
                     list,
-                    _react2.default.createElement('input', { className: 'addTag', onChange: this.handleChange.bind(this), id: 'new-skill', type: 'text', name: 'new-skill', key: 'new-skill', placeholder: 'Add Skill', value: this.state.newSkill }),
+                    _react2.default.createElement('input', { className: 'addTag', onChange: this.handleChange.bind(this), id: 'new-skill', type: 'text',
+                        name: 'new-skill', key: 'new-skill', placeholder: 'Add Skill', value: this.state.newSkill }),
                     _react2.default.createElement(_addCircle2.default, { className: 'add-icon', value: this.state.newSkill, size: 22, onClick: this.addSkill.bind(this) })
                 );
             } else {
                 for (var i = 0; i < this.state.relevantSkills.length; i++) {
                     list.push(_react2.default.createElement(
                         'p',
-                        { className: 'display-list-item skill', key: this.state.relevantSkills[i] },
+                        { className: 'display-list-item skill',
+                            key: this.state.relevantSkills[i] },
                         this.state.relevantSkills[i]
                     ));
                 }
@@ -79697,7 +79706,8 @@ var EditProfile = function (_Component) {
                                 'h5',
                                 null,
                                 this.state.year,
-                                _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon', onClick: this.handleEditYear.bind(this) })
+                                _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon',
+                                    onClick: this.handleEditYear.bind(this) })
                             ),
                             this.state.editMajor ? _react2.default.createElement(
                                 'div',
@@ -79711,7 +79721,8 @@ var EditProfile = function (_Component) {
                                 null,
                                 this.state.major,
                                 ' ',
-                                _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon', onClick: this.handleEditMajor.bind(this) })
+                                _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon',
+                                    onClick: this.handleEditMajor.bind(this) })
                             )
                         )
                     ),
@@ -79743,7 +79754,14 @@ var EditProfile = function (_Component) {
                                     value: 'View', onClick: this.viewResume }),
                                 _react2.default.createElement(
                                     _reactDropzone2.default,
-                                    { className: 'edit-drop', style: { position: 'relative', background: '#ededed', padding: '10px', width: '50%', margin: '0 0 0 25%', border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black' }, onDrop: this.onDropResume.bind(this) },
+                                    { className: 'edit-drop', style: {
+                                            position: 'relative',
+                                            background: '#ededed',
+                                            padding: '10px',
+                                            width: '50%',
+                                            margin: '0 0 0 25%',
+                                            border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
+                                        }, onDrop: this.onDropResume.bind(this) },
                                     _react2.default.createElement(
                                         'p',
                                         null,
@@ -79774,7 +79792,14 @@ var EditProfile = function (_Component) {
                                     value: 'View', onClick: this.viewTranscript }),
                                 _react2.default.createElement(
                                     _reactDropzone2.default,
-                                    { className: 'edit-drop', style: { position: 'relative', background: '#ededed', padding: '10px', width: '50%', margin: '0 25%', border: '1px dashed black' }, onDrop: this.onDropTranscript.bind(this) },
+                                    { className: 'edit-drop', style: {
+                                            position: 'relative',
+                                            background: '#ededed',
+                                            padding: '10px',
+                                            width: '50%',
+                                            margin: '0 25%',
+                                            border: '1px dashed black'
+                                        }, onDrop: this.onDropTranscript.bind(this) },
                                     _react2.default.createElement(
                                         'p',
                                         null,
@@ -79806,7 +79831,8 @@ var EditProfile = function (_Component) {
                                     ),
                                     _react2.default.createElement('input', { className: 'gpa edit-input', type: 'text', name: 'gpa', id: 'gpa',
                                         value: this.state.gpa, onChange: this.handleChange.bind(this) }),
-                                    _react2.default.createElement(_check2.default, { size: 25, onClick: this.handleEditGPA.bind(this), className: 'check-icon' }),
+                                    _react2.default.createElement(_check2.default, { size: 25, onClick: this.handleEditGPA.bind(this),
+                                        className: 'check-icon' }),
                                     this.state.invalidGPA ? _react2.default.createElement(
                                         'p',
                                         { className: 'gpa-error' },
@@ -79823,8 +79849,8 @@ var EditProfile = function (_Component) {
                                         ' ',
                                         this.state.gpa,
                                         ' ',
-                                        _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon', onClick: this.handleEditGPA.bind(this) }),
-                                        ' '
+                                        _react2.default.createElement(_pencil2.default, {
+                                            size: 20, className: 'pencil-icon', onClick: this.handleEditGPA.bind(this) })
                                     )
                                 )
                             ),
@@ -79839,14 +79865,14 @@ var EditProfile = function (_Component) {
                                         'h5',
                                         null,
                                         'Relevant Courses ',
-                                        _react2.default.createElement(_check2.default, { size: 23, className: 'check-icon', onClick: this.handleEditCourses.bind(this) }),
-                                        ' '
+                                        _react2.default.createElement(_check2.default, { size: 23, className: 'check-icon',
+                                            onClick: this.handleEditCourses.bind(this) })
                                     ) : _react2.default.createElement(
                                         'h5',
                                         null,
                                         'Relevant Courses ',
-                                        _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon', onClick: this.handleEditCourses.bind(this) }),
-                                        ' '
+                                        _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon',
+                                            onClick: this.handleEditCourses.bind(this) })
                                     ),
                                     this.displayCourses()
                                 ),
@@ -79858,14 +79884,14 @@ var EditProfile = function (_Component) {
                                         'h5',
                                         null,
                                         'Relevant Skills ',
-                                        _react2.default.createElement(_check2.default, { size: 23, className: 'check-icon', onClick: this.handleEditSkills.bind(this) }),
-                                        ' '
+                                        _react2.default.createElement(_check2.default, { size: 23, className: 'check-icon',
+                                            onClick: this.handleEditSkills.bind(this) })
                                     ) : _react2.default.createElement(
                                         'h5',
                                         null,
                                         'Relevant Skills ',
-                                        _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon', onClick: this.handleEditSkills.bind(this) }),
-                                        ' '
+                                        _react2.default.createElement(_pencil2.default, { size: 20, className: 'pencil-icon',
+                                            onClick: this.handleEditSkills.bind(this) })
                                     ),
                                     this.displaySkills()
                                 )
@@ -79874,7 +79900,7 @@ var EditProfile = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'button',
-                        { onClick: this.onClick },
+                        { className: 'column column-50', style: { marginLeft: "45%", marginTop: "20px" }, onClick: this.onClick },
                         'Submit'
                     )
                 ),
@@ -80227,7 +80253,7 @@ var LandingPage = function (_Component) {
 			if (sessionStorage.getItem('token_id') !== null) {
 				_axios2.default.get('/api/role/' + sessionStorage.getItem('token_id')).then(function (response) {
 					var endUrl = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
-					window.location.href.toString().replace(/\/[^\/]*$/, endUrl);
+					window.location.href = endUrl;
 				}).catch(function (error) {
 					console.log(error);
 				});
@@ -80260,9 +80286,9 @@ var LandingPage = function (_Component) {
 				console.log("has registered");
 				console.log(hasRegistered);
 				if (hasRegistered.data) {
-					window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities');
+					window.location.href = '/opportunities';
 				} else {
-					window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/studentRegister');
+					window.location.href = '/studentRegister';
 				}
 			});
 		}
@@ -80285,9 +80311,9 @@ var LandingPage = function (_Component) {
 			//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
 			_axios2.default.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu", "")).then(function (hasRegistered) {
 				if (hasRegistered.data) {
-					window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/professorView');
+					window.location.href = '/professorView';
 				} else {
-					window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/instructorRegister');
+					window.location.href = '/instructorRegister';
 				}
 			});
 		}
