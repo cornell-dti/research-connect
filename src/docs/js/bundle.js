@@ -76460,7 +76460,7 @@ var StudentRegister = function (_React$Component) {
                     var fileAsBinaryString = reader.result;
                     var encodedData = window.btoa(fileAsBinaryString);
                     // do whatever you want with the file content
-                    _this.setState({ resume: file });
+                    _this.setState({ resume: [encodedData] });
                     _this.setState({ resumeValid: true });
                 };
                 reader.onabort = function () {
@@ -76481,7 +76481,7 @@ var StudentRegister = function (_React$Component) {
                     var fileAsBinaryString = reader.result;
                     var encodedData = window.btoa(fileAsBinaryString);
                     // do whatever you want with the file content
-                    _this.setState({ transcript: file });
+                    _this.setState({ transcript: [encodedData] });
                 };
                 reader.onabort = function () {
                     return console.log('file reading was aborted');
@@ -76499,10 +76499,10 @@ var StudentRegister = function (_React$Component) {
             // super easy to update the state
             var state = _this.state;
             var name = e.target.name;
-            if (name != "courses") {
+            if (name !== "courses") {
                 var validationName = name + "Valid";
                 _this.setState(_defineProperty({}, name, e.target.value));
-                if (name == "gradYear" || name == "major") {
+                if (name === "gradYear" || name === "major") {
                     document.getElementById(name).innerHTML = [e.target.value];
                 }
                 if (e.target.value != "") {
@@ -76553,7 +76553,7 @@ var StudentRegister = function (_React$Component) {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
-                    if (_this.state.transcript != null) {
+                    if (_this.state.transcript != null && _this.state.transcript.length !== 0) {
                         _axios2.default.post('/api/docs', { netId: netId, transcript: transcript }).then(function (result) {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
@@ -76562,7 +76562,7 @@ var StudentRegister = function (_React$Component) {
                             }
                         });
                     }
-                    if (_this.state.resume != null) {
+                    if (_this.state.resume != null && _this.state.resume.length !== 0) {
                         _axios2.default.post('/api/docs', { netId: netId, resume: resume }).then(function (result) {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
