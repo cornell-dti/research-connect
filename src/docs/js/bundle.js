@@ -6206,7 +6206,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -6236,84 +6236,76 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var StudentNavbar = function (_Component) {
-  _inherits(StudentNavbar, _Component);
+    _inherits(StudentNavbar, _Component);
 
-  function StudentNavbar(props) {
-    _classCallCheck(this, StudentNavbar);
+    function StudentNavbar(props) {
+        _classCallCheck(this, StudentNavbar);
 
-    var _this = _possibleConstructorReturn(this, (StudentNavbar.__proto__ || Object.getPrototypeOf(StudentNavbar)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (StudentNavbar.__proto__ || Object.getPrototypeOf(StudentNavbar)).call(this, props));
 
-    _this.state = {};
-    return _this;
-  }
-
-  _createClass(StudentNavbar, [{
-    key: 'logout',
-    value: function logout() {
-      sessionStorage.clear();
-      window.location.href = '/';
+        _this.state = {};
+        return _this;
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'header-all' },
-        _react2.default.createElement(
-          'div',
-          { className: 'logo-div' },
-          _react2.default.createElement(
-            'a',
-            { href: '/opportunities' },
-            _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
-          ),
-          _react2.default.createElement(
-            'p',
-            { className: 'partnership' },
-            'in partnership with'
-          ),
-          _react2.default.createElement(
-            'a',
-            { href: 'http://curb.cornell.edu/', target: '_blank' },
-            _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
-          )
-        ),
-        _react2.default.createElement(
-          'nav',
-          null,
-          _react2.default.createElement(
-            'li',
-            { className: this.props.current == "opportunities" ? "current-page" : "" },
-            _react2.default.createElement(
-              'a',
-              { href: '/opportunities' },
-              'Opportunities'
-            )
-          ),
-          _react2.default.createElement(
-            'li',
-            { className: this.props.current == "editprofile" ? "current-page" : "" },
-            _react2.default.createElement(
-              'a',
-              { href: '/editprofile' },
-              'My Profile'
-            )
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            _react2.default.createElement(
-              'a',
-              { className: 'sign-out', onClick: this.logout.bind(this) },
-              'Sign Out'
-            )
-          )
-        )
-      );
-    }
-  }]);
 
-  return StudentNavbar;
+    _createClass(StudentNavbar, [{
+        key: 'logout',
+        value: function logout() {
+            sessionStorage.clear();
+            window.location.href = '/';
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'header-all' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo-div' },
+                    _react2.default.createElement(
+                        'a',
+                        { href: '/opportunities' },
+                        _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'partnership' },
+                        'in partnership with'
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { href: 'http://curb.cornell.edu/', target: '_blank' },
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                    )
+                ),
+                _react2.default.createElement(
+                    'nav',
+                    null,
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current == "opportunities" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                href: '/opportunities' },
+                            'Opportunities'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'a',
+                            { className: 'sign-out', onClick: this.logout.bind(this) },
+                            'Sign Out'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return StudentNavbar;
 }(_react.Component);
 
 exports.default = StudentNavbar;
@@ -79301,13 +79293,13 @@ var EditProfile = function (_Component) {
         _this.viewResume = function (e) {
             console.log("We are now viewing the resume");
             e.preventDefault();
-            window.location.href = '/api/doc/' + _this.state.resumeId;
+            window.location.href = '/api/docs/' + _this.state.resumeId;
         };
 
         _this.viewTranscript = function (e) {
             console.log("We are now viewing the transcript");
             e.preventDefault();
-            window.location.href = '/api/doc/' + _this.state.transcriptId;
+            window.location.href = '/api/docs/' + _this.state.transcriptId;
         };
 
         _this.onDropResume = function (acceptedFiles) {
@@ -79385,13 +79377,13 @@ var EditProfile = function (_Component) {
                 //access the results here....
             });
 
-            _axios2.default.post('/api/doc', { netId: netId, resume: resume }).then(function (result) {
+            _axios2.default.post('/api/docs', { netId: netId, resume: resume }).then(function (result) {
                 console.log("Resume updated, result:");
                 console.log(result);
                 //access the results here....
             });
 
-            _axios2.default.post('/api/doc', { netId: netId, transcript: transcript }).then(function (result) {
+            _axios2.default.post('/api/docs', { netId: netId, transcript: transcript }).then(function (result) {
                 console.log("Resume updated, result:");
                 console.log(result);
                 //access the results here....

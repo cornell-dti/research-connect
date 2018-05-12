@@ -247,13 +247,13 @@ class EditProfile extends Component {
     viewResume = (e) => {
         console.log("We are now viewing the resume");
         e.preventDefault();
-        window.location.href = '/api/doc/' + this.state.resumeId;
+        window.location.href = '/api/docs/' + this.state.resumeId;
     }
 
     viewTranscript = (e) => {
         console.log("We are now viewing the transcript");
         e.preventDefault();
-        window.location.href = '/api/doc/' + this.state.transcriptId;
+        window.location.href = '/api/docs/' + this.state.transcriptId;
     }
 
     onDropResume = acceptedFiles => {
@@ -327,14 +327,14 @@ class EditProfile extends Component {
                 //access the results here....
             });
 
-        axios.post('/api/doc', {netId, resume})
+        axios.post('/api/docs', {netId, resume})
             .then((result) => {
                 console.log("Resume updated, result:");
                 console.log(result);
                 //access the results here....
             });
 
-        axios.post('/api/doc', {netId, transcript})
+        axios.post('/api/docs', {netId, transcript})
             .then((result) => {
                 console.log("Resume updated, result:");
                 console.log(result);
