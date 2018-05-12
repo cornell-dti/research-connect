@@ -213,7 +213,15 @@ app.post('/', function (req, res) {
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
     let netId = data.netId;
-    data.questions.push({"coverLetter": "Cover Letter"});
+    for (var key in data.questions){
+        if (data.questions.hasOwnProperty(key)){
+            //if they added a question but then clicked the x then there would be q1 : null/undefined
+            if (data.questions[key] == null){
+                delete data.questions.key;
+            }
+        }
+    }
+    data.questions["coverLetter"] = "Cover Letter";
     let opportunity = new opportunityModel({
         creatorNetId: netId,
         labPage: data.labPage,

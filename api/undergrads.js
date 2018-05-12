@@ -9,14 +9,18 @@ app.get('/la/:netId', function (req, res) {
         if (profNetId == null){
             return res.status(401).send({});
         }
+        console.log("prof net id");
+        console.log(profNetId);
         labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
             if (labAdmin === null) return res.status(403).send({});
+            console.log(req.params);
             undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
                 if (err) {
                     return err;
                 }
-                debug(undergrad.netId);
+                console.log(undergrad);
                 res.send(undergrad);
+                // debug(undergrad.netId);
             });
         });
     });

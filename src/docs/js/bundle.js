@@ -6394,7 +6394,7 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -6424,88 +6424,85 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ProfNavbar = function (_Component) {
-  _inherits(ProfNavbar, _Component);
+    _inherits(ProfNavbar, _Component);
 
-  function ProfNavbar(props) {
-    _classCallCheck(this, ProfNavbar);
+    function ProfNavbar(props) {
+        _classCallCheck(this, ProfNavbar);
 
-    var _this = _possibleConstructorReturn(this, (ProfNavbar.__proto__ || Object.getPrototypeOf(ProfNavbar)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ProfNavbar.__proto__ || Object.getPrototypeOf(ProfNavbar)).call(this, props));
 
-    _this.state = {};
-    return _this;
-  }
-
-  _createClass(ProfNavbar, [{
-    key: 'logout',
-    value: function logout() {
-      sessionStorage.clear();
-      var homeString = "/";
-      if (window.location.toString().includes("app")) {
-        homeString += "app";
-      }
-      window.location.href = homeString;
+        _this.state = {};
+        return _this;
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'header-all' },
-        _react2.default.createElement(
-          'div',
-          { className: 'logo-div' },
-          _react2.default.createElement(
-            'a',
-            { href: '/' },
-            _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
-          ),
-          _react2.default.createElement(
-            'p',
-            { className: 'partnership' },
-            'in partnership with'
-          ),
-          _react2.default.createElement(
-            'a',
-            { href: 'http://curb.cornell.edu/', target: '_blank' },
-            _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
-          )
-        ),
-        _react2.default.createElement(
-          'nav',
-          null,
-          _react2.default.createElement(
-            'li',
-            { className: this.props.current == "newopp" ? "current-page" : "" },
-            _react2.default.createElement(
-              'a',
-              { href: '/newopp' },
-              'Post New Opportunity'
-            )
-          ),
-          _react2.default.createElement(
-            'li',
-            { className: this.props.current == "professorView" ? "current-page" : "" },
-            _react2.default.createElement(
-              'a',
-              { href: '/professorView' },
-              'View Applications'
-            )
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            _react2.default.createElement(
-              'a',
-              { className: 'sign-out', onClick: this.logout.bind(this) },
-              'Sign Out'
-            )
-          )
-        )
-      );
-    }
-  }]);
 
-  return ProfNavbar;
+    _createClass(ProfNavbar, [{
+        key: 'logout',
+        value: function logout() {
+            sessionStorage.clear();
+            window.location.href = "/";
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'header-all' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo-div' },
+                    _react2.default.createElement(
+                        'a',
+                        { href: '/' },
+                        _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'partnership' },
+                        'in partnership with'
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { href: 'http://curb.cornell.edu/', target: '_blank' },
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                    )
+                ),
+                _react2.default.createElement(
+                    'nav',
+                    null,
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current == "newopp" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            { href: '/newopp' },
+                            'Post New Opportunity'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current == "professorView" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                href: '/professorView' },
+                            'View Applications'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'a',
+                            { className: 'sign-out', onClick: this.logout.bind(this) },
+                            'Sign Out'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProfNavbar;
 }(_react.Component);
 
 exports.default = ProfNavbar;
@@ -47737,7 +47734,7 @@ var CreateOppForm = function (_React$Component) {
 					});
 				}
 				sleep(1200).then(function () {
-					document.location.href = "professorView";
+					document.location.href = "/professorView";
 				});
 			});
 		};
@@ -77360,7 +77357,7 @@ exports.default = ApplicationBox;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -77410,314 +77407,342 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var ApplicationPage = function (_Component) {
-	_inherits(ApplicationPage, _Component);
+    _inherits(ApplicationPage, _Component);
 
-	function ApplicationPage(props) {
-		_classCallCheck(this, ApplicationPage);
+    function ApplicationPage(props) {
+        _classCallCheck(this, ApplicationPage);
 
-		var _this = _possibleConstructorReturn(this, (ApplicationPage.__proto__ || Object.getPrototypeOf(ApplicationPage)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ApplicationPage.__proto__ || Object.getPrototypeOf(ApplicationPage)).call(this, props));
 
-		_this.state = {
-			application: [],
-			opportunity: []
-		};
-		return _this;
-	}
+        _this.state = {
+            application: [],
+            opportunity: [],
+            resumeId: ""
+        };
+        return _this;
+    }
 
-	_createClass(ApplicationPage, [{
-		key: 'componentWillMount',
-		value: function componentWillMount() {
-			var _this2 = this;
+    _createClass(ApplicationPage, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
 
-			//'netId': sessionStorage.getItem('netId')
-			//'netId': 'prk57' // TODO change back to above
-			_axios2.default.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57').then(function (response) {
-				console.log("response.data!");
-				console.log(response.data);
-				for (var opp in response.data) {
-					for (var app in response.data[opp].applications) {
-						var curApp = response.data[opp].applications[app];
-						var curOpp = response.data[opp].opportunity;
-						if (curApp !== undefined) {
-							if (curApp.id === _this2.props.match.params.id) {
-								_this2.setState({ application: curApp, opportunity: curOpp });
-								console.log(_this2.state.opportunity);
-								console.log(_this2.state.application);
-							}
-						}
-					}
-				}
-			}).catch(function (error) {
-				console.log(error);
-			});
-		}
-	}, {
-		key: 'toDivList',
-		value: function toDivList(lst) {
-			var i = 0;
-			var res = [];
-			for (i in lst) {
-				res.push(_react2.default.createElement(
-					'div',
-					{ key: i },
-					lst[i]
-				));
-			}
-			return res;
-		}
-	}, {
-		key: 'resume',
-		value: function resume() {
-			_axios2.default.get('/api/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id')).then(function (response) {
-				window.open('/doc/' + response.data.resumeId, '_blank');
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var questionsAndResponses = [];
-			var responses = this.state.application.responses;
-			var questions = this.state.opportunity.questions;
-			var c = 0;
-			for (var question in responses) {
-				questionsAndResponses.push(_react2.default.createElement(
-					'div',
-					{ className: 'question-and-response', key: c++ },
-					_react2.default.createElement(
-						'div',
-						{ className: 'question' },
-						questions[question]
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'response' },
-						responses[question]
-					)
-				));
-			}
+            //'netId': sessionStorage.getItem('netId')
+            //'netId': 'prk57' // TODO change back to above
+            _axios2.default.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57').then(function (response) {
+                console.log("response.data!");
+                console.log(response.data);
+                for (var opp in response.data) {
+                    for (var app in response.data[opp].applications) {
+                        var curApp = response.data[opp].applications[app];
+                        var curOpp = response.data[opp].opportunity;
+                        if (curApp !== undefined) {
+                            if (curApp.id === _this2.props.match.params.id) {
+                                _this2.setState({ application: curApp, opportunity: curOpp });
+                                console.log(_this2.state.opportunity);
+                                console.log(_this2.state.application);
+                                _axios2.default.get('/api/undergrads/la/' + _this2.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id')).then(function (response) {
+                                    // document.location.href ='/doc/' + response.data.resumeId;
+                                    _this2.setState({ "resumeId": response.data.resumeId });
+                                    var transcriptIdText = response.data.transcriptId != null ? "" : response.data.transcriptId;
+                                    _this2.setState({ "transcriptId": transcriptIdText });
+                                });
+                            }
+                        }
+                    }
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'toDivList',
+        value: function toDivList(lst) {
+            var i = 0;
+            var res = [];
+            for (i in lst) {
+                res.push(_react2.default.createElement(
+                    'div',
+                    { key: i },
+                    lst[i]
+                ));
+            }
+            return res;
+        }
+    }, {
+        key: 'renderTranscript',
+        value: function renderTranscript() {
+            if (this.state.transcriptId !== "") {
+                return null;
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'app-qual-section' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'resume-link' },
+                            _react2.default.createElement(
+                                'a',
+                                { href: this.state.transcriptId, target: '_blank' },
+                                _react2.default.createElement(
+                                    'h6',
+                                    { className: 'no-margin' },
+                                    'View Transcript ',
+                                    _react2.default.createElement(_externalLink2.default, {
+                                        className: 'red-link' })
+                                )
+                            )
+                        )
+                    ),
+                    _react2.default.createElement('hr', null)
+                );
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var questionsAndResponses = [];
+            var responses = this.state.application.responses;
+            var questions = this.state.opportunity.questions;
+            var c = 0;
+            for (var question in responses) {
+                questionsAndResponses.push(_react2.default.createElement(
+                    'div',
+                    { className: 'question-and-response', key: c++ },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'question' },
+                        questions[question]
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'response' },
+                        responses[question]
+                    )
+                ));
+            }
 
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(_ProfNavbar2.default, null),
-				_react2.default.createElement(
-					'div',
-					{ className: 'application-page-container' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'button-bar-container' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'return-to-apps' },
-							_react2.default.createElement(_longArrowLeft2.default, { className: 'black-arrow' }),
-							_react2.default.createElement(
-								'a',
-								{ href: '/professorView' },
-								'Return to View All Applications'
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row button-bar' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'column column-33 left-button' },
-								_react2.default.createElement(_EmailDialog2.default, { buttonText: 'Mark as Accepted', opp: this.state.opportunity, app: this.state.application })
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'column column-33 center-button' },
-								_react2.default.createElement(_EmailDialog2.default, { buttonText: 'Edit & Send Interview Email', opp: this.state.opportunity, app: this.state.application })
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'column column-33 right-button' },
-								_react2.default.createElement(_EmailDialog2.default, { buttonText: 'Mark as Rejected', opp: this.state.opportunity, app: this.state.application })
-							)
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'row' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'column column-75' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'row application-page-info' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'column' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'row app-page-info-top-row' },
-										_react2.default.createElement(
-											'div',
-											{ className: 'column app-info-left' },
-											_react2.default.createElement(
-												'div',
-												{ className: 'name' },
-												this.state.application.firstName,
-												', ',
-												this.state.application.lastName
-											),
-											_react2.default.createElement(
-												'div',
-												{ className: 'email' },
-												this.state.application.undergradNetId,
-												'@cornell.edu'
-											)
-										),
-										_react2.default.createElement(
-											'div',
-											{ className: 'column app-info-right' },
-											_react2.default.createElement(
-												'div',
-												{ className: 'date-applied' },
-												'Date Applied: ',
-												Utils.convertDate(this.state.application.timeSubmitted)
-											)
-										)
-									),
-									_react2.default.createElement(
-										'div',
-										{ className: 'row' },
-										_react2.default.createElement(
-											'div',
-											{ className: 'column app-info-left' },
-											_react2.default.createElement(
-												'div',
-												{ className: 'grad-year' },
-												Utils.gradYearToString(this.state.application.gradYear)
-											),
-											_react2.default.createElement(
-												'div',
-												{ className: 'major' },
-												this.state.application.major
-											)
-										),
-										_react2.default.createElement(
-											'div',
-											{ className: 'column app-info-right' },
-											_react2.default.createElement(
-												'div',
-												{ className: 'status' },
-												'Status: ',
-												this.state.application.status
-											),
-											_react2.default.createElement(
-												'div',
-												{ className: 'opportunity' },
-												'Position Applied To: ',
-												this.state.opportunity.title
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row application-page-responses' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'column' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'responses-header' },
-										'Application Responses'
-									),
-									questionsAndResponses
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'column column-25' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'app-qualifications' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-title' },
-									_react2.default.createElement(
-										'h5',
-										null,
-										'Qualifications'
-									)
-								),
-								_react2.default.createElement('hr', null),
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-section' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'resume-link' },
-										_react2.default.createElement(
-											'h6',
-											{ className: 'no-margin', onClick: this.resume.bind(this) },
-											'View Resume ',
-											_react2.default.createElement(_externalLink2.default, { className: 'red-link' })
-										)
-									)
-								),
-								_react2.default.createElement('hr', null),
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-section' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'resume-link' },
-										_react2.default.createElement(
-											'h6',
-											{ className: 'no-margin' },
-											'View Transcript ',
-											_react2.default.createElement(_externalLink2.default, { className: 'red-link' })
-										)
-									)
-								),
-								_react2.default.createElement('hr', null),
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-section' },
-									_react2.default.createElement(
-										'h6',
-										null,
-										'GPA'
-									),
-									this.state.application.gpa
-								),
-								_react2.default.createElement('hr', null),
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-section' },
-									_react2.default.createElement(
-										'h6',
-										null,
-										'Relevant Courses'
-									),
-									this.toDivList(this.state.application.courses)
-								),
-								_react2.default.createElement('hr', null),
-								_react2.default.createElement(
-									'div',
-									{ className: 'app-qual-section' },
-									_react2.default.createElement(
-										'h6',
-										null,
-										'Skills'
-									),
-									this.toDivList(this.state.application.skills)
-								)
-							)
-						)
-					)
-				),
-				_react2.default.createElement(_Footer2.default, null)
-			);
-		}
-	}]);
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_ProfNavbar2.default, null),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'application-page-container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'button-bar-container' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'return-to-apps' },
+                            _react2.default.createElement(_longArrowLeft2.default, { className: 'black-arrow' }),
+                            _react2.default.createElement(
+                                'a',
+                                { href: '/professorView' },
+                                'Return to View All Applications'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row button-bar' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column column-33 left-button' },
+                                _react2.default.createElement(_EmailDialog2.default, { buttonText: 'Mark as Accepted', opp: this.state.opportunity,
+                                    app: this.state.application })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column column-33 center-button' },
+                                _react2.default.createElement(_EmailDialog2.default, { buttonText: 'Edit & Send Interview Email', opp: this.state.opportunity,
+                                    app: this.state.application })
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'column column-33 right-button' },
+                                _react2.default.createElement(_EmailDialog2.default, { buttonText: 'Mark as Rejected', opp: this.state.opportunity,
+                                    app: this.state.application })
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'row' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'column column-75' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row application-page-info' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'column' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row app-page-info-top-row' },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'column app-info-left' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                {
+                                                    className: 'name' },
+                                                this.state.application.firstName,
+                                                ', ',
+                                                this.state.application.lastName
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                {
+                                                    className: 'email' },
+                                                this.state.application.undergradNetId,
+                                                '@cornell.edu'
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'column app-info-right' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'date-applied' },
+                                                'Date Applied: ',
+                                                Utils.convertDate(this.state.application.timeSubmitted)
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'column app-info-left' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                {
+                                                    className: 'grad-year' },
+                                                Utils.gradYearToString(this.state.application.gradYear)
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'major' },
+                                                this.state.application.major
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'column app-info-right' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'status' },
+                                                'Status: ',
+                                                this.state.application.status
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'opportunity' },
+                                                'Position Applied To: ',
+                                                this.state.opportunity.title
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row application-page-responses' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'column' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'responses-header' },
+                                        'Application Responses'
+                                    ),
+                                    questionsAndResponses
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'column column-25' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'app-qualifications' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'app-qual-title' },
+                                    _react2.default.createElement(
+                                        'h5',
+                                        null,
+                                        'Qualifications'
+                                    )
+                                ),
+                                _react2.default.createElement('hr', null),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'app-qual-section' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'resume-link' },
+                                        _react2.default.createElement(
+                                            'a',
+                                            { href: "/doc/" + this.state.resumeId, target: '_blank' },
+                                            _react2.default.createElement(
+                                                'h6',
+                                                { className: 'no-margin' },
+                                                'View Resume ',
+                                                _react2.default.createElement(_externalLink2.default, { className: 'red-link' })
+                                            )
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement('hr', null),
+                                this.renderTranscript(),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'app-qual-section' },
+                                    _react2.default.createElement(
+                                        'h6',
+                                        null,
+                                        'GPA'
+                                    ),
+                                    this.state.application.gpa
+                                ),
+                                _react2.default.createElement('hr', null),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'app-qual-section' },
+                                    _react2.default.createElement(
+                                        'h6',
+                                        null,
+                                        'Relevant Courses'
+                                    ),
+                                    this.toDivList(this.state.application.courses)
+                                ),
+                                _react2.default.createElement('hr', null),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'app-qual-section' },
+                                    _react2.default.createElement(
+                                        'h6',
+                                        null,
+                                        'Skills'
+                                    ),
+                                    this.toDivList(this.state.application.skills)
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(_Footer2.default, null)
+            );
+        }
+    }]);
 
-	return ApplicationPage;
+    return ApplicationPage;
 }(_react.Component);
 
 exports.default = ApplicationPage;
