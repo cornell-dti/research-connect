@@ -76553,7 +76553,7 @@ var StudentRegister = function (_React$Component) {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
-                    if (_this.state.transcript.length != 0) {
+                    if (_this.state.transcript != null) {
                         _axios2.default.post('/api/docs', { netId: netId, transcript: transcript }).then(function (result) {
                             if (oneRan) {
                                 window.location.replace(baseUrl + "/opportunities");
@@ -76562,16 +76562,17 @@ var StudentRegister = function (_React$Component) {
                             }
                         });
                     }
-
-                    _axios2.default.post('/api/docs', { netId: netId, resume: resume }).then(function (result) {
-                        if (oneRan) {
-                            window.location.replace(baseUrl + "/opportunities");
-                        } else {
-                            oneRan = true;
-                        }
-                        console.log("resume result");
-                        console.log(result);
-                    });
+                    if (_this.state.resume != null) {
+                        _axios2.default.post('/api/docs', { netId: netId, resume: resume }).then(function (result) {
+                            if (oneRan) {
+                                window.location.replace(baseUrl + "/opportunities");
+                            } else {
+                                oneRan = true;
+                            }
+                            console.log("resume result");
+                            console.log(result);
+                        });
+                    }
                 });
             }
         };
@@ -80499,6 +80500,7 @@ var LandingPage = function (_Component) {
 						_react2.default.createElement(_reactGoogleLogin2.default, {
 							clientId: '938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com',
 							buttonText: 'Student Signup',
+							hostedDomain: 'cornell.edu',
 							onSuccess: this.responseGoogleStudent.bind(this),
 							onFailure: this.loginFailure.bind(this),
 							className: 'signup button' })
@@ -80566,6 +80568,7 @@ var LandingPage = function (_Component) {
 						_react2.default.createElement(_reactGoogleLogin2.default, {
 							clientId: '938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com',
 							buttonText: 'Lab Signup',
+							hostedDomain: 'cornell.edu',
 							onSuccess: this.responseGoogle.bind(this),
 							onFailure: this.loginFailure.bind(this),
 							className: 'signup button' })

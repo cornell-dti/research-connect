@@ -166,7 +166,7 @@ class StudentRegister extends React.Component {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
-                    if (this.state.transcript.length != 0) {
+                    if (this.state.transcript != null) {
                         axios.post('/api/docs', {netId, transcript})
                             .then((result) => {
                                 if (oneRan) {
@@ -177,18 +177,19 @@ class StudentRegister extends React.Component {
                                 }
                             });
                     }
-
-                    axios.post('/api/docs', {netId, resume})
-                        .then((result) => {
-                            if (oneRan) {
-                                window.location.replace(baseUrl + "/opportunities");
-                            }
-                            else {
-                                oneRan = true;
-                            }
-                            console.log("resume result");
-                            console.log(result);
-                        });
+                    if (this.state.resume != null) {
+                        axios.post('/api/docs', {netId, resume})
+                            .then((result) => {
+                                if (oneRan) {
+                                    window.location.replace(baseUrl + "/opportunities");
+                                }
+                                else {
+                                    oneRan = true;
+                                }
+                                console.log("resume result");
+                                console.log(result);
+                            });
+                    }
                 });
         }
     };
