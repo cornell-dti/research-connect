@@ -34,7 +34,7 @@ class LandingPage extends Component {
 			axios.get('/api/role/' +  sessionStorage.getItem('token_id'))
 			.then((response) => {
 				let endUrl = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
-                window.location.href.toString().replace(/\/[^\/]*$/, endUrl);
+                window.location.href = endUrl;
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -65,10 +65,10 @@ class LandingPage extends Component {
 			console.log("has registered");
 			console.log(hasRegistered);
 			if (hasRegistered.data) {
-				window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/opportunities');
+				window.location.href = '/opportunities';
 			}
 			else {
-				window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/studentRegister');
+				window.location.href = '/studentRegister';
 			}
 		});
 	}
@@ -88,10 +88,10 @@ class LandingPage extends Component {
 		//don't use has registreed, just use role. but if you do use this, it takes raw net id not token.
 		axios.get("/api/hasRegistered/" + response.profileObj.email.replace("@cornell.edu","")).then((hasRegistered) => {
 			if (hasRegistered.data) {
-				window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/professorView');
+				window.location.href = '/professorView';
 			}
 			else {
-				window.location.href = window.location.href.toString().replace(/\/[^\/]*$/, '/instructorRegister');
+				window.location.href = '/instructorRegister';
 			}
 		});
 	}
