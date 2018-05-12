@@ -68,7 +68,7 @@ class StudentRegister extends React.Component {
                 var fileAsBinaryString = reader.result;
                 var encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({resume: file})
+                this.setState({resume: [encodedData]});
                 this.setState({resumeValid: true})
             };
             reader.onabort = () => console.log('file reading was aborted');
@@ -87,7 +87,7 @@ class StudentRegister extends React.Component {
                 var fileAsBinaryString = reader.result;
                 var encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({transcript: file})
+                this.setState({transcript: [encodedData]})
             };
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
@@ -95,17 +95,17 @@ class StudentRegister extends React.Component {
             reader.readAsBinaryString(file);
         });
 
-    }
+    };
 
     onChange = (e) => {
         // Because we named the inputs to match their corresponding values in state, it's
         // super easy to update the state
-        var state = this.state
-        var name = e.target.name;
-        if (name != "courses") {
-            var validationName = name + "Valid";
+        let state = this.state;
+        let name = e.target.name;
+        if (name !== "courses") {
+            let validationName = name + "Valid";
             this.setState({[name]: e.target.value});
-            if (name == "gradYear" || name == "major") {
+            if (name === "gradYear" || name === "major") {
                 document.getElementById(name).innerHTML = [e.target.value];
 
             }
@@ -122,8 +122,8 @@ class StudentRegister extends React.Component {
 
 
     createGpaOptions() {
-        var options = [];
-        for (var i = 25; i <= 43; i++) {
+        let options = [];
+        for (let i = 25; i <= 43; i++) {
             options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
         }
         return (
@@ -160,13 +160,13 @@ class StudentRegister extends React.Component {
         if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid) {
             let oneRan = false;
             let getUrl = window.location;
-            var baseUrl = getUrl.protocol + "//" + getUrl.host;
+            let baseUrl = getUrl.protocol + "//" + getUrl.host;
             axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netId, email, courses})
                 .then((result) => {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
-                    if (this.state.transcript != null) {
+                    if (this.state.transcript != null && this.state.transcript.length !== 0) {
                         axios.post('/api/docs', {netId, transcript})
                             .then((result) => {
                                 if (oneRan) {
@@ -177,7 +177,7 @@ class StudentRegister extends React.Component {
                                 }
                             });
                     }
-                    if (this.state.resume != null) {
+                    if (this.state.resume != null && this.state.resume.length !== 0) {
                         axios.post('/api/docs', {netId, resume})
                             .then((result) => {
                                 if (oneRan) {
