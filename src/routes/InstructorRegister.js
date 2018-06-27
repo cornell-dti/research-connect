@@ -208,7 +208,7 @@ class InstructorRegister extends React.Component {
 
         return (
             <div>
-                <Navbar/>
+                {/*<Navbar/>*/}
                 <div className=" instructor-reg-form" >
                     <h3>Lab Administrator Registration</h3>
                     <form
