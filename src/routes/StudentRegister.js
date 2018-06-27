@@ -206,7 +206,7 @@ class StudentRegister extends React.Component {
         }
         return (
             <div>
-                <Navbar/>
+                {/*<Navbar/>*/}
                 <div className="student-reg-form">
                     <h3>Student Registration</h3>
                     <form id="studentForm" onSubmit={this.onSubmit}>

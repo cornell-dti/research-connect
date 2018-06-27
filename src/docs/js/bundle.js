@@ -76674,7 +76674,6 @@ var StudentRegister = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_StudentNavbar2.default, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'student-reg-form' },
@@ -80268,7 +80267,17 @@ var LandingPage = function (_Component) {
 		value: function componentWillMount() {
 			if (sessionStorage.getItem('token_id') !== null) {
 				_axios2.default.get('/api/role/' + sessionStorage.getItem('token_id')).then(function (response) {
-					var endUrl = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
+					var endUrl = void 0;
+					if (response.data === 'undergrad') {
+						endUrl = '/opportunities';
+					}
+					//'none' means they're not an undergrad or professor
+					else if (response.data === 'none') {
+							sessionStorage.clear();
+							endUrl = '/';
+						} else {
+							endUrl = '/professorView';
+						}
 					window.location.href = endUrl;
 				}).catch(function (error) {
 					console.log(error);

@@ -33,7 +33,18 @@ class LandingPage extends Component {
 		if (sessionStorage.getItem('token_id') !== null) {
 			axios.get('/api/role/' +  sessionStorage.getItem('token_id'))
 			.then((response) => {
-				let endUrl = response.data !== 'undergrad' ? '/professorView' : '/opportunities';
+				let endUrl;
+				if (response.data === 'undergrad'){
+					endUrl = '/opportunities';
+				}
+				//'none' means they're not an undergrad or professor
+				else if (response.data === 'none'){
+					sessionStorage.clear();
+					endUrl = '/';
+				}
+				else {
+					endUrl = '/professorView';
+				}
                 window.location.href = endUrl;
 			})
 			.catch(function (error) {
