@@ -130,7 +130,7 @@ class LandingPage extends Component {
 							<div><GoogleLogin
 								clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
 								buttonText="Lab Log In"
-								hostedDomain="cornell.edu"
+								// hostedDomain="cornell.edu"
 								onSuccess={this.responseGoogle.bind(this)}
 								onFailure={this.loginFailure.bind(this)}
 								className="login button"/>
@@ -235,7 +235,7 @@ class LandingPage extends Component {
 					<GoogleLogin
 						clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
 						buttonText="Lab Signup"
-						hostedDomain="cornell.edu"
+						// hostedDomain="cornell.edu"
 						onSuccess={this.responseGoogle.bind(this)}
 						onFailure={this.loginFailure.bind(this)}
 						className="signup button"/>

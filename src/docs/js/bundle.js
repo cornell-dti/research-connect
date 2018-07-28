@@ -47588,7 +47588,7 @@ function unregister() {
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47646,814 +47646,941 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var CreateOppForm = function (_React$Component) {
-	_inherits(CreateOppForm, _React$Component);
+    _inherits(CreateOppForm, _React$Component);
 
-	function CreateOppForm(props) {
-		_classCallCheck(this, CreateOppForm);
+    function CreateOppForm(props) {
+        _classCallCheck(this, CreateOppForm);
 
-		var _this = _possibleConstructorReturn(this, (CreateOppForm.__proto__ || Object.getPrototypeOf(CreateOppForm)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (CreateOppForm.__proto__ || Object.getPrototypeOf(CreateOppForm)).call(this, props));
 
-		_this.onSubmit = function (e) {
-			_this.setState({ triedSubmitting: true });
-			e.preventDefault();
-			// get our form data out of state
-			var _this$state = _this.state,
-			    netId = _this$state.netId,
-			    creatorNetId = _this$state.creatorNetId,
-			    labPage = _this$state.labPage,
-			    areas = _this$state.areas,
-			    title = _this$state.title,
-			    projectDescription = _this$state.projectDescription,
-			    undergradTasks = _this$state.undergradTasks,
-			    qualifications = _this$state.qualifications,
-			    startSeason = _this$state.startSeason,
-			    startYear = _this$state.startYear,
-			    yearsAllowed = _this$state.yearsAllowed,
-			    questions = _this$state.questions,
-			    requiredClasses = _this$state.requiredClasses,
-			    minGPA = _this$state.minGPA,
-			    minHours = _this$state.minHours,
-			    maxHours = _this$state.maxHours,
-			    opens = _this$state.opens,
-			    closes = _this$state.closes,
-			    labName = _this$state.labName,
-			    supervisor = _this$state.supervisor,
-			    numQuestions = _this$state.numQuestions,
-			    titleIsValid = _this$state.titleIsValid,
-			    tasksAreValid = _this$state.tasksAreValid,
-			    seasonIsValid = _this$state.seasonIsValid,
-			    yearIsValid = _this$state.yearIsValid;
-
-			if (titleIsValid && tasksAreValid && seasonIsValid && yearIsValid) {
-				console.log("submitting form");
-				_axios2.default.post('/opportunities', {
-					netId: netId, creatorNetId: creatorNetId, labPage: labPage, areas: areas, title: title, projectDescription: projectDescription, undergradTasks: undergradTasks, qualifications: qualifications, startSeason: startSeason, startYear: startYear, yearsAllowed: yearsAllowed, questions: questions, requiredClasses: requiredClasses, minGPA: minGPA, minHours: minHours, maxHours: maxHours, opens: opens, closes: closes, labName: labName, supervisor: supervisor, numQuestions: numQuestions
-				}).then(function (result) {
-					//access the results here....
-					document.location.href = "/professorView";
-				});
-			} else {
-				window.scrollTo(0, 0);
-			}
-		};
-
-		_this.onSubmit = function (e) {
-			e.preventDefault();
-			// get our form data out of state
-			var _this$state2 = _this.state,
-			    netId = _this$state2.netId,
-			    creatorNetId = _this$state2.creatorNetId,
-			    labPage = _this$state2.labPage,
-			    areas = _this$state2.areas,
-			    title = _this$state2.title,
-			    projectDescription = _this$state2.projectDescription,
-			    undergradTasks = _this$state2.undergradTasks,
-			    qualifications = _this$state2.qualifications,
-			    startSeason = _this$state2.startSeason,
-			    startYear = _this$state2.startYear,
-			    yearsAllowed = _this$state2.yearsAllowed,
-			    questions = _this$state2.questions,
-			    requiredClasses = _this$state2.requiredClasses,
-			    minGPA = _this$state2.minGPA,
-			    minHours = _this$state2.minHours,
-			    maxHours = _this$state2.maxHours,
-			    opens = _this$state2.opens,
-			    closes = _this$state2.closes,
-			    labName = _this$state2.labName,
-			    supervisor = _this$state2.supervisor,
-			    numQuestions = _this$state2.numQuestions,
-			    result = _this$state2.result;
+        _this.onSubmit = function (e) {
+            _this.setState({ triedSubmitting: true });
+            e.preventDefault();
+            // get our form data out of state
+            var _this$state = _this.state,
+                netId = _this$state.netId,
+                creatorNetId = _this$state.creatorNetId,
+                labPage = _this$state.labPage,
+                areas = _this$state.areas,
+                title = _this$state.title,
+                projectDescription = _this$state.projectDescription,
+                undergradTasks = _this$state.undergradTasks,
+                qualifications = _this$state.qualifications,
+                compensation = _this$state.compensation,
+                startSeason = _this$state.startSeason,
+                startYear = _this$state.startYear,
+                yearsAllowed = _this$state.yearsAllowed,
+                questions = _this$state.questions,
+                requiredClasses = _this$state.requiredClasses,
+                minGPA = _this$state.minGPA,
+                minHours = _this$state.minHours,
+                maxHours = _this$state.maxHours,
+                opens = _this$state.opens,
+                closes = _this$state.closes,
+                labName = _this$state.labName,
+                supervisor = _this$state.supervisor,
+                numQuestions = _this$state.numQuestions,
+                result = _this$state.result;
 
 
-			_axios2.default.post('/api/opportunities', { netId: netId, creatorNetId: creatorNetId, labPage: labPage, areas: areas, title: title, projectDescription: projectDescription, undergradTasks: undergradTasks, qualifications: qualifications, startSeason: startSeason, startYear: startYear, yearsAllowed: yearsAllowed, questions: questions, requiredClasses: requiredClasses, minGPA: minGPA, minHours: minHours, maxHours: maxHours, opens: opens, closes: closes, labName: labName, supervisor: supervisor, numQuestions: numQuestions }).then(function (result) {
-				//access the results here....
-				_this.setState({ submit: "Submitted!" });
-				function sleep(time) {
-					return new Promise(function (resolve) {
-						return setTimeout(resolve, time);
-					});
-				}
-				sleep(1200).then(function () {
-					document.location.href = "/professorView";
-				});
-			});
-		};
+            _axios2.default.post('/api/opportunities', {
+                netId: netId,
+                creatorNetId: creatorNetId,
+                labPage: labPage,
+                areas: areas,
+                title: title,
+                projectDescription: projectDescription,
+                undergradTasks: undergradTasks,
+                qualifications: qualifications,
+                compensation: compensation,
+                startSeason: startSeason,
+                startYear: startYear,
+                yearsAllowed: yearsAllowed,
+                questions: questions,
+                requiredClasses: requiredClasses,
+                minGPA: minGPA,
+                minHours: minHours,
+                maxHours: maxHours,
+                opens: opens,
+                closes: closes,
+                labName: labName,
+                supervisor: supervisor,
+                numQuestions: numQuestions
+            }).then(function (result) {
+                //access the results here....
+                _this.setState({ submit: "Submitted!" });
+                function sleep(time) {
+                    return new Promise(function (resolve) {
+                        return setTimeout(resolve, time);
+                    });
+                }
 
-		_this.state = {
-			netId: sessionStorage.getItem('netId'),
-			creatorNetId: sessionStorage.getItem('token_id'),
-			labPage: '',
-			areas: [],
-			title: '',
-			projectDescription: '',
-			undergradTasks: '',
-			qualifications: '',
-			startSeason: '',
-			startYear: '',
-			yearsAllowed: [],
-			questions: {},
-			requiredClasses: [],
-			minGPA: '',
-			minHours: '',
-			maxHours: '',
-			opens: (0, _moment2.default)(),
-			closes: (0, _moment2.default)().add(365, 'days'),
-			labName: '',
-			supervisor: '',
-			numQuestions: 0,
-			titleIsValid: false,
-			tasksAreValid: false,
-			seasonIsValid: false,
-			yearIsValid: false,
-			triedSubmitting: false
-		};
+                sleep(1200).then(function () {
+                    document.location.href = "/professorView";
+                });
+            });
+        };
 
-		_this.handleChange = _this.handleChange.bind(_this);
-		_this.addQuestion = _this.addQuestion.bind(_this);
-		_this.displayQuestions = _this.displayQuestions.bind(_this);
+        _this.state = {
+            netId: sessionStorage.getItem('netId'),
+            creatorNetId: sessionStorage.getItem('token_id'),
+            labPage: '',
+            areas: [],
+            title: '',
+            projectDescription: '',
+            undergradTasks: '',
+            qualifications: '',
+            compensation: [],
+            startSeason: '',
+            startYear: '',
+            yearsAllowed: [],
+            questions: {},
+            requiredClasses: [],
+            minGPA: '',
+            minHours: '',
+            maxHours: '',
+            opens: (0, _moment2.default)(),
+            closes: (0, _moment2.default)().add(365, 'days'),
+            labName: '',
+            supervisor: '',
+            numQuestions: 0,
+            titleIsValid: false,
+            tasksAreValid: false,
+            seasonIsValid: false,
+            compensationIsValid: false,
+            yearIsValid: false,
+            triedSubmitting: false
+        };
 
-		return _this;
-	}
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.addQuestion = _this.addQuestion.bind(_this);
+        _this.displayQuestions = _this.displayQuestions.bind(_this);
 
-	_createClass(CreateOppForm, [{
-		key: 'displayQuestions',
-		value: function displayQuestions() {
+        return _this;
+    }
 
-			var questionBoxes = [];
-			for (var i = 0; i < this.state.numQuestions; i++) {
-				var stateLabel = "q" + i.toString();
-				questionBoxes.push(_react2.default.createElement(
-					'div',
-					{ key: stateLabel },
-					_react2.default.createElement(
-						'span',
-						null,
-						' ',
-						(i + 1).toString() + ". ",
-						' '
-					),
-					_react2.default.createElement('input', { name: i, value: this.state.questions[stateLabel], onChange: this.handleQuestionState.bind(this, i), className: 'question', type: 'text' }),
-					_react2.default.createElement(_delete2.default, { size: 30, id: i, onClick: this.deleteQuestion.bind(this, stateLabel), className: 'deleter-icon' })
-				));
-			}
-			return _react2.default.createElement(
-				'div',
-				{ className: 'question-boxes' },
-				questionBoxes
-			);
-		}
-	}, {
-		key: 'deleteQuestion',
-		value: function deleteQuestion(data, e) {
+    /**
+     onSubmit = (e) => {
+        this.setState({triedSubmitting: true});
+        e.preventDefault();
+        // get our form data out of state
+        const {
+            netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation,
+            startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens,
+            closes, labName, supervisor, numQuestions, titleIsValid, tasksAreValid, seasonIsValid, yearIsValid
+        } = this.state;
+        if (titleIsValid && tasksAreValid && seasonIsValid && yearIsValid) {
+            axios.post('/opportunities', {
+                netId,
+                creatorNetId,
+                labPage,
+                areas,
+                title,
+                projectDescription,
+                undergradTasks,
+                qualifications,
+                compensation,
+                startSeason,
+                startYear,
+                yearsAllowed,
+                questions,
+                requiredClasses,
+                minGPA,
+                minHours,
+                maxHours,
+                opens,
+                closes,
+                labName,
+                supervisor,
+                numQuestions
+            })
+                  .then((result) => {
+                    //access the results here....
+                    document.location.href = "/professorView"
+                });
+        }
+        else {
+            window.scrollTo(0, 0);
+        }
+    };
+     */
 
-			var deleted = parseInt(data.slice(1));
-			var newQnum = this.state.numQuestions - 1;
-			var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-			var questionsEdit = {};
+    //display the questions interface to add/delete questions
 
-			for (var question in questionsCopy) {
-				var num = parseInt(question.slice(1));
-				if (num < deleted) {
-					questionsEdit[question] = questionsCopy[question];
-				} else if (num > deleted) {
-					var newString = "q" + (num - 1).toString();
-					questionsEdit[newString] = questionsCopy[question];
-				}
-			}
 
-			this.setState({ numQuestions: newQnum });
+    _createClass(CreateOppForm, [{
+        key: 'displayQuestions',
+        value: function displayQuestions() {
 
-			this.setState({
-				questions: questionsEdit
-			});
-			// setTimeout(() => {
-			//           this.makeBoxes()
-			//       }, 40);
-		}
+            var questionBoxes = [];
+            for (var i = 0; i < this.state.numQuestions; i++) {
+                var stateLabel = "q" + i.toString();
+                questionBoxes.push(_react2.default.createElement(
+                    'div',
+                    { key: stateLabel },
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        ' ',
+                        (i + 1).toString() + ". ",
+                        ' '
+                    ),
+                    _react2.default.createElement('input', { name: i, value: this.state.questions[stateLabel],
+                        onChange: this.handleQuestionState.bind(this, i), className: 'question', type: 'text' }),
+                    _react2.default.createElement(_delete2.default, { size: 30, id: i, onClick: this.deleteQuestion.bind(this, stateLabel),
+                        className: 'deleter-icon' })
+                ));
+            }
+            return _react2.default.createElement(
+                'div',
+                { className: 'question-boxes' },
+                questionBoxes
+            );
+        }
+    }, {
+        key: 'deleteQuestion',
+        value: function deleteQuestion(data, e) {
 
-		//TODO: use this https://stackoverflow.com/questions/30483645/get-file-object-from-file-input so you don't get redirected everytime and can submit all data at once
+            var deleted = parseInt(data.slice(1));
+            var newQnum = this.state.numQuestions - 1;
+            var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
+            var questionsEdit = {};
 
-	}, {
-		key: 'addQuestion',
-		value: function addQuestion(event) {
+            for (var question in questionsCopy) {
+                var num = parseInt(question.slice(1));
+                if (num < deleted) {
+                    questionsEdit[question] = questionsCopy[question];
+                } else if (num > deleted) {
+                    var newString = "q" + (num - 1).toString();
+                    questionsEdit[newString] = questionsCopy[question];
+                }
+            }
 
-			var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-			questionsCopy["q" + this.state.numQuestions.toString()] = '';
-			this.setState({
-				questions: questionsCopy
-			});
-			this.setState({ numQuestions: this.state.numQuestions + 1 });
-		}
-	}, {
-		key: 'createGpaOptions',
-		value: function createGpaOptions() {
-			var options = [];
-			for (var i = 25; i <= 43; i++) {
-				options.push(_react2.default.createElement(
-					'option',
-					{ key: i, value: (i / 10).toString() },
-					(i / 10).toString()
-				));
-			}
-			return _react2.default.createElement(
-				'select',
-				{ name: 'gpa', className: 'gpa-select column column-90', value: this.state.minGPA, onChange: this.handleChange },
-				_react2.default.createElement(
-					'option',
-					{ key: '', value: '' },
-					'Select Minimum GPA'
-				),
-				options
-			);
-		}
-	}, {
-		key: 'setYears',
-		value: function setYears() {
+            this.setState({ numQuestions: newQnum });
 
-			var yearArray = [];
-			if (this.freshman.checked) {
-				yearArray.push('freshman');
-			}
-			if (this.sophomore.checked) {
-				yearArray.push('sophomore');
-			}
-			if (this.junior.checked) {
-				yearArray.push('junior');
-			}
-			if (this.senior.checked) {
-				yearArray.push('senior');
-			}
-			this.setState({ yearsAllowed: yearArray });
-		}
-	}, {
-		key: 'handleChange',
-		value: function handleChange(event) {
+            this.setState({
+                questions: questionsEdit
+            });
+            // setTimeout(() => {
+            //           this.makeBoxes()
+            //       }, 40);
+        }
+    }, {
+        key: 'addQuestion',
+        value: function addQuestion(event) {
 
-			if (event.target.name === "labName") {
-				this.setState({ labName: event.target.value });
-			} else if (event.target.name === "netID") {
-				this.setState({ creatorNetId: event.target.value });
-			} else if (event.target.name === "title") {
-				if (event.target.value.length > 0) {
-					this.setState({ titleIsValid: true });
-				} else {
-					this.setState({ titleIsValid: false });
-				}
-				this.setState({ title: event.target.value });
-			} else if (event.target.name === "areas") {
-				var areaArray = event.target.value.split(",");
-				this.setState({ areas: areaArray });
-			} else if (event.target.name === "pi") {
-				this.setState({ pi: event.target.value });
-			} else if (event.target.name === "supervisor") {
-				this.setState({ supervisor: event.target.value });
-			} else if (event.target.name === "descript") {
-				this.setState({ projectDescription: event.target.value });
-			} else if (event.target.name === "tasks") {
-				if (event.target.value.length > 0) {
-					this.setState({ tasksAreValid: true });
-				} else {
-					this.setState({ tasksAreValid: false });
-				}
-				this.setState({ undergradTasks: event.target.value });
-			} else if (event.target.name === "qual") {
-				this.setState({ qualifications: event.target.value });
-			} else if (event.target.name === "classes") {
-				var classArray = event.target.value.split(",");
-				this.setState({ areas: areaArray });
-				this.setState({ requiredClasses: classArray });
-			} else if (event.target.name === "startSeason") {
-				if (event.target.value != "Select") {
-					this.setState({ seasonIsValid: true });
-				} else {
-					this.setState({ seasonIsValid: false });
-				}
-				this.setState({ startSeason: event.target.value });
-			} else if (event.target.name === "startYear") {
-				if (event.target.value != "Select") {
-					this.setState({ yearIsValid: true });
-				} else {
-					this.setState({ yearIsValid: false });
-				}
-				this.setState({ startYear: event.target.value });
-			} else if (event.target.name === "gpa") {
-				this.setState({ minGPA: event.target.value });
-			} else if (event.target.name === "min") {
-				this.setState({ minHours: event.target.value });
-			} else if (event.target.name === "max") {
-				this.setState({ maxHours: event.target.value });
-			}
-		}
-	}, {
-		key: 'handleQuestionState',
-		value: function handleQuestionState(i) {
-			var stateLabel = "q" + i.toString();
-			var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-			questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
-			this.setState({
-				questions: questionsCopy
-			});
-		}
-	}, {
-		key: 'handleOpenDateChange',
-		value: function handleOpenDateChange(date) {
-			this.setState({ opens: date });
-		}
-	}, {
-		key: 'handleCloseDateChange',
-		value: function handleCloseDateChange(date) {
-			this.setState({ closes: date });
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+            var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
+            questionsCopy["q" + this.state.numQuestions.toString()] = '';
+            this.setState({
+                questions: questionsCopy
+            });
+            this.setState({ numQuestions: this.state.numQuestions + 1 });
+        }
+    }, {
+        key: 'createGpaOptions',
+        value: function createGpaOptions() {
+            var options = [];
+            for (var i = 25; i <= 43; i++) {
+                options.push(_react2.default.createElement(
+                    'option',
+                    { key: i, value: (i / 10).toString() },
+                    (i / 10).toString()
+                ));
+            }
+            return _react2.default.createElement(
+                'select',
+                { name: 'gpa', className: 'gpa-select column column-90', value: this.state.minGPA,
+                    onChange: this.handleChange },
+                _react2.default.createElement(
+                    'option',
+                    { key: '', value: '' },
+                    'Select Minimum GPA'
+                ),
+                options
+            );
+        }
+    }, {
+        key: 'setYears',
+        value: function setYears() {
 
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(_ProfNavbar2.default, { current: "newopp" }),
-				_react2.default.createElement(
-					'div',
-					{ className: 'row' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'new-opp-form' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'form-title' },
-							_react2.default.createElement(
-								'h3',
-								null,
-								'Create New Position'
-							),
-							_react2.default.createElement(
-								'span',
-								{ className: 'required-star-top' },
-								'* Required Fields'
-							)
-						),
-						_react2.default.createElement(
-							'form',
-							{ className: 'form-body ',
-								id: 'createOpp',
-								action: 'opportunities',
-								method: 'post',
-								onSubmit: this.onSubmit
-							},
-							_react2.default.createElement(
-								'div',
-								{ className: !this.state.titleIsValid && this.state.triedSubmitting ? "row input-row wrong" : "row input-row" },
-								_react2.default.createElement(
-									'span',
-									{ className: 'required-star' },
-									'*'
-								),
-								_react2.default.createElement('input', { className: 'column column-90', placeholder: 'Position Title', type: 'text', name: 'title', value: this.state.title, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-title', className: 'info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-title', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Examples:'
-										),
-										_react2.default.createElement(
-											'ul',
-											{ className: 'info-text' },
-											_react2.default.createElement(
-												'li',
-												null,
-												' Molecular Mechanisms of Tissue Morphogenesis'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Translational Regulation in Yeast Meiosis'
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: !this.state.tasksAreValid && this.state.triedSubmitting ? "row input-row wrong" : "row input-row" },
-								_react2.default.createElement(
-									'span',
-									{ className: 'required-star' },
-									'*'
-								),
-								_react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Undergraduate Tasks', name: 'tasks', type: 'text', value: this.state.undergradTasks, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-tasks', className: 'info-icon column column-5', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-tasks', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Examples:'
-										),
-										_react2.default.createElement(
-											'ul',
-											{ className: 'info-text' },
-											_react2.default.createElement(
-												'li',
-												null,
-												'Presenting findings'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Transcribing interviews'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Microscopy'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Caring for lab rats'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Data analytics in Excel'
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row start-time' },
-								_react2.default.createElement(
-									'span',
-									{ className: 'required-star' },
-									'*'
-								),
-								_react2.default.createElement(
-									'select',
-									{ className: !this.state.seasonIsValid && this.state.triedSubmitting ? "startSeason wrong-select" : "startSeason", name: 'startSeason', value: this.state.startSeason, onChange: this.handleChange },
-									_react2.default.createElement(
-										'option',
-										{ value: 'Select' },
-										'Select Start Semester'
-									),
-									_react2.default.createElement(
-										'option',
-										{ value: 'Spring' },
-										'Spring Semester'
-									),
-									_react2.default.createElement(
-										'option',
-										{ value: 'Summer' },
-										'Summer Semester'
-									),
-									_react2.default.createElement(
-										'option',
-										{ value: 'Fall' },
-										'Fall Semester'
-									)
-								),
-								_react2.default.createElement(
-									'select',
-									{ className: !this.state.yearIsValid && this.state.triedSubmitting ? "startYear wrong-select" : "startYear", name: 'startYear', value: this.state.startYear, onChange: this.handleChange },
-									_react2.default.createElement(
-										'option',
-										{ value: 'Select' },
-										'Select Start Year'
-									),
-									_react2.default.createElement(
-										'option',
-										{ value: '2018' },
-										'2018'
-									),
-									_react2.default.createElement(
-										'option',
-										{ value: '2019' },
-										'2019'
-									)
-								),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-start', className: ' info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-start', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text' },
-										'Indicates the semester the student will start working in the lab.'
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								_react2.default.createElement('input', { className: 'column column-90', placeholder: 'Position Supervisor', name: 'supervisor', type: 'text', value: this.state.supervisor, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-super', className: 'info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-super', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text' },
-										' Your name or the name of other person who would be their direct supervisor.'
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								_react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Project Description and Goals', name: 'descript', type: 'text', value: this.state.projectDescription, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-descript', className: 'info-icon column column-5', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-descript', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text' },
-										'Example:'
-									),
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text' },
-										'Apprentice will conduct a genetic screen to discover novel genes required for tissue morphogenesis and will be trained in general wet-lab work and microdissection. '
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								_react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Preferred Qualifications (i.e. completion of a class, familiarity with a subject)', name: 'qual', type: 'text', value: this.state.qualifications, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-quals', className: 'column column-5 info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-quals', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Examples:'
-										),
-										_react2.default.createElement(
-											'ul',
-											{ className: 'info-text' },
-											_react2.default.createElement(
-												'li',
-												null,
-												'Familiarity with molecular biology'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Experience with automated image analysis'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Passion for biomedical tech'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Above B+ in Intro Chem'
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'hours row input-row optional' },
-								_react2.default.createElement('input', { className: 'min-hours', placeholder: 'Min Hours', type: 'text', name: 'min', value: this.state.minHours, onChange: this.handleChange }),
-								_react2.default.createElement('input', { className: 'max-hours', placeholder: 'Max Hours', type: 'text', name: 'max', value: this.state.maxHours, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-hours', className: 'info-icon column column-5', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-hours', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text' },
-										'Estimate the minimum hours you would expect the student to work each week and the maximum hours you would ever require.'
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								_react2.default.createElement('input', { className: 'column column-90', placeholder: 'Required/Preferred Classes (Separate with commas, i.e. BIO 1110, MATH 1910)', type: 'text', name: 'classes', value: this.state.requiredClasses, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-classes', className: 'column column-5 info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-classes', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Examples:'
-										),
-										_react2.default.createElement(
-											'ul',
-											{ className: 'info-text' },
-											_react2.default.createElement(
-												'li',
-												null,
-												'CS 1110'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'MATH 1910'
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								this.createGpaOptions(),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-gpa', className: 'column column-5 info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-gpa', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Students with a GPA lower than this minimum will be discouraged from applying.'
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'years-allowed optional' },
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Years Desired: '
-								),
-								_react2.default.createElement('input', { ref: function ref(node) {
-										_this2.freshman = node;
-									}, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Freshman', value: 'Freshman' }),
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Freshmen '
-								),
-								_react2.default.createElement('input', { ref: function ref(node) {
-										_this2.sophomore = node;
-									}, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Sophomore', value: 'Sophomore' }),
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Sophomores '
-								),
-								_react2.default.createElement('input', { ref: function ref(node) {
-										_this2.junior = node;
-									}, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Junior', value: 'Junior' }),
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Juniors'
-								),
-								_react2.default.createElement('input', { ref: function ref(node) {
-										_this2.senior = node;
-									}, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Senior', value: 'Senior' }),
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Seniors '
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'row input-row optional' },
-								_react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Topics of Research (Please separate with commas)', type: 'text', name: 'areas', value: this.state.areas, onChange: this.handleChange }),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-topics', className: 'column column-5 info-icon', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'right', id: 'info-topics', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'info-text' },
-										_react2.default.createElement(
-											'span',
-											null,
-											'Examples:'
-										),
-										_react2.default.createElement(
-											'ul',
-											{ className: 'info-text' },
-											_react2.default.createElement(
-												'li',
-												null,
-												'Computational Biology'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Natural Language Processing'
-											),
-											_react2.default.createElement(
-												'li',
-												null,
-												'Protein Classification'
-											)
-										)
-									)
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'date-pick-container ' },
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline' },
-									'Open Application Window: '
-								),
-								_react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
-									placeholderText: 'Select a date',
-									selected: this.state.opens,
-									onChange: this.handleOpenDateChange.bind(this)
-								}),
-								_react2.default.createElement(
-									'label',
-									{ className: 'label-inline ' },
-									'Close Application Window: '
-								),
-								_react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
-									selected: this.state.closes,
-									onChange: this.handleCloseDateChange.bind(this)
-								})
-							),
-							_react2.default.createElement('hr', null),
-							_react2.default.createElement(
-								'div',
-								{ className: 'question-adder' },
-								_react2.default.createElement(
-									'h4',
-									null,
-									'Application Questions'
-								),
-								_react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-questions', className: 'info-icon-title', size: 20 }),
-								_react2.default.createElement(
-									_reactTooltip2.default,
-									{ place: 'top', id: 'info-questions', 'aria-haspopup': 'true', role: 'example' },
-									_react2.default.createElement(
-										'p',
-										{ className: 'info-text-large' },
-										'We recommend asking "Why are you interested in this lab and/or position?" to gauge interest. You will nonetheless be able to view each student',
-										"'",
-										's cover letter, year, GPA, r\xE9sum\xE9, and major, in addition to their responses to these questions once they apply.'
-									)
-								),
-								_react2.default.createElement(
-									'p',
-									null,
-									'Here you can add any position-specific questions or requests for additional information, which students will be required to answer in order to apply.'
-								),
-								this.displayQuestions(),
-								_react2.default.createElement(
-									'div',
-									{ className: 'add-question', onClick: this.addQuestion },
-									_react2.default.createElement(
-										'span',
-										null,
-										'ADD QUESTION'
-									),
-									_react2.default.createElement(_addCircle2.default, { className: 'adder-icon', size: 20 })
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'submit-div' },
-								_react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position' })
-							)
-						)
-					)
-				),
-				_react2.default.createElement(_Footer2.default, null)
-			);
-		}
-	}]);
+            var yearArray = [];
+            if (this.freshman.checked) {
+                yearArray.push('freshman');
+            }
+            if (this.sophomore.checked) {
+                yearArray.push('sophomore');
+            }
+            if (this.junior.checked) {
+                yearArray.push('junior');
+            }
+            if (this.senior.checked) {
+                yearArray.push('senior');
+            }
+            this.setState({ yearsAllowed: yearArray });
+        }
+    }, {
+        key: 'setCompensation',
+        value: function setCompensation() {
+            var compensationArray = [];
+            if (this.pay.checked) {
+                compensationArray.push('pay');
+            }
+            if (this.credit.checked) {
+                compensationArray.push('credit');
+            }
+            if (this.undetermined.checked) {
+                compensationArray.push('undetermined');
+            }
+            var atLeastOneOptionSelected = compensationArray.length !== 0;
+            this.setState({ compensationIsValid: atLeastOneOptionSelected });
+            this.setState({ compensation: compensationArray });
+        }
 
-	return CreateOppForm;
+        //Set values of form items in state and change their validation state if they're invalid
+
+    }, {
+        key: 'handleChange',
+        value: function handleChange(event) {
+
+            if (event.target.name === "labName") {
+                this.setState({ labName: event.target.value });
+            } else if (event.target.name === "netID") {
+                this.setState({ creatorNetId: event.target.value });
+            } else if (event.target.name === "title") {
+                if (event.target.value.length > 0) {
+                    this.setState({ titleIsValid: true });
+                } else {
+                    this.setState({ titleIsValid: false });
+                }
+                this.setState({ title: event.target.value });
+            } else if (event.target.name === "areas") {
+                var _areaArray = event.target.value.split(",");
+                this.setState({ areas: _areaArray });
+            } else if (event.target.name === "pi") {
+                this.setState({ pi: event.target.value });
+            } else if (event.target.name === "supervisor") {
+                this.setState({ supervisor: event.target.value });
+            } else if (event.target.name === "descript") {
+                this.setState({ projectDescription: event.target.value });
+            } else if (event.target.name === "tasks") {
+                if (event.target.value.length > 0) {
+                    this.setState({ tasksAreValid: true });
+                } else {
+                    this.setState({ tasksAreValid: false });
+                }
+                this.setState({ undergradTasks: event.target.value });
+            } else if (event.target.name === "qual") {
+                this.setState({ qualifications: event.target.value });
+            } else if (event.target.name === "classes") {
+                var classArray = event.target.value.split(",");
+                this.setState({ areas: areaArray });
+                //TODO should the above be classes: classArray ?
+                this.setState({ requiredClasses: classArray });
+            } else if (event.target.name === "startSeason") {
+                if (event.target.value !== "Select") {
+                    this.setState({ seasonIsValid: true });
+                } else {
+                    this.setState({ seasonIsValid: false });
+                }
+                this.setState({ startSeason: event.target.value });
+            } else if (event.target.name === "startYear") {
+                if (event.target.value !== "Select") {
+                    this.setState({ yearIsValid: true });
+                } else {
+                    this.setState({ yearIsValid: false });
+                }
+                this.setState({ startYear: event.target.value });
+            } else if (event.target.name === "gpa") {
+                this.setState({ minGPA: event.target.value });
+            } else if (event.target.name === "min") {
+                this.setState({ minHours: event.target.value });
+            } else if (event.target.name === "max") {
+                this.setState({ maxHours: event.target.value });
+            }
+        }
+    }, {
+        key: 'handleQuestionState',
+        value: function handleQuestionState(i) {
+            var stateLabel = "q" + i.toString();
+            var questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
+            questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
+            this.setState({
+                questions: questionsCopy
+            });
+        }
+    }, {
+        key: 'handleOpenDateChange',
+        value: function handleOpenDateChange(date) {
+            this.setState({ opens: date });
+        }
+    }, {
+        key: 'handleCloseDateChange',
+        value: function handleCloseDateChange(date) {
+            this.setState({ closes: date });
+        }
+
+        //takes care of sending the form data to the back-end
+
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_ProfNavbar2.default, { current: "newopp" }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'new-opp-form' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'form-title' },
+                            _react2.default.createElement(
+                                'h3',
+                                null,
+                                'Create New Position'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                { className: 'required-star-top' },
+                                '* Required Fields'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'form',
+                            { className: 'form-body ',
+                                id: 'createOpp',
+                                action: 'opportunities',
+                                method: 'post',
+                                onSubmit: this.onSubmit
+                            },
+                            _react2.default.createElement(
+                                'div',
+                                {
+                                    className: !this.state.titleIsValid && this.state.triedSubmitting ? "row input-row wrong" : "row input-row" },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'required-star' },
+                                    '*'
+                                ),
+                                _react2.default.createElement('input', { className: 'column column-90', placeholder: 'Position Title', type: 'text',
+                                    name: 'title', value: this.state.title, onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-title', className: 'info-icon', size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-title', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Examples:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'ul',
+                                            { className: 'info-text' },
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                ' Molecular Mechanisms of Tissue Morphogenesis'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Translational Regulation in Yeast Meiosis'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                {
+                                    className: !this.state.tasksAreValid && this.state.triedSubmitting ? "row input-row wrong" : "row input-row" },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'required-star' },
+                                    '*'
+                                ),
+                                _react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Undergraduate Tasks', name: 'tasks',
+                                    type: 'text', value: this.state.undergradTasks, onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-tasks', className: 'info-icon column column-5',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-tasks', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Examples:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'ul',
+                                            { className: 'info-text' },
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Presenting findings'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Transcribing interviews'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Microscopy'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Caring for lab rats'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Data analytics in Excel'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row start-time' },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'required-star' },
+                                    '*'
+                                ),
+                                _react2.default.createElement(
+                                    'select',
+                                    {
+                                        className: !this.state.seasonIsValid && this.state.triedSubmitting ? "startSeason wrong-select" : "startSeason",
+                                        name: 'startSeason', value: this.state.startSeason, onChange: this.handleChange },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Select' },
+                                        'Select Start Semester'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Spring' },
+                                        'Spring Semester'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Summer' },
+                                        'Summer Semester'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Fall' },
+                                        'Fall Semester'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'select',
+                                    {
+                                        className: !this.state.yearIsValid && this.state.triedSubmitting ? "startYear wrong-select" : "startYear",
+                                        name: 'startYear', value: this.state.startYear, onChange: this.handleChange },
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: 'Select' },
+                                        'Select Start Year'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '2018' },
+                                        '2018'
+                                    ),
+                                    _react2.default.createElement(
+                                        'option',
+                                        { value: '2019' },
+                                        '2019'
+                                    )
+                                ),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-start', className: ' info-icon', size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-start', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text' },
+                                        'Indicates the semester the student will start working in the lab.'
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('input', { className: 'column column-90', placeholder: 'Position Supervisor', name: 'supervisor',
+                                    type: 'text', value: this.state.supervisor, onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-super', className: 'info-icon', size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-super', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text' },
+                                        ' Your name or the name of other person who would be their direct supervisor.'
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('textarea', { className: 'column column-90', placeholder: 'Project Description and Goals',
+                                    name: 'descript', type: 'text', value: this.state.projectDescription,
+                                    onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-descript', className: 'info-icon column column-5',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-descript', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text' },
+                                        'Example:'
+                                    ),
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text' },
+                                        'Apprentice will conduct a genetic screen to discover novel genes required for tissue morphogenesis and will be trained in general wet-lab work and microdissection. '
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('textarea', { className: 'column column-90',
+                                    placeholder: 'Preferred Qualifications (i.e. completion of a class, familiarity with a subject)',
+                                    name: 'qual', type: 'text', value: this.state.qualifications,
+                                    onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-quals', className: 'column column-5 info-icon',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-quals', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Examples:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'ul',
+                                            { className: 'info-text' },
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Familiarity with molecular biology'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Experience with automated image analysis'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Passion for biomedical tech'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Above B+ in Intro Chem'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: !this.state.compensationIsValid && this.state.triedSubmitting ? "startYear wrong-select" : "compensation" },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'required-star' },
+                                    '*'
+                                ),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'How The Student Will Be Compensated (leave blank if no compensation beyond experience): '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.pay = node;
+                                    }, onChange: this.setCompensation().bind(this), type: 'checkbox', name: 'pay',
+                                    value: 'pay' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Pay '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.credit = node;
+                                    }, onChange: this.setCompensation().bind(this), type: 'checkbox', name: 'credit',
+                                    value: 'credit' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Course Credit '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.undetermined = node;
+                                    }, onChange: this.setCompensation().bind(this), type: 'checkbox', name: 'undetermined',
+                                    value: 'undetermined' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Undetermined'
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'hours row input-row optional' },
+                                _react2.default.createElement('input', { className: 'min-hours', placeholder: 'Min Hours', type: 'text', name: 'min',
+                                    value: this.state.minHours, onChange: this.handleChange }),
+                                _react2.default.createElement('input', { className: 'max-hours', placeholder: 'Max Hours', type: 'text', name: 'max',
+                                    value: this.state.maxHours, onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-hours', className: 'info-icon column column-5',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-hours', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text' },
+                                        'Estimate the minimum hours you would expect the student to work each week and the maximum hours you would ever require.'
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('input', { className: 'column column-90',
+                                    placeholder: 'Required/Preferred Classes (Separate with commas, i.e. BIO 1110, MATH 1910)',
+                                    type: 'text', name: 'classes', value: this.state.requiredClasses,
+                                    onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-classes', className: 'column column-5 info-icon',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-classes', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Examples:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'ul',
+                                            { className: 'info-text' },
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'CS 1110'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'MATH 1910'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                this.createGpaOptions(),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-gpa', className: 'column column-5 info-icon', size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-gpa', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Students with a GPA lower than this minimum will be discouraged from applying.'
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'years-allowed optional' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Years Desired: '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.freshman = node;
+                                    }, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Freshman',
+                                    value: 'Freshman' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Freshmen '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.sophomore = node;
+                                    }, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Sophomore',
+                                    value: 'Sophomore' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Sophomores '
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.junior = node;
+                                    }, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Junior', value: 'Junior' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Juniors'
+                                ),
+                                _react2.default.createElement('input', { ref: function ref(node) {
+                                        _this2.senior = node;
+                                    }, onChange: this.setYears.bind(this), type: 'checkbox', name: 'Senior', value: 'Senior' }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Seniors '
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('textarea', { className: 'column column-90',
+                                    placeholder: 'Topics of Research (Please separate with commas)', type: 'text',
+                                    name: 'areas', value: this.state.areas, onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-topics', className: 'column column-5 info-icon',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-topics', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Examples:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'ul',
+                                            { className: 'info-text' },
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Computational Biology'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Natural Language Processing'
+                                            ),
+                                            _react2.default.createElement(
+                                                'li',
+                                                null,
+                                                'Protein Classification'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'date-pick-container ' },
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline' },
+                                    'Open Application Window: '
+                                ),
+                                _react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
+                                    placeholderText: 'Select a date',
+                                    selected: this.state.opens,
+                                    onChange: this.handleOpenDateChange.bind(this)
+                                }),
+                                _react2.default.createElement(
+                                    'label',
+                                    { className: 'label-inline ' },
+                                    'Close Application Window: '
+                                ),
+                                _react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
+                                    selected: this.state.closes,
+                                    onChange: this.handleCloseDateChange.bind(this)
+                                })
+                            ),
+                            _react2.default.createElement('hr', null),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'question-adder' },
+                                _react2.default.createElement(
+                                    'h4',
+                                    null,
+                                    'Application Questions'
+                                ),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-questions', className: 'info-icon-title', size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'top', id: 'info-questions', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'p',
+                                        { className: 'info-text-large' },
+                                        'We recommend asking "Why are you interested in this lab and/or position?" to gauge interest. You will nonetheless be able to view each student',
+                                        "'",
+                                        's cover letter, year, GPA, r\xE9sum\xE9, and major, in addition to their responses to these questions once they apply.'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'p',
+                                    null,
+                                    'Here you can add any position-specific questions or requests for additional information, which students will be required to answer in order to apply.'
+                                ),
+                                this.displayQuestions(),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'add-question', onClick: this.addQuestion },
+                                    _react2.default.createElement(
+                                        'span',
+                                        null,
+                                        'ADD QUESTION'
+                                    ),
+                                    _react2.default.createElement(_addCircle2.default, { className: 'adder-icon', size: 20 })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'submit-div' },
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position' })
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(_Footer2.default, null)
+            );
+        }
+    }]);
+
+    return CreateOppForm;
 }(_react2.default.Component);
 
 exports.default = CreateOppForm;
@@ -75927,13 +76054,21 @@ var InstructorRegister = function (_React$Component) {
             }
         }
     }, {
+        key: 'suggestionsClicked',
+        value: function suggestionsClicked(event) {
+            event.preventDefault();
+            console.log("clicked");
+            console.log(event.target.name);
+            console.log(event.target);
+            console.log(event.target.event);
+        }
+    }, {
         key: 'render',
         value: function render() {
 
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_ProfNavbar2.default, null),
                 _react2.default.createElement(
                     'div',
                     { className: ' instructor-reg-form' },
@@ -76045,7 +76180,7 @@ var InstructorRegister = function (_React$Component) {
                                     onChange: this.handleChangeNotifications.bind(this) },
                                 _react2.default.createElement(
                                     'option',
-                                    { value: '0' },
+                                    { value: '-2' },
                                     'When do you want to receive emails about applications to your postings? You can nonetheless view applications on the site at any time.'
                                 ),
                                 _react2.default.createElement(
@@ -76080,7 +76215,7 @@ var InstructorRegister = function (_React$Component) {
                             ) : "",
                             !this.state.newLab ? _react2.default.createElement(
                                 'div',
-                                { className: 'existing-create-left' },
+                                { className: 'existing-create-left', onClick: this.suggestionsClicked.bind(this) },
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'existing-or-create' },
@@ -76113,10 +76248,13 @@ var InstructorRegister = function (_React$Component) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'existing-or-create' },
-                                    _react2.default.createElement('input', { type: 'button', className: 'left-button button-small-clear', value: 'Find Existing Lab', onClick: this.toggleNewLab.bind(this) }),
-                                    _react2.default.createElement('input', { type: 'button', className: 'right-button no-click button button-small', value: 'Add New Lab' })
+                                    _react2.default.createElement('input', { type: 'button', className: 'left-button button-small-clear',
+                                        value: 'Find Existing Lab', onClick: this.toggleNewLab.bind(this) }),
+                                    _react2.default.createElement('input', { type: 'button', className: 'right-button no-click button button-small',
+                                        value: 'Add New Lab' })
                                 ),
-                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labName', id: 'labName', placeholder: 'Lab Name', value: this.name,
+                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labName', id: 'labName',
+                                    placeholder: 'Lab Name', value: this.name,
                                     onChange: this.handleChangeNewLabName.bind(this) }),
                                 !this.state.labNameValid && this.state.triedSubmitting ? _react2.default.createElement(
                                     'div',
@@ -76127,7 +76265,8 @@ var InstructorRegister = function (_React$Component) {
                                         'Not a valid input.'
                                     )
                                 ) : "",
-                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labURL', id: 'labURL', placeholder: 'Lab URL', value: this.labPage,
+                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labURL', id: 'labURL',
+                                    placeholder: 'Lab URL', value: this.labPage,
                                     onChange: this.handleChangeLabURL.bind(this) }),
                                 !this.state.labURLValid && this.state.triedSubmitting ? _react2.default.createElement(
                                     'div',
@@ -76138,7 +76277,8 @@ var InstructorRegister = function (_React$Component) {
                                         'Not a valid input.'
                                     )
                                 ) : "",
-                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labPI', id: 'labPI', placeholder: 'Principal Investigator',
+                                _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labPI', id: 'labPI',
+                                    placeholder: 'Principal Investigator',
                                     value: this.pi,
                                     onChange: this.handleChangePI.bind(this) }),
                                 !this.state.piValid && this.state.triedSubmitting ? _react2.default.createElement(
@@ -76150,7 +76290,8 @@ var InstructorRegister = function (_React$Component) {
                                         'Not a valid input.'
                                     )
                                 ) : "",
-                                _react2.default.createElement('textarea', { className: 'left-input', name: 'labDescription', id: 'labDescription', value: this.labDescription,
+                                _react2.default.createElement('textarea', { className: 'left-input', name: 'labDescription', id: 'labDescription',
+                                    value: this.labDescription,
                                     onChange: this.handleChangeLabDescript.bind(this),
                                     placeholder: 'Optional Lab Description' })
                             ),
@@ -76181,7 +76322,7 @@ exports.default = InstructorRegister;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -76203,183 +76344,194 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Autosuggester = function (_React$Component) {
-  _inherits(Autosuggester, _React$Component);
+    _inherits(Autosuggester, _React$Component);
 
-  function Autosuggester(props) {
-    _classCallCheck(this, Autosuggester);
+    function Autosuggester(props) {
+        _classCallCheck(this, Autosuggester);
 
-    var _this = _possibleConstructorReturn(this, (Autosuggester.__proto__ || Object.getPrototypeOf(Autosuggester)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Autosuggester.__proto__ || Object.getPrototypeOf(Autosuggester)).call(this, props));
 
-    _this.state = {
-      value: '',
-      showDropdown: false,
-      labId: null,
-      cursor: -1,
-      result: _react2.default.createElement('div', null),
-      suggestionLength: 0,
-      highlightLabName: '',
-      highlightLabId: null
+        _this.state = {
+            value: '',
+            showDropdown: false,
+            labId: null,
+            cursor: -1,
+            result: _react2.default.createElement('div', null),
+            suggestionLength: 0,
+            highlightLabName: '',
+            highlightLabId: null
 
-    };
-    _this.handleChange = _this.handleChange.bind(_this);
-    _this.handleClick = _this.handleClick.bind(_this);
-    _this.getSuggestions = _this.getSuggestions.bind(_this);
-    _this.clickFill = _this.clickFill.bind(_this);
-    return _this;
-  }
-
-  _createClass(Autosuggester, [{
-    key: 'handleChange',
-    value: function handleChange(event) {
-      var _this2 = this;
-
-      this.setState({ value: event.target.value });
-      this.setState({ showDropdown: true, cursor: -1 });
-      setTimeout(function () {
-        _this2.getSuggestions();
-      }, 40);
-      this.props.updateLab(event.target.value, null);
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        _this.getSuggestions = _this.getSuggestions.bind(_this);
+        _this.clickFill = _this.clickFill.bind(_this);
+        return _this;
     }
-  }, {
-    key: 'handleClick',
-    value: function handleClick(event) {
 
-      this.setState({ showDropdown: true });
-      this.getSuggestions();
-    }
-  }, {
-    key: 'clickFill',
-    value: function clickFill(labName, labId) {
+    _createClass(Autosuggester, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var _this2 = this;
 
-      this.setState({ value: labName });
-      this.setState({ labId: labId });
-      this.setState({ showDropdown: false });
-
-      this.props.updateLab(labName, labId);
-    }
-  }, {
-    key: 'onBlur',
-    value: function onBlur(event) {
-      var _this3 = this;
-
-      setTimeout(function () {
-        _this3.setState({
-          showDropdown: false, highlightLabId: null,
-          highlightLabName: '', cursor: -1
-        });
-      }, 120);
-    }
-  }, {
-    key: 'handleKeyDown',
-    value: function handleKeyDown(e) {
-      var _this4 = this;
-
-      var _state = this.state,
-          cursor = _state.cursor,
-          suggestionLength = _state.suggestionLength;
-
-
-      if (e.key == "ArrowUp" && cursor > -1) {
-        e.preventDefault();
-        this.setState(function (prevState) {
-          return {
-            cursor: prevState.cursor - 1
-
-          };
-        });
-        setTimeout(function () {
-          _this4.getSuggestions();
-        }, 40);
-      } else if (e.key == "ArrowDown" && cursor < suggestionLength - 1) {
-
-        e.preventDefault();
-        this.setState(function (prevState) {
-          return {
-            cursor: prevState.cursor + 1
-          };
-        });
-        setTimeout(function () {
-          _this4.getSuggestions();
-        }, 40);
-      } else if (e.key == "Enter" && cursor > -1) {
-        e.preventDefault();
-        setTimeout(function () {
-          _this4.clickFill(_this4.state.highlightLabName, _this4.state.highlightLabId);
-        }, 40);
-      }
-    }
-  }, {
-    key: 'getSuggestions',
-    value: function getSuggestions() {
-
-      var arrayOfLabs = [];
-
-      for (var ind = 0; ind < this.props.data.length; ind++) {
-        arrayOfLabs.push({ "name": this.props.data[ind].name, "id": this.props.data[ind]._id });
-      }
-
-      var inputValue = this.state.value.trim().toLowerCase();
-      var inputLength = inputValue.length;
-      var suggestions = arrayOfLabs;
-
-      var suggArray = [];
-      var positionShowing = 0;
-      if (suggestions.length > 0) {
-        for (var i = 0; i < suggestions.length; i++) {
-          if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0, inputLength) === inputValue) {
-            suggArray.push(_react2.default.createElement(
-              'p',
-              { className: '' + (this.state.cursor === positionShowing ? "active autoOp" : "autoOp"), onClick: this.clickFill.bind(this, suggestions[i].name, suggestions[i].id), key: suggestions[i].id },
-              suggestions[i].name
-            ));
-            if (this.state.cursor == positionShowing) {
-
-              this.setState({ highlightLabName: suggestions[i].name });
-              this.setState({ highlightLabId: suggestions[i].id });
-            }
-            positionShowing += 1;
-          } else if (inputLength === 0) {
-
-            suggArray.push(_react2.default.createElement(
-              'p',
-              { className: '' + (this.state.cursor === positionShowing ? "active autoOp" : "autoOp"), onClick: this.clickFill.bind(this, suggestions[i].name, suggestions[i].id), key: suggestions[i].id },
-              suggestions[i].name
-            ));
-            if (this.state.cursor == positionShowing) {
-
-              this.setState({ highlightLabName: suggestions[i].name });
-              this.setState({ highlightLabId: suggestions[i].id });
-            }
-            positionShowing += 1;
-          }
-          if (this.state.cursor == -1) {
-            this.setState({ highlightLabId: null });
-            this.setState({ highlightLabName: '' });
-          }
+            this.setState({ value: event.target.value });
+            this.setState({ showDropdown: true, cursor: -1 });
+            setTimeout(function () {
+                _this2.getSuggestions();
+            }, 40);
+            this.props.updateLab(event.target.value, null);
         }
-      }
-      this.setState({ suggestionLength: suggArray.length });
-      this.setState({ result: _react2.default.createElement(
-          'div',
-          { className: 'suggestion-array' },
-          suggArray
-        ) });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
 
-      return _react2.default.createElement(
-        'div',
-        { className: 'left-input' },
-        _react2.default.createElement('input', { autoComplete: 'off', ref: 'autoFill', name: 'auto', className: 'suggest-input', placeholder: 'Type Lab Name', type: 'text', value: this.state.value,
-          onBlur: this.onBlur.bind(this), onKeyDown: this.handleKeyDown.bind(this), onChange: this.handleChange, onClick: this.handleClick }),
-        this.state.showDropdown ? this.state.result : ""
-      );
-    }
-  }]);
+            this.setState({ showDropdown: true });
+            this.getSuggestions();
+        }
+    }, {
+        key: 'clickFill',
+        value: function clickFill(labName, labId) {
+            event.preventDefault();
+            console.log("click fill: " + labId);
+            this.setState({ value: labName });
+            this.setState({ labId: labId });
+            this.setState({ showDropdown: false });
 
-  return Autosuggester;
+            this.props.updateLab(labName, labId);
+        }
+    }, {
+        key: 'onBlur',
+        value: function onBlur(event) {
+            var _this3 = this;
+
+            setTimeout(function () {
+                _this3.setState({
+                    showDropdown: false, highlightLabId: null,
+                    highlightLabName: '', cursor: -1
+                });
+            }, 120);
+        }
+    }, {
+        key: 'handleKeyDown',
+        value: function handleKeyDown(e) {
+            var _this4 = this;
+
+            var _state = this.state,
+                cursor = _state.cursor,
+                suggestionLength = _state.suggestionLength;
+
+
+            if (e.key == "ArrowUp" && cursor > -1) {
+                e.preventDefault();
+                this.setState(function (prevState) {
+                    return {
+                        cursor: prevState.cursor - 1
+
+                    };
+                });
+                setTimeout(function () {
+                    _this4.getSuggestions();
+                }, 40);
+            } else if (e.key == "ArrowDown" && cursor < suggestionLength - 1) {
+
+                e.preventDefault();
+                this.setState(function (prevState) {
+                    return {
+                        cursor: prevState.cursor + 1
+                    };
+                });
+                setTimeout(function () {
+                    _this4.getSuggestions();
+                }, 40);
+            } else if (e.key == "Enter" && cursor > -1) {
+                e.preventDefault();
+                setTimeout(function () {
+                    _this4.clickFill(_this4.state.highlightLabName, _this4.state.highlightLabId);
+                }, 40);
+            }
+        }
+    }, {
+        key: 'getSuggestions',
+        value: function getSuggestions() {
+
+            var arrayOfLabs = [];
+
+            for (var ind = 0; ind < this.props.data.length; ind++) {
+                arrayOfLabs.push({ "name": this.props.data[ind].name, "id": this.props.data[ind]._id });
+            }
+
+            var inputValue = this.state.value.trim().toLowerCase();
+            var inputLength = inputValue.length;
+            var suggestions = arrayOfLabs;
+
+            var suggArray = [];
+            var positionShowing = 0;
+            if (suggestions.length > 0) {
+                for (var i = 0; i < suggestions.length; i++) {
+                    if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0, inputLength) === inputValue) {
+                        suggArray.push(_react2.default.createElement(
+                            'p',
+                            {
+                                className: '' + (this.state.cursor === positionShowing ? "active autoOp" : "autoOp"),
+                                onClick: this.clickFill.bind(this, suggestions[i].name, suggestions[i].id),
+                                key: suggestions[i].id },
+                            suggestions[i].name
+                        ));
+                        if (this.state.cursor == positionShowing) {
+
+                            this.setState({ highlightLabName: suggestions[i].name });
+                            this.setState({ highlightLabId: suggestions[i].id });
+                        }
+                        positionShowing += 1;
+                    } else if (inputLength === 0) {
+
+                        suggArray.push(_react2.default.createElement(
+                            'p',
+                            {
+                                className: '' + (this.state.cursor === positionShowing ? "active autoOp" : "autoOp"),
+                                onClick: this.clickFill.bind(this, suggestions[i].name, suggestions[i].id),
+                                key: suggestions[i].id },
+                            suggestions[i].name
+                        ));
+                        if (this.state.cursor == positionShowing) {
+
+                            this.setState({ highlightLabName: suggestions[i].name });
+                            this.setState({ highlightLabId: suggestions[i].id });
+                        }
+                        positionShowing += 1;
+                    }
+                    if (this.state.cursor == -1) {
+                        this.setState({ highlightLabId: null });
+                        this.setState({ highlightLabName: '' });
+                    }
+                }
+            }
+            this.setState({ suggestionLength: suggArray.length });
+            this.setState({
+                result: _react2.default.createElement(
+                    'div',
+                    { className: 'suggestion-array' },
+                    suggArray
+                )
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'left-input' },
+                _react2.default.createElement('input', { autoComplete: 'off', ref: 'autoFill', name: 'auto', className: 'suggest-input',
+                    placeholder: 'Type Lab Name', type: 'text', value: this.state.value,
+                    onBlur: this.onBlur.bind(this), onKeyDown: this.handleKeyDown.bind(this),
+                    onChange: this.handleChange, onClick: this.handleClick }),
+                this.state.showDropdown ? this.state.result : ""
+            );
+        }
+    }]);
+
+    return Autosuggester;
 }(_react2.default.Component);
 
 exports.default = Autosuggester;
@@ -80400,9 +80552,9 @@ var LandingPage = function (_Component) {
 							null,
 							_react2.default.createElement(_reactGoogleLogin2.default, {
 								clientId: '938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com',
-								buttonText: 'Lab Log In',
-								hostedDomain: 'cornell.edu',
-								onSuccess: this.responseGoogle.bind(this),
+								buttonText: 'Lab Log In'
+								// hostedDomain="cornell.edu"
+								, onSuccess: this.responseGoogle.bind(this),
 								onFailure: this.loginFailure.bind(this),
 								className: 'login button' }),
 							_react2.default.createElement(_reactGoogleLogin2.default, {
@@ -80591,9 +80743,9 @@ var LandingPage = function (_Component) {
 						{ className: 'signup-wrap' },
 						_react2.default.createElement(_reactGoogleLogin2.default, {
 							clientId: '938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com',
-							buttonText: 'Lab Signup',
-							hostedDomain: 'cornell.edu',
-							onSuccess: this.responseGoogle.bind(this),
+							buttonText: 'Lab Signup'
+							// hostedDomain="cornell.edu"
+							, onSuccess: this.responseGoogle.bind(this),
 							onFailure: this.loginFailure.bind(this),
 							className: 'signup button' })
 					)

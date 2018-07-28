@@ -10,7 +10,7 @@ function findLabWithAdmin(labs, adminNetId) {
 }
 
 app.get('/check/:opportunityId', function(req, res){
-    var idToCheck = req.query.netId;
+    let idToCheck = req.query.netId;
     console.log("THIS IS WHERE WE START");
 
     opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
@@ -180,7 +180,7 @@ app.get('/', function (req, res) {
 //previously POST /createOpportunity
 app.post('/', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
-    var data = req.body;
+    let data = req.body;
     debug(data);
 
     console.log("netid: " + data.creatorNetId);
@@ -221,6 +221,11 @@ app.post('/', function (req, res) {
             }
         }
     }
+    //if the compensation array is empty, then that means they don't have any compensation
+    if (data.compensation === undefined|| data.compensation.length === 0){
+        data.compensation = ["none"];
+    }
+
     data.questions["coverLetter"] = "Cover Letter";
     let opportunity = new opportunityModel({
         creatorNetId: netId,
@@ -229,6 +234,7 @@ app.post('/', function (req, res) {
         projectDescription: data.projectDescription,
         undergradTasks: data.undergradTasks,
         qualifications: data.qualifications,
+        compensation: data.compensation,
         supervisor: data.supervisor,
         // spots: data.spots,
         startSeason: data.startSeason,

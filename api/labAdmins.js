@@ -77,18 +77,24 @@ app.post('/', function (req, res) {
 
 
     // if labId is null then there is no existing lab and creating new lab
-
-
     if (data.labId == null) {
         createLabAndAdmin(req, res);
         return res.send("success!");
     } else {
-        var labAdmin = new labAdministratorModel({
+        //-2 means they didn't select anything since -2 is the value of the default option on the select menu
+        if (data.notifications === undefined || data.notifications === -2){
+            //set it to 0 since that means they'll get an email every time someone submits an application
+            data.notifications = 0;
+        }
+
+        let labAdmin = new labAdministratorModel({
             role: data.role,
             labId: data.labId,
             netId: data.netId,
             firstName: data.firstName,
             lastName: data.lastName,
+            notifications: data.notifications,
+            lastSent: Date.now(),
             verified: data.verified
         });
 

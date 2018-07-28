@@ -162,6 +162,8 @@ const labAdministratorSchema = new Schema({
     pi: {type: String, required: false},
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
+    notifications: {type: Number, required: true},
+    lastSent: {type: Number, default: Date.now()},
     verified: {type: Boolean, default: false}
 });
 module.exports.labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
@@ -174,6 +176,11 @@ const opportunitySchema = new Schema({
     projectDescription: {type: String, default: "TBD"}, //required, add min length that you see fit
     undergradTasks: {type: String, default: "TBD"},  //what the undergrad would be doing, can be null
     qualifications: {type: String, default: "TBD"}, //can be null/empty
+    compensation:   {
+        type: [String],
+        enum: ["pay", "credit", "undetermined", "none"],
+        default: ["none"]
+    },
     supervisor: {type: String, default: "TBD"}, //can be null
     // spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
     startSeason: {type: String, enum: ["Summer", "Fall", "Winter", "Spring"]}, //null if start asap, string b/c it will prob be something like Fall 2018
