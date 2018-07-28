@@ -76058,9 +76058,7 @@ var InstructorRegister = function (_React$Component) {
         value: function suggestionsClicked(event) {
             event.preventDefault();
             console.log("clicked");
-            console.log(event.target.name);
-            console.log(event.target);
-            console.log(event.target.event);
+            console.log(event.currentTarget);
         }
     }, {
         key: 'render',

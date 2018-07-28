@@ -174,9 +174,7 @@ class InstructorRegister extends React.Component {
     suggestionsClicked(event) {
         event.preventDefault();
         console.log("clicked");
-        console.log(event.target.name);
-        console.log(event.target);
-        console.log(event.target.event);
+        console.log(event.currentTarget);
     }
 
     onSubmit = (e) => {
