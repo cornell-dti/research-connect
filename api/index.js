@@ -54,6 +54,7 @@ app.get("/hasRegistered/:input", function (req, res) {
     let input = req.params.input;
     let netId = null;
     let email = null;
+    debug("in hasregistered");
     //if they sent their email...
     if (input.indexOf("@") !== -1){
         let emailParts = input.split("@");
@@ -70,15 +71,25 @@ app.get("/hasRegistered/:input", function (req, res) {
     else {
         netId = input;
     }
+    debug('about ot find one');
     undergradModel.findOne({netId: netId}, function (err, undergrad) {
+        debug("undergrad");
+        debug(undergrad);
         if (undergrad !== null) {
             return res.send(true);
         }
         //see if they have a netid or not (in which case we'll have to search by email)
-        let searchQuery = email === null ? {netId: netId} : {email: email};
+        let searchQuery = (email === null ? {netId: netId} : {email: email});
+        debug("before lab admin");
         labAdministratorModel.findOne(searchQuery, function (err, labAdmin) {
+            debug("completed");
+            debug(labAdmin);
+            debug(labAdmin !== null);
             return res.send(labAdmin !== null);
         })
+    }).catch(function(err){
+        debug("weird error in findOne");
+        debug(err);
     })
 });
 

@@ -65,6 +65,8 @@ mongoose.plugin(schema => {
 });
 module.exports.mongoose = mongoose;
 
+debug("mongo");
+debug(process.env.MONGODB);
 const mongoDB = process.env.MONGODB;
 //Set up default mongoose connection
 mongoose.connect(mongoDB, {
