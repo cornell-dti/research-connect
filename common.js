@@ -303,7 +303,7 @@ function decryptGoogleToken(token, callback) {
     request(options, function (error, response, body) {
         body = JSON.parse(body);
         callback(body);
-    });
+    })
 }
 
 module.exports.decryptGoogleToken = decryptGoogleToken;
