@@ -1,13 +1,37 @@
 let express = require('express');
 let app = express.Router();
 let common = require('../common.js');
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify, handleVerifyError} = require('../common.js');
 
+/**
+ * Used to test quick functions that require the back-end
+ */
+app.get("/sandbox", function (req, res){
+    const msg = {
+        to: "abagh0703@gmail.com",
+        from: {
+            name: "Research Connect",
+            email: 'hello@research-connect.com'
+        },
+        subject: 'New Research Opportunity Available!',
+        html: 'Hi,<br />' +
+        'A new opportunity was just posted in an area you expressed interest in - ' +
+        1 + '. You can apply to it here: http://research-connect.com/opportunity/' + 2 + '<br />' +
+        '<br />' +
+        'Thanks,<br />' +
+        'The Research Connect Team<br />'
+    };
+
+    sgMail.send(msg); //TODO uncomment
+
+
+    return res.send();
+});
 
 /**
  * A method to populate fields. Feel free to change it as need be.
  */
-app.get('/populate', function (req, res) {
+app.get("/populate", function (req, res) {
     opportunityModel.find({}, function (err, opps) {
         for (let i = 0; i < opps.length; i++) {
             opps[i]["messages"] = {
@@ -25,30 +49,65 @@ app.get('/populate', function (req, res) {
     res.end();
 });
 
-app.get("/hasRegistered/:netId", function (req, res) {
-    let netId = req.params.netId;
+//:input can be email or netid...
+app.get("/hasRegistered/:input", function (req, res) {
+    let input = req.params.input;
+    let netId = null;
+    let email = null;
+    //if they sent their email...
+    if (input.indexOf("@") !== -1){
+        let emailParts = input.split("@");
+        //get just the part before the at sign
+        let domain = emailParts[1];
+        //if they're a cornell net id user...
+        if (domain.indexOf("cornell.edu") !== -1){
+            netId = emailParts[0];
+        }
+        else {
+            email = input;
+        }
+    }
+    else {
+        netId = input;
+    }
     undergradModel.findOne({netId: netId}, function (err, undergrad) {
-        if (undergrad !== null) return res.send(true);
-        labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
+        if (undergrad !== null) {
+            return res.send(true);
+        }
+        //see if they have a netid or not (in which case we'll have to search by email)
+        let searchQuery = email === null ? {netId: netId} : {email: email};
+        labAdministratorModel.findOne(searchQuery, function (err, labAdmin) {
             return res.send(labAdmin !== null);
         })
     })
 });
 
+
+
 /**
  * Returns the role associated with that net id
  * Can either be undergrad, none, or one of the various lab administrator roles
+ * @return undergrad, one of the many labAdmin roles, or none
  */
-app.get("/role/:netId", function (req, res) {
-    verify(req.params.netId, function (netId) {
+app.get("/role/:token", function (req, res) {
+    verify(req.params.token, function (netId) {
+        if (netId === null){
+            return res.send("none");
+        }
         undergradModel.findOne({netId: netId}, function (err, undergrad) {
-            if (undergrad !== null) return res.send("undergrad");
+            if (undergrad !== null) {
+                return res.send("undergrad");
+            }
             labAdministratorModel.findOne({netId: netId}, function (err, labAdmin) {
-                if (labAdmin === null) return res.send("none");
+                if (labAdmin === null) {
+                    return res.send("none");
+                }
                 res.send(labAdmin.role);
             })
         })
-    }).catch(console.error("3"));
+    }).catch(function(error){
+        handleVerifyError(error, res);
+    });
 });
 
 const {OAuth2Client} = require('google-auth-library');
@@ -62,6 +121,7 @@ app.get("/decrypt", function(req, res) {
     })
 });
 
+//never called? run code coverage test
 app.get("/verify/:token", function (req, res) {
     async function verify() {
         const ticket = await client.verifyIdToken({
@@ -72,10 +132,10 @@ app.get("/verify/:token", function (req, res) {
         });
         const payload = ticket.getPayload();
         const userid = payload['sub'];
-        console.log('before');
-        console.log(userid);
-        console.log(payload);
-        console.log('after');
+        debug('before');
+        debug(userid);
+        debug(payload);
+        debug('after');
 
         // If request specified a G Suite domain:
         //const domain = payload['hd'];

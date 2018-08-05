@@ -1,6 +1,11 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, verify, mongoose} = require('../common.js');
+let {
+    undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, verify, mongoose,
+    handleVerifyError
+} = require('../common.js');
+let common = require('../common.js');
+
 
 //finds lab where lab admin = {adminNetId}, undefined if the id can't be fine in any lab
 function findLabWithAdmin(labs, adminNetId) {
@@ -9,57 +14,57 @@ function findLabWithAdmin(labs, adminNetId) {
     })[0];
 }
 
-app.get('/check/:opportunityId', function(req, res){
+app.get('/check/:opportunityId', function (req, res) {
     let idToCheck = req.query.netId;
-    console.log("THIS IS WHERE WE START");
+    debug("THIS IS WHERE WE START");
 
     opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
-        //console.log(err);
-        console.log("callback function is being run");
-        //console.log(opportunity);
-        if(opportunity==null){
-            console.log("could not find matching opportunity");
+        //debug(err);
+        debug("callback function is being run");
+        //debug(opportunity);
+        if (opportunity == null) {
+            debug("could not find matching opportunity");
             res.send(false);
             return;
-        }else{
+        } else {
             var toSearch = opportunity.applications;
-            for (var i = 0; i<toSearch.length; i++){
+            for (var i = 0; i < toSearch.length; i++) {
                 if (toSearch[i].undergradNetId === idToCheck) {
-                    console.log("You have already applied to this lab");
+                    debug("You have already applied to this lab");
                     res.send(true);
                     return;
                 }
             }
-            console.log("You have not yet applied to this lab");
+            debug("You have not yet applied to this lab");
             res.send(false);
         }
     });
 });
 
 /*
-app.get('/check/:opportunityId', function(req, res){
-    var idToCheck = req.query.netId;
-    console.log(idToCheck);
-    opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
-        if (err) {
-            return err;
-        }
-        var toSearch = opportunity.applications;
-        console.log(toSearch);
-        for (var i = 0; i<toSearch.length; i++){
-            if (toSearch[i].undergradNetId === idToCheck) {
-                console.log("You have already applied to this lab");
-                res.send(true);
-                return;
-            }
-        }
-        console.log("We are here");
-        res.send(false);
-        console.log("You did not apply previously");
-        return;
-    });
-});
-*/
+ app.get('/check/:opportunityId', function(req, res){
+ var idToCheck = req.query.netId;
+ debug(idToCheck);
+ opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
+ if (err) {
+ return err;
+ }
+ var toSearch = opportunity.applications;
+ debug(toSearch);
+ for (var i = 0; i<toSearch.length; i++){
+ if (toSearch[i].undergradNetId === idToCheck) {
+ debug("You have already applied to this lab");
+ res.send(true);
+ return;
+ }
+ }
+ debug("We are here");
+ res.send(false);
+ debug("You did not apply previously");
+ return;
+ });
+ });
+ */
 
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
@@ -76,7 +81,7 @@ app.get('/', function (req, res) {
     let token = req.query.netId;
     if (token != undefined) {
         verify(token, function (undergradNetId) {
-            console.log("here! " + undergradNetId);
+            debug("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
             undergradModel.findOne({netId: undergradNetId}, function (err, undergrad) {
                 let undergrad1 = undergrad;
@@ -131,7 +136,7 @@ app.get('/', function (req, res) {
                                         }
                                         return true;    //if it's contained in the undergrad1 courses straight off the bat
                                     }) &&
-                                    opportunities[i].yearsAllowed.includes(gradYearToString(undergrad1.gradYear))) {
+                                    opportunities[i].yearsAllowed.includes(common.gradYearToString(undergrad1.gradYear))) {
                                     prereqsMatch = true;
                                 }
                                 debug("h");
@@ -158,6 +163,8 @@ app.get('/', function (req, res) {
                     });
                 }
             });
+        }).catch(function (error) {
+            handleVerifyError(error, res);
         });
     }
     else {
@@ -182,122 +189,147 @@ app.post('/', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     let data = req.body;
     debug(data);
-
-    console.log("netid: " + data.creatorNetId);
-    console.log("labpage: " + data.labPage);
-    console.log("title: " + data.title);
-    console.log("projDesc: " + data.projectDescription);
-    console.log("undergradTasks: " + data.undergradTasks);
-    console.log("qualifs: " + data.qualifications);
-    console.log("supervisor: " + data.supervisor);
-    // console.log("spots" + data.spots);
-    console.log("startSeason: " + data.startSeason);
-    console.log("startYear: " + data.startYear);
-    console.log("apps: " + data.applications);
-    console.log("yearsAllowed: " + data.yearsAllowed);
-    console.log("majorsAllowed: " + data.majorsAllowed);
-    console.log("question 1: " + JSON.parse(JSON.stringify(data.questions))["q0"]);
-    console.log("question 2: " + JSON.parse(JSON.stringify(data.questions))["q1"]);
-    console.log("requiredClasses: " + data.requiredClasses);
-    console.log("minGPA: " + data.minGPA);
-    console.log("minHours: " + data.minHours);
-    console.log("maxHours: " + data.maxHours);
-    console.log("opens: " + data.opens);
-    console.log("closes: " + data.closes);
-    console.log("areas: " + data.areas);
+    if (data == undefined ||
+        data.creatorNetId == undefined ||
+        data.title == undefined ||
+        data.undergradTasks == undefined ||
+        data.startSeason == undefined ||
+        data.compensation == undefined ||
+        data.startYear == undefined) {
+        return res.status(400).send();
+    }
+    debug("netid: " + data.creatorNetId);
+    debug("labpage: " + data.labPage);
+    debug("title: " + data.title);
+    debug("projDesc: " + data.projectDescription);
+    debug("undergradTasks: " + data.undergradTasks);
+    debug("qualifs: " + data.qualifications);
+    debug("supervisor: " + data.supervisor);
+    debug("startSeason: " + data.startSeason);
+    debug("startYear: " + data.startYear);
+    debug("apps: " + data.applications);
+    debug("yearsAllowed: " + data.yearsAllowed);
+    debug("majorsAllowed: " + data.majorsAllowed);
+    debug("question 1: " + JSON.parse(JSON.stringify(data.questions))["q0"]);
+    debug("question 2: " + JSON.parse(JSON.stringify(data.questions))["q1"]);
+    debug("requiredClasses: " + data.requiredClasses);
+    debug("minGPA: " + data.minGPA);
+    debug("minHours: " + data.minHours);
+    debug("maxHours: " + data.maxHours);
+    debug("opens: " + data.opens);
+    debug("closes: " + data.closes);
+    debug("areas: " + data.areas);
     let maxHours = 168;
     if (data.maxHours !== undefined && data.maxHours !== null) {
         maxHours = data.maxHours;
     }
-
+    debug("1");
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
-    let netId = data.netId;
-    for (var key in data.questions){
-        if (data.questions.hasOwnProperty(key)){
+    for (var key in data.questions) {
+        if (data.questions.hasOwnProperty(key)) {
             //if they added a question but then clicked the x then there would be q1 : null/undefined
-            if (data.questions[key] == null){
+            if (data.questions[key] == null) {
                 delete data.questions.key;
             }
         }
     }
+    debug("2");
     //if the compensation array is empty, then that means they don't have any compensation
-    if (data.compensation === undefined|| data.compensation.length === 0){
+    if (data.compensation === undefined || data.compensation.length === 0) {
+        debug("2.5");
         data.compensation = ["none"];
     }
-
+    debug("3");
     data.questions["coverLetter"] = "Cover Letter";
-    let opportunity = new opportunityModel({
-        creatorNetId: netId,
-        labPage: data.labPage,
-        title: data.title,
-        projectDescription: data.projectDescription,
-        undergradTasks: data.undergradTasks,
-        qualifications: data.qualifications,
-        compensation: data.compensation,
-        supervisor: data.supervisor,
-        // spots: data.spots,
-        startSeason: data.startSeason,
-        startYear: data.startYear,
-        applications: data.applications, //missing
-        yearsAllowed: data.yearsAllowed,
-        majorsAllowed: data.majorsAllowed, //missing
-        questions: data.questions,
-        requiredClasses: data.requiredClasses,
-        minGPA: data.minGPA,
-        minHours: data.minHours,
-        maxHours: maxHours,
-        opens: data.opens,
-        closes: data.closes,
-        areas: data.areas
-    });
 
-    opportunity.save(function (err, response) {
-        if (err) {
-            res.status(500).send({"errors": err.errors});
-            console.log(err);
+    let token = data.creatorNetId;
+    verify(token, function (netIdActual) {
+        //if they somehow reach this page without being logged in...
+        if (netIdActual === null){
+            handleVerifyError(null, res);
+            return;
         }
-        let oppId = response.id;
-        labModel.findOne(
-            {labAdmins: netId}
-            , function (error, lab) {
-                let opps = lab.opportunities;
-                opps.push(mongoose.Types.ObjectId(oppId));
-                lab.opportunities = opps;
-                lab.markModified("opportunities");
-                lab.save(function (saveError, response) {
-                });
-            });
-    });
-
-    let opportunityMajor = req.body.majorsAllowed;
-
-    undergradModel.find({
-            $or: [
-                {major: opportunityMajor},
-                {secondMajor: opportunityMajor},
-                {minor: opportunityMajor}
-            ]
-        },
-        function (err, studentsWhoMatch) {
-            for (let undergrad1 in studentsWhoMatch) {
-                const msg = {
-                    to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
-                    from: 'dhruvbaijal@gmail.com',
-                    subject: 'New Research Opportunity Available!',
-                    html: 'Hi,\n' +
-                    'A new opportunity was just posted in an area you expressed interest in - ' +
-                    opportunityMajor + '. You can apply to it here: http://research-connect.com/opportunity/' + opportunity._id + '\n' +
-                    '\n' + //TODO  change localhost:3000 to our domain!!! and fix line spacing
-                    'Thanks,\n' +
-                    'The Research Connect Team\n'
-                };
-
-                // sgMail.send(msg); //TODO uncommetn
-            }
-            res.send("Success!");
+        let opportunity = new opportunityModel({
+            creatorNetId: netIdActual,
+            labPage: data.labPage,
+            title: data.title,
+            projectDescription: data.projectDescription,
+            undergradTasks: data.undergradTasks,
+            qualifications: data.qualifications,
+            compensation: data.compensation,
+            supervisor: data.supervisor,
+            // spots: data.spots,
+            startSeason: data.startSeason,
+            startYear: data.startYear,
+            applications: data.applications, //missing
+            yearsAllowed: data.yearsAllowed,
+            majorsAllowed: data.majorsAllowed, //missing
+            questions: data.questions,
+            requiredClasses: data.requiredClasses,
+            minGPA: data.minGPA,
+            minHours: data.minHours,
+            maxHours: maxHours,
+            opens: data.opens,
+            closes: data.closes,
+            areas: data.areas
         });
-    // });
+
+        opportunity.save(function (err, response) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                debug(err);
+                return;
+            }
+            let oppId = response.id;
+            labModel.findOne(
+                {labAdmins: netIdActual}
+                , function (error, lab) {
+                    let opps = lab.opportunities;
+                    opps.push(mongoose.Types.ObjectId(oppId));
+                    lab.opportunities = opps;
+                    lab.markModified("opportunities");
+                    lab.save(function (saveError, response) {
+                    });
+                });
+        });
+
+        let opportunityMajor = req.body.majorsAllowed;
+        undergradModel.find({
+                $or: [
+                    {major: opportunityMajor},
+                    {secondMajor: opportunityMajor},
+                    {minor: opportunityMajor}
+                ]
+            },
+            function (err, studentsWhoMatch) {
+                for (let undergrad1 in studentsWhoMatch) {
+                    const msg = {
+                        to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
+                        from: {
+                            name: "Research Connect",
+                            email: 'hello@research-connect.com'
+                        },
+                        replyTo: "acb352@cornell.edu",
+                        subject: 'New Research Opportunity Available!',
+                        html: 'Hi,<br />' +
+                        'A new opportunity was just posted in an area you expressed interest in - ' +
+                        opportunityMajor + '. You can apply to it here: http://research-connect.com/opportunity/' + opportunity._id + '<br />' +
+                        '<br />' +
+                        'Thanks,<br />' +
+                        'The Research Connect Team<br />'
+                    };
+
+                    sgMail.send(msg);
+                }
+                debug("finished emailling students");
+            });
+        debug("done with function");
+        res.send("Success!");
+        // });
+    }).catch(function (error) {
+        handleVerifyError(error, res);
+    });
 });
 
 app.put('/:id', function (req, res) {
@@ -346,18 +378,18 @@ app.put('/:id', function (req, res) {
         }
     });
 });
-app.get('/search', function(req, res){
+app.get('/search', function (req, res) {
 
-    opportunityModel.find({$text:{$search:req.query.search}}, '_id', function(err,search){
-        if(err){
-            console.log(err);
+    opportunityModel.find({$text: {$search: req.query.search}}, '_id', function (err, search) {
+        if (err) {
+            debug(err);
             res.send(err);
         }
-        else{
-            if(search === null){
+        else {
+            if (search === null) {
                 res.send("Search not found :(");
             }
-            console.log(search);
+            debug(search);
             res.send(search);
         }
     });
@@ -384,9 +416,9 @@ app.delete('/:id', function (req, res) {
 //previous POST /getOpportunity
 //gets the opportunity given its object id
 app.get('/:id', function (req, res) {
-    console.log("token: " + req.query.netId);
+    debug("token: " + req.query.netId);
     verify(req.query.netId, function (tokenNetId) {
-        console.log("toke net id: " + tokenNetId);
+        debug("toke net id: " + tokenNetId);
         opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
             if (err) {
                 debug(err);
@@ -406,14 +438,14 @@ app.get('/:id', function (req, res) {
                             opportunity.labPage = currentLab.labPage;
                             opportunity.labDescription = currentLab.labDescription;
                             opportunity.labName = currentLab.name;
-                            console.log("found it");
-                            console.log(currentLab);
+                            debug("found it");
+                            debug(currentLab);
                             labAdmins = currentLab.labAdmins;
                         }
                     }
                 }
-                console.log("here");
-                console.log(labAdmins);
+                debug("here");
+                debug(labAdmins);
                 labAdministratorModel.findOne(
                     {
                         $and: [
@@ -451,6 +483,8 @@ app.get('/:id', function (req, res) {
                     });
             });
         });
+    }).catch(function (error) {
+        handleVerifyError(error, res);
     });
 });
 

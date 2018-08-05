@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
+let common = require('../common.js');
 
 
 //previously GET /getlabs
@@ -33,10 +34,10 @@ app.post('/', function (req, res) {
     let data = req.body;
     debug(data);
 
-    console.log("We are in createLab");
-    console.log(data.name);
-    console.log(data.labPage);
-    console.log(data.labDescription);
+    debug("We are in createLab");
+    debug(data.name);
+    debug(data.labPage);
+    debug(data.labDescription);
 
     let lab = new labModel({
         name: data.name,

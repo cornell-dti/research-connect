@@ -10,6 +10,7 @@ import Check from 'react-icons/lib/fa/check';
 import Add from 'react-icons/lib/md/add-circle';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import * as Utils from "../components/Shared/Utils";
 
 class EditProfile extends Component {
     constructor(props) {
@@ -86,7 +87,10 @@ class EditProfile extends Component {
                 } else {
                     console.log("We did load it :D");
                 }
-            });
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
+        ;
     }
 
     componentDidMount() {
@@ -482,7 +486,9 @@ class EditProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "20px"}} onClick={this.onClick}>Submit</button>
+                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "20px"}}
+                            onClick={this.onClick}>Submit
+                    </button>
                 </div>
                 <Footer/>
             </div>

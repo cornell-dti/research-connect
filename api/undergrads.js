@@ -1,7 +1,8 @@
 let express = require('express');
 let app = express.Router();
-
-let {verify, undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose} = require('../common.js');
+let {verify, undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail,
+decryptGoogleToken, mongoose, handleVerifyError, getNetIdFromEmail} = require('../common.js');
+let common = require('../common.js');
 
 //professors can get the information on any student
 app.get('/la/:netId', function (req, res) {
@@ -9,20 +10,22 @@ app.get('/la/:netId', function (req, res) {
         if (profNetId == null){
             return res.status(401).send({});
         }
-        console.log("prof net id");
-        console.log(profNetId);
+        debug("prof net id");
+        debug(profNetId);
         labAdministratorModel.findOne({netId: profNetId}, function (err, labAdmin) {
             if (labAdmin === null) return res.status(403).send({});
-            console.log(req.params);
+            debug(req.params);
             undergradModel.findOne({netId: req.params.netId}, function (err, undergrad) {
                 if (err) {
                     return err;
                 }
-                console.log(undergrad);
+                debug(undergrad);
                 res.send(undergrad);
                 // debug(undergrad.netId);
             });
         });
+    }).catch(function(error){
+        handleVerifyError(error, res);
     });
 });
 
@@ -31,59 +34,85 @@ app.get('/:tokenId', function (req, res) {
 
         undergradModel.find({netId: decrypted}, function (err, undergrad) {
             if (err) {
-                console.log("Not found");
+                debug("Not found");
                 return err;
             }
-            console.log("Found");
+            debug("Found");
             debug(undergrad.netId);
 
             res.send(undergrad);
         });
+    }).catch(function(error){
+        handleVerifyError(error, res);
     });
 });
 
 //previously POST /createUndergrad
 app.post('/', function (req, res) {
-    //req is json containing the stuff that was sent if there was anything
-    var data = req.body;
-    console.log(data.firstName);
-    console.log(data.lastName);
-    console.log(data.gradYear);
-    console.log(data.major);
-    console.log(data.GPA);
-    console.log(data.netid);
-    console.log(data.netId);
-    console.log(data.courses);
-    console.log("This be the resume");
-    var undergrad = new undergradModel({
-
-        firstName: data.firstName,
-        lastName: data.lastName,
-        gradYear: data.gradYear,    //number
-        major: data.major,
-        gpa: data.GPA,
-        netId: data.netId,
-        courses: data.courses
-    });
-    debug(undergrad);
-    undergrad.save(function (err) {
-        if (err) {
-            res.status(500).send({"errors": err.errors});
-            debug(err);
-            console.log("error in saving ugrad");
-            console.log(err);
-        } //Handle this error however you see fit
-        else {
-            console.log('saved');
-            res.send("success!");
+    debug(req.body);
+    if (req.body == null || req.body.token_id == undefined){
+        return res.status(412).send("No user found with current session token.");
+    }
+    verify(req.body.token_id, function(email){
+        debug("email: " + email);
+        if (email === null){
+            return res.status(412).send("No user found with current session token.");
         }
-        // Now the opportunity is saved in the commonApp collection on mlab!
+        debug("net id:");
+        let netId = common.getNetIdFromEmail(email);
+        debug(netId);
+        if (netId == ""){
+            return res.status(412).send("The email you signed up with does not end in @cornell.edu. Please log out and try again.");
+        }
+        debug("checkpoint");
+        //req is json containing the stuff that was sent if there was anything
+        let data = req.body;
+        debug(data.firstName);
+        debug(data.lastName);
+        debug(data.gradYear);
+        debug(data.major);
+        debug(data.GPA);
+        debug(data.courses);
+        debug("This be the resume");
+        //if they don't have the required values
+        if (data.firstName == null || data.lastName == null || data.gradYear == null){
+            return res.status(400).send("Missing either first name, last name, or graduation year");
+        }
+        let undergrad = new undergradModel({
+
+            firstName: data.firstName,
+            lastName: data.lastName,
+            gradYear: data.gradYear,    //number
+            major: data.major,
+            gpa: data.GPA,
+            netId: netId,
+            courses: data.courses
+        });
+        debug(undergrad);
+        undergrad.save(function (err) {
+            if (err) {
+                res.status(500).send({"errors": err.errors});
+                debug(err);
+                debug("error in saving ugrad");
+                debug(err);
+            } //Handle this error however you see fit
+            else {
+                debug('saved');
+                res.status(200).send("success!");
+                return;
+            }
+            // Now the opportunity is saved in the commonApp collection on mlab!
+        });
+    }, true).catch(function(error){
+        debug("error in verify");
+        debug(error);
+        handleVerifyError(error, res);
     });
 });
 
 app.put('/:netId', function (req, res) {
-    console.log("We have reached the backend");
-    console.log(req.body);
+    debug("We have reached the backend");
+    debug(req.body);
     var data = req.body;
     let nId = req.params.netId;
     undergradModel.find({netId:nId}, function (err, undergrad) {
@@ -95,7 +124,7 @@ app.put('/:netId', function (req, res) {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
 
-            console.log(undergrad);
+            debug(undergrad);
 
             undergrad[0].gradYear = data.year || undergrad[0].gradYear;
             undergrad[0].major = data.major || undergrad[0].major;
@@ -110,7 +139,7 @@ app.put('/:netId', function (req, res) {
                 if (err) {
                     res.status(500).send(err)
                 }
-                console.log("success!");
+                debug("success!");
                 res.status(200).send(todo);
             });
         }

@@ -9,6 +9,8 @@ import Footer from '../components/Footer';
 import MajorSelect from '../components/MajorSelect'
 import GPASelect from '../components/GPASelect'
 import StartDate from '../components/StartDate'
+import * as Utils from "../components/Shared/Utils";
+
 
 class ProfessorView extends Component {
 	constructor(props) {
@@ -44,8 +46,10 @@ class ProfessorView extends Component {
 	}
 
 	componentWillMount() {
+		console.log("will mount");
 		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
 		.then((response) => {
+			console.log("role: " + response.data);
 			if (response.data !== 'grad' &&
 				  response.data !== 'labtech' &&
 				  response.data !== 'postdoc' &&
@@ -54,7 +58,7 @@ class ProfessorView extends Component {
                 window.location.href = "/";			}
 		})
 		.catch(function (error) {
-			console.log(error);
+            Utils.handleTokenError(error);
 		});
 	}
 

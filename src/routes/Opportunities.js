@@ -11,6 +11,7 @@ import MajorSelect from '../components/MajorSelect';
 import GPASelect from '../components/GPASelect';
 import StartDate from '../components/StartDate';
 import DeleteIcon from 'react-icons/lib/ti/delete';
+import * as Utils from "../components/Shared/Utils";
 
 
 class Opportunities extends Component {
@@ -29,15 +30,15 @@ class Opportunities extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         axios.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/)
             .then((response) => {
-                if (response.data !== 'undergrad') {
+                if (response == null || response.data === "none" || response.data == null) {
                     window.location.href = '/';
                 }
             })
             .catch(function (error) {
-                console.log(error);
+                Utils.handleTokenError(error);
             });
     }
 
@@ -78,7 +79,7 @@ class Opportunities extends Component {
                     this.setState({matchingSearches: matching});
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    Utils.handleTokenError(error);
                 });
         }
     }

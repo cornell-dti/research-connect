@@ -44,15 +44,12 @@ class Autosuggester extends React.Component {
     }
 
     clickFill(labName, labId) {
-        event.preventDefault();
         console.log("click fill: " + labId);
         this.setState({value: labName});
         this.setState({labId: labId});
         this.setState({showDropdown: false});
 
         this.props.updateLab(labName, labId);
-
-
     }
 
     onBlur(event) {
@@ -165,7 +162,7 @@ class Autosuggester extends React.Component {
             <div className="left-input">
 
                 <input autoComplete="off" ref="autoFill" name="auto" className="suggest-input"
-                       placeholder='Type Lab Name' type="text" value={this.state.value}
+                       placeholder='Type Lab Name Exactly As It Appears In The Auto Suggest Box (Or Click On It)' type="text" value={this.state.value}
                        onBlur={this.onBlur.bind(this)} onKeyDown={ this.handleKeyDown.bind(this) }
                        onChange={this.handleChange} onClick={this.handleClick}/>
                 {this.state.showDropdown ? this.state.result : ""}

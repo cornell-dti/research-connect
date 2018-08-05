@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, mongoose, verify} = require('../common.js');
+let common = require('../common.js');
 
 
 /**
@@ -54,12 +55,16 @@ app.post('/send', function (req, res) {
                 message = replaceAll(message, "{opportunityTitle}", opportunity.title);
                 let msg = {
                     to: ugradNetId + "@cornell.edu",
-                    from: 'CornellDTITest@gmail.com',
+                    from: {
+                        name: "Research Connect",
+                        email: 'hello@research-connect.com'
+                    },
+                    replyTo: "acb352@cornell.edu",
                     subject: "Research Connect Application Update for \"" + opportunity.title + "\"",
                     text: message,
                     html: replaceAll(message, "\n", "<br />")
                 };
-                //TODO Change the "from" email to our domain name using zoho mail
+
                 sgMail.send(msg);
                 res.status(200).end();
             })

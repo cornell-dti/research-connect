@@ -2,7 +2,7 @@ require('dotenv').config({path: 'info.env'});
 const async = require('async');
 const express = require('express');
 const supportsColor = require('supports-color');
-const debug = require('debug')('http');
+const debug = require('debug')('server:app');
 module.exports.debug = debug;
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -27,53 +27,12 @@ module.exports.s3 = s3;
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 module.exports.sgMail = sgMail;
 
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
-
 module.exports.replaceAll = replaceAll;
-
-let tokenRequest = {
-    url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=',
-    method: 'GET',
-    headers: {
-        'User-Agent': 'Super Agent/0.0.1',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-};
-
-async function verify(token, callback) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    callback(payload["email"].replace(("@" + payload["hd"]), ""));
-}
-
-module.exports.verify = verify;
-
-/**
- * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
- * @param token the google token hash
- * @param callback the function to run after the token is decrypted, takes one parameter: the body object with name, email, etc.
- */
-function decryptGoogleToken(token, callback) {
-    let options = tokenRequest;
-    options.url = options.url + token;
-    request(options, function (error, response, body) {
-        body = JSON.parse(body);
-        callback(body);
-    });
-}
-
-module.exports.decryptGoogleToken = decryptGoogleToken;
 
 /** Graduation Year: 2021. Given graduation year and current date, determine whether they're freshman soph junior senior
  *  Senior: If current date is less than May 23, {Graduation Year} and greater than
@@ -87,6 +46,7 @@ module.exports.decryptGoogleToken = decryptGoogleToken;
 function dateIsBetween(date, lowerBound, upperBound) {
     return (lowerBound <= date && date <= upperBound);
 }
+module.exports.dateIsBetween = dateIsBetween;
 
 function gradYearToString(gradYear) {
     let presentDate = new Date();
@@ -96,10 +56,11 @@ function gradYearToString(gradYear) {
     if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "senior";
     return "freshman";
 }
-
+module.exports.gradYearToString = gradYearToString;
 
 /** DATABASE **/
 const mongoose = require('mongoose');
+mongoose.plugin(schema => { schema.options.usePushEach = true });
 module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
@@ -135,8 +96,8 @@ const undergradSchema = new Schema({
     // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
     // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });
-
-module.exports.undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb
+let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); //a mongoose model = a Collection on mlab/mongodb;
+module.exports.undergradModel = undergradModel;
 
 const docSchema = new Schema({
     doc: {type: String}
@@ -152,7 +113,8 @@ const labSchema = new Schema({
     labAdmins: {type: [String], default: []},
     opportunities: {type: [Schema.Types.ObjectId], ref: "Opportunities"}
 });
-module.exports.labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
+let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
+module.exports.labModel = labModel;
 
 
 const labAdministratorSchema = new Schema({
@@ -164,9 +126,11 @@ const labAdministratorSchema = new Schema({
     lastName: {type: String, required: true},
     notifications: {type: Number, required: true},
     lastSent: {type: Number, default: Date.now()},
-    verified: {type: Boolean, default: false}
+    verified: {type: Boolean, default: false},
+    email: {type: String, default: ""}
 });
-module.exports.labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
+let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
+module.exports.labAdministratorModel = labAdministratorModel;
 
 const opportunitySchema = new Schema({
 
@@ -225,4 +189,121 @@ opportunitySchema.pre('validate', function (next) {
         next();
     }
 });
-module.exports.opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
+let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
+module.exports.opportunityModel = opportunityModel;
+
+
+let tokenRequest = {
+    url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=',
+    method: 'GET',
+    headers: {
+        'User-Agent': 'Super Agent/0.0.1',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
+
+/**
+ * takes token (cryptic hash) and callback function, calls callback function with net id
+ * @param token google auth token
+ * @param callback function to run with net id (or email if @param justEmail is true)
+ * @param justEmail if set to true, function returns callback with justEmail not netid, if false or undefined (no input) then uses net id.
+ * @return {Promise.<void>} nothing useful, since everything is done in the callback
+ * @requires that you have a handleVerifyError, like as follows:
+ * verify(token, function(){//do whatever}).catch(function(error){
+ *        handleVerifyError(error, res);
+ * }
+ */
+async function verify(token, callback, justEmail) {
+    if (token === null){
+        callback(null);
+        return;
+    }
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    let email = payload["email"];
+    if (justEmail){
+        callback(email);
+        return;
+    }
+    let emailBeforeAt = email.replace(("@" + payload["hd"]), "");
+    //for undergrads, they're required to sign up with their cornell email so emailBeforeAt is their net id.
+    undergradModel.findOne({netId: emailBeforeAt}, function (err, undergrad) {
+        if (undergrad !== null) {
+            callback(emailBeforeAt); //should be same as netid since they're forced to sign up with cornell emails
+            return;
+        }
+        labAdministratorModel.findOne({email: email}, function (err, labAdmin) {
+            //if the person googlge auth'ed but didn't make it past instructor/student register then they'll have an email but won't be in the database so just return null
+            if (labAdmin === null){
+                callback(null);
+                return;
+            }
+            else {
+                callback(labAdmin.netId);
+                return;
+            }
+        })
+    });
+}
+
+module.exports.verify = verify;
+
+/**
+ * Used in the .catch when verify is used, handles whatever should be done
+ * @param errorObj (required) the error that is returned from the .catch
+ * @param res the response object
+ * @return {boolean} true if their token is too old, false if some other error
+ * @requires that you have the verify function, like as follows:
+ * verify(token, function(){//do whatever}).catch(function(error){
+ *        handleVerifyError(error, res);
+ * }
+ */
+function handleVerifyError(errorObj, res){
+    if (errorObj != null && errorObj.toString() != undefined){
+        if (errorObj.toString().indexOf("used too late") !== -1){
+            res.status(409).send("Token used too late");
+            return true;
+        }
+        else{
+            res.status(409).send("Invalid token");
+            return true;
+        }
+    }
+    return false;
+}
+
+module.exports.handleVerifyError = handleVerifyError;
+
+function getNetIdFromEmail(email){
+    if (email == null){
+        return "";
+    }
+    let emailParts = email.split("@");
+    if (emailParts.length < 2){
+        return "";
+    }
+    return emailParts[0];
+}
+
+module.exports.getNetIdFromEmail = getNetIdFromEmail;
+
+/**
+ * Decrypts google token to get the email, name, and other info from it. Runs callback with token.
+ * @param token the google token hash
+ * @param callback the function to run after the token is decrypted, takes one parameter: the body object with name, email, etc.
+ */
+function decryptGoogleToken(token, callback) {
+    let options = tokenRequest;
+    options.url = options.url + token;
+    request(options, function (error, response, body) {
+        body = JSON.parse(body);
+        callback(body);
+    });
+}
+
+module.exports.decryptGoogleToken = decryptGoogleToken;

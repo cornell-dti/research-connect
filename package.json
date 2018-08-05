@@ -7,7 +7,6 @@
     "@sendgrid/mail": "^6.2.1",
     "async": "^2.6.0",
     "aws-sdk": "^2.224.1",
-    "axios": "^0.14.0",
     "body-parser": "~1.17.1",
     "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
@@ -33,23 +32,6 @@
     "nodemon": "^1.17.3",
     "npm": "^6.1.0",
     "prop-types": "^15.6.1",
-    "react": "^16.3.1",
-    "react-bootstrap": "^0.32.1",
-    "react-datepicker": "^1.4.1",
-    "react-dom": "^16.3.1",
-    "react-dropzone": "^4.2.9",
-    "react-fontawesome": "^1.6.1",
-    "react-google-login": "^3.2.1",
-    "react-icons": "^2.2.7",
-    "react-modal": "^3.3.1",
-    "react-modal-dialog": "^4.0.7",
-    "react-moment": "^0.7.0",
-    "react-onclickoutside": "^6.7.1",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.17",
-    "react-table": "^6.8.0",
-    "react-tooltip": "^3.5.0",
     "request": "^2.85.0",
     "scroll-element": "^1.0.0",
     "scroll-to-element": "^2.0.0",
@@ -66,6 +48,8 @@
   "scripts": {
     "build:client": "cd src && npm run build",
     "start": "node server.js",
-    "start:dev": "concurrently \"cd src && npm start\" \"node server.js\""
+    "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && node server.js\"",
+    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && node server.js\"",
+    "start:dev-backend": "set DEBUG=* && node server.js"
   }
 }

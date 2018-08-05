@@ -3,6 +3,8 @@ import '../Navbar.css';
 import logo from '../images/wordlogo.png';
 import curblogo from '../images/CURB.png';
 import {Link} from 'react-router-dom';
+import {logoutGoogle} from "../components/Shared/Utils";
+
 
 class ProfNavbar extends Component {
 
@@ -11,9 +13,8 @@ class ProfNavbar extends Component {
         this.state = {};
     }
 
-    logout() {
-        sessionStorage.clear();
-        window.location.href = "/";
+    logout(){
+        logoutGoogle();
     }
 
     render() {
@@ -29,6 +30,7 @@ class ProfNavbar extends Component {
                         Opportunity</a></li>
                     <li className={this.props.current == "professorView" ? "current-page" : ""}><a
                         href='/professorView'>View Applications</a></li>
+                    <li><a href="mailto:acb352@cornell.edu">Contact Us</a></li>
                     <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
                 </nav>
             </div>

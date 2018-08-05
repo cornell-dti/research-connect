@@ -1,28 +1,86 @@
 function dateIsBetween(date, lowerBound, upperBound) {
-	return (lowerBound <= date && date <= upperBound);
+    return (lowerBound <= date && date <= upperBound);
 }
 
 export function gradYearToString(gradYear) {
-	let presentDate = new Date();
-	if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return "Freshman";
-	if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return "Sophomore";
-	if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return "Junior";
-	if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "Senior";
-	return "Freshman";
+    let presentDate = new Date();
+    if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return "Freshman";
+    if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return "Sophomore";
+    if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return "Junior";
+    if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "Senior";
+    return "Freshman";
 }
 
 export function convertDate(dateString) {
-	var dateObj = new Date(dateString);
-	var month = dateObj.getUTCMonth()+1;
-	var day = dateObj.getUTCDay();
-	var month0 = '';
-	var day0 = '';
-	if (month<10){
-	  month0 = '0';
-	}
-	if (day0<10){
-	  day0='0';
-	}
+    var dateObj = new Date(dateString);
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDay();
+    var month0 = '';
+    var day0 = '';
+    if (month < 10) {
+        month0 = '0';
+    }
+    if (day0 < 10) {
+        day0 = '0';
+    }
 
-	return(month0+ (month).toString()+"/"+day0+(day).toString());
+    return (month0 + (month).toString() + "/" + day0 + (day).toString());
+}
+
+/**
+ * Takes care of the response and checking for errors specifically due to outdated tokens.
+ * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
+ * Otherwise will return false and do nothing so you can handle the other errors.
+ * @param error the Error object (special type of object, look it up, took me a while to find that out...) you get from
+ * the promise callback for axios
+ * @return {boolean} returns false if there was no token-related error.
+ */
+
+export function handleTokenError(error) {
+    if (error.response) {
+        console.log(error.response.data);
+        if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
+            alert("You either were inactive for too long or something went wrong on our side. " +
+                "You'll be signed out and taken to the home page.");
+            logoutGoogle();
+            return true;
+        }
+    }
+}
+
+//helper function for logoutGoogle
+function tryLoggingOut(){
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    if (auth2 != null) {
+        auth2.signOut().then(
+            auth2.disconnect().then(function (e) {
+                sessionStorage.clear();
+                window.location.href = "/";
+            }, function (e) {
+                //auth2.disconnect didn't work...
+                sessionStorage.clear();
+                window.location.href = "/"
+            })
+        )
+    }
+}
+
+export function logoutGoogle() {
+    if (window.gapi) {
+        tryLoggingOut();
+    }
+    else {
+        //if window.gapi hasn't loaded yet, wait 2 seconds and try again
+        setTimeout(function () {
+            if (window.gapi) {
+                tryLoggingOut();
+            }
+            else{
+                //if it's still not there for some reason, just do the "works half the time" solution
+                console.log("no gapi");
+                sessionStorage.clear();
+                window.location.href = "/"
+            }
+        }, 2000);
+    }
 }

@@ -6,9 +6,11 @@ import Footer from '../components/Footer';
 import '../App.css';
 import Dropzone from 'react-dropzone';
 import '../StudentRegister.css';
+import * as Utils from '../components/Shared/Utils.js'
 
-var majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"]
-var gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3]
+
+var majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"];
+let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
 
 
 class StudentRegister extends React.Component {
@@ -149,6 +151,8 @@ class StudentRegister extends React.Component {
             resumeValid,
             triedSubmitting
         } = this.state;
+        this.setState({token_id: sessionStorage.getItem("token_id")});
+        let token_id = sessionStorage.getItem("token_id");
 
         // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
         //     .then(function (response) {
@@ -161,13 +165,13 @@ class StudentRegister extends React.Component {
             let oneRan = false;
             let getUrl = window.location;
             let baseUrl = getUrl.protocol + "//" + getUrl.host;
-            axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netId, email, courses})
+            axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id})
                 .then((result) => {
                     console.log("undergrad created, result:");
                     console.log(result);
                     //access the results here....
                     if (this.state.transcript != null && this.state.transcript.length !== 0) {
-                        axios.post('/api/docs', {netId, transcript})
+                        axios.post('/api/docs', {token_id, transcript})
                             .then((result) => {
                                 if (oneRan) {
                                     window.location.replace(baseUrl + "/opportunities");
@@ -175,10 +179,23 @@ class StudentRegister extends React.Component {
                                 else {
                                     oneRan = true;
                                 }
-                            });
+                            }).catch(function (error) {
+                            //if it's not a session error...
+                            if (!Utils.handleTokenError(error)){
+                                console.log("error in creating transcript");
+                                console.log(error);
+                                if (error.response.status === 400){
+                                    alert(error.response.data);
+                                }
+                                else {
+                                    console.log(error);
+                                    alert("Something went wrong on our side. Please refresh the page and try again");
+                                }
+                            }
+                        });
                     }
                     if (this.state.resume != null && this.state.resume.length !== 0) {
-                        axios.post('/api/docs', {netId, resume})
+                        axios.post('/api/docs', {token_id, resume})
                             .then((result) => {
                                 if (oneRan || this.state.transcript == null) {
                                     window.location.replace(baseUrl + "/opportunities");
@@ -188,22 +205,48 @@ class StudentRegister extends React.Component {
                                 }
                                 console.log("resume result");
                                 console.log(result);
-                            });
+                            }).catch(function (error) {
+                            console.log("error in posting resume");
+                            console.log(error);
+                            //if it's not a session error...
+                            if (!Utils.handleTokenError(error)){
+                                if (error.response.status === 400){
+                                    alert(error.response.data);
+                                }
+                                else {
+                                    console.log(error);
+                                    alert("Something went wrong on our side. Please refresh the page and try again");
+                                }
+                            }
+                        });
                     }
-                });
+                }).catch(function (error) {
+                    console.log("error in creating undergrad");
+                    console.log(error);
+                    //if it's not a session error...
+                if (!Utils.handleTokenError(error)){
+                    if (error.response.status === 400){
+                        alert(error.response.data);
+                    }
+                    else {
+                        console.log(error);
+                        alert("Something went wrong on our side. Please refresh the page and try again");
+                    }
+                }
+            });
         }
     };
 
 
     render() {
         const {firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript} = this.state;
-        if (this.state.netId === "") {
-            axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-                this.setState({netId: res.data});
-                console.log("res data!");
-                console.log(res.data);
-            });
-        }
+        // if (this.state.netId === "") {
+        //     axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
+        //         this.setState({netId: res.data});
+        //         console.log("res data!");
+        //         console.log(res.data);
+        //     });
+        // }
         return (
             <div>
                 {/*<Navbar/>*/}

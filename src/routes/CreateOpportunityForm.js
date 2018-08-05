@@ -10,13 +10,13 @@ import ReactTooltip from 'react-tooltip';
 import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
+import * as Utils from "../components/Shared/Utils";
 
 
 class CreateOppForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            netId: sessionStorage.getItem('netId'),
             creatorNetId: sessionStorage.getItem('token_id'),
             labPage: '',
             areas: [],
@@ -292,6 +292,7 @@ class CreateOppForm extends React.Component {
         this.setState({closes: date});
     }
 
+
     //takes care of sending the form data to the back-end
     onSubmit = (e) => {
         this.setState({triedSubmitting: true});
@@ -299,6 +300,14 @@ class CreateOppForm extends React.Component {
         // get our form data out of state
         const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result} = this.state;
 
+        //makes sure all the fields that are required are valid
+        if (!(this.state.titleIsValid &&
+            this.state.tasksAreValid &&
+            this.state.seasonIsValid &&
+            this.state.compensationIsValid &&
+            this.state.yearIsValid)) {
+            return;
+        }
         axios.post('/api/opportunities', {
             netId,
             creatorNetId,
@@ -329,11 +338,23 @@ class CreateOppForm extends React.Component {
                 function sleep(time) {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
-
                 sleep(1200).then(() => {
                     document.location.href = "/professorView";
                 });
-            });
+            }).catch(function (error) {
+            if (error.response) {
+                if (error.response.status === 400) {
+                    alert("One of the required fields is not properly filled in.");
+                }
+                else {
+                    //if there's no token-related error, then do the alert.
+                    if (!Utils.handleTokenError(error)) {
+                        console.log(error.response.data);
+                        alert("Something went wrong on our side. Please refresh and try again.");
+                    }
+                }
+            }
+        });
     };
 
     render() {
@@ -475,25 +496,27 @@ class CreateOppForm extends React.Component {
                                 </ReactTooltip>
                             </div>
 
-                            <div className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear wrong-select" : "compensation"} >
+                            <div
+                                className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}>
                                 <span className="required-star">*</span>
 
-                                <label className="label-inline">How The Student Will Be Compensated (leave blank if no compensation beyond experience): </label>
+                                <label className="label-inline">Student Compensation (leave blank if just
+                                    experience): </label>
                                 <input ref={(node) => {
                                     this.pay = node
-                                }} onChange={this.setCompensation().bind(this)} type="checkbox" name="pay"
+                                }} onChange={this.setCompensation.bind(this)} type="checkbox" name="pay"
                                        value="pay"/>
                                 <label className="label-inline">Pay </label>
                                 <input ref={(node) => {
                                     this.credit = node
-                                }} onChange={this.setCompensation().bind(this)} type="checkbox" name="credit"
+                                }} onChange={this.setCompensation.bind(this)} type="checkbox" name="credit"
                                        value="credit"/>
                                 <label className="label-inline">Course Credit </label>
                                 <input ref={(node) => {
                                     this.undetermined = node
-                                }} onChange={this.setCompensation().bind(this)} type="checkbox" name="undetermined"
+                                }} onChange={this.setCompensation.bind(this)} type="checkbox" name="undetermined"
                                        value="undetermined"/>
-                                <label className="label-inline">Undetermined</label>
+                                <label className="label-inline">Not sure yet</label>
                             </div>
 
                             <div className="hours row input-row optional">

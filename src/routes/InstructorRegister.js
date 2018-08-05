@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import '../App.css';
 import '../InstructorRegister.css';
 import Autosuggester from '../components/Autosuggest';
+import * as Utils from "../components/Shared/Utils";
 
 
 class InstructorRegister extends React.Component {
@@ -81,10 +82,11 @@ class InstructorRegister extends React.Component {
 
         axios.get('/api/labs')
             .then(res => {
-
                 this.setState({data: res.data});
                 console.log(res.data);
-            })
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
     }
 
     componentDidMount() {
@@ -162,6 +164,22 @@ class InstructorRegister extends React.Component {
         this.setState({labDescription: event.target.value});
     }
 
+    hanldeChangelabDescript(event) {
+        this.setState({labDescription: event.target.value});
+    }
+
+    hanldeChangeLabDescript(event) {
+        this.setSTate({labDescription: event.target.value});
+    }
+
+    handleChagneLabDescript(event) {
+        this.setState({labDescription: event.target.value});
+    }
+
+    handleChangeLabDescript(event) {
+        this.setState({labDescription: event.target.value})
+    }
+
     handleChangePI(event) {
         this.setState({pi: event.target.value});
         if (event.target.value != "") {
@@ -185,6 +203,7 @@ class InstructorRegister extends React.Component {
             data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi, firstNameValid, lastNameValid, netIDValid, roleValid, notifValid,
             labNameValid, labURLValid, piValid
         } = this.state;
+        let token_id = sessionStorage.getItem("token_id");
         if (firstNameValid && lastNameValid && netIDValid && roleValid && notifValid && labNameValid &&
             (!newLab || (labURLValid && piValid))) {
             if (newLab)
@@ -203,14 +222,17 @@ class InstructorRegister extends React.Component {
                 labPage,
                 name,
                 labDescription,
-                pi
+                pi,
+                token_id
             })
                 .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
-                });
+                }).catch(function (error) {
+                Utils.handleTokenError(error);
+            });
         }
-    }
+    };
 
     render() {
 
@@ -249,7 +271,6 @@ class InstructorRegister extends React.Component {
                             <select className="main-form-input left-input" value={this.state.role}
                                     onChange={this.handleChangePosition.bind(this)}>
                                 <option value="Select Position">Select Your Position</option>
-                                <option value="undergrad">Staff Scientist</option>
                                 <option value="grad">Graduate Student</option>
                                 <option value="labtech">Lab Technician</option>
                                 <option value="postdoc">Post-Doc</option>
@@ -277,26 +298,29 @@ class InstructorRegister extends React.Component {
                             </div> : ""}
 
                             {/*<h6><center>All members of the same lab can view all the opportunities and applications for that lab</center></h6>*/}
-                            {!this.state.newLab ? <div className="existing-create-left" onClick={this.suggestionsClicked.bind(this)}>
-                                <div className="existing-or-create">
-                                    <input type="button" className="button left-button no-click button-small"
-                                           value="Find Existing Lab"/>
+                            {!this.state.newLab ?
+                                <div className="existing-create-left" onClick={this.suggestionsClicked.bind(this)}>
+                                    <div className="existing-or-create">
+                                        <input type="button" className="button left-button no-click button-small"
+                                               value="Find Existing Lab"/>
 
-                                    <input type="button" className="right-button button-small-clear" value="Add New Lab"
-                                           onClick={this.toggleNewLab.bind(this)}/>
+                                        <input type="button" className="right-button button-small-clear"
+                                               value="Add New Lab"
+                                               onClick={this.toggleNewLab.bind(this)}/>
+                                    </div>
+                                    <div className="auto-div">
+                                        <Autosuggester className="left-input"
+                                                       updateLab={this.handleUpdateLab.bind(this)}
+                                                       showDropdown={this.state.showDropdown}
+                                                       onChange={this.handleUpdateLab.bind(this)}
+                                                       data={this.state.data}
+                                        />
+                                        {!this.state.labNameValid && this.state.triedSubmitting ?
+                                            <div className="error-message">
+                                                <span>Not a valid input.</span>
+                                            </div> : ""}
+                                    </div>
                                 </div>
-                                <div className="auto-div">
-                                    <Autosuggester className="left-input" updateLab={this.handleUpdateLab.bind(this)}
-                                                   showDropdown={this.state.showDropdown}
-                                                   onChange={this.handleUpdateLab.bind(this)}
-                                                   data={this.state.data}
-                                    />
-                                    {!this.state.labNameValid && this.state.triedSubmitting ?
-                                        <div className="error-message">
-                                            <span>Not a valid input.</span>
-                                        </div> : ""}
-                                </div>
-                            </div>
 
                                 : <div>
                                     <div className="existing-or-create">

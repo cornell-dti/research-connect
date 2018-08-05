@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify, handleVerifyError} = require('../common.js');
+let common = require('../common.js');
 
 
 //gets the lab admin by their net id
@@ -19,7 +20,7 @@ app.get('/:netId', function (req, res) {
  All three should be in req.body. If labId is not null, then just continue with the method as usual.
  */
 function createLabAndAdmin(req, res) {
-    console.log("This means we had to go somewhere else");
+    debug("This means we had to go somewhere else");
 
     var data = req.body;
 
@@ -38,7 +39,12 @@ function createLabAndAdmin(req, res) {
 
         if (err) {
             res.status(500).send({"errors": err.errors});
-            console.log(err);
+            debug(err);
+        }
+
+        if (data.notifications === undefined || data.notifications === -2){
+            //set it to 0 since that means they'll get an email every time someone submits an application
+            data.notifications = 0;
         }
 
         let labAdmin = new labAdministratorModel({
@@ -47,77 +53,173 @@ function createLabAndAdmin(req, res) {
             netId: data.netId,
             firstName: data.firstName,
             lastName: data.lastName,
-            verified: data.verified
+            verified: data.verified,
+            notifications: data.notifications,
+            lastSent: Date.now(),
         });
 
         labAdmin.save(function (err) {
             if (err) {
                 res.status(500).send({"errors": err.errors});
-                console.log(err);
+                debug(err);
             }
         });
     });
 }
 
+/**
+ * Takes data and creates a lab admin assuming they already have a lab id
+ * @param data
+ * @param res the response
+ */
+function createLabAdmin(data, res){
+    //-2 means they didn't select anything since -2 is the value of the default option on the select menu
+    if (data.notifications === undefined || data.notifications === -2){
+        //set it to 0 since that means they'll get an email every time someone submits an application
+        data.notifications = 0;
+    }
+
+    let labAdmin = new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        notifications: data.notifications,
+        lastSent: Date.now(),
+        verified: data.verified,
+        email: data.email
+    });
+
+    labAdmin.save(function (err) {
+        if (err) {
+            res.status(500).send({"errors": err.errors});
+            debug(err);
+        } //Handle this error however you see fit
+        else {
+            labModel.findById(data.labId, function (error, lab) {
+                lab.labAdmins.push(data.netId);
+                lab.markModified("labAdmins");
+                lab.save((err, todo) => {
+                    if (err) {
+                        res.status(500).send(err)
+                    }
+                    res.status(200).send("success");
+                });
+            });
+        }
+        // Now the opportunity is saved in the commonApp collection on mlab!
+    });
+}
 
 //previously POST /createLabAdmin
 app.post('/', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
-    var data = req.body;
+    let data = req.body;
     debug(data);
 
-    console.log("we are in createLabAdmin");
-    console.log(data.role);
-    console.log(data.labId);
-    console.log(data.netId);
-    console.log(data.firstName);
-    console.log(data.lastName);
-    console.log(data.verified);
-    console.log(data.labDescription);
+    debug("we are in createLabAdmin");
+    debug(data.role);
+    debug(data.labId);
+    debug(data.netId);
+    debug(data.firstName);
+    debug(data.lastName);
+    debug(data.verified);
+    debug(data.labDescription);
 
+    verify(data.token_id, function(email){
+        data.email = email;
+        // if labId is null then there is no existing lab and creating new lab
+        if (data.labId == null) {
+            //check to see if they are creating a new lab or the select just bugged out and didn't add the lab id
+            labModel.findOne({name: new RegExp(["^", data.name, "$"].join(""), "i")}, function (err, lab) {
+                if (lab === null){
+                    createLabAndAdmin(req, res);
+                    return res.send("success!");
+                }
+                else {
+                    data.labId = lab._id;
+                    //-2 means they didn't select anything since -2 is the value of the default option on the select menu
+                    if (data.notifications === undefined || data.notifications === -2){
+                        //set it to 0 since that means they'll get an email every time someone submits an application
+                        data.notifications = 0;
+                    }
 
-    // if labId is null then there is no existing lab and creating new lab
-    if (data.labId == null) {
-        createLabAndAdmin(req, res);
-        return res.send("success!");
-    } else {
-        //-2 means they didn't select anything since -2 is the value of the default option on the select menu
-        if (data.notifications === undefined || data.notifications === -2){
-            //set it to 0 since that means they'll get an email every time someone submits an application
-            data.notifications = 0;
-        }
-
-        let labAdmin = new labAdministratorModel({
-            role: data.role,
-            labId: data.labId,
-            netId: data.netId,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            notifications: data.notifications,
-            lastSent: Date.now(),
-            verified: data.verified
-        });
-
-        labAdmin.save(function (err) {
-            if (err) {
-                res.status(500).send({"errors": err.errors});
-                console.log(err);
-            } //Handle this error however you see fit
-            else {
-                labModel.findById(data.labId, function (error, lab) {
-                    lab.labAdmins.push(data.netId);
-                    lab.markModified("labAdmins");
-                    lab.save((err, todo) => {
-                        if (err) {
-                            res.status(500).send(err)
-                        }
-                        res.status(200).send("success");
+                    let labAdmin = new labAdministratorModel({
+                        role: data.role,
+                        labId: data.labId,
+                        netId: data.netId,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        notifications: data.notifications,
+                        lastSent: Date.now(),
+                        verified: data.verified,
+                        email: email
                     });
-                });
+
+                    labAdmin.save(function (err) {
+                        if (err) {
+                            res.status(500).send({"errors": err.errors});
+                            debug(err);
+                        } //Handle this error however you see fit
+                        else {
+                            labModel.findById(data.labId, function (error, lab) {
+                                lab.labAdmins.push(data.netId);
+                                lab.markModified("labAdmins");
+                                lab.save((err, todo) => {
+                                    if (err) {
+                                        res.status(500).send(err)
+                                    }
+                                    res.send("success");
+                                });
+                            });
+                        }
+                        // Now the opportunity is saved in the commonApp collection on mlab!
+                    });            }
+            });
+        } else {
+            //-2 means they didn't select anything since -2 is the value of the default option on the select menu
+            if (data.notifications === undefined || data.notifications === -2){
+                //set it to 0 since that means they'll get an email every time someone submits an application
+                data.notifications = 0;
             }
-            // Now the opportunity is saved in the commonApp collection on mlab!
-        });
-    }
+
+            let labAdmin = new labAdministratorModel({
+                role: data.role,
+                labId: data.labId,
+                netId: data.netId,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                notifications: data.notifications,
+                lastSent: Date.now(),
+                verified: data.verified,
+                email: email
+            });
+
+            labAdmin.save(function (err) {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send({"errors": err.errors});
+                } //Handle this error however you see fit
+                else {
+                    labModel.findById(data.labId, function (error, lab) {
+                        lab.labAdmins.push(data.netId);
+                        lab.markModified("labAdmins");
+                        lab.save((err, todo) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).send(err)
+                            }
+                            res.send("success");
+                        });
+                    });
+                }
+                // Now the opportunity is saved in the commonApp collection on mlab!
+            });    }
+    }, true).catch(function(error){
+        handleVerifyError(error,res);
+    });
+
 });
 
 app.put('/:id', function (req, res) {

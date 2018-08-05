@@ -41,15 +41,16 @@ class ApplicationPage extends Component {
                                         this.setState({"resumeId": response.data.resumeId});
                                         let transcriptIdText = response.data.transcriptId != null ? "" : response.data.transcriptId;
                                         this.setState({"transcriptId": transcriptIdText})
-                                    });
+                                    }).catch(function (error) {
+                                    Utils.handleTokenError(error);
+                                });
                             }
                         }
                     }
                 }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
     }
 
     toDivList(lst) {
@@ -66,7 +67,8 @@ class ApplicationPage extends Component {
     }
 
     renderTranscript() {
-        if (this.state.transcriptId !== "") {
+        console.log("transcriptid: " + this.state.transcriptId);
+        if (this.state.transcriptId == undefined) {
             return null;
         }
         else {
@@ -74,8 +76,9 @@ class ApplicationPage extends Component {
                 <div>
                     <div className="app-qual-section">
                         <div className="resume-link">
-                            <a href={this.state.transcriptId} target="_blank"><h6 className="no-margin">View Transcript <ExternalLink
-                                className="red-link"/>
+                            <a href={this.state.transcriptId} target="_blank"><h6 className="no-margin">View Transcript
+                                <ExternalLink
+                                    className="red-link"/>
                             </h6></a>
                         </div>
 
@@ -91,7 +94,7 @@ class ApplicationPage extends Component {
         const responses = this.state.application.responses;
         const questions = this.state.opportunity.questions;
         let c = 0;
-        for (var question in responses) {
+        for (let question in responses) {
             questionsAndResponses.push(
                 <div className="question-and-response" key={ c++ }>
                     <div className='question'>{ questions[question] }</div>
@@ -176,7 +179,8 @@ class ApplicationPage extends Component {
 
                                 <div className="app-qual-section">
                                     <div className="resume-link">
-                                        <a href={"/doc/" + this.state.resumeId} target="_blank"><h6 className="no-margin">
+                                        <a href={"/doc/" + this.state.resumeId} target="_blank"><h6
+                                            className="no-margin">
                                             View Resume <ExternalLink className="red-link"/></h6></a>
                                     </div>
                                 </div>
