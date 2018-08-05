@@ -1,4 +1,4 @@
-require('dotenv').config({path: 'info.env'});
+require('dotenv').config();
 const async = require('async');
 const express = require('express');
 const supportsColor = require('supports-color');
@@ -16,13 +16,13 @@ const fileUpload = require('express-fileupload');
 const request = require("request");
 const AWS = require('aws-sdk');
 let s3;
-if (fs.existsSync('./S3Config2.json')) {
-    // Do something
-    AWS.config.loadFromPath('./S3Config2.json');
-    AWS.config.update({region: 'us-east-2'});
-    s3 = new AWS.S3();
-    module.exports.s3 = s3;
-}
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: 'us-east-2'
+});
+s3 = new AWS.S3();
 module.exports.s3 = s3;
 
 const sgMail = require('@sendgrid/mail');
@@ -60,7 +60,9 @@ module.exports.gradYearToString = gradYearToString;
 
 /** DATABASE **/
 const mongoose = require('mongoose');
-mongoose.plugin(schema => { schema.options.usePushEach = true });
+mongoose.plugin(schema => {
+    schema.options.usePushEach = true
+});
 module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
@@ -140,7 +142,7 @@ const opportunitySchema = new Schema({
     projectDescription: {type: String, default: "TBD"}, //required, add min length that you see fit
     undergradTasks: {type: String, default: "TBD"},  //what the undergrad would be doing, can be null
     qualifications: {type: String, default: "TBD"}, //can be null/empty
-    compensation:   {
+    compensation: {
         type: [String],
         enum: ["pay", "credit", "undetermined", "none"],
         default: ["none"]
@@ -178,7 +180,7 @@ const opportunitySchema = new Schema({
     areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
     prereqsMatch: {type: Boolean, default: false},
     labDescription: {type: String, required: false},
-    fundOption:{type:Number, min:0, default:0},
+    fundOption: {type: Number, min: 0, default: 0},
     labName: {type: String, required: false}
 });
 opportunitySchema.index({'$**': 'text'});
@@ -214,7 +216,7 @@ let tokenRequest = {
  * }
  */
 async function verify(token, callback, justEmail) {
-    if (token === null){
+    if (token === null) {
         callback(null);
         return;
     }
@@ -226,7 +228,7 @@ async function verify(token, callback, justEmail) {
     });
     const payload = ticket.getPayload();
     let email = payload["email"];
-    if (justEmail){
+    if (justEmail) {
         callback(email);
         return;
     }
@@ -239,7 +241,7 @@ async function verify(token, callback, justEmail) {
         }
         labAdministratorModel.findOne({email: email}, function (err, labAdmin) {
             //if the person googlge auth'ed but didn't make it past instructor/student register then they'll have an email but won't be in the database so just return null
-            if (labAdmin === null){
+            if (labAdmin === null) {
                 callback(null);
                 return;
             }
@@ -263,13 +265,13 @@ module.exports.verify = verify;
  *        handleVerifyError(error, res);
  * }
  */
-function handleVerifyError(errorObj, res){
-    if (errorObj != null && errorObj.toString() != undefined){
-        if (errorObj.toString().indexOf("used too late") !== -1){
+function handleVerifyError(errorObj, res) {
+    if (errorObj != null && errorObj.toString() != undefined) {
+        if (errorObj.toString().indexOf("used too late") !== -1) {
             res.status(409).send("Token used too late");
             return true;
         }
-        else{
+        else {
             res.status(409).send("Invalid token");
             return true;
         }
@@ -279,12 +281,12 @@ function handleVerifyError(errorObj, res){
 
 module.exports.handleVerifyError = handleVerifyError;
 
-function getNetIdFromEmail(email){
-    if (!email){
+function getNetIdFromEmail(email) {
+    if (!email) {
         return "";
     }
     let emailParts = email.split("@");
-    if (emailParts.length < 2){
+    if (emailParts.length < 2) {
         return "";
     }
     return emailParts[0];

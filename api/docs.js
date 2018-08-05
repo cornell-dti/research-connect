@@ -2,6 +2,7 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, s3, mongoose, verify, handleVerifyError} = require('../common.js');
 let common = require('../common.js');
+const BUCKET_NAME = process.env.bucket_name;
 
 
 
@@ -12,7 +13,7 @@ app.get('/:id', function (req, res) {
     })
      */
     let params = {
-        Bucket: "research-connect",
+        Bucket: BUCKET_NAME,
         Key: req.params.id
     };
     verify(req.query.token, function (netId) {
@@ -75,7 +76,7 @@ app.post('/', function (req, res) {
                 });
                  */
                 let uploadParams = {
-                    Bucket: "research-connect",
+                    Bucket: BUCKET_NAME,
                     Key: docId,
                     ContentEncoding: 'base64',
                     ContentType: 'text/plain',
@@ -110,7 +111,7 @@ app.post('/', function (req, res) {
             });
              */
             let uploadParams = {
-                Bucket: "research-connect",
+                Bucket: BUCKET_NAME,
                 Key: docId,
                 ContentEncoding: 'base64',
                 ContentType: 'text/plain',
@@ -120,20 +121,22 @@ app.post('/', function (req, res) {
             debug(uploadParams);
             s3.upload(uploadParams, function (err, data) {
                 if (err) {
-                    debug("Error", err);
+                    debug("Error in s3 upload", err);
+                    return;
                 }
                 if (data) {
                     debug("Upload Success", data.Location);
-                    res.send("Success!");
-                }
-            });
-            undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function (err, oldDoc) {
-                debug("resume error: " + err);
-                if (!err){
-                    res.status(200).send();
-                }
-                else{
-                    res.status(500).send(err);
+                    undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function (err, oldDoc) {
+                        debug("resume error: " + err);
+                        if (!err){
+                            res.status(200).send();
+                        }
+                        else{
+                            debug("error in find  one and update");
+                            debug(err);
+                            res.status(500).send(err);
+                        }
+                    });
                 }
             });
             debug('gend');

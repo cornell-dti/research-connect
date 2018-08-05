@@ -12,6 +12,7 @@ src/node_modules
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.test.local
 .env.production.local
