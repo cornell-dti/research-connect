@@ -68,7 +68,7 @@ class Autosuggester extends React.Component {
     handleKeyDown(e) {
         const {cursor, suggestionLength} = this.state;
 
-        if (e.key == "ArrowUp" && cursor > -1) {
+        if (e.key === "ArrowUp" && cursor > -1) {
             e.preventDefault();
             this.setState(prevState => ({
                 cursor: prevState.cursor - 1
@@ -78,7 +78,7 @@ class Autosuggester extends React.Component {
                 this.getSuggestions()
             }, 40);
 
-        } else if (e.key == "ArrowDown" && cursor < suggestionLength - 1) {
+        } else if (e.key === "ArrowDown" && cursor < suggestionLength - 1) {
 
             e.preventDefault();
             this.setState(prevState => ({
@@ -88,7 +88,7 @@ class Autosuggester extends React.Component {
                 this.getSuggestions()
             }, 40);
 
-        } else if (e.key == "Enter" && cursor > -1) {
+        } else if (e.key === "Enter" && cursor > -1) {
             e.preventDefault();
             setTimeout(() => {
                 this.clickFill(this.state.highlightLabName, this.state.highlightLabId)
@@ -100,22 +100,22 @@ class Autosuggester extends React.Component {
 
     getSuggestions() {
 
-        var arrayOfLabs = [];
+        let arrayOfLabs = [];
 
-        for (var ind = 0; ind < this.props.data.length; ind++) {
+        for (let ind = 0; ind < this.props.data.length; ind++) {
             arrayOfLabs.push({"name": this.props.data[ind].name, "id": this.props.data[ind]._id});
 
         }
 
-        var inputValue = this.state.value.trim().toLowerCase();
-        var inputLength = inputValue.length;
-        var suggestions = arrayOfLabs;
+        let inputValue = this.state.value.trim().toLowerCase();
+        let inputLength = inputValue.length;
+        let suggestions = arrayOfLabs;
 
 
-        var suggArray = [];
-        var positionShowing = 0;
+        let suggArray = [];
+        let positionShowing = 0;
         if (suggestions.length > 0) {
-            for (var i = 0; i < suggestions.length; i++) {
+            for (let i = 0; i < suggestions.length; i++) {
                 if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0, inputLength) === inputValue) {
                     suggArray.push(<p
                         className={`${this.state.cursor === positionShowing ? "active autoOp" : "autoOp"}`}

@@ -44,9 +44,9 @@ class InstructorRegister extends React.Component {
     };
 
     // displayLabs() {
-    //   var arrayOfLabs = [];
+    //   let arrayOfLabs = [];
     //
-    //   for (var i = 0; i < this.state.data.length; i++) {
+    //   for (let i = 0; i < this.state.data.length; i++) {
     //       arrayOfLabs.push(<option key={this.state.data[i].name} value={this.state.data[i].name}>{this.state.data[i].name}</option>);
     //
     //   }
@@ -131,7 +131,7 @@ class InstructorRegister extends React.Component {
     }
 
     handleChangeNetId(event) {
-        if (event.target.value != "" && event.target.value.indexOf("@cornell.edu") == -1) {
+        if (event.target.value && event.target.value.indexOf("@cornell.edu") === -1) {
             this.setState({netIDValid: true})
         } else {
             this.setState({netIDValid: false})
@@ -142,7 +142,7 @@ class InstructorRegister extends React.Component {
     handleChangeNewLabName(event) {
         if (this.state.newLab) {
             this.setState({name: event.target.value});
-            if (event.target.value != "") {
+            if (event.target.value) {
                 this.setState({labNameValid: true});
             } else {
                 this.setState({labNameValid: false});

@@ -32,7 +32,7 @@ class OpportunityPage extends Component {
     }
 
     isEmpty(obj) {
-        for (var key in obj) {
+        for (let key in obj) {
             if (obj.hasOwnProperty(key))
                 return false;
         }
@@ -66,18 +66,18 @@ class OpportunityPage extends Component {
 
         // get our form data out of state
         const {opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId} = this.state;
-        if (coverLetter != '') {
-            var allQsAnswered = true;
-            for (var key in questionAnswers) {
+        if (coverLetter) {
+            let allQsAnswered = true;
+            for (let key in questionAnswers) {
                 if (questionAnswers[key] == '') {
-                    var allQsAnswered = false;
+                    let allQsAnswered = false;
                 }
             }
-            if (allQsAnswered == true) {
+            if (allQsAnswered === true) {
                 this.setState({submitted: true});
                 console.log("submitting form");
-                var opportunityId = opportunity._id;
-                var responses = questionAnswers;
+                let opportunityId = opportunity._id;
+                let responses = questionAnswers;
                 axios.post('/api/applications', {opportunityId, netId, responses})
                     .then((result) => {
                         console.log(result);
@@ -99,7 +99,7 @@ class OpportunityPage extends Component {
                 this.setState({opportunity: response.data});
                 this.setState({student: response.data.student});
                 if (!this.isEmpty(response.data)) {
-                    var obj = {};
+                    let obj = {};
                     //get all the keys and put them in an array
                     for (let k in response.data.questions) {
                         //make sure it's an actual key and not a property that all objects have by default
@@ -169,11 +169,11 @@ class OpportunityPage extends Component {
     }
 
     convertDate(dateString) {
-        var dateObj = new Date(dateString);
-        var month = dateObj.getUTCMonth() + 1;
-        var day = dateObj.getUTCDay();
-        var month0 = '';
-        var day0 = '';
+        let dateObj = new Date(dateString);
+        let month = dateObj.getUTCMonth() + 1;
+        let day = dateObj.getUTCDay();
+        let month0 = '';
+        let day0 = '';
         if (month < 10) {
             month0 = '0';
         }
@@ -199,11 +199,11 @@ class OpportunityPage extends Component {
 
     parseYears(yearsArray) {
 
-        var yearDivArray = []
+        let yearDivArray = []
         if (yearsArray) {
-            var trackYear = false;
+            let trackYear = false;
             if (yearsArray.includes("freshman")) {
-                if (this.state.student != null && Utils.gradYearToString(this.state.student.gradYear) == "Freshman") {
+                if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Freshman") {
                     yearDivArray.push(<div key="f"><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span>
                     </div>)
                 }
@@ -214,7 +214,7 @@ class OpportunityPage extends Component {
                 trackYear = true;
             }
             if (yearsArray.includes("sophomore")) {
-                if (this.state.student != null && Utils.gradYearToString(this.state.student.gradYear) == "Sophomore") {
+                if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Sophomore") {
                     yearDivArray.push(<div key="so"><CheckBox className="greenCheck"/><span > Sophomore</span></div>)
                 }
                 else {
@@ -223,7 +223,7 @@ class OpportunityPage extends Component {
                 trackYear = true;
             }
             if (yearsArray.includes("junior")) {
-                if (this.state.student != null && Utils.gradYearToString(this.state.student.gradYear) == "Junior") {
+                if (this.state.student  && Utils.gradYearToString(this.state.student.gradYear) === "Junior") {
                     yearDivArray.push(<div key="j"><CheckBox className="greenCheck"/><span > Junior</span></div>)
                 } else {
                     yearDivArray.push(<div key="j"><CrossCircle className="cross"/><span > Junior</span></div>)
@@ -232,7 +232,7 @@ class OpportunityPage extends Component {
                 trackYear = true;
             }
             if (yearsArray.includes("senior")) {
-                if (this.state.student != null && Utils.gradYearToString(this.state.student.gradYear) == "Senior") {
+                if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Senior") {
                     yearDivArray.push(<div key="se"><CheckBox className="greenCheck"/><span > Senior</span></div>)
                 } else {
                     yearDivArray.push(<div key="se"><CrossCircle className="cross"/><span > Senior</span></div>)
@@ -253,13 +253,13 @@ class OpportunityPage extends Component {
     }
 
     parseMajors(arrayIn) {
-        var returnArray = []
+        let returnArray = [];
         if (arrayIn) {
-            if (arrayIn.length == 0) {
+            if (arrayIn.length === 0) {
                 returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span
                     key="n"> No Preference</span></div>);
             }
-            for (var i = 0; i < arrayIn.length; i++) {
+            for (let i = 0; i < arrayIn.length; i++) {
                 if (this.state.student != null && this.state.student.major.indexOf(arrayIn[i]) != -1) {
                     returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span > {arrayIn[i]}</span></div>);
                 }
@@ -273,13 +273,13 @@ class OpportunityPage extends Component {
     }
 
     parseClasses(arrayIn) {
-        var returnArray = []
+        let returnArray = []
         if (arrayIn) {
-            if (arrayIn.length == 0) {
+            if (arrayIn.length === 0) {
                 returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span
                     key="n"> No Preference</span></div>);
             }
-            for (var i = 0; i < arrayIn.length; i++) {
+            for (let i = 0; i < arrayIn.length; i++) {
                 if (this.state.student != null && this.state.student.courses.indexOf(arrayIn[i]) != -1) {
                     returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span> {arrayIn[i]}</span></div>);
                 }

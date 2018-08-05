@@ -68,7 +68,7 @@ class ApplicationPage extends Component {
 
     renderTranscript() {
         console.log("transcriptid: " + this.state.transcriptId);
-        if (this.state.transcriptId == undefined) {
+        if (!this.state.transcriptId) {
             return null;
         }
         else {

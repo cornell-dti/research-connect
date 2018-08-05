@@ -22,9 +22,9 @@ app.get('/:netId', function (req, res) {
 function createLabAndAdmin(req, res) {
     debug("This means we had to go somewhere else");
 
-    var data = req.body;
+    let data = req.body;
 
-    var lab = new labModel({
+    let lab = new labModel({
         name: data.name,
         labPage: data.labPage,
         labDescription: data.labDescription,
@@ -130,7 +130,7 @@ app.post('/', function (req, res) {
     verify(data.token_id, function(email){
         data.email = email;
         // if labId is null then there is no existing lab and creating new lab
-        if (data.labId == null) {
+        if (!data.labId) {
             //check to see if they are creating a new lab or the select just bugged out and didn't add the lab id
             labModel.findOne({name: new RegExp(["^", data.name, "$"].join(""), "i")}, function (err, lab) {
                 if (lab === null){

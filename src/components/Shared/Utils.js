@@ -12,11 +12,11 @@ export function gradYearToString(gradYear) {
 }
 
 export function convertDate(dateString) {
-    var dateObj = new Date(dateString);
-    var month = dateObj.getUTCMonth() + 1;
-    var day = dateObj.getUTCDay();
-    var month0 = '';
-    var day0 = '';
+    let dateObj = new Date(dateString);
+    let month = dateObj.getUTCMonth() + 1;
+    let day = dateObj.getUTCDay();
+    let month0 = '';
+    let day0 = '';
     if (month < 10) {
         month0 = '0';
     }

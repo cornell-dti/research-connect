@@ -66,7 +66,7 @@ class EditProfile extends Component {
         console.log("Begin loadInfoFromServer")
         axios.get('/api/undergrads/' + (sessionStorage.getItem('token_id')))
             .then(res => {
-                var info = res.data[0];
+                let info = res.data[0];
                 console.log("info");
                 console.log(info);
                 let skills = info.skills === undefined ? [] : info.skills;
@@ -99,26 +99,26 @@ class EditProfile extends Component {
     }
 
     handleChange(event) {
-        if (event.target.id == "year") {
+        if (event.target.id === "year") {
             this.setState({year: event.target.value});
         }
-        else if (event.target.id == "major") {
+        else if (event.target.id === "major") {
             this.setState({major: event.target.value});
         }
-        else if (event.target.id == "gpa") {
+        else if (event.target.id === "gpa") {
             this.setState({gpa: event.target.value});
         }
-        else if (event.target.id == "new-course") {
+        else if (event.target.id === "new-course") {
             this.setState({newCourse: event.target.value});
         }
-        else if (event.target.id == "new-skill") {
+        else if (event.target.id === "new-skill") {
             this.setState({newSkill: event.target.value});
         }
     }
 
     handleEditYear(event) {
-        var validateYear = ["Freshman", "Sophomore", "Junior", "Senior"]
-        if (validateYear.indexOf(this.state.year) == -1) {
+        let validateYear = ["Freshman", "Sophomore", "Junior", "Senior"]
+        if (validateYear.indexOf(this.state.year) === -1) {
             this.setState({invalidYear: true});
         } else {
             this.setState({invalidYear: false});
@@ -155,8 +155,8 @@ class EditProfile extends Component {
     }
 
     handleDeleteCourse(data, e) {
-        var currentCourses = this.state.relevantCourses;
-        var index = currentCourses.indexOf(data);
+        let currentCourses = this.state.relevantCourses;
+        let index = currentCourses.indexOf(data);
         currentCourses.splice(index, 1);
 
         this.setState({relevantCourses: currentCourses});
@@ -165,7 +165,7 @@ class EditProfile extends Component {
 
     addCourse() {
         if (this.state.newCourse != "") {
-            var currentCourses = this.state.relevantCourses;
+            let currentCourses = this.state.relevantCourses;
             currentCourses.push(this.state.newCourse);
             this.setState({relevantCourses: currentCourses});
             this.setState({newCourse: ""});
@@ -173,8 +173,8 @@ class EditProfile extends Component {
     }
 
     handleDeleteSkill(data, e) {
-        var currentSkills = this.state.relevantSkills;
-        var index = currentSkills.indexOf(data);
+        let currentSkills = this.state.relevantSkills;
+        let index = currentSkills.indexOf(data);
         currentSkills.splice(index, 1);
 
         this.setState({relevantSkills: currentSkills});
@@ -182,7 +182,7 @@ class EditProfile extends Component {
 
     addSkill() {
         if (this.state.newSkill != "") {
-            var currentSkills = this.state.relevantSkills;
+            let currentSkills = this.state.relevantSkills;
             currentSkills.push(this.state.newSkill);
             this.setState({relevantSkills: currentSkills});
             this.setState({newSkill: ""});
@@ -190,9 +190,9 @@ class EditProfile extends Component {
     }
 
     displayCourses() {
-        var list = [];
+        let list = [];
         if (this.state.editCourses) {
-            for (var i = 0; i < this.state.relevantCourses.length; i++) {
+            for (let i = 0; i < this.state.relevantCourses.length; i++) {
                 list.push(<div key={i} className="edit-container">
                         <div className="editting">
                             <p className="course editting"
@@ -210,7 +210,7 @@ class EditProfile extends Component {
                 <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse.bind(this)}/>
             </div>;
         } else {
-            for (var i = 0; i < this.state.relevantCourses.length; i++) {
+            for (let i = 0; i < this.state.relevantCourses.length; i++) {
                 list.push(<p className="display-list-item course"
                              key={this.state.relevantCourses[i]}>{this.state.relevantCourses[i]}</p>);
             }
@@ -219,9 +219,9 @@ class EditProfile extends Component {
     }
 
     displaySkills() {
-        var list = [];
+        let list = [];
         if (this.state.editSkills) {
-            for (var i = 0; i < this.state.relevantSkills.length; i++) {
+            for (let i = 0; i < this.state.relevantSkills.length; i++) {
                 list.push(<div key={i} className="edit-container">
                         <div className="editting">
                             <p className="skill editting"
@@ -240,7 +240,7 @@ class EditProfile extends Component {
             </div>;
         }
         else {
-            for (var i = 0; i < this.state.relevantSkills.length; i++) {
+            for (let i = 0; i < this.state.relevantSkills.length; i++) {
                 list.push(<p className="display-list-item skill"
                              key={this.state.relevantSkills[i]}>{this.state.relevantSkills[i]}</p>);
             }
@@ -264,8 +264,8 @@ class EditProfile extends Component {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (event) => {
-                var fileAsBinaryString = reader.result;
-                var encodedData = window.btoa(fileAsBinaryString);
+                let fileAsBinaryString = reader.result;
+                let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
                 this.setState({resume: file})
                 this.setState({resumeValid: true})
@@ -283,8 +283,8 @@ class EditProfile extends Component {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (event) => {
-                var fileAsBinaryString = reader.result;
-                var encodedData = window.btoa(fileAsBinaryString);
+                let fileAsBinaryString = reader.result;
+                let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
                 this.setState({transcript: file})
             };

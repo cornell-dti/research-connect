@@ -22,13 +22,13 @@ app.get('/check/:opportunityId', function (req, res) {
         //debug(err);
         debug("callback function is being run");
         //debug(opportunity);
-        if (opportunity == null) {
+        if (!opportunity) {
             debug("could not find matching opportunity");
             res.send(false);
             return;
         } else {
-            var toSearch = opportunity.applications;
-            for (var i = 0; i < toSearch.length; i++) {
+            let toSearch = opportunity.applications;
+            for (let i = 0; i < toSearch.length; i++) {
                 if (toSearch[i].undergradNetId === idToCheck) {
                     debug("You have already applied to this lab");
                     res.send(true);
@@ -43,15 +43,15 @@ app.get('/check/:opportunityId', function (req, res) {
 
 /*
  app.get('/check/:opportunityId', function(req, res){
- var idToCheck = req.query.netId;
+ let idToCheck = req.query.netId;
  debug(idToCheck);
  opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
  if (err) {
  return err;
  }
- var toSearch = opportunity.applications;
+ let toSearch = opportunity.applications;
  debug(toSearch);
- for (var i = 0; i<toSearch.length; i++){
+ for (let i = 0; i<toSearch.length; i++){
  if (toSearch[i].undergradNetId === idToCheck) {
  debug("You have already applied to this lab");
  res.send(true);
@@ -189,13 +189,13 @@ app.post('/', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     let data = req.body;
     debug(data);
-    if (data == undefined ||
-        data.creatorNetId == undefined ||
-        data.title == undefined ||
-        data.undergradTasks == undefined ||
-        data.startSeason == undefined ||
-        data.compensation == undefined ||
-        data.startYear == undefined) {
+    if (!data ||
+        !data.creatorNetId ||
+        !data.title ||
+        !data.undergradTasks ||
+        !data.startSeason ||
+        !data.compensation ||
+        !data.startYear) {
         return res.status(400).send();
     }
     debug("netid: " + data.creatorNetId);
@@ -226,10 +226,10 @@ app.post('/', function (req, res) {
     debug("1");
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
-    for (var key in data.questions) {
+    for (let key in data.questions) {
         if (data.questions.hasOwnProperty(key)) {
             //if they added a question but then clicked the x then there would be q1 : null/undefined
-            if (data.questions[key] == null) {
+            if (!data.questions[key]) {
                 delete data.questions.key;
             }
         }
@@ -246,7 +246,7 @@ app.post('/', function (req, res) {
     let token = data.creatorNetId;
     verify(token, function (netIdActual) {
         //if they somehow reach this page without being logged in...
-        if (netIdActual === null){
+        if (netIdActual === null) {
             handleVerifyError(null, res);
             return;
         }

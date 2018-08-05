@@ -39,17 +39,17 @@ class Opportunity extends Component {
 	}
 
 	contains(needle) {
-		var findNaN = isNaN(needle);
-		var indexOf;
+		let findNaN = isNaN(needle);
+		let indexOf;
 
 		if (!findNaN && typeof Array.prototype.indexOf === 'function') {
 			indexOf = Array.prototype.indexOf;
 		} else {
 			indexOf = function (needle) {
-				var i = -1, index = -1;
+				let i = -1, index = -1;
 
 				for (i = 0; i < this.length; i++) {
-					var item = this[i];
+					let item = this[i];
 
 					if ((findNaN && isNaN(item)) || item.toLowerCase() === needle.toLowerCase()) {
 						index = i;
@@ -72,11 +72,11 @@ class Opportunity extends Component {
 	}
 
 	convertDate(dateString) {
-		var dateObj = new Date(dateString);
-		var month = dateObj.getUTCMonth()+1;
-		var day = dateObj.getUTCDay();
-		var month0 = '';
-		var day0 = '';
+		let dateObj = new Date(dateString);
+		let month = dateObj.getUTCMonth()+1;
+		let day = dateObj.getUTCDay();
+		let month0 = '';
+		let day0 = '';
 		if (month<10){
 		  month0 = '0';
 		}
@@ -106,9 +106,9 @@ class Opportunity extends Component {
 	}
 
 	checkOpen() {
-		var openDateObj = new Date(this.props.opens);
-		var closesDateObj = new Date(this.props.closes);
-		var nowTime = Date.now()
+		let openDateObj = new Date(this.props.opens);
+		let closesDateObj = new Date(this.props.closes);
+		let nowTime = Date.now()
 		if (closesDateObj.getTime() < nowTime) {
 			return "Closed";
 		} else if (openDateObj.getTime() > nowTime) {

@@ -12,8 +12,8 @@ class ProfessorMatches extends Component {
     componentDidMount() {
         axios.get('/api/applications?id=' + '5a3c0f1df36d280c875969ed')
             .then((response) => {
-                for (var opp in response.data) {
-                    for (var app in opp) {
+                for (let opp in response.data) {
+                    for (let app in opp) {
                         console.log(response.data[opp][app]);
                     }
                 }
@@ -25,8 +25,8 @@ class ProfessorMatches extends Component {
     }
 
     render() {
-        var oppList = [];
-        for (var opp in this.state.data) {
+        let oppList = [];
+        for (let opp in this.state.data) {
             oppList.push(<ProfessorMatchList data={ this.state.data[opp] }/>);
         }
         return (

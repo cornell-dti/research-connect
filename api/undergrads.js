@@ -7,7 +7,7 @@ let common = require('../common.js');
 //professors can get the information on any student
 app.get('/la/:netId', function (req, res) {
     verify(req.query.tokenId, function (profNetId) {
-        if (profNetId == null){
+        if (!profNetId){
             return res.status(401).send({});
         }
         debug("prof net id");
@@ -50,7 +50,7 @@ app.get('/:tokenId', function (req, res) {
 //previously POST /createUndergrad
 app.post('/', function (req, res) {
     debug(req.body);
-    if (req.body == null || req.body.token_id == undefined){
+    if (!req.body || !req.body.token_id){
         return res.status(412).send("No user found with current session token.");
     }
     verify(req.body.token_id, function(email){
@@ -61,7 +61,7 @@ app.post('/', function (req, res) {
         debug("net id:");
         let netId = common.getNetIdFromEmail(email);
         debug(netId);
-        if (netId == ""){
+        if (!netId){
             return res.status(412).send("The email you signed up with does not end in @cornell.edu. Please log out and try again.");
         }
         debug("checkpoint");
@@ -75,7 +75,7 @@ app.post('/', function (req, res) {
         debug(data.courses);
         debug("This be the resume");
         //if they don't have the required values
-        if (data.firstName == null || data.lastName == null || data.gradYear == null){
+        if (!data.firstName|| !data.lastName|| !data.gradYear){
             return res.status(400).send("Missing either first name, last name, or graduation year");
         }
         let undergrad = new undergradModel({
@@ -113,7 +113,7 @@ app.post('/', function (req, res) {
 app.put('/:netId', function (req, res) {
     debug("We have reached the backend");
     debug(req.body);
-    var data = req.body;
+    let data = req.body;
     let nId = req.params.netId;
     undergradModel.find({netId:nId}, function (err, undergrad) {
         if (err) {

@@ -21,9 +21,9 @@ class Reference extends Component {
     }
 
     render() {
-        //You can't declare variables or put "var ... = ..." in between the constructor and render, so if you want to declare
+        //You can't declare variables or put "let ... = ..." in between the constructor and render, so if you want to declare
         //variables you either have to do it in between render and return or do it in state.
-        var arrayOfNums = [1, 4, 9, 16];
+        let arrayOfNums = [1, 4, 9, 16];
         return (
             <div>
                 <p>Anything in return is displayed on the page</p>

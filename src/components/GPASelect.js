@@ -22,8 +22,8 @@ class GPASelect extends React.Component {
 	}
 
 	createGpaOptions() {
-		var options = [];
-		for(var i=25; i<=43; i++){
+		let options = [];
+		for(let i=25; i<=43; i++){
 			options.push( <option key={i} value={(i/10).toString()} >{(i/10).toString()}</option>);
 		}
 		return (

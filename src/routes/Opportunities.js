@@ -33,7 +33,7 @@ class Opportunities extends Component {
     componentDidMount() {
         axios.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/)
             .then((response) => {
-                if (response == null || response.data === "none" || response.data == null) {
+                if (!response || response.data === "none" || !response.data) {
                     window.location.href = '/';
                 }
             })
@@ -72,8 +72,8 @@ class Opportunities extends Component {
             this.setState({clickedEnter: true});
             axios.get('/api/opportunities/search' + '?search=' + this.state.searchBar)
                 .then((response) => {
-                    var matching = [];
-                    for (var i = 0; i < response.data.length; i++) {
+                    let matching = [];
+                    for (let i = 0; i < response.data.length; i++) {
                         matching.push(response.data[i]._id);
                     }
                     this.setState({matchingSearches: matching});

@@ -22,7 +22,7 @@ class StartDate extends React.Component {
         this.props.updateDate(this.state.startDate);
       });
     }else{
-    var tmp = e.target.value.toString().split(" ");
+    let tmp = e.target.value.toString().split(" ");
     console.log(tmp);
     this.setState({startDate: {
       "season": tmp[0],

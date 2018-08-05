@@ -7,9 +7,9 @@ class OpportunityList extends Component {
     super(props);
 	 }
     countNodes(nodes){
-      var tempCount = 0;
-      var countString = "";
-      for (var k in nodes){
+      let tempCount = 0;
+      let countString = "";
+      for (let k in nodes){
         if (nodes[k]!=null){
           tempCount++;
         }
@@ -26,7 +26,7 @@ class OpportunityList extends Component {
     render() {
         let oppNodes = this.props.data.map(opp => {
         /*The variable 'willshow' will be set to false if any filter excludes this opportunity */
-        var willShow = true;
+        let willShow = true;
         const filteredOptions = this.props.filteredOptions;
         /**
          * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
@@ -46,8 +46,8 @@ class OpportunityList extends Component {
         let year = filteredOptions.startDate.year;
 
         if (filteredOptions.searchBar!="" && filteredOptions.clickedEnter){
-          var matches = false
-          for (var i = 0; i<matchingSearches.length; i++){
+          let matches = false
+          for (let i = 0; i<matchingSearches.length; i++){
             if(matchingSearches[i]==opp._id){
               matches = true;
             }

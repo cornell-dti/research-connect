@@ -43,7 +43,7 @@ const router = express.Router();
 const port = process.env.PORT || 3001;
 
 // uncomment after placing your favicon in /public
-// var favicon = require('serve-favicon');
+// let favicon = require('serve-favicon');
 // app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
 // app.use(bodyParser.json());
 app.use(bodyParser.json({limit: '50mb'}));
@@ -103,7 +103,7 @@ app.use("/*", express.static("./src/docs"));
 
 // catch 404 and fgorward to error handler
 // app.use(function (req, res, next) {
-//     var err = new Error('Not Found');
+//     let err = new Error('Not Found');
 //     err.status = 404;
 //     next(err);
 // });

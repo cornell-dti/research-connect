@@ -49,7 +49,7 @@ app.post('/', function (req, res) {
         debug("net id:");
         let netId = common.getNetIdFromEmail(email);
         debug(netId);
-        if (netId == ""){
+        if (!netId){
             return res.status(412).send("The email you signed up with does not end in @cornell.edu. Please log out and try again.");
         }
         let resume = req.body.resume;

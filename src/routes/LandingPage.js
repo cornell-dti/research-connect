@@ -60,7 +60,7 @@ class LandingPage extends Component {
 
     scrollTo(id) {
         console.log("scrolling");
-        var scrollToElement = require('scroll-to-element');
+        let scrollToElement = require('scroll-to-element');
         scrollToElement(id, {
             offset: 0,
             ease: 'linear',

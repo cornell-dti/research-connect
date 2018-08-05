@@ -280,7 +280,7 @@ function handleVerifyError(errorObj, res){
 module.exports.handleVerifyError = handleVerifyError;
 
 function getNetIdFromEmail(email){
-    if (email == null){
+    if (!email){
         return "";
     }
     let emailParts = email.split("@");

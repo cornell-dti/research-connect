@@ -9,7 +9,7 @@ import '../StudentRegister.css';
 import * as Utils from '../components/Shared/Utils.js'
 
 
-var majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"];
+let majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"];
 let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
 
 
@@ -40,18 +40,18 @@ class StudentRegister extends React.Component {
     };
 
     optionify(inputArray, inputName) {
-        var newArray = [];
-        for (var i = 0; i < inputArray.length; i++) {
+        let newArray = [];
+        for (let i = 0; i < inputArray.length; i++) {
             newArray.push(<option key={inputArray[i]} value={inputArray[i]}>
                 {inputArray[i]}
             </option>);
         }
-        var placehold = "Select";
-        var validName;
-        if (inputName == "gradYear") {
+        let placehold = "Select";
+        let validName;
+        if (inputName === "gradYear") {
             placehold = "Select Graduation Year";
             validName = this.state.gradYearValid
-        } else if (inputName == "major") {
+        } else if (inputName === "major") {
             placehold = "Select Major";
             validName = this.state.majorValid
 
@@ -67,8 +67,8 @@ class StudentRegister extends React.Component {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (event) => {
-                var fileAsBinaryString = reader.result;
-                var encodedData = window.btoa(fileAsBinaryString);
+                let fileAsBinaryString = reader.result;
+                let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
                 this.setState({resume: [encodedData]});
                 this.setState({resumeValid: true})
@@ -86,8 +86,8 @@ class StudentRegister extends React.Component {
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (event) => {
-                var fileAsBinaryString = reader.result;
-                var encodedData = window.btoa(fileAsBinaryString);
+                let fileAsBinaryString = reader.result;
+                let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
                 this.setState({transcript: [encodedData]})
             };
@@ -197,7 +197,7 @@ class StudentRegister extends React.Component {
                     if (this.state.resume != null && this.state.resume.length !== 0) {
                         axios.post('/api/docs', {token_id, resume})
                             .then((result) => {
-                                if (oneRan || this.state.transcript == null) {
+                                if (oneRan || !this.state.transcript) {
                                     window.location.replace(baseUrl + "/opportunities");
                                 }
                                 else {
