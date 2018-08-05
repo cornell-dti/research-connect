@@ -2,7 +2,7 @@ let express = require('express');
 let app = express.Router();
 let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, s3, mongoose, verify, handleVerifyError} = require('../common.js');
 let common = require('../common.js');
-const BUCKET_NAME = process.env.bucket_name;
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 
 
@@ -19,10 +19,10 @@ app.get('/:id', function (req, res) {
     verify(req.query.token, function (netId) {
         s3.getObject(params, function (err, data) {
             if (err) {
-                console.log('err!');
-                console.log(err);
-                console.log(err.stack);
-                console.log(err, err.stack);
+                debug('err!');
+                debug(err);
+                debug(err.stack);
+                debug(err, err.stack);
             } // an error occurred
             else {
                 let baseString = Buffer.from(data.Body, 'base64').toString('ascii');
@@ -41,24 +41,24 @@ function generateId() {
 
 //Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/', function (req, res) {
-    console.log('reached');
+    debug('reached');
     verify(req.body.token_id, function(email){
-        console.log("email: " + email);
+        debug("email: " + email);
         if (email === null){
             return res.status(412).send("No user found with current session token.");
         }
-        console.log("net id:");
+        debug("net id:");
         let netId = common.getNetIdFromEmail(email);
-        console.log(netId);
+        debug(netId);
         if (!netId){
             return res.status(412).send("The email you signed up with does not end in @cornell.edu. Please log out and try again.");
         }
         let resume = req.body.resume;
         let docId = generateId();
-        console.log("resume:");
-        console.log(resume);
-        console.log("req.body below, resume above");
-        console.log(req.body);
+        debug("resume:");
+        debug(resume);
+        debug("req.body below, resume above");
+        debug(req.body);
         //if there's no resume, so add the trasncript
         if (resume === undefined || resume === null) {
             let transcript = req.body.transcript;
@@ -72,7 +72,7 @@ app.post('/', function (req, res) {
                  transcriptObj.doc = transcript;
                  transcriptObj.save(function(err, document){
                     undergradModel.findOneAndUpdate({"netId": netId}, {transcriptId: document.id}, function(err, oldDoc){
-                        console.log("trans error: " + err);
+                        debug("trans error: " + err);
                     });
                 });
                  */
@@ -85,30 +85,30 @@ app.post('/', function (req, res) {
                 };
                 s3.upload(uploadParams, function (err, data) {
                     if (err) {
-                        console.log("Error", err);
+                        debug("Error", err);
                     }
                     if (data) {
-                        console.log("Upload Success", data.Location);
+                        debug("Upload Success", data.Location);
                         res.send("Success!");
                     }
                 });
                 //if this doessn't work, use update operators for the second param: https://docs.mongodb.com/manual/reference/operator/update/
                 undergradModel.findOneAndUpdate({"netId": netId}, {$set: {transcriptId: docId}}, function (err, oldDoc) {
-                    console.log("trans error: " + err);
+                    debug("trans error: " + err);
                 });
             }
         }
         //resume is defined
         else {
-            console.log("resume uploaded");
+            debug("resume uploaded");
             resume = resume[0];
-            console.log(resume);
+            debug(resume);
             /** MLAB STORAGE
              let resumeObj = new docModel();
              resumeObj.doc = resume;
              resumeObj.save(function(err, document){
                 undergradModel.findOneAndUpdate({"netId": netId}, {resumeId: document.id}, function(err, oldDoc){
-                    console.log("resume error: " + err);
+                    debug("resume error: " + err);
                 });
             });
              */
@@ -119,34 +119,34 @@ app.post('/', function (req, res) {
                 ContentType: 'text/plain',
                 Body: resume
             };
-            console.log("upload params");
-            console.log(uploadParams);
+            debug("upload params");
+            debug(uploadParams);
             s3.upload(uploadParams, function (err, data) {
                 if (err) {
-                    console.log("Error in s3 upload", err);
-                    console.log(err);
+                    debug("Error in s3 upload", err);
+                    debug(err);
                     return;
                 }
                 if (data) {
-                    console.log("Upload Success", data.Location);
+                    debug("Upload Success", data.Location);
                     undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function (err, oldDoc) {
-                        console.log("resume error: " + err);
+                        debug("resume error: " + err);
                         if (!err){
                             res.status(200).send();
                         }
                         else{
-                            console.log("error in find  one and update");
-                            console.log(err);
+                            debug("error in find  one and update");
+                            debug(err);
                             res.status(500).send(err);
                         }
                     });
                 }
             });
-            console.log('gend');
+            debug('gend');
         }
     }, true).catch(function(error){
-        console.log("error in post doc/");
-        console.log(error);
+        debug("error in post doc/");
+        debug(error);
         if (!handleVerifyError(error, res)){
             res.status(500).send("Error in submitting your doc. Please try again");
         }
