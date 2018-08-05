@@ -48,7 +48,7 @@
   },
   "scripts": {
     "build:client": "cd src && npm run build",
-    "start": "set DEBUG=* && node server.js",
+    "start": "node server.js",
     "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
     "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\"",
     "start:dev-backend": "set DEBUG=* && nodemon server.js"

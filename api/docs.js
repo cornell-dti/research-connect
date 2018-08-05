@@ -19,10 +19,10 @@ app.get('/:id', function (req, res) {
     verify(req.query.token, function (netId) {
         s3.getObject(params, function (err, data) {
             if (err) {
-                debug('err!');
-                debug(err);
-                debug(err.stack);
-                debug(err, err.stack);
+                console.log('err!');
+                console.log(err);
+                console.log(err.stack);
+                console.log(err, err.stack);
             } // an error occurred
             else {
                 let baseString = Buffer.from(data.Body, 'base64').toString('ascii');
@@ -41,23 +41,24 @@ function generateId() {
 
 //Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/', function (req, res) {
-    debug('reached');
+    console.log('reached');
     verify(req.body.token_id, function(email){
-        debug("email: " + email);
+        console.log("email: " + email);
         if (email === null){
             return res.status(412).send("No user found with current session token.");
         }
-        debug("net id:");
+        console.log("net id:");
         let netId = common.getNetIdFromEmail(email);
-        debug(netId);
+        console.log(netId);
         if (!netId){
             return res.status(412).send("The email you signed up with does not end in @cornell.edu. Please log out and try again.");
         }
         let resume = req.body.resume;
         let docId = generateId();
-        debug(resume);
-        debug("req.body below, resume above");
-        debug(req.body);
+        console.log("resume:");
+        console.log(resume);
+        console.log("req.body below, resume above");
+        console.log(req.body);
         //if there's no resume, so add the trasncript
         if (resume === undefined || resume === null) {
             let transcript = req.body.transcript;
@@ -71,7 +72,7 @@ app.post('/', function (req, res) {
                  transcriptObj.doc = transcript;
                  transcriptObj.save(function(err, document){
                     undergradModel.findOneAndUpdate({"netId": netId}, {transcriptId: document.id}, function(err, oldDoc){
-                        debug("trans error: " + err);
+                        console.log("trans error: " + err);
                     });
                 });
                  */
@@ -84,29 +85,30 @@ app.post('/', function (req, res) {
                 };
                 s3.upload(uploadParams, function (err, data) {
                     if (err) {
-                        debug("Error", err);
+                        console.log("Error", err);
                     }
                     if (data) {
-                        debug("Upload Success", data.Location);
+                        console.log("Upload Success", data.Location);
                         res.send("Success!");
                     }
                 });
                 //if this doessn't work, use update operators for the second param: https://docs.mongodb.com/manual/reference/operator/update/
                 undergradModel.findOneAndUpdate({"netId": netId}, {$set: {transcriptId: docId}}, function (err, oldDoc) {
-                    debug("trans error: " + err);
+                    console.log("trans error: " + err);
                 });
             }
         }
         //resume is defined
         else {
-            debug("resume uploaded");
+            console.log("resume uploaded");
             resume = resume[0];
+            console.log(resume);
             /** MLAB STORAGE
              let resumeObj = new docModel();
              resumeObj.doc = resume;
              resumeObj.save(function(err, document){
                 undergradModel.findOneAndUpdate({"netId": netId}, {resumeId: document.id}, function(err, oldDoc){
-                    debug("resume error: " + err);
+                    console.log("resume error: " + err);
                 });
             });
              */
@@ -117,33 +119,34 @@ app.post('/', function (req, res) {
                 ContentType: 'text/plain',
                 Body: resume
             };
-            debug("upload params");
-            debug(uploadParams);
+            console.log("upload params");
+            console.log(uploadParams);
             s3.upload(uploadParams, function (err, data) {
                 if (err) {
-                    debug("Error in s3 upload", err);
+                    console.log("Error in s3 upload", err);
+                    console.log(err);
                     return;
                 }
                 if (data) {
-                    debug("Upload Success", data.Location);
+                    console.log("Upload Success", data.Location);
                     undergradModel.findOneAndUpdate({"netId": netId}, {$set: {resumeId: docId}}, function (err, oldDoc) {
-                        debug("resume error: " + err);
+                        console.log("resume error: " + err);
                         if (!err){
                             res.status(200).send();
                         }
                         else{
-                            debug("error in find  one and update");
-                            debug(err);
+                            console.log("error in find  one and update");
+                            console.log(err);
                             res.status(500).send(err);
                         }
                     });
                 }
             });
-            debug('gend');
+            console.log('gend');
         }
     }, true).catch(function(error){
-        debug("error in post doc/");
-        debug(error);
+        console.log("error in post doc/");
+        console.log(error);
         if (!handleVerifyError(error, res)){
             res.status(500).send("Error in submitting your doc. Please try again");
         }
