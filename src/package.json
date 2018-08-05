@@ -50,6 +50,7 @@
     "react-modal": "^3.4.4",
     "react-onclickoutside": "^6.7.1",
     "react-router-dom": "^4.2.2",
+    "react-tooltip": "^3.6.1",
     "scroll-to-element": "^2.0.0"
   }
 }
