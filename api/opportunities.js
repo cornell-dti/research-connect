@@ -244,12 +244,18 @@ app.post('/', function (req, res) {
     data.questions["coverLetter"] = "Cover Letter";
     if (data.areas) {
         data.areas = data.areas.map(function(element){
-            return element.trim();
+            let trimmed = element.trim();
+            if (trimmed){
+                return trimmed;
+            }
         });
     }
     if (data.requiredClasses){
         data.requiredClasses = data.requiredClasses.map(function(element){
-            return element.trim();
+            let trimmed = element.trim();
+            if (trimmed){
+                return trimmed;
+            }
         })
     }
 
