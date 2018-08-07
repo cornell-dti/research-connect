@@ -15,6 +15,24 @@ app.get('/:netId', function (req, res) {
     });
 });
 
+/**
+ * Creates lab admin object using info from the data object
+ * @param data should have all the proper fields below
+ */
+function createLabAdminObject(data){
+    return new labAdministratorModel({
+        role: data.role,
+        labId: data.labId,
+        netId: data.netId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        verified: data.verified,
+        notifications: data.notifications,
+        lastSent: Date.now(),
+        email: data.email
+    });
+}
+
 /* In the addLabAdmin endpoint, check to see if the req.body.labId field is null.
  If it is null, then create a lab with labName, labDescription, and labUrl and save it to the database.
  All three should be in req.body. If labId is not null, then just continue with the method as usual.
@@ -47,17 +65,9 @@ function createLabAndAdmin(req, res) {
             data.notifications = 0;
         }
 
-        let labAdmin = new labAdministratorModel({
-            role: data.role,
-            labId: labObject._id,
-            netId: data.netId,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            verified: data.verified,
-            notifications: data.notifications,
-            lastSent: Date.now(),
-            email: data.email
-        });
+        data.labId = labObject._id;
+
+        let labAdmin = createLabAdminObject(data);
 
         labAdmin.save(function (err) {
             if (err) {
@@ -80,17 +90,7 @@ function createLabAdmin(data, res){
         data.notifications = 0;
     }
 
-    let labAdmin = new labAdministratorModel({
-        role: data.role,
-        labId: data.labId,
-        netId: data.netId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        notifications: data.notifications,
-        lastSent: Date.now(),
-        verified: data.verified,
-        email: data.email
-    });
+    let labAdmin = createLabAdminObject(data);
 
     labAdmin.save(function (err) {
         if (err) {
