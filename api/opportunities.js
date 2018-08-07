@@ -241,7 +241,7 @@ app.post('/', function (req, res) {
         data.compensation = ["none"];
     }
     debug("3");
-    data.questions["coverLetter"] = "Cover Letter";
+    // data.questions["coverLegtter"] = "Cover Letter";
     if (data.areas) {
         data.areas = data.areas.map(function(element){
             let trimmed = element.trim();

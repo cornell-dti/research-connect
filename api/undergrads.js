@@ -72,6 +72,14 @@ app.post('/', function (req, res) {
         debug(data.gradYear);
         debug(data.major);
         debug(data.GPA);
+        if (data.courses) {
+            data.courses = data.courses.map(function(element){
+                let trimmed = element.trim();
+                if (trimmed){
+                    return trimmed;
+                }
+            });
+        }
         debug(data.courses);
         debug("This be the resume");
         //if they don't have the required values

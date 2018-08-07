@@ -97,7 +97,7 @@ class ApplicationPage extends Component {
         for (let question in responses) {
             questionsAndResponses.push(
                 <div className="question-and-response" key={ c++ }>
-                    <div className='question'>{ questions[question] }</div>
+                    <div className='question'>{ questions[question] ? questions[question] : "Cover Letter"}</div>
                     <div className='response'>{ responses[question] }</div>
                 </div>
             );

@@ -57983,7 +57983,7 @@ var ApplicationPage = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'question' },
-                        questions[question]
+                        questions[question] ? questions[question] : "Cover Letter"
                     ),
                     _react2.default.createElement(
                         'div',
