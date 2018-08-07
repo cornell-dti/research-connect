@@ -45979,26 +45979,27 @@ var OpportunityPage = function (_Component) {
                 student = _this$state.student,
                 coverLetter = _this$state.coverLetter,
                 netId = _this$state.netId;
+            // if (coverLetter) {
 
-            if (coverLetter) {
-                var allQsAnswered = true;
-                for (var key in questionAnswers) {
-                    if (questionAnswers[key] == '') {
-                        var _allQsAnswered = false;
-                    }
-                }
-                if (allQsAnswered === true) {
-                    _this.setState({ submitted: true });
-                    console.log("submitting form");
-                    var opportunityId = opportunity._id;
-                    var responses = questionAnswers;
-                    _axios2.default.post('/api/applications', { opportunityId: opportunityId, netId: netId, responses: responses }).then(function (result) {
-                        console.log(result);
-                    }).catch(function (error) {
-                        Utils.handleTokenError(error);
-                    });
+            var allQsAnswered = true;
+            for (var key in questionAnswers) {
+                if (questionAnswers[key] == '') {
+                    var _allQsAnswered = false;
                 }
             }
+            if (allQsAnswered === true) {
+                _this.setState({ submitted: true });
+                console.log("submitting form");
+                var opportunityId = opportunity._id;
+                var responses = questionAnswers;
+                _axios2.default.post('/api/applications', { opportunityId: opportunityId, netId: netId, responses: responses }).then(function (result) {
+                    console.log(result);
+                }).catch(function (error) {
+                    Utils.handleTokenError(error);
+                });
+            }
+
+            // }
         };
 
         _this.state = {
@@ -46111,7 +46112,7 @@ var OpportunityPage = function (_Component) {
                         { id: key, key: key },
                         _this3.state.opportunity.questions[key],
                         _react2.default.createElement('br', null),
-                        _react2.default.createElement('textarea', { name: key, key: key, onChange: _this3.handleChange.bind(_this3, key) }),
+                        _react2.default.createElement('textarea', { style: { "min-height": "16rem" }, name: key, key: key, onChange: _this3.handleChange.bind(_this3, key) }),
                         _react2.default.createElement('br', null)
                     );
                 });
@@ -46120,11 +46121,6 @@ var OpportunityPage = function (_Component) {
                     { onSubmit: this.handleAppSubmit.bind(this) },
                     ' ',
                     questionMapping,
-                    'Cover Letter: Describe why you',
-                    "'",
-                    're interested in this lab/position in particular, as well as how any qualifications you have will help you excel in this lab. Please be concise.',
-                    _react2.default.createElement('textarea', { value: this.state.coverLetter, onChange: this.coverChange.bind(this),
-                        className: 'cover-letter' }),
                     _react2.default.createElement('input', { className: 'button', type: 'submit', value: 'Submit' })
                 );
             } else {
@@ -46132,7 +46128,6 @@ var OpportunityPage = function (_Component) {
                 return _react2.default.createElement(
                     'form',
                     { onSubmit: this.handleAppSubmit.bind(this) },
-                    _react2.default.createElement('textarea', { className: 'cover-letter' }),
                     _react2.default.createElement('input', { className: 'button', type: 'submit', value: 'Submit' })
                 );
             }

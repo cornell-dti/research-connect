@@ -66,7 +66,7 @@ class OpportunityPage extends Component {
 
         // get our form data out of state
         const {opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId} = this.state;
-        if (coverLetter) {
+        // if (coverLetter) {
             let allQsAnswered = true;
             for (let key in questionAnswers) {
                 if (questionAnswers[key] == '') {
@@ -87,9 +87,7 @@ class OpportunityPage extends Component {
 
             }
 
-        }
-
-
+        // }
     };
     //this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
     componentWillMount() {
@@ -149,21 +147,25 @@ class OpportunityPage extends Component {
                     return <div id={key} key={key}>
                         {this.state.opportunity.questions[key]}
                         <br/>
-                        <textarea name={key} key={key} onChange={this.handleChange.bind(this, key)}/>
+                        <textarea style={{"min-height": "16rem"}} name={key} key={key} onChange={this.handleChange.bind(this, key)}/>
                         <br/>
                     </div>
                 }
             );
             return <form onSubmit={this.handleAppSubmit.bind(this)}> {questionMapping}
-                Cover Letter: Describe why you{"'"}re interested in this lab/position in particular, as well as how any
-                qualifications you have will help you excel in this lab. Please be concise.
-                <textarea value={this.state.coverLetter} onChange={this.coverChange.bind(this)}
-                          className="cover-letter"></textarea><input className="button" type="submit" value="Submit"/>
+                {/*Cover Letter: Describe why you{"'"}re interested in this lab/position in particular, as well as how any*/}
+                    {/*qualifications you have will help you excel in this lab. Please be concise.*/}
+                {/*<textarea value={this.state.coverLetter} onChange={this.coverChange.bind(this)}*/}
+                          {/*className="cover-letter"></textarea>*/}
+                <input className="button" type="submit" value="Submit"/>
             </form>;
 
         } else {
 
-            return <form onSubmit={this.handleAppSubmit.bind(this)}><textarea className="cover-letter"></textarea>
+            return <form onSubmit={this.handleAppSubmit.bind(this)}>
+                {/*Cover Letter: Describe why you{"'"}re interested in this lab/position in particular, as well as how any*/}
+                {/*qualifications you have will help you excel in this lab. Please be concise.*/}
+                {/*<textarea value={this.state.coverLetter} onChange={this.coverChange.bind(this)} className="cover-letter"></textarea>*/}
                 <input className="button" type="submit" value="Submit"/></form>;
         }
     }

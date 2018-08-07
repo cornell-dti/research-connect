@@ -241,7 +241,8 @@ app.post('/', function (req, res) {
         data.compensation = ["none"];
     }
     debug("3");
-    // data.questions["coverLegtter"] = "Cover Letter";
+    data.questions["coverLetter"] = "Cover Letter: Describe why you're interested in this lab/position in particular, " +
+        "as well as how any qualifications you have will help you excel in this lab. Please be concise.";
     if (data.areas) {
         data.areas = data.areas.map(function(element){
             let trimmed = element.trim();
@@ -292,7 +293,6 @@ app.post('/', function (req, res) {
             closes: data.closes,
             areas: data.areas
         });
-
         opportunity.save(function (err, response) {
             if (err) {
                 res.status(500).send({"errors": err.errors});
