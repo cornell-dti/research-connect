@@ -242,6 +242,18 @@ app.post('/', function (req, res) {
     }
     debug("3");
     data.questions["coverLetter"] = "Cover Letter";
+    if (data.areas) {
+        data.areas.map(function(element){
+            return element.trim();
+        });
+    }
+    if (data.requiredClasses){
+        data.requiredClasses.map(function(element){
+            return element.trim();
+        })
+    }
+
+
 
     let token = data.creatorNetId;
     verify(token, function (netIdActual) {
