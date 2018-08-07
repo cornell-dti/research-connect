@@ -131,7 +131,7 @@ const labAdministratorSchema = new Schema({
     notifications: {type: Number, required: true},
     lastSent: {type: Number, default: Date.now()},
     verified: {type: Boolean, default: false},
-    email: {type: String, default: ""}
+    email: {type: String, default: "", required: true}
 });
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 module.exports.labAdministratorModel = labAdministratorModel;

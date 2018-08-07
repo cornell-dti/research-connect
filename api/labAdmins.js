@@ -56,6 +56,7 @@ function createLabAndAdmin(req, res) {
             verified: data.verified,
             notifications: data.notifications,
             lastSent: Date.now(),
+            email: data.email
         });
 
         labAdmin.save(function (err) {
@@ -116,18 +117,11 @@ function createLabAdmin(data, res){
 app.post('/', function (req, res) {
     //req is json containing the stuff that was sent if there was anything
     let data = req.body;
-    debug(data);
-
     debug("we are in createLabAdmin");
-    debug(data.role);
-    debug(data.labId);
-    debug(data.netId);
-    debug(data.firstName);
-    debug(data.lastName);
-    debug(data.verified);
-    debug(data.labDescription);
-
+    debug(data);
     verify(data.token_id, function(email){
+        debug("email");
+        debug(email);
         data.email = email;
         // if labId is null then there is no existing lab and creating new lab
         if (!data.labId) {
