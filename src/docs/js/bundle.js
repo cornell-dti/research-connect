@@ -47256,7 +47256,9 @@ var CreateOppForm = function (_React$Component) {
 
             //makes sure all the fields that are required are valid
 
-            if (!(_this.state.titleIsValid && _this.state.tasksAreValid && _this.state.seasonIsValid && _this.state.compensationIsValid && _this.state.yearIsValid)) {
+            if (!(_this.state.titleIsValid && _this.state.tasksAreValid && _this.state.seasonIsValid &&
+            // this.state.compensationIsValid &&
+            _this.state.yearIsValid)) {
                 return;
             }
             _axios2.default.post('/api/opportunities', {
@@ -47333,7 +47335,7 @@ var CreateOppForm = function (_React$Component) {
             titleIsValid: false,
             tasksAreValid: false,
             seasonIsValid: false,
-            compensationIsValid: false,
+            // compensationIsValid: false,
             yearIsValid: false,
             triedSubmitting: false
         };
@@ -47518,7 +47520,7 @@ var CreateOppForm = function (_React$Component) {
                 compensationArray.push('undetermined');
             }
             var atLeastOneOptionSelected = compensationArray.length !== 0;
-            this.setState({ compensationIsValid: atLeastOneOptionSelected });
+            // this.setState({compensationIsValid: atLeastOneOptionSelected});
             this.setState({ compensation: compensationArray });
         }
 
@@ -47892,13 +47894,7 @@ var CreateOppForm = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 'div',
-                                {
-                                    className: !this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation" },
-                                _react2.default.createElement(
-                                    'span',
-                                    { className: 'required-star' },
-                                    '*'
-                                ),
+                                { className: 'years-allowed compensation' },
                                 _react2.default.createElement(
                                     'label',
                                     { className: 'label-inline' },

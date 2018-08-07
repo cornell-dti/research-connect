@@ -41,7 +41,7 @@ class CreateOppForm extends React.Component {
             titleIsValid: false,
             tasksAreValid: false,
             seasonIsValid: false,
-            compensationIsValid: false,
+            // compensationIsValid: false,
             yearIsValid: false,
             triedSubmitting: false
         };
@@ -208,7 +208,7 @@ class CreateOppForm extends React.Component {
             compensationArray.push('undetermined');
         }
         let atLeastOneOptionSelected = compensationArray.length !== 0;
-        this.setState({compensationIsValid: atLeastOneOptionSelected});
+        // this.setState({compensationIsValid: atLeastOneOptionSelected});
         this.setState({compensation: compensationArray});
     }
 
@@ -302,7 +302,7 @@ class CreateOppForm extends React.Component {
         if (!(this.state.titleIsValid &&
             this.state.tasksAreValid &&
             this.state.seasonIsValid &&
-            this.state.compensationIsValid &&
+            // this.state.compensationIsValid &&
             this.state.yearIsValid)) {
             return;
         }
@@ -494,9 +494,9 @@ class CreateOppForm extends React.Component {
                                 </ReactTooltip>
                             </div>
 
-                            <div
-                                className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}>
-                                <span className="required-star">*</span>
+                            <div className="years-allowed compensation">
+                                {/*className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}>*/}
+                                {/*<span className="required-star">*</span>*/}
 
                                 <label className="label-inline">Student Compensation (leave blank if just
                                     experience): </label>
