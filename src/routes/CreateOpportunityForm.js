@@ -246,8 +246,6 @@ class CreateOppForm extends React.Component {
             this.setState({qualifications: event.target.value});
         } else if (event.target.name === "classes") {
             let classArray = event.target.value.split(",");
-            this.setState({areas: areaArray});
-            //TODO should the above be classes: classArray ?
             this.setState({requiredClasses: classArray});
         } else if (event.target.name === "startSeason") {
             if (event.target.value !== "Select") {
