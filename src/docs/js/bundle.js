@@ -47540,8 +47540,8 @@ var CreateOppForm = function (_React$Component) {
                 }
                 this.setState({ title: event.target.value });
             } else if (event.target.name === "areas") {
-                var _areaArray = event.target.value.split(",");
-                this.setState({ areas: _areaArray });
+                var areaArray = event.target.value.split(",");
+                this.setState({ areas: areaArray });
             } else if (event.target.name === "pi") {
                 this.setState({ pi: event.target.value });
             } else if (event.target.name === "supervisor") {
@@ -47559,8 +47559,6 @@ var CreateOppForm = function (_React$Component) {
                 this.setState({ qualifications: event.target.value });
             } else if (event.target.name === "classes") {
                 var classArray = event.target.value.split(",");
-                this.setState({ areas: areaArray });
-                //TODO should the above be classes: classArray ?
                 this.setState({ requiredClasses: classArray });
             } else if (event.target.name === "startSeason") {
                 if (event.target.value !== "Select") {
