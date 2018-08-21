@@ -24,7 +24,11 @@ class ProfNavbar extends Component {
             .then((response) => {
                 //if the user doesn't have a role for whatever reason (logeed out or didn't finish registration)
                 console.log(response);
-                if (!response || response.data === "none" || !response.data) {
+                //if it's an undergrad who requested this... (i could've made it an error response but I was in a rush!)
+                if (response.data === "undergrad"){
+                    this.setState({labId: ""});
+                }
+                else if (!response || response.data === "none" || !response.data) {
                     alert("You have to have an account to view this page");
                     window.location.href = '/';
                 }

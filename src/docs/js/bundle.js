@@ -5781,7 +5781,10 @@ var ProfNavbar = function (_Component) {
             _axios2.default.get('/api/labAdmins/lab/' + sessionStorage.getItem('token_id')).then(function (response) {
                 //if the user doesn't have a role for whatever reason (logeed out or didn't finish registration)
                 console.log(response);
-                if (!response || response.data === "none" || !response.data) {
+                //if it's an undergrad who requested this... (i could've made it an error response but I was in a rush!)
+                if (response.data === "undergrad") {
+                    _this2.setState({ labId: "" });
+                } else if (!response || response.data === "none" || !response.data) {
                     alert("You have to have an account to view this page");
                     window.location.href = '/';
                 } else {
@@ -46654,11 +46657,6 @@ var OpportunityPage = function (_Component) {
                                         'h5',
                                         null,
                                         'Lab:'
-                                    ),
-                                    _react2.default.createElement(
-                                        'a',
-                                        { href: this.state.opportunity.labPage },
-                                        this.state.opportunity.labName
                                     ),
                                     _react2.default.createElement(
                                         'p',

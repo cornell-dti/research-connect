@@ -23,6 +23,10 @@ app.get('/lab/:id', function (req, res){
             debug(err);
             debug("la");
             debug(labAdmin);
+            //if labAdmin is null or undefined (falsy) then it's an undergraed
+            if (!labAdmin){
+                return res.send("undergrad");
+            }
             if (err) {
                 return res.status(500).send(err);
             }
