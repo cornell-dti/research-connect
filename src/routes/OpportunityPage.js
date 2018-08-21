@@ -358,7 +358,7 @@ class OpportunityPage extends Component {
                                     - { this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week. </p>
                                     <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}</p>
                                     <h5>Lab:</h5>
-                                    <a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>
+                                    {/*<a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>*/}
                                     <p>{this.state.opportunity.labDescription}</p>
 
                                 </div>
