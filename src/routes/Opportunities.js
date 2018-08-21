@@ -12,6 +12,7 @@ import GPASelect from '../components/GPASelect';
 import StartDate from '../components/StartDate';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import * as Utils from "../components/Shared/Utils";
+import ProfNavbar from "../components/ProfNavbar";
 
 
 class Opportunities extends Component {
@@ -23,18 +24,23 @@ class Opportunities extends Component {
             gpaSelect: {},
             majorSelect: {},
             startDate: {},
-            searchBar: "",
+            searchBar: '',
             matchingSearches: [],
             searching: false,
-            clickedEnter: false
+            clickedEnter: false,
+            role: ''
         };
     }
 
     componentDidMount() {
-        axios.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/)
+        axios.get('/api/role/' + sessionStorage.getItem('token_id'))
             .then((response) => {
                 if (!response || response.data === "none" || !response.data) {
+                    alert("You must be signed in to view this.");
                     window.location.href = '/';
+                }
+                else{
+                    this.setState({role: response.data});
                 }
             })
             .catch(function (error) {
@@ -103,8 +109,7 @@ class Opportunities extends Component {
     render() {
         return (
             <div>
-
-                <Navbar current={"opportunities"}/>
+                {this.state.role === "undergrad" ? <Navbar current={"opportunities"}/> : <ProfNavbar/>}
 
                 <div className="opp-container row">
 

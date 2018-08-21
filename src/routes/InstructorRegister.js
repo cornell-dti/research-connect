@@ -275,7 +275,7 @@ class InstructorRegister extends React.Component {
                                 <option value="labtech">Lab Technician</option>
                                 <option value="postdoc">Post-Doc</option>
                                 <option value="staffscientist">Staff Scientist</option>
-                                <option value="pi">Principal Investigator</option>
+                                <option value="pi">Professor</option>
                             </select>
                             {!this.state.roleValid && this.state.triedSubmitting ? <div className="error-message">
                                 <span>Not a valid input.</span>
@@ -347,7 +347,7 @@ class InstructorRegister extends React.Component {
                                             <span>Not a valid input.</span>
                                         </div> : ""}
                                     <input className="left-input" type="text" name="labPI" id="labPI"
-                                           placeholder="Principal Investigator"
+                                           placeholder="Professor"
                                            value={this.pi}
                                            onChange={this.handleChangePI.bind(this)}/>
                                     {!this.state.piValid && this.state.triedSubmitting ? <div className="error-message">

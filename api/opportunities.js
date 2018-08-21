@@ -79,26 +79,52 @@ app.get('/', function (req, res) {
     };
 
     let token = req.query.netId;
+    let urlLabId = req.query.labId;
     if (token != undefined) {
         verify(token, function (undergradNetId) {
             debug("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
             undergradModel.findOne({netId: undergradNetId}, function (err, undergrad) {
                 let undergrad1 = undergrad;
-                //if they're a lab admin, show them all
+                //if they're a lab admin, show all the opportunites and set all prereqsMatch to true
                 if (undergrad1 === undefined || undergrad1 === null) {
-                    opportunityModel.find({
-                        opens: {
-                            $lte: new Date()
-                        },
-                        closes: {
-                            $gte: new Date()
+                    let timeRange;
+                    //if there's a lab id in the url, then it's a lab administrator trying to view their own opportunities
+                    if (urlLabId) {
+                        timeRange = {};
+                    }
+                    else {
+                        timeRange = {
+                            opens: {
+                                $lte: new Date()
+                            },
+                            closes: {
+                                $gte: new Date()
+                            }
                         }
-                    }, function (err, opportunities) {
+                    }
+                    opportunityModel.find(timeRange, function (err, opportunities) {
                         for (let i = 0; i < opportunities.length; i++) {
                             opportunities[i]["prereqsMatch"] = true;
                         }
-                        return res.send(opportunities);
+                        //make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
+                        if (urlLabId && urlLabId !== "null") {
+                            debug("2");
+                            labModel.findById(urlLabId, function (err, lab) {
+                                debug(lab);
+                                let oppIdsToOnlyInclude = lab.opportunities;
+                                //right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
+                                oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(opp => opp.toString());
+                                //remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
+                                opportunities = opportunities.filter(opp =>
+                                    oppIdsToOnlyInclude.includes(opp._id.toString())
+                                );
+                                return res.send(opportunities);
+                            });
+                        }
+                        else {
+                            return res.send(opportunities);
+                        }
                     })
                 } else {
                     undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
@@ -244,22 +270,21 @@ app.post('/', function (req, res) {
     data.questions["coverLetter"] = "Cover Letter: Describe why you're interested in this lab/position in particular, " +
         "as well as how any qualifications you have will help you excel in this lab. Please be concise.";
     if (data.areas) {
-        data.areas = data.areas.map(function(element){
+        data.areas = data.areas.map(function (element) {
             let trimmed = element.trim();
-            if (trimmed){
+            if (trimmed) {
                 return trimmed;
             }
         });
     }
-    if (data.requiredClasses){
-        data.requiredClasses = data.requiredClasses.map(function(element){
+    if (data.requiredClasses) {
+        data.requiredClasses = data.requiredClasses.map(function (element) {
             let trimmed = element.trim();
-            if (trimmed){
+            if (trimmed) {
                 return trimmed;
             }
         })
     }
-
 
 
     let token = data.creatorNetId;

@@ -4897,6 +4897,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.gradYearToString = gradYearToString;
 exports.convertDate = convertDate;
 exports.handleTokenError = handleTokenError;
+exports.getParameterByName = getParameterByName;
 exports.logoutGoogle = logoutGoogle;
 function dateIsBetween(date, lowerBound, upperBound) {
     return lowerBound <= date && date <= upperBound;
@@ -4945,6 +4946,22 @@ function handleTokenError(error) {
             return true;
         }
     }
+}
+
+/**
+ * Gets query parameter from url. example url: google.com?id=bear
+ * @param name is name of query parameter, in example it's id
+ * @param url
+ * @return string the value of that url param, in our example it'd be bear
+ */
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
 //helper function for logoutGoogle
@@ -5695,6 +5712,176 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(46);
+
+var _wordlogo = __webpack_require__(47);
+
+var _wordlogo2 = _interopRequireDefault(_wordlogo);
+
+var _axios = __webpack_require__(6);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _CURB = __webpack_require__(48);
+
+var _CURB2 = _interopRequireDefault(_CURB);
+
+var _reactRouterDom = __webpack_require__(16);
+
+var _Utils = __webpack_require__(5);
+
+var _Utils2 = __webpack_require__(5);
+
+var Utils = _interopRequireWildcard(_Utils2);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProfNavbar = function (_Component) {
+    _inherits(ProfNavbar, _Component);
+
+    function ProfNavbar(props) {
+        _classCallCheck(this, ProfNavbar);
+
+        var _this = _possibleConstructorReturn(this, (ProfNavbar.__proto__ || Object.getPrototypeOf(ProfNavbar)).call(this, props));
+
+        _this.state = { labId: "" };
+        return _this;
+    }
+
+    _createClass(ProfNavbar, [{
+        key: 'logout',
+        value: function logout() {
+            (0, _Utils.logoutGoogle)();
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            _axios2.default.get('/api/labAdmins/lab/' + sessionStorage.getItem('token_id')).then(function (response) {
+                //if the user doesn't have a role for whatever reason (logeed out or didn't finish registration)
+                console.log(response);
+                if (!response || response.data === "none" || !response.data) {
+                    alert("You have to have an account to view this page");
+                    window.location.href = '/';
+                } else {
+                    console.log(response.data);
+                    _this2.setState({ labId: response.data });
+                }
+            }).catch(function (error) {
+                Utils.handleTokenError(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'header-all' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'logo-div' },
+                    _react2.default.createElement(
+                        'a',
+                        { href: '/' },
+                        _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'partnership' },
+                        'in partnership with'
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { href: 'http://curb.cornell.edu/', target: '_blank' },
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                    )
+                ),
+                _react2.default.createElement(
+                    'nav',
+                    null,
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current === "newopp" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            { href: '/newopp' },
+                            'Post New Opportunity'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current === "professorView" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                href: '/professorView' },
+                            'View Applications'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        { className: this.props.current === "opportunities" ? "current-page" : "" },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                href: '/opportunities?labId=' + this.state.labId },
+                            'Your Opportunities'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'a',
+                            { href: 'mailto:acb352@cornell.edu' },
+                            'Contact Us'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'a',
+                            { className: 'sign-out', onClick: this.logout.bind(this) },
+                            'Sign Out'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProfNavbar;
+}(_react.Component);
+
+exports.default = ProfNavbar;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /*
 object-assign
 (c) Sindre Sorhus
@@ -5788,7 +5975,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5834,7 +6021,7 @@ if (process.env.NODE_ENV === 'production') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5901,7 +6088,7 @@ var createPath = exports.createPath = function createPath(location) {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5972,7 +6159,7 @@ var createPath = function createPath(location) {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5996,7 +6183,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6065,7 +6252,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6150,7 +6337,7 @@ var StudentNavbar = function (_Component) {
                     null,
                     _react2.default.createElement(
                         'li',
-                        { className: this.props.current == "opportunities" ? "current-page" : "" },
+                        { className: this.props.current === "opportunities" ? "current-page" : "" },
                         _react2.default.createElement(
                             'a',
                             {
@@ -6187,7 +6374,7 @@ var StudentNavbar = function (_Component) {
 exports.default = StudentNavbar;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6195,7 +6382,7 @@ exports.default = StudentNavbar;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return locationsAreEqual; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_resolve_pathname__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_value_equal__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PathUtils__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PathUtils__ = __webpack_require__(21);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -6263,137 +6450,6 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 };
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-__webpack_require__(46);
-
-var _wordlogo = __webpack_require__(47);
-
-var _wordlogo2 = _interopRequireDefault(_wordlogo);
-
-var _CURB = __webpack_require__(48);
-
-var _CURB2 = _interopRequireDefault(_CURB);
-
-var _reactRouterDom = __webpack_require__(16);
-
-var _Utils = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ProfNavbar = function (_Component) {
-    _inherits(ProfNavbar, _Component);
-
-    function ProfNavbar(props) {
-        _classCallCheck(this, ProfNavbar);
-
-        var _this = _possibleConstructorReturn(this, (ProfNavbar.__proto__ || Object.getPrototypeOf(ProfNavbar)).call(this, props));
-
-        _this.state = {};
-        return _this;
-    }
-
-    _createClass(ProfNavbar, [{
-        key: 'logout',
-        value: function logout() {
-            (0, _Utils.logoutGoogle)();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'header-all' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo-div' },
-                    _react2.default.createElement(
-                        'a',
-                        { href: '/' },
-                        _react2.default.createElement('img', { className: 'logo', src: _wordlogo2.default })
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { className: 'partnership' },
-                        'in partnership with'
-                    ),
-                    _react2.default.createElement(
-                        'a',
-                        { href: 'http://curb.cornell.edu/', target: '_blank' },
-                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
-                    )
-                ),
-                _react2.default.createElement(
-                    'nav',
-                    null,
-                    _react2.default.createElement(
-                        'li',
-                        { className: this.props.current === "newopp" ? "current-page" : "" },
-                        _react2.default.createElement(
-                            'a',
-                            { href: '/newopp' },
-                            'Post New Opportunity'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { className: this.props.current === "professorView" ? "current-page" : "" },
-                        _react2.default.createElement(
-                            'a',
-                            {
-                                href: '/professorView' },
-                            'View Applications'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'a',
-                            { href: 'mailto:acb352@cornell.edu' },
-                            'Contact Us'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'a',
-                            { className: 'sign-out', onClick: this.logout.bind(this) },
-                            'Sign Out'
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return ProfNavbar;
-}(_react.Component);
-
-exports.default = ProfNavbar;
-
-/***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6409,7 +6465,7 @@ exports.default = ProfNavbar;
 
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(11);
-  var warning = __webpack_require__(22);
+  var warning = __webpack_require__(23);
   var ReactPropTypesSecret = __webpack_require__(27);
   var loggedTypeFailures = {};
 }
@@ -6603,7 +6659,7 @@ var _valueEqual = __webpack_require__(50);
 
 var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
-var _PathUtils = __webpack_require__(19);
+var _PathUtils = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8632,7 +8688,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IGNORE_CLASS_NAME", function() { return IGNORE_CLASS_NAME; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 
 
@@ -21714,7 +21770,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -21815,7 +21871,7 @@ _reactDom2.default.render(_react2.default.createElement(
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(17),n=__webpack_require__(11),p=__webpack_require__(21),q=__webpack_require__(12),r="function"===typeof Symbol&&Symbol["for"],t=r?Symbol["for"]("react.element"):60103,u=r?Symbol["for"]("react.portal"):60106,v=r?Symbol["for"]("react.fragment"):60107,w=r?Symbol["for"]("react.strict_mode"):60108,x=r?Symbol["for"]("react.provider"):60109,y=r?Symbol["for"]("react.context"):60110,z=r?Symbol["for"]("react.async_mode"):60111,A=r?Symbol["for"]("react.forward_ref"):
+var m=__webpack_require__(18),n=__webpack_require__(11),p=__webpack_require__(22),q=__webpack_require__(12),r="function"===typeof Symbol&&Symbol["for"],t=r?Symbol["for"]("react.element"):60103,u=r?Symbol["for"]("react.portal"):60106,v=r?Symbol["for"]("react.fragment"):60107,w=r?Symbol["for"]("react.strict_mode"):60108,x=r?Symbol["for"]("react.provider"):60109,y=r?Symbol["for"]("react.context"):60110,z=r?Symbol["for"]("react.async_mode"):60111,A=r?Symbol["for"]("react.forward_ref"):
 60112,B="function"===typeof Symbol&&Symbol.iterator;function C(a){for(var b=arguments.length-1,e="http://reactjs.org/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);n(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",e)}var D={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};
 function E(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||D}E.prototype.isReactComponent={};E.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?C("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};E.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function F(){}F.prototype=E.prototype;function G(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||D}var H=G.prototype=new F;
 H.constructor=G;m(H,E.prototype);H.isPureReactComponent=!0;var I={current:null},J=Object.prototype.hasOwnProperty,K={key:!0,ref:!0,__self:!0,__source:!0};
@@ -21852,10 +21908,10 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(17);
+var _assign = __webpack_require__(18);
 var invariant = __webpack_require__(11);
-var emptyObject = __webpack_require__(21);
-var warning = __webpack_require__(22);
+var emptyObject = __webpack_require__(22);
+var warning = __webpack_require__(23);
 var emptyFunction = __webpack_require__(12);
 var checkPropTypes = __webpack_require__(26);
 
@@ -23269,7 +23325,7 @@ module.exports = react;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(11),ea=__webpack_require__(1),m=__webpack_require__(37),A=__webpack_require__(17),C=__webpack_require__(12),fa=__webpack_require__(38),ha=__webpack_require__(39),ja=__webpack_require__(40),ka=__webpack_require__(21);
+var ba=__webpack_require__(11),ea=__webpack_require__(1),m=__webpack_require__(37),A=__webpack_require__(18),C=__webpack_require__(12),fa=__webpack_require__(38),ha=__webpack_require__(39),ja=__webpack_require__(40),ka=__webpack_require__(22);
 function D(a){for(var b=arguments.length-1,c="http://reactjs.org/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);ba(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",c)}ea?void 0:D("227");
 function ma(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var v=Array.prototype.slice.call(arguments,3);try{b.apply(c,v)}catch(l){this._caughtError=l,this._hasCaughtError=!0}}
 var E={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ma.apply(E,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){E.invokeGuardedCallback.apply(this,arguments);if(E.hasCaughtError()){var v=E.clearCaughtError();E._hasRethrowError||(E._hasRethrowError=!0,E._rethrowError=v)}},rethrowCaughtError:function(){return na.apply(E,arguments)},hasCaughtError:function(){return E._hasCaughtError},clearCaughtError:function(){if(E._hasCaughtError){var a=
@@ -23585,15 +23641,15 @@ if (process.env.NODE_ENV !== "production") {
 
 var invariant = __webpack_require__(11);
 var React = __webpack_require__(1);
-var warning = __webpack_require__(22);
+var warning = __webpack_require__(23);
 var ExecutionEnvironment = __webpack_require__(37);
-var _assign = __webpack_require__(17);
+var _assign = __webpack_require__(18);
 var emptyFunction = __webpack_require__(12);
 var checkPropTypes = __webpack_require__(26);
 var getActiveElement = __webpack_require__(38);
 var shallowEqual = __webpack_require__(39);
 var containsNode = __webpack_require__(40);
-var emptyObject = __webpack_require__(21);
+var emptyObject = __webpack_require__(22);
 var hyphenateStyleName = __webpack_require__(204);
 var camelizeStyleName = __webpack_require__(206);
 
@@ -40524,7 +40580,7 @@ __webpack_require__(15);
 
 __webpack_require__(13);
 
-var _StudentNavbar = __webpack_require__(23);
+var _StudentNavbar = __webpack_require__(24);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
 
@@ -40564,6 +40620,10 @@ var _Utils = __webpack_require__(5);
 
 var Utils = _interopRequireWildcard(_Utils);
 
+var _ProfNavbar = __webpack_require__(17);
+
+var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -40587,10 +40647,11 @@ var Opportunities = function (_Component) {
             gpaSelect: {},
             majorSelect: {},
             startDate: {},
-            searchBar: "",
+            searchBar: '',
             matchingSearches: [],
             searching: false,
-            clickedEnter: false
+            clickedEnter: false,
+            role: ''
         };
         return _this;
     }
@@ -40598,9 +40659,14 @@ var Opportunities = function (_Component) {
     _createClass(Opportunities, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            _axios2.default.get('/api/role/' + sessionStorage.getItem('token_id') /* 'prk57'*/).then(function (response) {
+            var _this2 = this;
+
+            _axios2.default.get('/api/role/' + sessionStorage.getItem('token_id')).then(function (response) {
                 if (!response || response.data === "none" || !response.data) {
+                    alert("You must be signed in to view this.");
                     window.location.href = '/';
+                } else {
+                    _this2.setState({ role: response.data });
                 }
             }).catch(function (error) {
                 Utils.handleTokenError(error);
@@ -40641,7 +40707,7 @@ var Opportunities = function (_Component) {
     }, {
         key: 'handleKeyPress',
         value: function handleKeyPress(e) {
-            var _this2 = this;
+            var _this3 = this;
 
             if (e.key === 'Enter') {
                 this.setState({ clickedEnter: true });
@@ -40650,7 +40716,7 @@ var Opportunities = function (_Component) {
                     for (var i = 0; i < response.data.length; i++) {
                         matching.push(response.data[i]._id);
                     }
-                    _this2.setState({ matchingSearches: matching });
+                    _this3.setState({ matchingSearches: matching });
                 }).catch(function (error) {
                     Utils.handleTokenError(error);
                 });
@@ -40680,7 +40746,7 @@ var Opportunities = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_StudentNavbar2.default, { current: "opportunities" }),
+                this.state.role === "undergrad" ? _react2.default.createElement(_StudentNavbar2.default, { current: "opportunities" }) : _react2.default.createElement(_ProfNavbar2.default, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'opp-container row' },
@@ -41735,8 +41801,8 @@ BrowserRouter.propTypes = {
 
 var emptyFunction = __webpack_require__(12);
 var invariant = __webpack_require__(11);
-var warning = __webpack_require__(22);
-var assign = __webpack_require__(17);
+var warning = __webpack_require__(23);
+var assign = __webpack_require__(18);
 
 var ReactPropTypesSecret = __webpack_require__(27);
 var checkPropTypes = __webpack_require__(26);
@@ -42357,7 +42423,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(29);
 
-var _PathUtils = __webpack_require__(19);
+var _PathUtils = __webpack_require__(20);
 
 var _createTransitionManager = __webpack_require__(30);
 
@@ -42734,7 +42800,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(29);
 
-var _PathUtils = __webpack_require__(19);
+var _PathUtils = __webpack_require__(20);
 
 var _createTransitionManager = __webpack_require__(30);
 
@@ -43138,7 +43204,7 @@ var _warning = __webpack_require__(4);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _PathUtils = __webpack_require__(19);
+var _PathUtils = __webpack_require__(20);
 
 var _LocationUtils = __webpack_require__(29);
 
@@ -44051,10 +44117,10 @@ Redirect.contextTypes = {
 /* unused harmony reexport createHashHistory */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__createMemoryHistory__ = __webpack_require__(247);
 /* unused harmony reexport createMemoryHistory */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LocationUtils__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LocationUtils__ = __webpack_require__(25);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_3__LocationUtils__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__LocationUtils__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PathUtils__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PathUtils__ = __webpack_require__(21);
 /* unused harmony reexport parsePath */
 /* unused harmony reexport createPath */
 
@@ -44076,8 +44142,8 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(55);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -44380,8 +44446,8 @@ var createBrowserHistory = function createBrowserHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(55);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -44699,8 +44765,8 @@ var createHashHistory = function createHashHistory() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(34);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -44884,7 +44950,7 @@ var createMemoryHistory = function createMemoryHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_history_PathUtils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(32);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -45335,6 +45401,8 @@ var _OpportunityList = __webpack_require__(258);
 
 var _OpportunityList2 = _interopRequireDefault(_OpportunityList);
 
+var _Utils = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45373,7 +45441,7 @@ var OpportunityBox = function (_Component) {
 		value: function loadOpportunitiesFromServer() {
 			var _this2 = this;
 
-			_axios2.default.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId')).then(function (res) {
+			_axios2.default.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + (0, _Utils.getParameterByName)("labId", window.location.href)).then(function (res) {
 				_this2.setState({ data: res.data });
 			});
 		}
@@ -45924,9 +45992,13 @@ var _axios2 = _interopRequireDefault(_axios);
 
 __webpack_require__(265);
 
-var _StudentNavbar = __webpack_require__(23);
+var _StudentNavbar = __webpack_require__(24);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
+
+var _ProfNavbar = __webpack_require__(17);
+
+var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
 
 var _Footer = __webpack_require__(10);
 
@@ -46009,8 +46081,8 @@ var OpportunityPage = function (_Component) {
             triedSubmitting: false,
             student: null,
             coverLetter: '',
-            netId: 'unknown'
-
+            netId: 'unknown',
+            role: ''
         };
 
         _this.parseClasses = _this.parseClasses.bind(_this);
@@ -46405,8 +46477,8 @@ var OpportunityPage = function (_Component) {
     }, {
         key: 'parseGPA',
         value: function parseGPA(gpa) {
-
-            if (this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa) {
+            //if minGPA is falsy or falls in range
+            if (!this.state.minGPA || this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa) {
                 return _react2.default.createElement(
                     'p',
                     { key: 0 },
@@ -46415,7 +46487,7 @@ var OpportunityPage = function (_Component) {
                         'span',
                         null,
                         ' ',
-                        this.state.opportunity.minGPA
+                        this.state.opportunity.minGPA ? this.state.opportunity.minGPA : "No Preference"
                     )
                 );
             } else {
@@ -46433,12 +46505,31 @@ var OpportunityPage = function (_Component) {
             }
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            _axios2.default.get('/api/role/' + sessionStorage.getItem('token_id')).then(function (response) {
+                //if they don't have a role or it's just not showing up for some reason, go to home page
+                //remove this line if you want anybody to be able to view opportunity page
+                if (!response || response.data === "none" || !response.data) {
+                    alert("You must be signed in to view this.");
+                    window.location.href = '/';
+                } else {
+                    _this4.setState({ role: response.data });
+                }
+            }).catch(function (error) {
+                Utils.handleTokenError(error);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var notProvidedMessage = "Not specified";
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_StudentNavbar2.default, null),
+                this.state.role === "undergrad" ? _react2.default.createElement(_StudentNavbar2.default, null) : _react2.default.createElement(_ProfNavbar2.default, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'opportunities-page-wrapper' },
@@ -46498,7 +46589,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.supervisor
+                                        this.state.opportunity.supervisor ? this.state.opportunity.supervisor : notProvidedMessage
                                     ),
                                     _react2.default.createElement(
                                         'h5',
@@ -46509,7 +46600,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.qualifications
+                                        this.state.opportunity.qualifications ? this.state.opportunity.qualifications : notProvidedMessage
                                     ),
                                     _react2.default.createElement(
                                         'h5',
@@ -46520,7 +46611,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.undergradTasks
+                                        this.state.opportunity.undergradTasks ? this.state.opportunity.undergradTasks : notProvidedMessage
                                     ),
                                     _react2.default.createElement(
                                         'h5',
@@ -46530,9 +46621,9 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.startSeason,
+                                        this.state.opportunity.startSeason ? this.state.opportunity.startSeason : "(Season not specified) ",
                                         ' ',
-                                        this.state.opportunity.startYear
+                                        this.state.opportunity.startYear ? this.state.opportunity.startYear : "(Year not specified)"
                                     ),
                                     _react2.default.createElement(
                                         'h5',
@@ -46543,9 +46634,9 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.minHours + " ",
-                                        'to ',
-                                        this.state.opportunity.maxHours,
+                                        this.state.opportunity.minHours ? this.state.opportunity.minHours + " " : "No minimum ",
+                                        '- ',
+                                        this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum",
                                         ' hours a week. '
                                     ),
                                     _react2.default.createElement(
@@ -46557,7 +46648,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.projectDescription
+                                        this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage
                                     ),
                                     _react2.default.createElement(
                                         'h5',
@@ -47168,7 +47259,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _ProfNavbar = __webpack_require__(25);
+var _ProfNavbar = __webpack_require__(17);
 
 var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
 
@@ -54577,7 +54668,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -56035,7 +56126,7 @@ var _reactOnclickoutside = __webpack_require__(65);
 
 var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
-var _ProfNavbar = __webpack_require__(25);
+var _ProfNavbar = __webpack_require__(17);
 
 var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
 
@@ -56420,7 +56511,7 @@ var InstructorRegister = function (_React$Component) {
                                 _react2.default.createElement(
                                     'option',
                                     { value: 'pi' },
-                                    'Principal Investigator'
+                                    'Professor'
                                 )
                             ),
                             !this.state.roleValid && this.state.triedSubmitting ? _react2.default.createElement(
@@ -56538,7 +56629,7 @@ var InstructorRegister = function (_React$Component) {
                                     )
                                 ) : "",
                                 _react2.default.createElement('input', { className: 'left-input', type: 'text', name: 'labPI', id: 'labPI',
-                                    placeholder: 'Principal Investigator',
+                                    placeholder: 'Professor',
                                     value: this.pi,
                                     onChange: this.handleChangePI.bind(this) }),
                                 !this.state.piValid && this.state.triedSubmitting ? _react2.default.createElement(
@@ -56818,7 +56909,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 __webpack_require__(14);
 
-var _StudentNavbar = __webpack_require__(23);
+var _StudentNavbar = __webpack_require__(24);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
 
@@ -57373,7 +57464,7 @@ var _axios = __webpack_require__(6);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _ProfNavbar = __webpack_require__(25);
+var _ProfNavbar = __webpack_require__(17);
 
 var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
 
@@ -57830,7 +57921,7 @@ var _axios = __webpack_require__(6);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _ProfNavbar = __webpack_require__(25);
+var _ProfNavbar = __webpack_require__(17);
 
 var _ProfNavbar2 = _interopRequireDefault(_ProfNavbar);
 
@@ -58228,7 +58319,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -58468,7 +58559,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -59721,7 +59812,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _StudentNavbar = __webpack_require__(23);
+var _StudentNavbar = __webpack_require__(24);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
 

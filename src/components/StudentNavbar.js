@@ -26,7 +26,7 @@ class StudentNavbar extends Component {
                     <a href="http://curb.cornell.edu/" target="_blank"><img className="CURBlogo" src={curblogo}/></a>
                 </div>
                 <nav>
-                    <li className={this.props.current == "opportunities" ? "current-page" : ""}><a
+                    <li className={this.props.current === "opportunities" ? "current-page" : ""}><a
                         href='/opportunities'>Opportunities</a></li>
                     {/*<li className={this.props.current=="editprofile"? "current-page":""}><a href='/editprofile'>My Profile</a></li>*/}
                     <li><a href="mailto:acb352@cornell.edu">Contact Us</a></li>

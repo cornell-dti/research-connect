@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import OpportunityList from './OpportunityList';
+import {getParameterByName} from "./Shared/Utils";
 
 class OpportunityBox extends Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class OpportunityBox extends Component {
   }
 
 	loadOpportunitiesFromServer() {
-		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId'))
+		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + getParameterByName("labId", window.location.href))
 			.then(res => {
 				this.setState({ data: res.data });
 			})

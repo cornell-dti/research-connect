@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../OpportunityPage.css';
 import Navbar from '../components/StudentNavbar'
+import ProfNavbar from '../components/ProfNavbar'
 import Footer from '../components/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
@@ -20,8 +21,8 @@ class OpportunityPage extends Component {
             triedSubmitting: false,
             student: null,
             coverLetter: '',
-            netId: 'unknown'
-
+            netId: 'unknown',
+            role: ''
         };
 
         this.parseClasses = this.parseClasses.bind(this);
@@ -294,9 +295,9 @@ class OpportunityPage extends Component {
     }
 
     parseGPA(gpa) {
-
-        if (this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa) {
-            return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA}</span></p>;
+        //if minGPA is falsy or falls in range
+        if (!this.state.minGPA || (this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa)) {
+            return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA ? this.state.opportunity.minGPA : "No Preference"}</span></p>;
         }
         else {
             return <p key={1}><CrossCircle className="cross"/><span> {this.state.opportunity.minGPA}</span></p>;
@@ -304,11 +305,30 @@ class OpportunityPage extends Component {
 
     }
 
+    componentDidMount() {
+        axios.get('/api/role/' + sessionStorage.getItem('token_id'))
+            .then((response) => {
+                //if they don't have a role or it's just not showing up for some reason, go to home page
+                //remove this line if you want anybody to be able to view opportunity page
+                if (!response || response.data === "none" || !response.data) {
+                    alert("You must be signed in to view this.");
+                    window.location.href = '/';
+                }
+                else {
+                    this.setState({role: response.data});
+                }
+            })
+            .catch(function (error) {
+                Utils.handleTokenError(error);
+            });
+    }
+
 
     render() {
+        const notProvidedMessage = "Not specified";
         return (
             <div>
-                <Navbar/>
+                {this.state.role === "undergrad" ? <Navbar/> : <ProfNavbar/>}
                 <div className="opportunities-page-wrapper">
                     <div className="cover-photo"></div>
                     <div className="container opportunityListing">
@@ -319,7 +339,7 @@ class OpportunityPage extends Component {
                                     <div className="title-first-col ">
                                         <h4>{this.state.opportunity.title}</h4>
                                         <h6> Lab: {this.state.opportunity.labName}</h6>
-                                        {/*<h6> Principal Investigator: {this.state.opportunity.pi}</h6>*/}
+                                        {/*<h6> Professor: {this.state.opportunity.pi}</h6>*/}
                                     </div>
                                     <div className="title-second-col">
                                         <a className="apply-button button" href="#Application">Apply</a>
@@ -329,14 +349,14 @@ class OpportunityPage extends Component {
                                     </div>
                                 </div>
                                 <div className="about-box">
-                                    <h5> Supervisor:</h5> <p>{this.state.opportunity.supervisor}</p>
-                                    <h5> Qualifications:</h5> <p>{this.state.opportunity.qualifications}</p>
-                                    <h5> Tasks:</h5> <p>{this.state.opportunity.undergradTasks}</p>
+                                    <h5> Supervisor:</h5> <p>{this.state.opportunity.supervisor ? this.state.opportunity.supervisor : notProvidedMessage}</p>
+                                    <h5> Qualifications:</h5> <p>{this.state.opportunity.qualifications ? this.state.opportunity.qualifications : notProvidedMessage}</p>
+                                    <h5> Tasks:</h5> <p>{this.state.opportunity.undergradTasks ? this.state.opportunity.undergradTasks : notProvidedMessage}</p>
                                     <h5> Start Season:</h5>
-                                    <p>{this.state.opportunity.startSeason} {this.state.opportunity.startYear}</p>
-                                    <h5> Weekly Hours:</h5> <p>{ this.state.opportunity.minHours + " " }
-                                    to { this.state.opportunity.maxHours } hours a week. </p>
-                                    <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription}</p>
+                                    <p>{this.state.opportunity.startSeason ? this.state.opportunity.startSeason : "(Season not specified) "} {this.state.opportunity.startYear ? this.state.opportunity.startYear : "(Year not specified)"}</p>
+                                    <h5> Weekly Hours:</h5> <p>{ this.state.opportunity.minHours ? this.state.opportunity.minHours + " " : "No minimum "}
+                                    - { this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week. </p>
+                                    <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}</p>
                                     <h5>Lab:</h5>
                                     <a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>
                                     <p>{this.state.opportunity.labDescription}</p>

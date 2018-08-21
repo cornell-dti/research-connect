@@ -48,6 +48,22 @@ export function handleTokenError(error) {
     }
 }
 
+/**
+ * Gets query parameter from url. example url: google.com?id=bear
+ * @param name is name of query parameter, in example it's id
+ * @param url
+ * @return string the value of that url param, in our example it'd be bear
+ */
+export function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 //helper function for logoutGoogle
 function tryLoggingOut(){
     const auth2 = window.gapi.auth2.getAuthInstance();

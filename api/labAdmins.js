@@ -15,6 +15,24 @@ app.get('/:netId', function (req, res) {
     });
 });
 
+//return the labid of a labAdmin when given their token (id)
+app.get('/lab/:id', function (req, res){
+    verify(req.params.id, function(email) {
+        debug(2);
+        labAdministratorModel.findOne({email: email}, function (err, labAdmin) {
+            debug(err);
+            debug("la");
+            debug(labAdmin);
+            if (err) {
+                return res.status(500).send(err);
+            }
+            res.send(labAdmin.labId);
+        });
+    }, true).catch(function(error){
+        handleVerifyError(error,res);
+    });
+});
+
 /**
  * Creates lab admin object using info from the data object
  * @param data should have all the proper fields below
