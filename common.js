@@ -136,6 +136,23 @@ const labAdministratorSchema = new Schema({
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 module.exports.labAdministratorModel = labAdministratorModel;
 
+/** FACULTY SCHEMA */
+const facultySchema = new Schema({
+    name: {type: String, required: true},
+    office: {type: String},
+    photoId: {type: String},
+    researchInterests: {type:[String]},
+    researchDescription: {type: String},
+    phone: {type: String},
+    labName: {type: String},
+    labPage: {type: String},
+    department: {type: String},
+    email: {type: String}
+});
+let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
+module.exports.facultyModel = facultyModel;
+
+/** OPPORTUNITY SCHEMA */
 const opportunitySchema = new Schema({
 
     creatorNetId: {type: String, required: [true, "Must have NetId for the user creating the opportunity"]},
