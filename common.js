@@ -147,7 +147,8 @@ const facultySchema = new Schema({
     labName: {type: String},
     labPage: {type: String},
     department: {type: String},
-    email: {type: String}
+    email: {type: String},
+    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]}
 });
 let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
