@@ -111,6 +111,7 @@ class FacultySearch extends Component {
                         </div>
                     </div>
                     <div className="column column-80">
+                        <FacultyBox/>
                         <div className="row search-div-container">
 
                             <input onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)}

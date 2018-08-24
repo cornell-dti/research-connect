@@ -47471,7 +47471,7 @@ var CreateOppForm = function (_React$Component) {
                 supervisor,
                 numQuestions
             })
-                 .then((result) => {
+                  .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
                 });
@@ -60814,6 +60814,7 @@ var FacultySearch = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'column column-80' },
+                        _react2.default.createElement(_FacultyBox2.default, null),
                         _react2.default.createElement(
                             'div',
                             { className: 'row search-div-container' },
@@ -60913,16 +60914,17 @@ var FacultyBox = function (_Component) {
 		value: function loadFacultyFromServer() {
 			var _this2 = this;
 
-			_axios2.default.get('localhost:3001/api/faculty')
-			// + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + getParameterByName("labId", window.location.href))
-			.then(function (res) {
+			console.log("loadin'");
+			_axios2.default.get('/api/faculty').then(function (res) {
 				_this2.setState({ data: res.data });
+				console.log('here');
 				console.log(res.data);
 			});
 		}
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			console.log('component did mount');
 			this.loadFacultyFromServer();
 			// setInterval(this.loadCommentsFromServer, this.props.pollInterval);
 		}
@@ -61014,6 +61016,48 @@ exports.default = FacultyList;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(60);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Faculty = function (_Component) {
+    _inherits(Faculty, _Component);
+
+    function Faculty(props) {
+        _classCallCheck(this, Faculty);
+
+        return _possibleConstructorReturn(this, (Faculty.__proto__ || Object.getPrototypeOf(Faculty)).call(this, props));
+    }
+
+    _createClass(Faculty, [{
+        key: 'render',
+        value: function render() {
+
+            return _react2.default.createElement('div', null);
+        }
+    }]);
+
+    return Faculty;
+}(_react.Component);
+
+exports.default = Faculty;
 
 /***/ }),
 /* 330 */

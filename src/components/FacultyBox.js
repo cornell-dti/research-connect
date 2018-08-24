@@ -21,15 +21,17 @@ class FacultyBox extends Component {
   }
 
 	loadFacultyFromServer() {
-		axios.get('localhost:3001/api/faculty')
-			// + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + getParameterByName("labId", window.location.href))
+		console.log("loadin'");
+		axios.get('/api/faculty')
 			.then(res => {
 				this.setState({ data: res.data });
+				console.log('here');
 				console.log(res.data);
 			})
 	}
 
 	componentDidMount() {
+		console.log('component did mount');
 		this.loadFacultyFromServer();
 		// setInterval(this.loadCommentsFromServer, this.props.pollInterval);
 	}
