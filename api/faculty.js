@@ -46,13 +46,30 @@ app.get('/', function (req, res) {
     }
 });
 
-/** Searches the database for whatever the user has in their query string
- * @requires a query string called "query". so /api/faculty/search?query="my search term"
- * @return array of all faculty if no search is specified, matching profs if search term is specified
+/**Searches the database for whatever the user has in their query string
+ * DO NOT REORDER: this endpoint MUST be "above app.get('/:id'..." below. Why? Because when someone sends a request to
+ * the back-end, express moves sequentially down these endpoints and stops at the first match. If /:id was above this
+ * endpoint, something like /api/faculty/search?search="abc" would be triggered first by /:id since express thinks that
+ * "search" is the id that you want to use for that endpoint (since :id is a wildcard operator, meaning that ":id"
+ * can be anything, even the term "search"). So if we put /search first, then our desired /ap/faculty/search requests
+ * will get triggered here.
+ * @requires a query string called "search". so /api/faculty/search?search="my search term"
+ * @return array of 0 elements if no search is specified, matching profs if search term is specified
  */
 app.get('/search', function (req, res) {
-    facultyModel.find({$text: {$search: req.query.query}}, function (err, search) {
+    debug(req.query.search);
+    let searchQuery = {$text: {$search: req.query.search}};
+    //if req.query.search is empty string or undefined (falsy) then just send back all faculty
+    if (!req.query.search){
+        //when you don't specify any criteria, mongo returns everything
+        searchQuery = {};
+    }
+    facultyModel.find(searchQuery, function (err, search) {
         if (err) {
+            // //if the error code name is "TypeMismatch" then req.query.search was null so just send back an empty array
+            // if (err.codeName === "TypeMismatch"){
+            //     res.status(200).send([]);
+            // }
             debug(err);
             res.send(err);
         }
