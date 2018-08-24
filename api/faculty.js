@@ -46,18 +46,40 @@ app.get('/', function (req, res) {
     }
 });
 
+/** Searches the database for whatever the user has in their query string
+ * @requires a query string called "query". so /api/faculty/search?query="my search term"
+ * @return array of all faculty if no search is specified, matching profs if search term is specified
+ */
+app.get('/search', function (req, res) {
+    facultyModel.find({$text: {$search: req.query.query}}, function (err, search) {
+        if (err) {
+            debug(err);
+            res.send(err);
+        }
+        else {
+            if (search === null) {
+                res.send([]);
+            }
+            debug(search);
+            res.send(search);
+        }
+    });
+});
 
 /** gets the faculty by their object id. GET /api/faculty/:id
  * @field id is the object id of the faculty member
  * @return one faculty member object
  */
 app.get('/:id', function (req, res) {
-    facultyModel.findById(req.params.id, function (err, faculty) {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        res.send(faculty);
-    });
+        facultyModel.findById(req.params.id, function (err, faculty) {
+            if (err) {
+                if (err.name === "CastError"){
+                    return res.status(400).send("No faculty could be found with that id.");
+                }
+                return res.status(500).send(err);
+            }
+            res.send(faculty);
+        });
 });
 
 app.post('/', function (req, res) {
