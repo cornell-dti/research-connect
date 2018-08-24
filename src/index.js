@@ -14,6 +14,7 @@ import StudentRegister from './routes/StudentRegister';
 import ProfessorView from './routes/ProfessorView';
 import ApplicationPage from './routes/ApplicationPage';
 import EditProfile from './routes/EditProfile';
+import FacultySearch from './routes/FacultySearch';
 import Doc from './routes/Doc';
 import LandingPage from './routes/LandingPage';
 
@@ -29,6 +30,7 @@ ReactDOM.render(
             <Route exact path='/professorView' component = {ProfessorView} />
             <Route path = '/doc/:id' component = {Doc} />
             <Route exact path='/editProfile' component = {EditProfile} />
+            <Route exact path='/facultySearch' component = {FacultySearch} />
             <Route exact path='/' component = {LandingPage} />
             <Route path='/*' component = {Error} />
         </Switch>
