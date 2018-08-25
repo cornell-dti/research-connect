@@ -21,11 +21,9 @@ class FacultyBox extends Component {
   }
 
 	loadFacultyFromServer() {
-		console.log("loadin'");
 		axios.get('/api/faculty')
 			.then(res => {
 				this.setState({ data: res.data });
-				console.log('here');
 				console.log(res.data);
 			})
 	}

@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import FacultyBox from '../components/FacultyBox';
 import * as Utils from "../components/Shared/Utils";
 import ProfNavbar from "../components/ProfNavbar";
+import DeleteIcon from 'react-icons/lib/ti/delete';
 import '../Opportunities.css';
 
 
@@ -14,12 +15,15 @@ class FacultySearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            department: '',
+            area: '',
             searchBar: '',
             matchingSearches: [],
             searching: false,
             clickedEnter: false,
             role: ''
         };
+    this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +41,17 @@ class FacultySearch extends Component {
                 Utils.handleTokenError(error);
             });
     }
+
+    handleChange(event) {
+
+            if (event.target.name === "area") {
+                this.setState({area: event.target.value});
+            } else if (event.target.name === "department") {
+                this.setState({department: event.target.value});
+            } 
+
+    }
+
     handleUpdateSearch(e) {
         this.setState({searchBar: e.target.value});
         if (e.target.value == "") {
@@ -48,7 +63,7 @@ class FacultySearch extends Component {
     handleKeyPress(e) {
         if (e.key === 'Enter') {
             this.setState({clickedEnter: true});
-            axios.get('/api/opportunities/search' + '?search=' + this.state.searchBar)
+            axios.get('/api/faculty/search' + '?search=' + this.state.searchBar)
                 .then((response) => {
                     let matching = [];
                     for (let i = 0; i < response.data.length; i++) {
@@ -81,7 +96,7 @@ class FacultySearch extends Component {
     render() {
         return (
             <div>
-                {this.state.role === "undergrad" ? <Navbar current={"opportunities"}/> : <ProfNavbar/>}
+                {this.state.role === "undergrad" ? <Navbar current={"facultysearch"}/> : <ProfNavbar/>}
 
                 <div className="opp-container row">
 
@@ -90,11 +105,26 @@ class FacultySearch extends Component {
                             <h4>Filters</h4>
                             <hr />
                             <label >Area(s) of Interest</label>
-                            <input />
+                            <select onChange={this.handleChange} name="area">
+                                <option value="">Select</option>
+                                <option value="computer science">Computer Science</option>
+                                <option value="machine learning">Machine Learning</option>
+                                <option value="information science">Information Science</option>
+                                <option value="busyness">Business</option>
+                                <option value="test">Something Else</option>
+                            </select>
+                            <br/>
                             <br/>
                             <hr />
                             <label >Department</label>
-                            <input/>
+                            <select onChange={this.handleChange} name="department">
+                                <option value="">Select</option>
+                                <option value="Information Science">Information Science</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="other">Other</option>
+
+                            </select>
+                            <br/>
                             <br/>
                             <hr />
                             <label >Show:</label>
@@ -111,7 +141,7 @@ class FacultySearch extends Component {
                         </div>
                     </div>
                     <div className="column column-80">
-                        <FacultyBox/>
+                        
                         <div className="row search-div-container">
 
                             <input onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)}
@@ -129,7 +159,8 @@ class FacultySearch extends Component {
                         <div className="row">
                             <div className="column column-70">
                                 <div className="opp-list-container">
-                                    
+                                    <FacultyBox filteredOptions={this.state}
+                                                    url='opportunities'/>
                                 </div>
                             </div>
                         </div>
