@@ -47490,7 +47490,7 @@ var CreateOppForm = function (_React$Component) {
                 supervisor,
                 numQuestions
             })
-                 .then((result) => {
+                  .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
                 });
