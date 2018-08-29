@@ -45,10 +45,10 @@ class FacultyList extends Component {
             }
           }
           /* checks if filters have been added and excludes faculty if no match*/
-          if (departmentSelected!="" && prof.department!=departmentSelected){
+          if (departmentSelected && prof.department !== departmentSelected){
               willShow = false;
           }
-          if (areaSelected!="" && (prof.researchInterests.indexOf(areaSelected) == -1)) {
+          if (areaSelected && (prof.researchInterests.indexOf(areaSelected) === -1)) {
               willShow = false;
           }
           

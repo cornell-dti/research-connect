@@ -31,9 +31,9 @@ class Faculty extends Component {
 					<h5>{this.props.lab}</h5>
 				{/* <h5>{this.props.researchInterests}</h5> */}
 				</div>
- 				<div className="column column-20">
-					Accepting on Research Connect
-				</div>
+ 				{/*<div className="column column-20">*/}
+					{/*Accepting on Research Connect*/}
+				{/*</div>*/}
  			</div>
 
 				{ this.convertDescription(this.props.researchDescription) }

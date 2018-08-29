@@ -110,7 +110,7 @@ class FacultySearch extends Component {
                                 <option value="computer science">Computer Science</option>
                                 <option value="machine learning">Machine Learning</option>
                                 <option value="information science">Information Science</option>
-                                <option value="busyness">Business</option>
+                                <option value="business">Business</option>
                                 <option value="test">Something Else</option>
                             </select>
                             <br/>
@@ -126,13 +126,14 @@ class FacultySearch extends Component {
                             </select>
                             <br/>
                             <br/>
-                            <hr />
-                            <label >Show:</label>
-                            <input type="checkbox" name="acceptOnline"/>
-                            <span>Faculty Accepting on Research Connect</span>
-                            <br/>
-                            <input type="checkbox" name="acceptEmail" />
-                            <span>Faculty Accepting by Email</span>
+                            {/*This currently doesn't work, will fix later... but it's v low priority*/}
+                            {/*<hr />*/}
+                            {/*<label >Show:</label>*/}
+                            {/*<input type="checkbox" name="acceptOnline"/>*/}
+                            {/*<span>Faculty Accepting on Research Connect</span>*/}
+                            {/*<br/>*/}
+                            {/*<input type="checkbox" name="acceptEmail" />*/}
+                            {/*<span>Faculty Accepting by Email</span>*/}
 
                             <br/>
 

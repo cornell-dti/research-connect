@@ -83,17 +83,22 @@ class FacultyPage extends Component {
                     <div className="title-box prof-box">
                         <h3><b>{this.state.profInfo.name}</b></h3>    
 
-                        <h4><b>Professor</b> in <b>{this.state.profInfo.department}</b> at <b>{this.state.profInfo.labName}</b></h4>
-                        <h4><b>Areas of Interest: </b>{this.separateInterests(this.state.profInfo.researchInterests)}</h4>
+                        <p><b>Professor</b> in <b>{this.state.profInfo.department}</b> at <b>{this.state.profInfo.labName}</b></p>
+                        <p><b>Areas of Interest: </b>{this.separateInterests(this.state.profInfo.researchInterests)}</p>
                         <div className="row">
-                            <div className="column column-40 office">
-                                <h4><b>Office: </b>{this.state.profInfo.office}</h4>
+                            <div className="column column-30 office">
+                                <h6>Office: {this.state.profInfo.office ? this.state.profInfo.office : "Unknown"}</h6>
                             </div>
-                            <div className="column column-40">
-                                <h4><b>Phone: </b> {this.state.profInfo.phone} </h4>
+                            <div className="row">
+                                <div className="column column-30">
+                                    <h6>Email: <a href={this.state.profInfo.email ? "mailto:" + this.state.profInfo.email : ""}>{this.state.profInfo.email ? this.state.profInfo.email : "Unknown"}</a></h6>
+                                </div>
                             </div>
-                            <div className="column column-40">
-                                <h4><b><a href="{this.state.profInfo.labPage}" target="_blank">Website</a> </b></h4>
+                            <div className="column column-30">
+                                <h6>Phone: {this.state.profInfo.phone ? this.state.profInfo.phone : "Unknown"} </h6>
+                            </div>
+                            <div className="column column-30">
+                                <h6><b><a href={this.state.profInfo.labPage ? this.state.profInfo.labPage : window.location.href} target="_blank">Website</a> </b></h6>
                             </div>
                         </div>
                     </div>
@@ -101,25 +106,26 @@ class FacultyPage extends Component {
                     
                     <div className="prof-box">
                         <h3>About</h3>
-                        <h4>{this.state.profInfo.researchDescription}</h4>
+                        <p>{this.state.profInfo.researchDescription}</p>
                     </div>
-                    <div className="prof-box opps">
-                        <h3>Opportunities</h3>
-                    </div>
-                    <div className="row">
-                        <div className="prof-box column column-25 prof-box-1">
-                        <h4>Opportunity Name</h4>
-                        <h5>Few lines of preview text taken from the project description section…</h5>
-                        </div>
-                        <div className="prof-box column column-25 column-offset-10">
-                        <h4>Opportunity Name</h4>
-                        <h5>Few lines of preview text taken from the project description section…</h5>
-                        </div>
-                        <div className="prof-box column column-25 column-offset-10">
-                        <h4>Opportunity Name</h4>
-                        <h5>Few lines of preview text taken from the project description section…</h5>
-                        </div>
-                    </div>
+                    {/*TODO will implement later, this is v low priority*/}
+                    {/*<div className="prof-box opps">*/}
+                        {/*<h3>Opportunities</h3>*/}
+                    {/*</div>*/}
+                    {/*<div className="row">*/}
+                        {/*<div className="prof-box column column-25 prof-box-1">*/}
+                        {/*<h4>Opportunity Name</h4>*/}
+                        {/*<h5>Few lines of preview text taken from the project description section…</h5>*/}
+                        {/*</div>*/}
+                        {/*<div className="prof-box column column-25 column-offset-10">*/}
+                        {/*<h4>Opportunity Name</h4>*/}
+                        {/*<h5>Few lines of preview text taken from the project description section…</h5>*/}
+                        {/*</div>*/}
+                        {/*<div className="prof-box column column-25 column-offset-10">*/}
+                        {/*<h4>Opportunity Name</h4>*/}
+                        {/*<h5>Few lines of preview text taken from the project description section…</h5>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
             </div>
             
             </div>
