@@ -61410,11 +61410,11 @@ var FacultyPage = function (_Component) {
                                 null,
                                 this.state.profInfo.department
                             ),
-                            ' at ',
+                            ' at',
                             _react2.default.createElement(
                                 'b',
                                 null,
-                                this.state.profInfo.labName
+                                this.state.profInfo.labName ? this.state.profInfo.labName : " Cornell"
                             )
                         ),
                         _react2.default.createElement(
@@ -61425,7 +61425,7 @@ var FacultyPage = function (_Component) {
                                 null,
                                 'Areas of Interest: '
                             ),
-                            this.separateInterests(this.state.profInfo.researchInterests)
+                            this.state.profInfo.researchInterests ? this.separateInterests(this.state.profInfo.researchInterests) : " None found"
                         ),
                         _react2.default.createElement(
                             'div',

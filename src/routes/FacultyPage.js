@@ -83,8 +83,10 @@ class FacultyPage extends Component {
                     <div className="title-box prof-box">
                         <h3><b>{this.state.profInfo.name}</b></h3>    
 
-                        <p><b>Professor</b> in <b>{this.state.profInfo.department}</b> at <b>{this.state.profInfo.labName}</b></p>
-                        <p><b>Areas of Interest: </b>{this.separateInterests(this.state.profInfo.researchInterests)}</p>
+                        <p><b>Professor</b> in <b>{this.state.profInfo.department}</b> at
+                            <b>{this.state.profInfo.labName ? this.state.profInfo.labName : " Cornell"}</b></p>
+                        <p><b>Areas of Interest: </b>{(this.state.profInfo.researchInterests) ?
+                            this.separateInterests(this.state.profInfo.researchInterests) : " None found"}</p>
                         <div className="row">
                             <div className="column column-30 office">
                                 <h6>Office: {this.state.profInfo.office ? this.state.profInfo.office : "Unknown"}</h6>
