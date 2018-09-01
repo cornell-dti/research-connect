@@ -60,7 +60,7 @@ app.post('/send', function (req, res) {
                         email: 'hello@research-connect.com'
                     },
                     replyTo: "acb352@cornell.edu",
-                    subject: "Research Connect Application Update for \"" + opportunity.title + "\"",
+                    subject: "Research Connect ApplicationList Update for \"" + opportunity.title + "\"",
                     text: message,
                     html: replaceAll(message, "\n", "<br />")
                 };

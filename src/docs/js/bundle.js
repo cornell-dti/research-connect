@@ -24119,7 +24119,7 @@ var validateEventDispatches = void 0;
  * Dispatch the event to the listener.
  * @param {SyntheticEvent} event SyntheticEvent to handle
  * @param {boolean} simulated If the event is simulated (changes exn behavior)
- * @param {function} listener Application-level callback
+ * @param {function} listener ApplicationList-level callback
  * @param {*} inst Internal component instance
  */
 function executeDispatch(event, simulated, listener, inst) {
@@ -46598,7 +46598,7 @@ var OpportunityPage = function (_Component) {
                                         { className: 'title-second-col' },
                                         _react2.default.createElement(
                                             'a',
-                                            { className: 'apply-button button', href: '#Application' },
+                                            { className: 'apply-button button', href: '#ApplicationList' },
                                             'Apply'
                                         ),
                                         _react2.default.createElement(
@@ -48206,7 +48206,7 @@ var CreateOppForm = function (_React$Component) {
                                 _react2.default.createElement(
                                     'label',
                                     { className: 'label-inline' },
-                                    'Open Application Window: '
+                                    'Open ApplicationList Window: '
                                 ),
                                 _react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
                                     placeholderText: 'Select a date',
@@ -48216,7 +48216,7 @@ var CreateOppForm = function (_React$Component) {
                                 _react2.default.createElement(
                                     'label',
                                     { className: 'label-inline ' },
-                                    'Close Application Window: '
+                                    'Close ApplicationList Window: '
                                 ),
                                 _react2.default.createElement(_reactDatepicker2.default, { className: 'datePicker',
                                     selected: this.state.closes,
@@ -48230,7 +48230,7 @@ var CreateOppForm = function (_React$Component) {
                                 _react2.default.createElement(
                                     'h4',
                                     null,
-                                    'Application Questions'
+                                    'ApplicationList Questions'
                                 ),
                                 _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-questions', className: 'info-icon-title', size: 20 }),
                                 _react2.default.createElement(
@@ -56562,7 +56562,7 @@ var InstructorRegister = function (_React$Component) {
                                 _react2.default.createElement(
                                     'option',
                                     { value: '0' },
-                                    'Every Time An Application is Submitted'
+                                    'Every Time An ApplicationList is Submitted'
                                 ),
                                 _react2.default.createElement(
                                     'option',
@@ -58240,7 +58240,7 @@ var ApplicationPage = function (_Component) {
                                     _react2.default.createElement(
                                         'div',
                                         { className: 'responses-header' },
-                                        'Application Responses'
+                                        'ApplicationList Responses'
                                     ),
                                     questionsAndResponses
                                 )
