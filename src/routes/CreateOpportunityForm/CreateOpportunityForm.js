@@ -624,7 +624,7 @@ class CreateOppForm extends React.Component {
                             </div>
                             <hr/>
                             <div className="question-adder">
-                                <h4>Application Questions</h4>
+                                <h4>Application Question</h4>
 
                                 <InfoIcon data-tip data-for="info-questions" className="info-icon-title" size={20}/>
                                 <ReactTooltip place='top' id='info-questions' aria-haspopup='true' role='example'>
