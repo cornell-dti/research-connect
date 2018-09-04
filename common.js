@@ -30,6 +30,9 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sgMail = sgMail;
 
 function replaceAll(str, find, replace) {
+    if (!str){
+        return "";
+    }
     return str.replace(new RegExp(find, 'g'), replace);
 }
 module.exports.replaceAll = replaceAll;
