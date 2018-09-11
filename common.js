@@ -68,8 +68,6 @@ mongoose.plugin(schema => {
 });
 module.exports.mongoose = mongoose;
 
-debug("mongo");
-debug(process.env.MONGODB);
 const mongoDB = process.env.MONGODB;
 //Set up default mongoose connection
 mongoose.connect(mongoDB, {
@@ -151,8 +149,10 @@ const facultySchema = new Schema({
     labPage: {type: String},
     department: {type: String},
     email: {type: String},
-    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]},
+    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]}
 });
+//create text indices so we can use the mongo search functionality: https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
+facultySchema.index({'$**': 'text'});
 let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
 

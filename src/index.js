@@ -14,6 +14,8 @@ import StudentRegister from './routes/StudentRegister';
 import ProfessorView from './routes/ProfessorView';
 import ApplicationPage from './routes/ApplicationPage';
 import EditProfile from './routes/EditProfile';
+import FacultySearch from './routes/FacultySearch';
+import FacultyPage from './routes/FacultyPage';
 import Doc from './routes/Doc';
 import LandingPage from './routes/LandingPage';
 
@@ -22,6 +24,7 @@ ReactDOM.render(
         <Switch>
             <Route exact path='/opportunities' component = {Opportunities} />
             <Route path='/opportunity/:id' component = {OpportunityPage} />
+            <Route path='/faculty/:id' component = {FacultyPage} />
             <Route path='/application/:id' component = {ApplicationPage} />
             <Route exact path='/newopp' component = {CreateOpportunityForm} />
             <Route exact path='/instructorRegister' component = {InstructorRegister} />
@@ -29,6 +32,7 @@ ReactDOM.render(
             <Route exact path='/professorView' component = {ProfessorView} />
             <Route path = '/doc/:id' component = {Doc} />
             <Route exact path='/editProfile' component = {EditProfile} />
+            <Route exact path='/facultySearch' component = {FacultySearch} />
             <Route exact path='/' component = {LandingPage} />
             <Route path='/*' component = {Error} />
         </Switch>

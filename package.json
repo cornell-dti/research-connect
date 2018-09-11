@@ -33,6 +33,7 @@
     "nodemon": "^1.17.3",
     "npm": "^6.1.0",
     "prop-types": "^15.6.1",
+    "react-tooltip": "^3.6.1",
     "request": "^2.85.0",
     "scroll-element": "^1.0.0",
     "scroll-to-element": "^2.0.0",
