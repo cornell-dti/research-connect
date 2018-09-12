@@ -40,8 +40,8 @@ export function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
         if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-            alert("You either were inactive for too long or something went wrong on our side. " +
-                "You'll be signed out and taken to the home page.");
+            alert("You were either inactive for too long or visited this page without being signed in. " +
+                "You'll be signed out and taken to the home page. Sign up/in and then come back to this page to view its contents.");
             logoutGoogle();
             return true;
         }
