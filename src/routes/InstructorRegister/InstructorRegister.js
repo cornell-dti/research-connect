@@ -4,9 +4,9 @@ import onClickOutside from "react-onclickoutside";
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import '../App/App.scss';
-import '../InstructorRegister.scss';
-import AutoSuggest from '../components/AutoSuggest/AutoSuggest';
-import * as Utils from "../components/Utils";
+import './InstructorRegister.scss';
+import AutoSuggest from '../../components/AutoSuggest/AutoSuggest';
+import * as Utils from "../../components/Utils";
 
 
 class InstructorRegister extends React.Component {

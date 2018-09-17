@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './Opportunities.scss';
-import '../index.css';
-import Navbar from '../components/StudentNavbar/StudentNavbar'
-import Footer from '../components/Footer/Footer';
-import logo from '../images/vectorlogo.png';
-import OpportunityBox from '../components/Opportunity/OpportunityBox/OpportunityBox';
-import YearSelect from '../components/YearSelect/YearSelect';
-import MajorSelect from '../components/MajorSelect/MajorSelect';
-import GPASelect from '../components/GPASelect/GPASelect';
-import StartDate from '../components/StartDate/StartDate';
+import '../../index.css';
+import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
+import Footer from '../../components/Footer/Footer';
+import logo from '../../images/vectorlogo.png';
+import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
+import YearSelect from '../../components/YearSelect/YearSelect';
+import MajorSelect from '../../components/MajorSelect/MajorSelect';
+import GPASelect from '../../components/GPASelect/GPASelect';
+import StartDate from '../../components/StartDate/StartDate';
 import DeleteIcon from 'react-icons/lib/ti/delete';
-import * as Utils from "../components/Utils";
-import ProfessorNavbar from "../components/ProfessorNavbar/ProfessorNavbar";
+import * as Utils from "../../components/Utils";
+import ProfessorNavbar from "../../components/Navbars/ProfessorNavbar/ProfessorNavbar";
 
 
 class Opportunities extends Component {

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import './ApplicationPage.scss';
-import EmailDialog from '../components/EmailDialog/EmailDialog.js';
-import Footer from '../components/Footer/Footer';
-import * as Utils from '../components/Utils.js'
+import EmailDialog from '../../components/EmailDialog/EmailDialog.js';
+import Footer from '../../components/Footer/Footer';
+import * as Utils from '../../components/Utils.js'
 import ExternalLink from 'react-icons/lib/fa/external-link';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 

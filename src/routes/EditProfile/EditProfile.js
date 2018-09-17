@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
 import Footer from '../../components/Footer/Footer';
 import './EditProfile.scss';
-import '../index.css';
+import '../../index.css';
 import Pencil from 'react-icons/lib/fa/pencil';
 import ExternalLink from 'react-icons/lib/fa/external-link-square';
 import Delete from 'react-icons/lib/ti/delete';
@@ -10,7 +10,7 @@ import Check from 'react-icons/lib/fa/check';
 import Add from 'react-icons/lib/md/add-circle';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
-import * as Utils from "../components/Utils";
+import * as Utils from "../../components/Utils";
 
 class EditProfile extends Component {
     constructor(props) {

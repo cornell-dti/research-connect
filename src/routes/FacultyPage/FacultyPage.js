@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './FacultyPage.scss';
-import Navbar from '../components/StudentNavbar/StudentNavbar'
-import ProfessorNavbar from '../components/ProfessorNavbar/ProfessorNavbar'
-import Footer from '../components/Footer/Footer';
-
-
-import * as Utils from '../components/Utils.js'
+import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar'
+import Footer from '../../components/Footer/Footer';
+import * as Utils from '../../components/Utils.js'
 
 //Utils.gradYearToString(2020) == "Sophomore"
 

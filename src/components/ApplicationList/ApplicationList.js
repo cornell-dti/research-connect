@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import './ApplicationList.scss';
 import ApplicationBox from './ApplicationBox/ApplicationBox';
-import * as Utils from '../Shared/Utils.js'
+import * as Utils from '../Utils.js'
 
 class ApplicationList extends Component {
     constructor(props) {

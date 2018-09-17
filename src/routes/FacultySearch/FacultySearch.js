@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../../index.css';
-import Navbar from '../components/StudentNavbar/StudentNavbar'
-import Footer from '../components/Footer/Footer';
-import FacultyBox from '../components/Faculty/FacultyBox/FacultyBox';
-import * as Utils from "../components/Utils";
-import ProfessorNavbar from "../components/ProfessorNavbar/ProfessorNavbar";
+import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
+import Footer from '../../components/Footer/Footer';
+import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
+import * as Utils from "../../components/Utils";
+import ProfessorNavbar from "../../components/Navbars/ProfessorNavbar/ProfessorNavbar";
 import DeleteIcon from 'react-icons/lib/ti/delete';
-import '../Opportunities.scss';
+import '../Opportunities/Opportunities.scss';
 
 
 class FacultySearch extends Component {

@@ -4,7 +4,7 @@ import '../../index.css';
 import {BrowserRouter as Router} from 'react-router-dom'
 
 import OpportunityJSON from './Opportunity.json'
-import '../Opportunities.scss';
+import '../../routes/Opportunities/Opportunities.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import Calendar from 'react-icons/lib/fa/calendar-check-o';

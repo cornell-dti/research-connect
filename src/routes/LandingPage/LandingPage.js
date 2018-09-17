@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import './LandingPage.scss';
-import logo from '../images/vectorlogo.png';
-import stockPhoto from '../images/writing-picture.jpg';
-import filler from '../images/download.png';
-import img1 from '../images/img1.png';
-import img2 from '../images/img2.png';
-import img3 from '../images/img3.png';
+import logo from '../../images/vectorlogo.png';
+import stockPhoto from '../../images/writing-picture.jpg';
+import filler from '../../images/download.png';
+import img1 from '../../images/img1.png';
+import img2 from '../../images/img2.png';
+import img3 from '../../images/img3.png';
 import axios from 'axios';
-import student1 from '../images/student-laptop.png';
-import student2 from '../images/student-magnifier.png';
-import student3 from '../images/student-lightbulb.png';
-import prof1 from '../images/prof1.png';
-import prof2 from '../images/prof2.png';
-import prof3 from '../images/prof3.png';
-import logoWithText from '../images/LogoWithText.png';
-import CDTIlogo from '../images/cdti.png';
+import student1 from '../../images/student-laptop.png';
+import student2 from '../../images/student-magnifier.png';
+import student3 from '../../images/student-lightbulb.png';
+import prof1 from '../../images/prof1.png';
+import prof2 from '../../images/prof2.png';
+import prof3 from '../../images/prof3.png';
+import logoWithText from '../../images/LogoWithText.png';
+import CDTIlogo from '../../images/cdti.png';
 import { GoogleLogin  } from 'react-google-login';
 import {Link} from 'react-router-dom';
-import * as Utils from '../components/Utils.js'
-import {logoutGoogle} from "../components/Utils";
+import * as Utils from '../../components/Utils.js'
+import {logoutGoogle} from "../../components/Utils";
 
 
 function clearUnregistered() {

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import '../Navbar.scss';
-import logo from '../images/wordlogo.png';
-import curblogo from '../images/CURB.png';
+import logo from '../../../images/wordlogo.png';
+import curblogo from '../../../images/CURB.png';
 import {Link} from 'react-router-dom';
-import {logoutGoogle} from "./Utils";
+import {logoutGoogle} from "../../Utils";
 
 
 class StudentNavbar extends Component {

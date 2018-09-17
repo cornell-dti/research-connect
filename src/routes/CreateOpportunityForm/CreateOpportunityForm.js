@@ -2,15 +2,15 @@ import React from 'react';
 import './CreateOpportunityForm.scss';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import ProfessorNavbar from '../components/ProfessorNavbar/ProfessorNavbar'
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar'
 import axios from 'axios';
-import Footer from '../components/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactTooltip from 'react-tooltip';
 import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
-import * as Utils from "../components/Utils";
+import * as Utils from "../../components/Utils";
 
 
 class CreateOppForm extends React.Component {

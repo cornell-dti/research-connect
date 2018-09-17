@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './OpportunityPage.scss';
-import Navbar from '../components/StudentNavbar/StudentNavbar'
-import ProfessorNavbar from '../components/ProfessorNavbar/ProfessorNavbar'
-import Footer from '../components/Footer/Footer';
+import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar'
+import Footer from '../../components/Footer/Footer';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
-import * as Utils from '../components/Utils.js'
+import * as Utils from '../../components/Utils.js'
 
 //Utils.gradYearToString(2020) == "Sophomore"
 

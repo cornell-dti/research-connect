@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../TemplatePage'
-import '../App.scss';
+import '../App/App.scss';
 import TemplatePage from "./TemplatePage";
 
 class Reference extends Component {

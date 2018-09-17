@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Footer.scss';
-import CDTIlogo from '../images/cdti.png';
+import CDTIlogo from '../../images/cdti.png';
 import {Link} from 'react-router-dom';
 import { GoogleLogin  } from 'react-google-login';
 
