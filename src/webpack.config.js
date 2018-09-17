@@ -42,16 +42,19 @@ module.exports = {
                 })
             },
             {
-                test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use:      ["css-loader", "less-loader"]
-                })
-            },
-            {
                 test: /\.(woff|woff2|eot|ttf)$/,
                 loader: "url-loader?limit=100000&name=./fonts/[hash].[ext]"
             },
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader"
+                }, {
+                    loader: "sass-loader"
+                }]
+            }
         ]
     },
     plugins: plugins
