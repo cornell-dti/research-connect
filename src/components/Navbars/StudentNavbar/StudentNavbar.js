@@ -30,7 +30,7 @@ class StudentNavbar extends Component {
                         href='/opportunities'>Opportunities</a></li>
                     <li className={this.props.current === "facultysearch" ? "current-page" : ""}><a
                         href='/facultysearch'>Faculty</a></li>
-                    <li className={this.props.current=="editprofile"? "current-page":""}><a href='/editprofile'>My Profile</a></li>
+                    {/*<li className={this.props.current=="editprofile"? "current-page":""}><a href='/editprofile'>My Profile</a></li>*/}
                     <li><a href="mailto:acb352@cornell.edu">Contact Us</a></li>
                     <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
                 </nav>
