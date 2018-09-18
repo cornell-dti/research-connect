@@ -1,0 +1,33 @@
+.header {
+  background-color: #b31b1b;
+  width: 100%;
+  height: 50px;
+}
+
+.professor-view-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.professor-view-container form {
+	padding-bottom: 20px;
+}
+
+.filter-box {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: white;
+  border: solid #979797 1px;
+  border-radius: 2px;
+
+}
+
+.filter-box select {
+  margin-bottom: 0px;
+}
+
+.filter-box label {
+  padding-top: 20px;
+}

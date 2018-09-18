@@ -1,0 +1,37 @@
+.prof-application-box {
+    padding: 20px 30px;
+    margin-top: 15px;
+    background-color: white;
+    border: solid #979797 1px;
+    border-radius: 2px;
+    font-weight: 500;
+    position: relative;
+
+    .left-column {
+        text-align: left;
+
+        .grad-year {
+            margin-bottom: 30px;
+        }
+    }
+
+    .right-column {
+        text-align: right;
+
+        .opportunity {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
+    }
+}
+
+.prof-application-box:hover {
+    padding: 20px 30px;
+    margin-top: 15px;
+    background-color: #e0e0e0;
+    border: solid #979797 1px;
+    border-radius: 2px;
+    font-weight: 500;
+    cursor: pointer;
+}

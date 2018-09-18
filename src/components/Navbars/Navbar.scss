@@ -1,0 +1,90 @@
+.header-all {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  height: 80px;
+  background-color: #f6f6f6;
+  border-bottom:  rgb(166,57,45) 4px solid;
+  padding: 30px 10%;
+}
+
+@media only screen and (max-width: 1480px) {
+  .header-all {
+    padding: 30px 1%;
+  }
+}
+
+.logo {
+  height: 50px;
+}
+
+.CURBlogo {
+  height: 50px;
+  vertical-align: text-top;
+}
+
+.logo:hover, .CURBlogo:hover {
+  opacity: .7;
+}
+
+.logo-div {
+  display: flex;
+}
+
+.partnership {
+  color: #2d2f91;
+  font-size: 13px;
+  margin: 0px 10px;
+  padding-top: 25px;
+}
+
+.header-all h2 {
+	font-family: 'Roboto', sans-serif;
+}
+
+.header-all nav {
+	display: flex;
+}
+
+.header-all nav li {
+	padding: 0 15px;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header-all nav li a {
+  color: black;
+}
+
+.header-all nav li a:hover {
+  color: gray;
+}
+
+.header-all nav li:first-child {
+	margin-left: 0;
+}
+.header-all nav li:last-child {
+	margin-right: 0;
+}
+
+.header-all .button:hover {
+  opacity: 0.9;
+}
+
+.header-all .current-page {
+  font-weight: bold;
+  height: 76px;
+}
+
+.header-all nav .current-page a:hover{
+  color: black;
+  cursor: auto;
+}
