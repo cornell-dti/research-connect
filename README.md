@@ -22,14 +22,14 @@ cd into the directory of the project  (probably cd research-connect)
 
 ## Dependencies & Libraries
 Progressive Web App Written On The MERN Stack
- * **Node** - **Backend framework and NPM**
- * **React** - **Frontend framework of choice**
- * **Webpack** - **Module bundler (we use v3!)**
- * **Milligram** - **Style bootstraps and grid system**
- * **SASS** - **For modular styling**
- * **MongoDB** - **Data store**
- * **Mongoose** - **MongoDB validation**
- * **SendGrid** - **For email functionality**
+ * **Node** - Backend framework and NPM
+ * **React** - Frontend framework of choice
+ * **Webpack** - Module bundler (we use v3!)
+ * **Milligram** - Style bootstraps and grid system
+ * **SASS** - For modular styling
+ * **MongoDB** - Data store
+ * **Mongoose** - MongoDB validation
+ * **SendGrid** - For email functionality
 
 ## Screenshots
 <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20faculty%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20opportunity%20apply.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20opportunity%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20single%20opportunity%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"><img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Landing%20page.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;">
