@@ -10,7 +10,7 @@ _See [here](https://github.com/cornell-dti/o-week-android/blob/master/README.md)
   - [Contributors](#contributors)
 ​
 ## About
-A(n) **[Android, iOS, backend, web]** app for **purpose**. **additional related repository links**.
+A **[web]** app for **purpose**. **additional related repository links**.
 ​
 ## Getting Started
 You will need **required IDE or platform, version number** to run the latest version of this app, which uses the following **SDKs, extensions, packages**:
@@ -41,7 +41,14 @@ _Screenshots showing major parts of app_
  * **Name** - **Role**
 ​
 **2017**
- * **David Chu** - Product Manager
+ * **Aram ** - Product Manager
+ * **Andrew ** - Product Manager
+ * **Phillip ** - Product Manager
+ * **Rachel ** - Product Manager
+ * **Ayesha ** - Product Manager
+ * **Emily ** - Product Manager
+ * **Micheal ** - Product Manager
+ * **Laura ** - Product Manager
 ​
 We are a team within **Cornell Design & Tech Initiative**. For more information, see our website [here](https://cornelldti.org/).
 <img src="https://raw.githubusercontent.com/cornell-dti/design/master/Branding/Wordmark/Dark%20Text/Transparent/Wordmark-Dark%20Text-Transparent%403x.png">
