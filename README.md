@@ -27,14 +27,14 @@ cd into the directory of the project  (probably cd research-connect)
 ​
 ## Dependencies & Libraries
 Progressive Web App Written On The MERN Stack
- * **[Node]** - **Backend framework and NPM**
- * **[React]** - **Frontend framework of choice**
- * **[Webpack]** - **Module bundler (we use v3!)**
- * **[Milligram]** - **Style bootstraps and grid system**
- * **[SASS]** - **For modular styling**
- * **[MongoDB]** - **Data store**
- * **[Mongoose]** - **MongoDB validation**
- * **[SendGrid]** - **For email functionality**
+ * **Node** - **Backend framework and NPM**
+ * **React** - **Frontend framework of choice**
+ * **Webpack** - **Module bundler (we use v3!)**
+ * **Milligram** - **Style bootstraps and grid system**
+ * **SASS** - **For modular styling**
+ * **MongoDB** - **Data store**
+ * **Mongoose** - **MongoDB validation**
+ * **SendGrid** - **For email functionality**
 ​
 ## Screenshots
 ​
@@ -45,12 +45,12 @@ _Screenshots showing major parts of app_
 ## Contributors
 ​
 **2017-2018**
- * **[Aram Baghdassarian]** - Product Manager
- * **[Andrew Xiao]** - Software Developer
- * **[Phillip Kheyfets]** - Software Developer
- * **[Ayesha Gagguturi]** - Software Developer
- * **[Emily Chan]** - Designer
- * **[Laura]**  - Software Developer
+ * **Aram Baghdassarian** - Product Manager
+ * **Andrew Xiao** - Software Developer
+ * **Phillip Kheyfets** - Software Developer
+ * **Ayesha Gagguturi** - Software Developer
+ * **Emily Chan** - Designer
+ * **Laura**  - Software Developer
 ​
 We are a team within **Cornell Design & Tech Initiative**. For more information, see our website [here](https://cornelldti.org/).
 <img src="https://raw.githubusercontent.com/cornell-dti/design/master/Branding/Wordmark/Dark%20Text/Transparent/Wordmark-Dark%20Text-Transparent%403x.png">
