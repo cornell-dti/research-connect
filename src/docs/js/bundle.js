@@ -5986,6 +5986,37 @@ exports.default = Navbar;
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(232);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./Opportunities.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./Opportunities.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -6154,7 +6185,7 @@ var ProfessorNavbar = function (_Component) {
 exports.default = ProfessorNavbar;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6214,7 +6245,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6254,37 +6285,6 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(232);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./Opportunities.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./Opportunities.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 /* 17 */
@@ -6757,7 +6757,7 @@ module.exports = emptyObject;
 
 
 
-var emptyFunction = __webpack_require__(15);
+var emptyFunction = __webpack_require__(16);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -7017,7 +7017,7 @@ if(false) {
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(14);
+  var invariant = __webpack_require__(15);
   var warning = __webpack_require__(24);
   var ReactPropTypesSecret = __webpack_require__(30);
   var loggedTypeFailures = {};
@@ -8851,7 +8851,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8946,7 +8946,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9023,7 +9023,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9114,7 +9114,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22215,7 +22215,7 @@ Dropzone.defaultProps = {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(324);
+var content = __webpack_require__(325);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -22388,7 +22388,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.canUseDOM = undefined;
 
-var _exenv = __webpack_require__(332);
+var _exenv = __webpack_require__(333);
 
 var _exenv2 = _interopRequireDefault(_exenv);
 
@@ -22449,27 +22449,27 @@ var _ProfessorView = __webpack_require__(314);
 
 var _ProfessorView2 = _interopRequireDefault(_ProfessorView);
 
-var _ApplicationPage = __webpack_require__(323);
+var _ApplicationPage = __webpack_require__(324);
 
 var _ApplicationPage2 = _interopRequireDefault(_ApplicationPage);
 
-var _EditProfile = __webpack_require__(338);
+var _EditProfile = __webpack_require__(339);
 
 var _EditProfile2 = _interopRequireDefault(_EditProfile);
 
-var _FacultySearch = __webpack_require__(344);
+var _FacultySearch = __webpack_require__(345);
 
 var _FacultySearch2 = _interopRequireDefault(_FacultySearch);
 
-var _FacultyPage = __webpack_require__(348);
+var _FacultyPage = __webpack_require__(349);
 
 var _FacultyPage2 = _interopRequireDefault(_FacultyPage);
 
-var _Doc = __webpack_require__(351);
+var _Doc = __webpack_require__(352);
 
 var _Doc2 = _interopRequireDefault(_Doc);
 
-var _LandingPage = __webpack_require__(354);
+var _LandingPage = __webpack_require__(355);
 
 var _LandingPage2 = _interopRequireDefault(_LandingPage);
 
@@ -22511,7 +22511,7 @@ _reactDom2.default.render(_react2.default.createElement(
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(20),n=__webpack_require__(14),p=__webpack_require__(23),q=__webpack_require__(15),r="function"===typeof Symbol&&Symbol["for"],t=r?Symbol["for"]("react.element"):60103,u=r?Symbol["for"]("react.portal"):60106,v=r?Symbol["for"]("react.fragment"):60107,w=r?Symbol["for"]("react.strict_mode"):60108,x=r?Symbol["for"]("react.provider"):60109,y=r?Symbol["for"]("react.context"):60110,z=r?Symbol["for"]("react.async_mode"):60111,A=r?Symbol["for"]("react.forward_ref"):
+var m=__webpack_require__(20),n=__webpack_require__(15),p=__webpack_require__(23),q=__webpack_require__(16),r="function"===typeof Symbol&&Symbol["for"],t=r?Symbol["for"]("react.element"):60103,u=r?Symbol["for"]("react.portal"):60106,v=r?Symbol["for"]("react.fragment"):60107,w=r?Symbol["for"]("react.strict_mode"):60108,x=r?Symbol["for"]("react.provider"):60109,y=r?Symbol["for"]("react.context"):60110,z=r?Symbol["for"]("react.async_mode"):60111,A=r?Symbol["for"]("react.forward_ref"):
 60112,B="function"===typeof Symbol&&Symbol.iterator;function C(a){for(var b=arguments.length-1,e="http://reactjs.org/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);n(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",e)}var D={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};
 function E(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||D}E.prototype.isReactComponent={};E.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?C("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};E.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function F(){}F.prototype=E.prototype;function G(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||D}var H=G.prototype=new F;
 H.constructor=G;m(H,E.prototype);H.isPureReactComponent=!0;var I={current:null},J=Object.prototype.hasOwnProperty,K={key:!0,ref:!0,__self:!0,__source:!0};
@@ -22549,10 +22549,10 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var _assign = __webpack_require__(20);
-var invariant = __webpack_require__(14);
+var invariant = __webpack_require__(15);
 var emptyObject = __webpack_require__(23);
 var warning = __webpack_require__(24);
-var emptyFunction = __webpack_require__(15);
+var emptyFunction = __webpack_require__(16);
 var checkPropTypes = __webpack_require__(29);
 
 // TODO: this is special because it gets imported during build.
@@ -23965,7 +23965,7 @@ module.exports = react;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(14),ea=__webpack_require__(1),m=__webpack_require__(40),A=__webpack_require__(20),C=__webpack_require__(15),fa=__webpack_require__(41),ha=__webpack_require__(42),ja=__webpack_require__(43),ka=__webpack_require__(23);
+var ba=__webpack_require__(15),ea=__webpack_require__(1),m=__webpack_require__(40),A=__webpack_require__(20),C=__webpack_require__(16),fa=__webpack_require__(41),ha=__webpack_require__(42),ja=__webpack_require__(43),ka=__webpack_require__(23);
 function D(a){for(var b=arguments.length-1,c="http://reactjs.org/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);ba(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",c)}ea?void 0:D("227");
 function ma(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var v=Array.prototype.slice.call(arguments,3);try{b.apply(c,v)}catch(l){this._caughtError=l,this._hasCaughtError=!0}}
 var E={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ma.apply(E,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){E.invokeGuardedCallback.apply(this,arguments);if(E.hasCaughtError()){var v=E.clearCaughtError();E._hasRethrowError||(E._hasRethrowError=!0,E._rethrowError=v)}},rethrowCaughtError:function(){return na.apply(E,arguments)},hasCaughtError:function(){return E._hasCaughtError},clearCaughtError:function(){if(E._hasCaughtError){var a=
@@ -24279,12 +24279,12 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var invariant = __webpack_require__(14);
+var invariant = __webpack_require__(15);
 var React = __webpack_require__(1);
 var warning = __webpack_require__(24);
 var ExecutionEnvironment = __webpack_require__(40);
 var _assign = __webpack_require__(20);
-var emptyFunction = __webpack_require__(15);
+var emptyFunction = __webpack_require__(16);
 var checkPropTypes = __webpack_require__(29);
 var getActiveElement = __webpack_require__(41);
 var shallowEqual = __webpack_require__(42);
@@ -41191,7 +41191,7 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 __webpack_require__(17);
 
@@ -41235,7 +41235,7 @@ var _Utils = __webpack_require__(6);
 
 var Utils = _interopRequireWildcard(_Utils);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -42449,8 +42449,8 @@ BrowserRouter.propTypes = {
 
 
 
-var emptyFunction = __webpack_require__(15);
-var invariant = __webpack_require__(14);
+var emptyFunction = __webpack_require__(16);
+var invariant = __webpack_require__(15);
 var warning = __webpack_require__(24);
 var assign = __webpack_require__(20);
 
@@ -42999,8 +42999,8 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 
-var emptyFunction = __webpack_require__(15);
-var invariant = __webpack_require__(14);
+var emptyFunction = __webpack_require__(16);
+var invariant = __webpack_require__(15);
 var ReactPropTypesSecret = __webpack_require__(30);
 
 module.exports = function() {
@@ -46348,7 +46348,7 @@ var _Opportunity = __webpack_require__(268);
 
 var _Opportunity2 = _interopRequireDefault(_Opportunity);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 var _checkSquareO = __webpack_require__(63);
 
@@ -46693,7 +46693,7 @@ var _StudentNavbar = __webpack_require__(18);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -47611,7 +47611,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -47820,7 +47820,7 @@ var CreateOppForm = function (_React$Component) {
                 supervisor,
                 numQuestions
             })
-                  .then((result) => {
+                 .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
                 });
@@ -56517,7 +56517,7 @@ var _reactOnclickoutside = __webpack_require__(69);
 
 var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -57917,7 +57917,7 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -57945,6 +57945,10 @@ var _StartDate = __webpack_require__(67);
 
 var _StartDate2 = _interopRequireDefault(_StartDate);
 
+var _CourseSelect = __webpack_require__(323);
+
+var _CourseSelect2 = _interopRequireDefault(_CourseSelect);
+
 var _Utils = __webpack_require__(6);
 
 var Utils = _interopRequireWildcard(_Utils);
@@ -57971,7 +57975,8 @@ var ProfessorView = function (_Component) {
 			yearSelect: {},
 			gpaSelect: {},
 			majorSelect: {},
-			startDate: {}
+			startDate: {},
+			courses: {}
 		};
 		return _this;
 	}
@@ -57995,6 +58000,11 @@ var ProfessorView = function (_Component) {
 		key: 'handleUpdateDate',
 		value: function handleUpdateDate(majorObj) {
 			this.setState({ startDate: majorObj });
+		}
+	}, {
+		key: 'handleUpdateCourses',
+		value: function handleUpdateCourses(courseObj) {
+			this.setState({ courses: courseObj });
 		}
 	}, {
 		key: 'componentWillMount',
@@ -58046,7 +58056,14 @@ var ProfessorView = function (_Component) {
 									{ htmlFor: 'gpaField' },
 									'GPA Requirement'
 								),
-								_react2.default.createElement(_GPASelect2.default, { updateGPA: this.handleUpdateGPA.bind(this) })
+								_react2.default.createElement(_GPASelect2.default, { updateGPA: this.handleUpdateGPA.bind(this) }),
+								_react2.default.createElement('hr', null),
+								_react2.default.createElement(
+									'label',
+									{ htmlFor: 'courseField' },
+									'Required Courses'
+								),
+								_react2.default.createElement(_CourseSelect2.default, null)
 							)
 						),
 						_react2.default.createElement(
@@ -58115,7 +58132,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.professor-view-container {\n  width: 80%;\n  margin: auto;\n  margin-top: 80px;\n  margin-bottom: 20px; }\n\n.professor-view-container form {\n  padding-bottom: 20px; }\n\n.filter-box {\n  padding: 10px;\n  margin-top: 10px;\n  background-color: white;\n  border: solid #979797 1px;\n  border-radius: 2px; }\n\n.filter-box select {\n  margin-bottom: 0px; }\n\n.filter-box label {\n  padding-top: 20px; }\n", ""]);
+exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.professor-view-container {\n  width: 80%;\n  margin: auto;\n  margin-top: 80px;\n  margin-bottom: 20px; }\n\n.professor-view-container form {\n  padding-bottom: 20px; }\n\n.filter-box {\n  padding: 10px;\n  margin-top: 10px;\n  margin-bottom: 10px;\n  background-color: white;\n  border: solid #979797 1px;\n  border-radius: 2px; }\n\n.filter-box select {\n  margin-bottom: 0px; }\n\n.filter-box label {\n  padding-top: 20px; }\n", ""]);
 
 // exports
 
@@ -58180,7 +58197,7 @@ var ApplicationList = function (_Component) {
 
             console.log(sessionStorage.getItem('token_id'));
             //'netId': sessionStorage.getItem('netId')
-            _axios2.default.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57').then(function (response) {
+            _axios2.default.get('/api/applications?id=' + sessionStorage.getItem('token_id')).then(function (response) {
                 _this2.setState({ data: response.data });
             }).catch(function (error) {
                 Utils.handleTokenError(error);
@@ -58189,6 +58206,8 @@ var ApplicationList = function (_Component) {
     }, {
         key: 'shouldShow',
         value: function shouldShow(application) {
+            console.log(application);
+
             var filter = this.props.filter;
 
             var froshSelected = filter.yearSelect.Freshman;
@@ -58484,6 +58503,125 @@ exports.push([module.i, ".prof-application-box {\n  padding: 20px 30px;\n  margi
 
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(381);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CourseSelect = function (_React$Component) {
+  _inherits(CourseSelect, _React$Component);
+
+  function CourseSelect(props) {
+    _classCallCheck(this, CourseSelect);
+
+    var _this = _possibleConstructorReturn(this, (CourseSelect.__proto__ || Object.getPrototypeOf(CourseSelect)).call(this, props));
+
+    _this.state = {
+      courses: []
+    };
+    return _this;
+  }
+
+  _createClass(CourseSelect, [{
+    key: 'addCourse',
+    value: function addCourse() {
+      var courses = [].concat(_toConsumableArray(this.state.courses));
+      var cur = this.newText.value.split(' ').join('').toUpperCase();
+      console.log(courses);
+      console.log(cur);
+      if (cur !== '' && !courses.includes(cur)) {
+        courses.push(cur);
+      }
+      this.setState({ courses: courses });
+    }
+  }, {
+    key: 'removeFromArray',
+    value: function removeFromArray(arr) {
+      var what,
+          a = arguments,
+          L = a.length,
+          ax;
+      while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax = arr.indexOf(what)) !== -1) {
+          arr.splice(ax, 1);
+        }
+      }
+      return arr;
+    }
+  }, {
+    key: 'removeCourse',
+    value: function removeCourse(course) {
+      var courses = this.state.courses;
+      this.removeFromArray(courses, course);
+      this.setState({ courses: courses });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'course-select' },
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement('input', { placeholder: 'enter course (ex: CS1110)', type: 'text', ref: function ref(ip) {
+              _this2.newText = ip;
+            } }),
+          _react2.default.createElement(
+            'button',
+            { className: 'add-button', onClick: this.addCourse.bind(this) },
+            'Add'
+          )
+        ),
+        _react2.default.createElement(
+          'ul',
+          null,
+          this.state.courses.map(function (course) {
+            return _react2.default.createElement(
+              'li',
+              { onClick: function onClick() {
+                  return _this2.removeCourse(course);
+                } },
+              course
+            );
+          })
+        )
+      );
+    }
+  }]);
+
+  return CourseSelect;
+}(_react2.default.Component);
+
+exports.default = CourseSelect;
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -58497,13 +58635,13 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
 __webpack_require__(197);
 
-var _EmailDialog = __webpack_require__(325);
+var _EmailDialog = __webpack_require__(326);
 
 var _EmailDialog2 = _interopRequireDefault(_EmailDialog);
 
@@ -58515,11 +58653,11 @@ var _Utils = __webpack_require__(6);
 
 var Utils = _interopRequireWildcard(_Utils);
 
-var _externalLink = __webpack_require__(336);
+var _externalLink = __webpack_require__(337);
 
 var _externalLink2 = _interopRequireDefault(_externalLink);
 
-var _longArrowLeft = __webpack_require__(337);
+var _longArrowLeft = __webpack_require__(338);
 
 var _longArrowLeft2 = _interopRequireDefault(_longArrowLeft);
 
@@ -58879,7 +59017,7 @@ var ApplicationPage = function (_Component) {
 exports.default = ApplicationPage;
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -58893,7 +59031,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n.application-page-container {\n  w
 
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58909,11 +59047,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactModal = __webpack_require__(326);
+var _reactModal = __webpack_require__(327);
 
 var _reactModal2 = _interopRequireDefault(_reactModal);
 
-__webpack_require__(334);
+__webpack_require__(335);
 
 var _axios = __webpack_require__(5);
 
@@ -59108,7 +59246,7 @@ var EmailDialog = function (_React$Component) {
 exports.default = EmailDialog;
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59118,7 +59256,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Modal = __webpack_require__(327);
+var _Modal = __webpack_require__(328);
 
 var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -59128,7 +59266,7 @@ exports.default = _Modal2.default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59155,7 +59293,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _ModalPortal = __webpack_require__(328);
+var _ModalPortal = __webpack_require__(329);
 
 var _ModalPortal2 = _interopRequireDefault(_ModalPortal);
 
@@ -59167,7 +59305,7 @@ var _safeHTMLElement = __webpack_require__(200);
 
 var _safeHTMLElement2 = _interopRequireDefault(_safeHTMLElement);
 
-var _reactLifecyclesCompat = __webpack_require__(333);
+var _reactLifecyclesCompat = __webpack_require__(334);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -59393,7 +59531,7 @@ Modal.defaultStyles = {
 exports.default = Modal;
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59417,11 +59555,11 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _focusManager = __webpack_require__(329);
+var _focusManager = __webpack_require__(330);
 
 var focusManager = _interopRequireWildcard(_focusManager);
 
-var _scopeTab = __webpack_require__(330);
+var _scopeTab = __webpack_require__(331);
 
 var _scopeTab2 = _interopRequireDefault(_scopeTab);
 
@@ -59429,7 +59567,7 @@ var _ariaAppHider = __webpack_require__(199);
 
 var ariaAppHider = _interopRequireWildcard(_ariaAppHider);
 
-var _classList = __webpack_require__(331);
+var _classList = __webpack_require__(332);
 
 var classList = _interopRequireWildcard(_classList);
 
@@ -59800,7 +59938,7 @@ module.exports = exports["default"];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59900,7 +60038,7 @@ function teardownScopedFocus() {
 }
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59983,7 +60121,7 @@ function scopeTab(node, event) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60097,7 +60235,7 @@ var remove = exports.remove = function remove(element, classString) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -60144,7 +60282,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60308,13 +60446,13 @@ function polyfill(Component) {
 
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(335);
+var content = __webpack_require__(336);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -60339,7 +60477,7 @@ if(false) {
 }
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -60353,7 +60491,7 @@ exports.push([module.i, ".email-text {\n  height: 250px; }\n", ""]);
 
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60391,7 +60529,7 @@ exports.default = FaExternalLink;
 module.exports = exports['default'];
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60429,7 +60567,7 @@ exports.default = FaLongArrowLeft;
 module.exports = exports['default'];
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60453,15 +60591,15 @@ var _Footer = __webpack_require__(12);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
-__webpack_require__(339);
+__webpack_require__(340);
 
 __webpack_require__(17);
 
-var _pencil = __webpack_require__(341);
+var _pencil = __webpack_require__(342);
 
 var _pencil2 = _interopRequireDefault(_pencil);
 
-var _externalLinkSquare = __webpack_require__(342);
+var _externalLinkSquare = __webpack_require__(343);
 
 var _externalLinkSquare2 = _interopRequireDefault(_externalLinkSquare);
 
@@ -60469,7 +60607,7 @@ var _delete = __webpack_require__(27);
 
 var _delete2 = _interopRequireDefault(_delete);
 
-var _check = __webpack_require__(343);
+var _check = __webpack_require__(344);
 
 var _check2 = _interopRequireDefault(_check);
 
@@ -61129,13 +61267,13 @@ var EditProfile = function (_Component) {
 exports.default = EditProfile;
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(340);
+var content = __webpack_require__(341);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61160,7 +61298,7 @@ if(false) {
 }
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -61174,7 +61312,7 @@ exports.push([module.i, ".profile-page-wrapper {\n  margin-top: 80px;\n  backgro
 
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61212,7 +61350,7 @@ exports.default = FaPencil;
 module.exports = exports['default'];
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61250,7 +61388,7 @@ exports.default = FaExternalLinkSquare;
 module.exports = exports['default'];
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61288,7 +61426,7 @@ exports.default = FaCheck;
 module.exports = exports['default'];
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61318,7 +61456,7 @@ var _Footer = __webpack_require__(12);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
-var _FacultyBox = __webpack_require__(345);
+var _FacultyBox = __webpack_require__(346);
 
 var _FacultyBox2 = _interopRequireDefault(_FacultyBox);
 
@@ -61326,7 +61464,7 @@ var _Utils = __webpack_require__(6);
 
 var Utils = _interopRequireWildcard(_Utils);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -61334,7 +61472,7 @@ var _delete = __webpack_require__(27);
 
 var _delete2 = _interopRequireDefault(_delete);
 
-__webpack_require__(16);
+__webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -61593,7 +61731,7 @@ var FacultySearch = function (_Component) {
 exports.default = FacultySearch;
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61613,7 +61751,7 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _FacultyList = __webpack_require__(346);
+var _FacultyList = __webpack_require__(347);
 
 var _FacultyList2 = _interopRequireDefault(_FacultyList);
 
@@ -61677,7 +61815,7 @@ var FacultyBox = function (_Component) {
 exports.default = FacultyBox;
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61693,7 +61831,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Faculty = __webpack_require__(347);
+var _Faculty = __webpack_require__(348);
 
 var _Faculty2 = _interopRequireDefault(_Faculty);
 
@@ -61807,7 +61945,7 @@ var FacultyList = function (_Component) {
 exports.default = FacultyList;
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61926,7 +62064,7 @@ var Faculty = function (_Component) {
 exports.default = Faculty;
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61946,13 +62084,13 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-__webpack_require__(349);
+__webpack_require__(350);
 
 var _StudentNavbar = __webpack_require__(18);
 
 var _StudentNavbar2 = _interopRequireDefault(_StudentNavbar);
 
-var _ProfessorNavbar = __webpack_require__(13);
+var _ProfessorNavbar = __webpack_require__(14);
 
 var _ProfessorNavbar2 = _interopRequireDefault(_ProfessorNavbar);
 
@@ -62210,13 +62348,13 @@ var FacultyPage = function (_Component) {
 exports.default = FacultyPage;
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(350);
+var content = __webpack_require__(351);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -62241,7 +62379,7 @@ if(false) {
 }
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -62255,7 +62393,7 @@ exports.push([module.i, ".prof-box, .row .prof-box {\n  background-color: white;
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62277,7 +62415,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 __webpack_require__(197);
 
-__webpack_require__(352);
+__webpack_require__(353);
 
 var _Utils = __webpack_require__(6);
 
@@ -62352,13 +62490,13 @@ var Resume = function (_Component) {
 exports.default = Resume;
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(353);
+var content = __webpack_require__(354);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -62383,7 +62521,7 @@ if(false) {
 }
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -62397,7 +62535,7 @@ exports.push([module.i, "body {\n  margin-top: 0 !important; }\n", ""]);
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62413,29 +62551,29 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(355);
+__webpack_require__(356);
 
 var _vectorlogo = __webpack_require__(62);
 
 var _vectorlogo2 = _interopRequireDefault(_vectorlogo);
 
-var _writingPicture = __webpack_require__(358);
+var _writingPicture = __webpack_require__(359);
 
 var _writingPicture2 = _interopRequireDefault(_writingPicture);
 
-var _download = __webpack_require__(359);
+var _download = __webpack_require__(360);
 
 var _download2 = _interopRequireDefault(_download);
 
-var _img = __webpack_require__(360);
+var _img = __webpack_require__(361);
 
 var _img2 = _interopRequireDefault(_img);
 
-var _img3 = __webpack_require__(361);
+var _img3 = __webpack_require__(362);
 
 var _img4 = _interopRequireDefault(_img3);
 
-var _img5 = __webpack_require__(362);
+var _img5 = __webpack_require__(363);
 
 var _img6 = _interopRequireDefault(_img5);
 
@@ -62443,31 +62581,31 @@ var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _studentLaptop = __webpack_require__(363);
+var _studentLaptop = __webpack_require__(364);
 
 var _studentLaptop2 = _interopRequireDefault(_studentLaptop);
 
-var _studentMagnifier = __webpack_require__(364);
+var _studentMagnifier = __webpack_require__(365);
 
 var _studentMagnifier2 = _interopRequireDefault(_studentMagnifier);
 
-var _studentLightbulb = __webpack_require__(365);
+var _studentLightbulb = __webpack_require__(366);
 
 var _studentLightbulb2 = _interopRequireDefault(_studentLightbulb);
 
-var _prof = __webpack_require__(366);
+var _prof = __webpack_require__(367);
 
 var _prof2 = _interopRequireDefault(_prof);
 
-var _prof3 = __webpack_require__(367);
+var _prof3 = __webpack_require__(368);
 
 var _prof4 = _interopRequireDefault(_prof3);
 
-var _prof5 = __webpack_require__(368);
+var _prof5 = __webpack_require__(369);
 
 var _prof6 = _interopRequireDefault(_prof5);
 
-var _LogoWithText = __webpack_require__(369);
+var _LogoWithText = __webpack_require__(370);
 
 var _LogoWithText2 = _interopRequireDefault(_LogoWithText);
 
@@ -62540,7 +62678,7 @@ var LandingPage = function (_Component) {
         key: 'scrollTo',
         value: function scrollTo(id) {
             console.log("scrolling");
-            var scrollToElement = __webpack_require__(370);
+            var scrollToElement = __webpack_require__(371);
             scrollToElement(id, {
                 offset: 0,
                 ease: 'linear',
@@ -62864,7 +63002,7 @@ var LandingPage = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'footer',
-                    null,
+                    { 'class': 'footer-all' },
                     _react2.default.createElement(
                         'ul',
                         null,
@@ -62957,13 +63095,13 @@ var LandingPage = function (_Component) {
 exports.default = LandingPage;
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(356);
+var content = __webpack_require__(357);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -62988,7 +63126,7 @@ if(false) {
 }
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var escape = __webpack_require__(49);
@@ -62997,94 +63135,94 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*-------------\r\n \tGeneral\r\n-------------*/\n.landingPage section .get-started {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.landingPage * {\n  box-sizing: border-box;\n  font: 'Roboto'; }\n\n.landingPage section .get-started:hover {\n  opacity: 0.9;\n  border-color: #b31b1b;\n  background-color: #b31b1b; }\n\n.landingPage ul, .landingPage nav {\n  list-style: none; }\n\n.landingPage a {\n  text-decoration: none;\n  color: inherit;\n  cursor: pointer; }\n\n.landingPage a:hover {\n  color: gray; }\n\n.landingPage a.btn {\n  color: #fff;\n  border-radius: 4px;\n  text-transform: uppercase;\n  background-color: #2196F3;\n  font-weight: 800;\n  text-align: center; }\n\n.landingPage hr {\n  width: 150px;\n  height: 2px;\n  background-color: #f6f6f6;\n  border: 0;\n  margin-bottom: 40px; }\n\n.landingPage section {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 125px 12%; }\n\n.our-work .students-title h2 {\n  font-size: 43px;\n  line-height: 45px;\n  font-weight: 500; }\n\n.our-work .students-title {\n  text-align: left; }\n\n.background-image {\n  background-image: url(" + escape(__webpack_require__(357)) + ");\n  background-size: 100% 100%; }\n\n@media (max-width: 1000px) {\n  section {\n    padding: 100px 50px; } }\n\n@media (max-width: 600px) {\n  section {\n    padding: 80px 30px; } }\n\n.landingPage section h3.title {\n  color: #414a4f;\n  text-transform: capitalize;\n  font: bold 32px 'Roboto', sans-serif;\n  margin-bottom: 35px;\n  text-align: center; }\n\n.landingPage section p {\n  max-width: 800px;\n  text-align: center;\n  margin-bottom: 35px;\n  padding: 0 20px;\n  line-height: 2; }\n\n.landingPage ul.grid {\n  width: 100%;\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.signup {\n  margin-right: 8px; }\n\n.sign-out {\n  cursor: pointer; }\n\n/*-------------\r\n \tHeader\r\n-------------*/\n.landingPage .logo {\n  height: 50px;\n  margin-top: 25px; }\n\n.landingPage header {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10;\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: black;\n  height: 80px;\n  background-color: #f6f6f6;\n  border-bottom: #b31b1b 4px solid;\n  padding: 30px 5%; }\n\n.landingPage header h2 {\n  font-family: 'Roboto', sans-serif; }\n\n.landingPage header nav {\n  display: flex; }\n\n.landingPage header nav li {\n  margin: 0 15px;\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  font-size: 20px; }\n\n.landingPage header nav li:first-child {\n  margin-left: 0; }\n\n.landingPage header .button {\n  background-color: #b31b1b;\n  color: white;\n  margin-left: 10px;\n  border-color: #b31b1b; }\n\n.landingPage header .button:hover {\n  opacity: 0.9;\n  border-color: #b31b1b; }\n\n.login {\n  background-color: #b31b1b;\n  color: white;\n  margin-left: 10px;\n  border-color: #a6392d;\n  border-radius: .4rem;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.1rem;\n  font-weight: 700;\n  height: 3.8rem;\n  letter-spacing: .1rem;\n  line-height: 3.8rem;\n  padding: 0 3.0rem;\n  text-align: center;\n  text-decoration: none;\n  text-transform: uppercase;\n  white-space: nowrap;\n  margin-bottom: 0; }\n\n.login:hover {\n  opacity: 0.9;\n  background-color: #a6392d; }\n\n.login:focus {\n  opacity: 1;\n  background-color: #a6392d; }\n\n@media (max-width: 1000px) {\n  .landingPage header {\n    padding: 20px 50px; } }\n\n@media (max-width: 700px) {\n  .landingPage header {\n    flex-direction: column; }\n  .landingPage header h2 {\n    margin-bottom: 15px; } }\n\n/*----------------\r\n \tHero Section\r\n----------------*/\n.hero {\n  position: relative;\n  justify-content: center;\n  min-height: 100vh;\n  color: #fff;\n  text-align: center; }\n\n.hero .background-image {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-size: cover;\n  background-color: #525a63;\n  z-index: -1; }\n\n.hero .arrow {\n  width: 100px;\n  height: 100px;\n  color: black; }\n\n.hero .white-button:hover {\n  opacity: 0.8;\n  background-color: white;\n  border-color: white;\n  color: #a6392d; }\n\n.hero .lab-button {\n  padding-left: 48px;\n  padding-right: 48px; }\n\n.hero h3 {\n  color: white; }\n\n.hero .white-button {\n  background-color: white;\n  color: #a6392d;\n  border-color: white;\n  margin: auto 10px; }\n\n.hero h1 {\n  padding-top: 100px;\n  font: bold 75px 'Roboto', sans-serif;\n  margin-bottom: 15px;\n  color: #f6f6f6; }\n\n.hero h1 {\n  padding-top: 100px;\n  font: bold 75px 'Roboto', sans-serif;\n  margin-bottom: 15px;\n  color: #f6f6f6; }\n\n.hero h3 {\n  font: normal 28px 'Roboto', sans-serif;\n  margin-bottom: 40px; }\n\n.hero a.btn {\n  padding: 20px 46px; }\n\n@media (max-width: 800px) {\n  .hero {\n    min-height: 600px; }\n  .hero h1 {\n    font-size: 48px; }\n  .hero h3 {\n    font-size: 24px; }\n  .hero a.btn {\n    padding: 15px 40px; } }\n\n/*--------------------\r\n \tOur Work Section\r\n---------------------*/\n.landingPage .our-work {\n  background-size: cover; }\n\n.our-work .photo-flex {\n  height: 400px;\n  width: 100%;\n  margin-bottom: 40px; }\n\n.our-work .step p {\n  padding: 0px;\n  font-size: 22px;\n  font-weight: 100;\n  color: black;\n  line-height: 27px; }\n\n.our-work .get-started {\n  margin-top: 50px;\n  margin-bottom: 0px; }\n\n.for-profs {\n  background-color: white; }\n\n.for-students {\n  background-color: #f6f6f6; }\n\n.our-work .step {\n  height: 100%;\n  margin-top: 30px;\n  text-align: center;\n  flex-basis: 33%;\n  padding: 50px 30px; }\n\n.our-work .step-photo {\n  border-radius: 50%; }\n\n.our-work .step .padding {\n  padding: 15px; }\n\n.our-work .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b;\n  color: white;\n  height: 50px;\n  width: 210px; }\n\n.our-work .photo-flex {\n  display: flex;\n  flex-direction: row; }\n\n/*--------------------\r\n \tReviews Section\r\n--------------------*/\n.reviews {\n  min-height: 100vh;\n  background-color: white; }\n\nsection.why-us p {\n  margin-top: 50px;\n  text-align: justify; }\n\nsection.why-us {\n  flex-direction: row; }\n\nsection.why-us img {\n  width: 400px; }\n\nsection.why-us .students-title {\n  width: 60%; }\n\n.reviews .author {\n  font-size: 18px;\n  margin-bottom: 50px; }\n\n.reviews .author:last-child {\n  margin-bottom: 0; }\n\n@media (max-width: 1000px) {\n  .reviews .quote {\n    font-size: 20px; }\n  .reviews .author {\n    font-size: 16px; } }\n\n/*---------------------\r\n \tContact Section\r\n---------------------*/\n.contact {\n  background-color: #f7f7f7; }\n\n.contact form {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-wrap: wrap;\n  max-width: 800px;\n  width: 80%; }\n\n.contact form input {\n  padding: 15px;\n  flex: 1;\n  margin-right: 30px;\n  font-size: 18px;\n  color: #555; }\n\n.contact form .btn {\n  padding: 18px 42px; }\n\n@media (max-width: 800px) {\n  .contact form input {\n    flex-basis: 100%;\n    margin: 0 0 20px 0; } }\n\n/*-------------\r\n \tFooter\r\n-------------*/\n.landingPage footer {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  text-align: center;\n  color: #fff;\n  background-color: #414a4f;\n  padding: 20px 0; }\n\n.landingPage footer ul {\n  display: flex;\n  margin-bottom: 25px;\n  font-size: 32px; }\n\n.landingPage footer ul li {\n  margin: 0 8px; }\n\n.landingPage footer ul li:first-child {\n  margin-left: 0; }\n\n.landingPage footer ul li:last-child {\n  margin-right: 0; }\n\n.landingPage footer p {\n  text-transform: uppercase;\n  font-size: 16px;\n  color: white;\n  margin-bottom: 0px;\n  letter-spacing: 3px; }\n\n.landingPage footer p a {\n  color: #fff;\n  letter-spacing: 1px; }\n\n.CDTIlogo {\n  width: 25%;\n  margin-bottom: 25px; }\n\n.CDTIlogo:hover {\n  opacity: 0.7; }\n\n@media (max-width: 700px) {\n  footer {\n    padding: 80px 15px; } }\n\n/* -- Demo ads -- */\n@media (max-width: 1200px) {\n  #bsaHolder {\n    display: none; } }\n", ""]);
+exports.push([module.i, "/*-------------\n \tGeneral\n-------------*/\n.landingPage section .get-started {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.landingPage * {\n  box-sizing: border-box;\n  font: 'Roboto'; }\n\n.landingPage section .get-started:hover {\n  opacity: 0.9;\n  border-color: #b31b1b;\n  background-color: #b31b1b; }\n\n.landingPage ul, .landingPage nav {\n  list-style: none; }\n\n.landingPage a {\n  text-decoration: none;\n  color: inherit;\n  cursor: pointer; }\n\n.landingPage a:hover {\n  color: gray; }\n\n.landingPage a.btn {\n  color: #fff;\n  border-radius: 4px;\n  text-transform: uppercase;\n  background-color: #2196F3;\n  font-weight: 800;\n  text-align: center; }\n\n.landingPage hr {\n  width: 150px;\n  height: 2px;\n  background-color: #f6f6f6;\n  border: 0;\n  margin-bottom: 40px; }\n\n.landingPage section {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 125px 12%; }\n\n.our-work .students-title h2 {\n  font-size: 43px;\n  line-height: 45px;\n  font-weight: 500; }\n\n.our-work .students-title {\n  text-align: left; }\n\n.background-image {\n  background-image: url(" + escape(__webpack_require__(358)) + ");\n  background-size: 100% 100%; }\n\n@media (max-width: 1000px) {\n  section {\n    padding: 100px 50px; } }\n\n@media (max-width: 600px) {\n  section {\n    padding: 80px 30px; } }\n\n.landingPage section h3.title {\n  color: #414a4f;\n  text-transform: capitalize;\n  font: bold 32px 'Roboto', sans-serif;\n  margin-bottom: 35px;\n  text-align: center; }\n\n.landingPage section p {\n  max-width: 800px;\n  text-align: center;\n  margin-bottom: 35px;\n  padding: 0 20px;\n  line-height: 2; }\n\n.landingPage ul.grid {\n  width: 100%;\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.signup {\n  margin-right: 8px; }\n\n.sign-out {\n  cursor: pointer; }\n\n/*-------------\n \tHeader\n-------------*/\n.landingPage .logo {\n  height: 50px;\n  margin-top: 25px; }\n\n.landingPage header {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10;\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: black;\n  height: 80px;\n  background-color: #f6f6f6;\n  border-bottom: #b31b1b 4px solid;\n  padding: 30px 5%; }\n\n.landingPage header h2 {\n  font-family: 'Roboto', sans-serif; }\n\n.landingPage header nav {\n  display: flex; }\n\n.landingPage header nav li {\n  margin: 0 15px;\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  font-size: 20px; }\n\n.landingPage header nav li:first-child {\n  margin-left: 0; }\n\n.landingPage header .button {\n  background-color: #b31b1b;\n  color: white;\n  margin-left: 10px;\n  border-color: #b31b1b; }\n\n.landingPage header .button:hover {\n  opacity: 0.9;\n  border-color: #b31b1b; }\n\n.login {\n  background-color: #b31b1b;\n  color: white;\n  margin-left: 10px;\n  border-color: #a6392d;\n  border-radius: .4rem;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.1rem;\n  font-weight: 700;\n  height: 3.8rem;\n  letter-spacing: .1rem;\n  line-height: 3.8rem;\n  padding: 0 3.0rem;\n  text-align: center;\n  text-decoration: none;\n  text-transform: uppercase;\n  white-space: nowrap;\n  margin-bottom: 0; }\n\n.login:hover {\n  opacity: 0.9;\n  background-color: #a6392d; }\n\n.login:focus {\n  opacity: 1;\n  background-color: #a6392d; }\n\n@media (max-width: 1000px) {\n  .landingPage header {\n    padding: 20px 50px; } }\n\n@media (max-width: 700px) {\n  .landingPage header {\n    flex-direction: column; }\n  .landingPage header h2 {\n    margin-bottom: 15px; } }\n\n/*----------------\n \tHero Section\n----------------*/\n.hero {\n  position: relative;\n  justify-content: center;\n  min-height: 100vh;\n  color: #fff;\n  text-align: center; }\n\n.hero .background-image {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-size: cover;\n  background-color: #525a63;\n  z-index: -1; }\n\n.hero .arrow {\n  width: 100px;\n  height: 100px;\n  color: black; }\n\n.hero .white-button:hover {\n  opacity: 0.8;\n  background-color: white;\n  border-color: white;\n  color: #a6392d; }\n\n.hero .lab-button {\n  padding-left: 48px;\n  padding-right: 48px; }\n\n.hero h3 {\n  color: white; }\n\n.hero .white-button {\n  background-color: white;\n  color: #a6392d;\n  border-color: white;\n  margin: auto 10px; }\n\n.hero h1 {\n  padding-top: 100px;\n  font: bold 75px 'Roboto', sans-serif;\n  margin-bottom: 15px;\n  color: #f6f6f6; }\n\n.hero h1 {\n  padding-top: 100px;\n  font: bold 75px 'Roboto', sans-serif;\n  margin-bottom: 15px;\n  color: #f6f6f6; }\n\n.hero h3 {\n  font: normal 28px 'Roboto', sans-serif;\n  margin-bottom: 40px; }\n\n.hero a.btn {\n  padding: 20px 46px; }\n\n@media (max-width: 800px) {\n  .hero {\n    min-height: 600px; }\n  .hero h1 {\n    font-size: 48px; }\n  .hero h3 {\n    font-size: 24px; }\n  .hero a.btn {\n    padding: 15px 40px; } }\n\n/*--------------------\n \tOur Work Section\n---------------------*/\n.landingPage .our-work {\n  background-size: cover; }\n\n.our-work .photo-flex {\n  height: 400px;\n  width: 100%;\n  margin-bottom: 40px; }\n\n.our-work .step p {\n  padding: 0px;\n  font-size: 22px;\n  font-weight: 100;\n  color: black;\n  line-height: 27px; }\n\n.our-work .get-started {\n  margin-top: 50px;\n  margin-bottom: 0px; }\n\n.for-profs {\n  background-color: white; }\n\n.for-students {\n  background-color: #f6f6f6; }\n\n.our-work .step {\n  height: 100%;\n  margin-top: 30px;\n  text-align: center;\n  flex-basis: 33%;\n  padding: 50px 30px; }\n\n.our-work .step-photo {\n  border-radius: 50%; }\n\n.our-work .step .padding {\n  padding: 15px; }\n\n.our-work .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b;\n  color: white;\n  height: 50px;\n  width: 210px; }\n\n.our-work .photo-flex {\n  display: flex;\n  flex-direction: row; }\n\n/*--------------------\n \tReviews Section\n--------------------*/\n.reviews {\n  min-height: 100vh;\n  background-color: white; }\n\nsection.why-us p {\n  margin-top: 50px;\n  text-align: justify; }\n\nsection.why-us {\n  flex-direction: row; }\n\nsection.why-us img {\n  width: 400px; }\n\nsection.why-us .students-title {\n  width: 60%; }\n\n.reviews .author {\n  font-size: 18px;\n  margin-bottom: 50px; }\n\n.reviews .author:last-child {\n  margin-bottom: 0; }\n\n@media (max-width: 1000px) {\n  .reviews .quote {\n    font-size: 20px; }\n  .reviews .author {\n    font-size: 16px; } }\n\n/*---------------------\n \tContact Section\n---------------------*/\n.contact {\n  background-color: #f7f7f7; }\n\n.contact form {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-wrap: wrap;\n  max-width: 800px;\n  width: 80%; }\n\n.contact form input {\n  padding: 15px;\n  flex: 1;\n  margin-right: 30px;\n  font-size: 18px;\n  color: #555; }\n\n.contact form .btn {\n  padding: 18px 42px; }\n\n@media (max-width: 800px) {\n  .contact form input {\n    flex-basis: 100%;\n    margin: 0 0 20px 0; } }\n\n/*-------------\n \tFooter\n-------------*/\n.landingPage footer {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  text-align: center;\n  color: #fff;\n  background-color: #414a4f;\n  padding: 20px 0;\n  height: 225px; }\n\n.landingPage footer ul {\n  display: flex;\n  margin-bottom: 25px;\n  font-size: 32px; }\n\n.landingPage footer ul li {\n  margin: 0 8px; }\n\n.landingPage footer ul li:first-child {\n  margin-left: 0; }\n\n.landingPage footer ul li:last-child {\n  margin-right: 0; }\n\n.landingPage footer p {\n  text-transform: uppercase;\n  font-size: 16px;\n  color: white;\n  margin-bottom: 0px;\n  letter-spacing: 3px; }\n\n.landingPage footer p a {\n  color: #fff;\n  letter-spacing: 1px; }\n\n.CDTIlogo {\n  width: 25%;\n  margin-bottom: 25px; }\n\n.CDTIlogo:hover {\n  opacity: 0.7; }\n\n@media (max-width: 700px) {\n  footer {\n    padding: 80px 15px; } }\n\n/* -- Demo ads -- */\n@media (max-width: 1200px) {\n  #bsaHolder {\n    display: none; } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/52c0286315780280e42c480d2b8a0ab5.png";
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/0f7fdd8883b03edd802cd49823406039.jpg";
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/b6e63d49be474f9e1877c0b5c73330bf.png";
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/267948eb3718d3ee187b892551038971.png";
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/7fc82a1fc87f5d9cbf293638bcc009fc.png";
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/c2d3c39275d8aa57cdaf949752dc643e.png";
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/72c30759845e9589c1c7b6cdd738600c.png";
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/e2c54ba9860ab5860bbaf0dbbeae232b.png";
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/9eb29c32007f9b502a2ef87da302282b.png";
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/d6ccdf8352640794a5e739dcbe93dac3.png";
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/f6f95dc2655646ea1bff339fb8eb1e63.png";
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/864fdbfea6bf0dfa3b502f61fbd8635b.png";
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "./img/8d66706ec0e479a3f8563ff07aed71e2.png";
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var scroll = __webpack_require__(371);
+var scroll = __webpack_require__(372);
 
 function calculateScrollOffset(elem, additionalOffset, alignment) {
   var body = document.body,
@@ -63119,15 +63257,15 @@ module.exports = function (elem, options) {
 
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Module dependencies.
  */
 
-var Tween = __webpack_require__(372);
-var raf = __webpack_require__(376);
+var Tween = __webpack_require__(373);
+var raf = __webpack_require__(377);
 
 /**
  * Expose `scrollTo`.
@@ -63191,7 +63329,7 @@ function scroll() {
 
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -63199,10 +63337,10 @@ function scroll() {
  * Module dependencies.
  */
 
-var Emitter = __webpack_require__(373);
-var clone = __webpack_require__(374);
+var Emitter = __webpack_require__(374);
+var clone = __webpack_require__(375);
 var type = __webpack_require__(39);
-var ease = __webpack_require__(375);
+var ease = __webpack_require__(376);
 
 /**
  * Expose `Tween`.
@@ -63374,7 +63512,7 @@ Tween.prototype.update = function(fn){
 };
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports) {
 
 
@@ -63541,7 +63679,7 @@ Emitter.prototype.hasListeners = function(event){
 
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -63604,7 +63742,7 @@ function clone(obj){
 
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports) {
 
 
@@ -63780,7 +63918,7 @@ exports['in-out-bounce'] = exports.inOutBounce;
 
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports) {
 
 /**
@@ -63817,6 +63955,54 @@ var cancel = window.cancelAnimationFrame
 exports.cancel = function(id){
   cancel.call(window, id);
 };
+
+
+/***/ }),
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(382);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./CourseSelect.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./CourseSelect.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 382 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".course-select {\n  padding: 10px;\n  margin-bottom: 10px; }\n  .course-select .add-button {\n    float: right;\n    background-color: #b31b1b;\n    color: white;\n    border-color: #b31b1b; }\n  .course-select .add-bottom:hover {\n    opacity: 0.9;\n    border-color: #b31b1b; }\n  .course-select li {\n    list-style: none;\n    font-weight: 400;\n    cursor: pointer; }\n", ""]);
+
+// exports
 
 
 /***/ })

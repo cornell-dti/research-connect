@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/Footer';
 import MajorSelect from '../../components/MajorSelect/MajorSelect'
 import GPASelect from '../../components/GPASelect/GPASelect'
 import StartDate from '../../components/StartDate/StartDate'
+import CourseSelect from '../../components/CourseSelect/CourseSelect'
 import * as Utils from "../../components/Utils";
 
 
@@ -16,24 +17,18 @@ class ProfessorView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			yearSelect: {
-
-			},
-			gpaSelect: {
-
-			},
-			majorSelect: {
-
-			},
-			startDate: {
-
-			}
+			yearSelect: {},
+			gpaSelect: {},
+			majorSelect: {},
+			startDate: {},
+			courses: {}
 		};
 	}
 
 	handleUpdateYear(yearObj) {
 		this.setState({yearSelect: yearObj});
 	}
+
 	handleUpdateGPA(gpaObj) {
 		this.setState({gpaSelect: gpaObj});
 	}
@@ -41,8 +36,13 @@ class ProfessorView extends Component {
 	handleUpdateMajor(majorObj) {
 		this.setState({majorSelect: majorObj});
 	}
+
 	handleUpdateDate(majorObj) {
 		this.setState({startDate: majorObj});
+	}
+
+	handleUpdateCourses(courseObj) {
+		this.setState({courses: courseObj});
 	}
 
 	componentWillMount() {
@@ -84,7 +84,11 @@ class ProfessorView extends Component {
 
 							<hr />
 							<label htmlFor="gpaField">GPA Requirement</label>
-							<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
+							<GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
+
+							<hr />
+							<label htmlFor="courseField">Required Courses</label>
+							<CourseSelect />
 						</div>
 						</div>
 						<div className='column'>

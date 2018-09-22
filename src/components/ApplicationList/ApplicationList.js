@@ -13,7 +13,7 @@ class ApplicationList extends Component {
     componentDidMount() {
         console.log(sessionStorage.getItem('token_id'));
         //'netId': sessionStorage.getItem('netId')
-        axios.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
+        axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
             .then((response) => {
                 this.setState({data: response.data});
             })
@@ -23,6 +23,8 @@ class ApplicationList extends Component {
     }
 
     shouldShow(application) {
+        console.log(application);
+
         const filter = this.props.filter;
 
         let froshSelected = filter.yearSelect.Freshman;
