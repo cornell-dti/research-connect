@@ -40,14 +40,14 @@ _Screenshots showing major parts of app_
 ​
 **2017-2018**
  * **[Aram Baghdassarian](https://github.com/abagh0703)** - Product Manager
- * **Andrew Xiao** - Product Manager
- * **Phillip Kheyfets** - Product Manager
- * **Rachel Nash** - Product Manager
- * **Ayesha Gagguturi** - Product Manager
- * **Emily Chan** - Product Manager
- * **Micheal Huang** - Product Manager
- * **Julia Yang**  - Product Manager
- * **Laura Sizemore**  - Product Manager
+ * **[Andrew Xiao](https://github.com/Andrewxzn)** - Developer
+ * **[Phillip Kheyfets](https://github.com/kheyfets)** - Developer
+ * **[Rachel Nash](https://github.com/rsn55)** - Developer
+ * **[Ayesha Gagguturi](https://github.com/Ayesha34)** - Developer
+ * **[Julia Yang](https://github.com/juliayangg)**  - Developer
+ * **[Emily Chan]** - Designer
+ * **[Micheal Huang]** - Desginer
+ * **[Laura Sizemore]()**  - Developer
 ​
 
 #
