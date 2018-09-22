@@ -39,7 +39,7 @@ _Screenshots showing major parts of app_
 ## Contributors
 ​
 **2017-2018**
- * **Aram Baghdassarian** - Product Manager
+ * **[Aram Baghdassarian](https://github.com/abagh0703)** - Product Manager
  * **Andrew Xiao** - Product Manager
  * **Phillip Kheyfets** - Product Manager
  * **Rachel Nash** - Product Manager
@@ -47,7 +47,7 @@ _Screenshots showing major parts of app_
  * **Emily Chan** - Product Manager
  * **Micheal Huang** - Product Manager
  * **Julia Yang**  - Product Manager
- * **Laura**  - Product Manager
+ * **Laura Sizemore**  - Product Manager
 ​
 
 #
