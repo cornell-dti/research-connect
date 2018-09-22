@@ -1,5 +1,5 @@
 # Research Connect v1.0
-_See [here](https://github.com/cornell-dti/o-week-android/blob/master/README.md) for an example of what a good README.md looks like._
+
 ​
 #### Contents
   - [About](#about)
@@ -50,6 +50,8 @@ _Screenshots showing major parts of app_
  * **Julia Yang**  - Product Manager
  * **Laura**  - Product Manager
 ​
+
+#
 We are a team within **Cornell Design & Tech Initiative**. For more information, see our website [here](https://cornelldti.org/).
 <img src="https://raw.githubusercontent.com/cornell-dti/design/master/Branding/Wordmark/Dark%20Text/Transparent/Wordmark-Dark%20Text-Transparent%403x.png">
 ​
