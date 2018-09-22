@@ -22,14 +22,13 @@ cd into the directory of the project  (probably cd research-connect)
 6. Ask a teammate for the .env file (it contains all the passwords so it's not safe to post it here), and add it to the research connect folder right next to app.json. Make sure to call it .env
 7. Do cd.. to be in the top level of the project and then run npm run start:dev
 8. Put localhost:3001 in your browser address bar and click enter, and the website should pop up
-​
- * **api name***
 
 
 ​
 ## Dependencies & Libraries
- * **[Example Library](http://example.com)** - **Why we use this library**
- * [Guava](https://github.com/google/guava) - a Google Library containing lots of helpful classes for Java. Most notably, immutable data structures (like ImmutableList) and EventBus, which provides a way for classes that do not have references to each other to communicate.
+
+
+
 ​
 ## Screenshots
 ​
