@@ -42,6 +42,7 @@ Progressive Web App Written On The MERN Stack
  * **Ayesha Gagguturi** - Software Developer
  * **Emily Chan** - Designer
  * **Laura Sizemore**  - Software Developer
+#
 **Former Contributors**
  * **Rachel Nash** - Software Developer
  * **Julia Yang** - Software Developer
