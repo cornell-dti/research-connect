@@ -1,4 +1,4 @@
-# Research Connect v1.0 <img src="./src/images/LogoWithText.png" />
+# Research Connect v0.1 <img src="./src/images/LogoWithText.png" />
 #### Contents
   - [About](#about)
   - [Getting Started](#getting-started)
