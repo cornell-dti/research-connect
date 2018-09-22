@@ -45,9 +45,9 @@ _Screenshots showing major parts of app_
  * **[Rachel Nash](https://github.com/rsn55)** - Developer
  * **[Ayesha Gagguturi](https://github.com/Ayesha34)** - Developer
  * **[Julia Yang](https://github.com/juliayangg)**  - Developer
- * **[Emily Chan]** - Designer
- * **[Micheal Huang]** - Desginer
- * **[Laura Sizemore]()**  - Developer
+ * **Emily Chan** - Designer
+ * **Micheal Huang** - Desginer
+ * **[Laura Sizemore](https://github.com/lsizemore8)**  - Developer
 ​
 
 #
