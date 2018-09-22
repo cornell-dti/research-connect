@@ -35,14 +35,16 @@ Progressive Web App Written On The MERN Stack
 <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20faculty%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20opportunity%20apply.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20opportunity%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"> <img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Student%20single%20opportunity%20view.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;"><img src="https://raw.githubusercontent.com/cornell-dti/research-connect/master/Landing%20page.png" width="250px" style="margin: 10px; border: 1px rgba(0,0,0,0.4) solid;">
 
 ## Contributors
-**2017-2018**
+**Current Contributors**
  * **Aram Baghdassarian** - Product Manager
  * **Andrew Xiao** - Software Developer
  * **Phillip Kheyfets** - Software Developer
  * **Ayesha Gagguturi** - Software Developer
  * **Emily Chan** - Designer
  * **Laura Sizemore**  - Software Developer
- 
+**Former Contributors**
+ * **Rachel Nash** - Software Developer
+ * **Julia Yang** - Software Developer
 ##
 
 
