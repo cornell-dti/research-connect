@@ -44,5 +44,8 @@ Progressive Web App Written On The MERN Stack
  * **Laura Sizemore**  - Software Developer
  
 ##
+
+
+
 We are a team within **Cornell Design & Tech Initiative**. For more information, see our website [here](https://cornelldti.org/).
 <img src="https://raw.githubusercontent.com/cornell-dti/design/master/Branding/Wordmark/Dark%20Text/Transparent/Wordmark-Dark%20Text-Transparent%403x.png">
