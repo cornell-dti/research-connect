@@ -9,7 +9,7 @@
   - [Contributors](#contributors)
 ​
 ## About
-Large universities have so many research opportunities, but few ways to find out about them. Research Connect is a platform where students can find opportunities and research labs can find students they’re looking for. Instead of having to email researchers, we streamline the process by showing undergrads all of the opportunities available to them.Find out exactly what requirements a lab is searching for that match your background. Search for faculty across all departments to find out who is conducting research and whether they’re looking for students.
+Large universities have so many research opportunities, but few ways to find out about them. Research Connect is a platform where students can find opportunities and research labs can find students they’re looking for. Instead of having to email researchers, we streamline the process by showing undergrads all of the opportunities available to them. Find out exactly what requirements a lab is searching for that match your background. Search for faculty across all departments to find out who is conducting research and whether they’re looking for students.
 
 ​
 ## Getting Started
