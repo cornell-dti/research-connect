@@ -1,5 +1,6 @@
+​
 # Research Connect v1.0
-# <img src="./src/images/LogoWithText.png" />
+  <img src="./src/images/LogoWithText.png" />
 ​
 #### Contents
   - [About](#about)
