@@ -134,8 +134,11 @@ app.post('/', function (req, res) {
             console.log("Post function's find did not work");
             return err;
         }
-        console.log("Post function's find works");
 
+        //if req.body is not empty and (netid is falsy or netid is unknown)
+        if (req.body && (!req.body.netId || req.body.netId === "unknown")){
+            return res.send("");
+        }
         let application = {
             "undergradNetId": req.body.netId,
             "status": "received",
