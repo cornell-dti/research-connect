@@ -22,8 +22,6 @@ class ApplicationList extends Component {
 
     coursesSatisfied(studentCourses, filterCourses) {
         studentCourses = studentCourses.map((course) => course.split(' ').join('').toUpperCase());
-        console.log(studentCourses);
-        console.log(filterCourses);
         for (var i = 0; i < filterCourses.length; i++) {
             const course = filterCourses[i];
             if (!studentCourses.includes(course)) {
