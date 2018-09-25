@@ -265,7 +265,7 @@ class LandingPage extends Component {
                 </section>
 
 
-                <footer>
+                <footer class="footer-all">
                     <ul>
                         <li><a href="#"><i className="fa fa-twitter-square"></i></a></li>
                         <li><a href="#"><i className="fa fa-facebook-square"></i></a></li>

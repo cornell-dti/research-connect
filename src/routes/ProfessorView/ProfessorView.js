@@ -9,6 +9,8 @@ import Footer from '../../components/Footer/Footer';
 import MajorSelect from '../../components/MajorSelect/MajorSelect'
 import GPASelect from '../../components/GPASelect/GPASelect'
 import StartDate from '../../components/StartDate/StartDate'
+import CourseSelect from '../../components/CourseSelect/CourseSelect'
+import SkillSelect from '../../components/SkillSelect/SkillSelect'
 import * as Utils from "../../components/Utils";
 
 
@@ -16,24 +18,19 @@ class ProfessorView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			yearSelect: {
-
-			},
-			gpaSelect: {
-
-			},
-			majorSelect: {
-
-			},
-			startDate: {
-
-			}
+			yearSelect: {},
+			gpaSelect: {},
+			majorSelect: {},
+			startDate: {},
+			courses: [],
+			skills: []
 		};
 	}
 
 	handleUpdateYear(yearObj) {
 		this.setState({yearSelect: yearObj});
 	}
+
 	handleUpdateGPA(gpaObj) {
 		this.setState({gpaSelect: gpaObj});
 	}
@@ -41,15 +38,22 @@ class ProfessorView extends Component {
 	handleUpdateMajor(majorObj) {
 		this.setState({majorSelect: majorObj});
 	}
+
 	handleUpdateDate(majorObj) {
 		this.setState({startDate: majorObj});
 	}
 
+	handleUpdateCourses(courseList) {
+		this.setState({courses: courseList});
+	}
+
+	handleUpdateSkills(skillList) {
+		this.setState({skills: skillList});
+	}
+
 	componentWillMount() {
-		console.log("will mount");
 		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
 		.then((response) => {
-			console.log("role: " + response.data);
 			if (response.data !== 'grad' &&
 				  response.data !== 'labtech' &&
 				  response.data !== 'postdoc' &&
@@ -84,7 +88,15 @@ class ProfessorView extends Component {
 
 							<hr />
 							<label htmlFor="gpaField">GPA Requirement</label>
-							<GPASelect updateGPA= {this.handleUpdateGPA.bind(this)}/>
+							<GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
+
+							<hr />
+							<label htmlFor="courseField">Required Courses</label>
+							<CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+
+							<hr />
+							<label htmlFor="skillField">Required Skills</label>
+							<SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
 						</div>
 						</div>
 						<div className='column'>
