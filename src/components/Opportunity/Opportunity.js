@@ -117,7 +117,22 @@ class Opportunity extends Component {
 			return "Open";
 		}
 	}
+	checkEdit (){
+		let lab = false; 
+		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
+            .then((response) => {
+				if (!response || response.data == "none" ||
+				 !response.data || response.data == "undergrad"){
+					 lab = false;  
+				}
+				else {
+					lab = true; 
+				}	
 
+		});
+		return lab; 
+		
+	}
 
 	render() {
 		return (
@@ -139,6 +154,7 @@ class Opportunity extends Component {
 
 			</div>
 		)
+		
 	}
 }
 

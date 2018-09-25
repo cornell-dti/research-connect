@@ -54,12 +54,12 @@ app.get('/', function (req, res) {
                     '_id': {
                         $in: mongooseLabIds
                     }
-                }, function (err, docs) {
-                    let applicationsArray = [];
-                    let allApplications = {};
-                    let netIds = [];
+                }, function (err, docs) {//docs = all opportunities in database
+                    let applicationsArray = [];//all applications for all opportunities
+                    let allApplications = {};//dict where key=title of opportunity / value=list of applications for that opportunity
+                    let netIds = [];//netIds of all students that applied for any opportunity
                     for (let i = 0; i < docs.length; i++) {
-                        let opportunityObject = docs[i];
+                        let opportunityObject = docs[i];// an opportunityModel
                         for (let j = 0; j < opportunityObject.applications.length; j++) {
                             applicationsArray.push(opportunityObject.applications[j]);
                             netIds.push(opportunityObject.applications[j].undergradNetId);
@@ -72,11 +72,11 @@ app.get('/', function (req, res) {
                         'netId': {
                             $in: netIds
                         }
-                    }, function (err, studentInfoArray) {
+                    }, function (err, studentInfoArray) { //studentInfoArray is list of undergradModels
                         let count = 0;
-                        for (let key in allApplications) {
+                        for (let key in allApplications) { //For each opportunity in a list of all opportunities
                             if (allApplications.hasOwnProperty(key)) {
-                                let currentApplication = allApplications[key];
+                                let currentApplication = allApplications[key];//currentApplication is all applications of a given opportunity
                                 for (let i = 0; i < currentApplication.length; i++) {
                                     let currentStudent = currentApplication[i];
                                     let undergradId = currentStudent.undergradNetId;
@@ -89,8 +89,8 @@ app.get('/', function (req, res) {
                                     currentStudent.major = undergradInfo.major;
                                     currentStudent.gpa = undergradInfo.gpa;
                                     currentStudent.courses = undergradInfo.courses;
-
-
+                                    currentStudent.skills = undergradInfo.skills;
+                                    currentStudent.opportunity = key; //The title of the opportunity this application is being sent to
                                 }
                                 //reformat it to match:
                                 /**
@@ -119,7 +119,7 @@ app.get('/', function (req, res) {
                         res.send(reformatted);
                     });
                 });
-            })
+            });
         });
     }).catch(function(error){
         handleVerifyError(error, res);
@@ -128,22 +128,45 @@ app.get('/', function (req, res) {
 
 //previously POST /storeApplication
 app.post('/', function (req, res) {
+    console.log("Entered the post function");
     opportunityModel.findById(req.body.opportunityId, function (err, opportunity) {
         if (err) {
+            console.log("Post function's find did not work");
             return err;
         }
 
+        //if req.body is not empty and (netid is falsy or netid is unknown)
+        if (req.body && (!req.body.netId || req.body.netId === "unknown")){
+            return res.send("");
+        }
         let application = {
             "undergradNetId": req.body.netId,
             "status": "received",
             "responses": req.body.responses,
             "timeSubmitted": Date.now(),
-            "id": req.body.netId + Date.now()
+            "id": req.body.netId + Date.now(),
+            "skills": [],
+            "opportunity": opportunity.title
         };
-        opportunity.applications.push(application);
-        opportunity.save(function (err) {
+        undergradModel.find({"netId":req.body.netId},function(err,u){
+            console.log("undergrad is: "+u[0].skills);
+            application.skills = u[0].skills;
+            console.log("Application dictionary set");
+            console.log("Skills be: "+application.skills);
+            opportunity.applications.push(application);
+            opportunity.save(function (err) {
+            });
+            res.send("success!");
         });
-        res.send("success!");
+        
+        /*
+        if(application['skills'].length > 0){
+            console.log("good job you printed skills");
+            console.log(application.skills[1]);
+            console.log(application.opportunity);
+        }
+        */
+
     });
 });
 
