@@ -10,6 +10,7 @@ import MajorSelect from '../../components/MajorSelect/MajorSelect'
 import GPASelect from '../../components/GPASelect/GPASelect'
 import StartDate from '../../components/StartDate/StartDate'
 import CourseSelect from '../../components/CourseSelect/CourseSelect'
+import SkillSelect from '../../components/SkillSelect/SkillSelect'
 import * as Utils from "../../components/Utils";
 
 
@@ -21,7 +22,8 @@ class ProfessorView extends Component {
 			gpaSelect: {},
 			majorSelect: {},
 			startDate: {},
-			courses: {}
+			courses: [],
+			skills: []
 		};
 	}
 
@@ -41,15 +43,17 @@ class ProfessorView extends Component {
 		this.setState({startDate: majorObj});
 	}
 
-	handleUpdateCourses(courseObj) {
-		this.setState({courses: courseObj});
+	handleUpdateCourses(courseList) {
+		this.setState({courses: courseList});
+	}
+
+	handleUpdateSkills(skillList) {
+		this.setState({skills: skillList});
 	}
 
 	componentWillMount() {
-		console.log("will mount");
 		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
 		.then((response) => {
-			console.log("role: " + response.data);
 			if (response.data !== 'grad' &&
 				  response.data !== 'labtech' &&
 				  response.data !== 'postdoc' &&
@@ -88,7 +92,11 @@ class ProfessorView extends Component {
 
 							<hr />
 							<label htmlFor="courseField">Required Courses</label>
-							<CourseSelect />
+							<CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+
+							<hr />
+							<label htmlFor="skillField">Required Skills</label>
+							<SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
 						</div>
 						</div>
 						<div className='column'>

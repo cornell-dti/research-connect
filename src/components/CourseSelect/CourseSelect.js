@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './CourseSelect.scss';
+import FaTimesCircle from 'react-icons/lib/fa/times-circle';
 
 class CourseSelect extends React.Component {
 
@@ -13,12 +14,11 @@ class CourseSelect extends React.Component {
   addCourse() {
     let courses = [...this.state.courses];
     let cur = this.newText.value.split(' ').join('').toUpperCase();
-    console.log(courses);
-    console.log(cur);
     if (cur !== '' && !courses.includes(cur)) {
     	courses.push(cur);
     }
-    this.setState({ courses });
+    this.setState({ courses }, () => this.props.updateCourses(courses));
+    this.newText.value = '';
   }
 
   removeFromArray(arr) {
@@ -35,7 +35,7 @@ class CourseSelect extends React.Component {
   removeCourse(course) {
   	let courses = this.state.courses;
     this.removeFromArray(courses, course);
-    this.setState({ courses });
+    this.setState({ courses }, () => this.props.updateCourses(courses));
   }
 
 	render() {
@@ -48,8 +48,12 @@ class CourseSelect extends React.Component {
         <ul>
           {
           	this.state.courses.map((course) => {
-                return <li onClick={ () => this.removeCourse(course) }>{ course }</li>
-          	})
+              return (
+                <li onClick={ () => this.removeCourse(course) }>
+                  { course } <FaTimesCircle style={{verticalAlign: 'text-top'}} />
+                </li>
+              )
+            })
           }
         </ul>
       </div>
