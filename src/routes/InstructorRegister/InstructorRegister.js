@@ -68,7 +68,7 @@ class InstructorRegister extends React.Component {
     handleUpdateLab(labName, id) {
         if (!this.state.newLab) {
             this.setState({labId: id});
-            if (labName != "" && id) {
+            if (labName !== "") {
                 this.setState({labNameValid: true});
             } else {
                 this.setState({labNameValid: false});
