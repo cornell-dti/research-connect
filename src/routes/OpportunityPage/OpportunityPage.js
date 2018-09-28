@@ -352,7 +352,7 @@ class OpportunityPage extends Component {
                                             {/*<h6> Professor: {this.state.opportunity.pi}</h6>*/}
                                         </div>
                                         <div className="title-second-col">
-                                            <a className="button" href =  {"/EditOpp?Id=" + this.getId() }>Edit Opportunity</a>
+                                            <a className="button" href =  {"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
     
                                         </div>
                                     </div>

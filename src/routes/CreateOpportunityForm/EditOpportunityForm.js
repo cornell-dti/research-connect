@@ -52,7 +52,50 @@ class EditOppForm extends React.Component {
 
 
     }
-
+    getUrlId(val) {
+        let url = window.location.href;
+       let  word = val.replace(/[\[\]]/g, '\\$&');
+      let regex = new RegExp('[?&]' + word + '(=([^&#]*)|&|#|$)'),
+             res = regex.exec(url);
+         if (!res){
+             return null;
+         } 
+         if (!res[2]) {
+             return '';
+         }
+         return decodeURIComponent(res[2].replace(/\+/g, ' '));
+     }
+     
+     componentDidMount() {
+         let id = parseInt(this.getUrlId("Id")); 
+         this.setValues(id);
+  }
+     setValues(id){
+         axios.get(' /api/opportunity?id=' + id)
+         .then((response) => {
+             if(response != null && response != undefined){
+              if(response.areas != undefined)  this.setState({areas: response.areas})
+              if(response.projectDescription != undefined)
+              { this.setState({projectDescription: response.projectDescription});}
+            if(response.undergradTasks != undefined) this.setState({undergradTasks: response.undergradTasks});
+            if (response.qualifications != undefined)   this.setState({qualifications: response.qualifications}); 
+            if (response.compensation != undefined) this.setState({compensation: response.compensation});
+                if(response.yearsAllowed != undefined)    this.setState({yearsAllowed: response.yearsAllowed});
+            if(response.questions != undefined)        this.setState({questions:  response.questions});
+            if(response.requiredClasses != undefined)       this.setState({requiredClasses: response.requiredClasses}); 
+            if (response.minGPA != undefined)       this.setState({minGPA: response.minGPA});
+            if (response.minHours != undefined)        this.setState({minHours: response.minHours}); 
+            if (response.maxHours != undefined)        this.setState({maxHours: response.maxHours}); 
+            if (response.opens != undefined)       this.setState({opens: response.opens}); 
+            if (response.closes != undefined)        this.setState({closes: response.closes}); 
+            if (response.labName != undefined)        this.setState({labName: response.labName}); 
+            if (response.supervisor != undefined)        this.setState({supervisor: response.supervisor});
+             }
+            
+          }); 
+         }
+        
+         
     /**
      onSubmit = (e) => {
         this.setState({triedSubmitting: true});
@@ -121,30 +164,7 @@ class EditOppForm extends React.Component {
             {questionBoxes}
         </div>;
 
-    }
-     getUrlId(val) {
-       let url = window.location.href;
-      let  word = val.replace(/[\[\]]/g, '\\$&');
-     let regex = new RegExp('[?&]' + word + '(=([^&#]*)|&|#|$)'),
-            res = regex.exec(url);
-        if (!res){
-            return null;
-        } 
-        if (!res[2]) {
-            return '';
-        }
-        return decodeURIComponent(res[2].replace(/\+/g, ' '));
-    }
-    
-      
-        
-        
-      
-        
-    
-         
-         
-      
+    } 
     deleteQuestion(data, e) {
 
         let deleted = parseInt(data.slice(1));
@@ -186,53 +206,74 @@ class EditOppForm extends React.Component {
     }
 
 
+    addQuestion(event) {
+
+        let questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
+        questionsCopy["q" + (this.state.numQuestions).toString()] = '';
+        this.setState({
+            questions: questionsCopy
+        });
+        this.setState({numQuestions: this.state.numQuestions + 1});
+
+    }
+
+
     createGpaOptions() {
-        let options = [];
-        for (let i = 25; i <= 43; i++) {
-            options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
+        if(this.state.minGPA != ''){
+            let options = [];
+            for (let i = 25; i <= 43; i++) {
+                options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
+            }
+            return (
+                <select name="gpa" className="gpa-select column column-90" value={this.state.minGPA}
+                        onChange={this.handleChange}>
+                    <option key="" value="">Select Minimum GPA</option>
+                    {options}
+                </select>
+            );
         }
-        return (
-            <select name="gpa" className="gpa-select column column-90" value={this.state.minGPA}
-                    onChange={this.handleChange}>
-                <option key="" value="">Select Minimum GPA</option>
-                {options}
-            </select>
-        );
+       
     }
 
     setYears() {
-
-        let yearArray = [];
-        if (this.freshman.checked) {
-            yearArray.push('freshman');
+        if (this.state.yearsAllowed != []){
+            let yearArray = [];
+            if (this.freshman.checked) {
+                yearArray.push('freshman');
+            }
+            if (this.sophomore.checked) {
+                yearArray.push('sophomore');
+            }
+            if (this.junior.checked) {
+                yearArray.push('junior');
+            }
+            if (this.senior.checked) {
+                yearArray.push('senior');
+            }
+            this.setState({yearsAllowed: yearArray});
         }
-        if (this.sophomore.checked) {
-            yearArray.push('sophomore');
         }
-        if (this.junior.checked) {
-            yearArray.push('junior');
-        }
-        if (this.senior.checked) {
-            yearArray.push('senior');
-        }
-        this.setState({yearsAllowed: yearArray});
-    }
+      
 
     setCompensation() {
-        let compensationArray = [];
-        if (this.pay.checked) {
-            compensationArray.push('pay');
+        if (this.state.compensation != []){
+            let compensationArray = [];
+            if (this.pay.checked) {
+                compensationArray.push('pay');
+            }
+            if (this.credit.checked) {
+                compensationArray.push('credit');
+            }
+            if (this.undetermined.checked) {
+                compensationArray.push('undetermined');
+            }
+            let atLeastOneOptionSelected = compensationArray.length !== 0;
+            // this.setState({compensationIsValid: atLeastOneOptionSelected});
+            this.setState({compensation: compensationArray});
         }
-        if (this.credit.checked) {
-            compensationArray.push('credit');
-        }
-        if (this.undetermined.checked) {
-            compensationArray.push('undetermined');
-        }
-        let atLeastOneOptionSelected = compensationArray.length !== 0;
-        // this.setState({compensationIsValid: atLeastOneOptionSelected});
-        this.setState({compensation: compensationArray});
+       
     }
+
 
     //Set values of form items in state and change their validation state if they're invalid
     handleChange(event) {
@@ -311,29 +352,7 @@ class EditOppForm extends React.Component {
     handleCloseDateChange(date) {
         this.setState({closes: date});
     }
-
-    /*setValues(){
-        let id = this.getUrlId("Id");
-        axios.get(' /api/opportunity/' + id)
-        .then((response) => {
-            this.setState({areas: response.areas})
-            this.setState({projectDescription: response.projectDescription});
-                this.setState({undergradTasks: response.undergradTasks});
-                this.setState({qualifications: response.qualifications}); 
-                this.setState({compensation: response.compensation});
-                this.setState({yearsAllowed: response.yearsAllowed});
-                this.setState({questions:  response.questions});
-                this.setState({requiredClasses: response.requiredClasses}); 
-                this.setState({minGPA: response.minGPA});
-                this.setState({minHours: response.minHours}); 
-                this.setState({maxHours: response.maxHours}); 
-                this.setState({opens: response.opens}); 
-                this.setState({closes: response.closes}); 
-                this.setState({labName: response.labName}); 
-                this.setState({supervisor: response.supervisor});
-         }); 
-        }*/
-     
+    
 
     //takes care of sending the form data to the back-end
     onSubmit = (e) => {
@@ -400,7 +419,6 @@ class EditOppForm extends React.Component {
     };
 
     render() {
-       // this.setValues();
         return (
             <div >
                 <ProfessorNavbar current={"newopp"}/>
