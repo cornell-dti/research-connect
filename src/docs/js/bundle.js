@@ -41379,14 +41379,6 @@ var Opportunities = function (_Component) {
                             _react2.default.createElement('hr', null),
                             _react2.default.createElement(
                                 'label',
-                                { htmlFor: 'depField' },
-                                'Area of Interest'
-                            ),
-                            _react2.default.createElement(_MajorSelect2.default, { updateMajor: this.handleUpdateMajor.bind(this) }),
-                            _react2.default.createElement('br', null),
-                            _react2.default.createElement('hr', null),
-                            _react2.default.createElement(
-                                'label',
                                 { htmlFor: 'yearField' },
                                 'School Year'
                             ),
@@ -47357,7 +47349,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.labDescription
+                                        this.state.opportunity.labDescription ? this.state.opportunity.labDescription : "No lab info available."
                                     )
                                 ),
                                 _react2.default.createElement(
