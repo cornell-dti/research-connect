@@ -149,12 +149,35 @@ const facultySchema = new Schema({
     labPage: {type: String},
     department: {type: String},
     email: {type: String},
-    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]}
+    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]},
+    bio: {type: String},
+    teaching: {type: String}
 });
 //create text indices so we can use the mongo search functionality: https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
 facultySchema.index({'$**': 'text'});
 let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
+
+//The code below can be used to update information in all the faculty documents.
+/**
+facultyModel.find({}, function(err, facultyArray){
+    for (let i = 0; i < facultyArray.length; i++){
+        let currentFaculty = facultyArray[i];
+        currentFaculty.name = (currentFaculty.name ? currentFaculty.name.replace(/[^\x00-\x7F]/g, "") : currentFaculty.name);
+        currentFaculty.bio = (currentFaculty.bio ? currentFaculty.bio.replace(/[^\x00-\x7F]/g, "") : currentFaculty.bio);
+        currentFaculty.researchDescription = (currentFaculty.researchDescription ? currentFaculty.researchDescription.replace(/[^\x00-\x7F]/g, "") : currentFaculty.researchDescription);
+        currentFaculty.teaching = (currentFaculty.teaching ? currentFaculty.teaching.replace(/[^\x00-\x7F]/g, "") : currentFaculty.teaching);
+        currentFaculty.save(function(err, doc){
+           if (err){
+               debug("error!");
+               debug(err);
+               debug(doc);
+           }
+        });
+    }
+});
+ **/
+
 
 /** OPPORTUNITY SCHEMA */
 const opportunitySchema = new Schema({
