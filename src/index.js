@@ -24,6 +24,7 @@ ReactDOM.render(
             <Route path='/faculty/:id' component={FacultyPage} />
             <Route path='/application/:id' component={ApplicationPage} />
             <Route exact path='/newopp' component={CreateOpportunityForm} />
+            <Route exact path='/editopp' component={CreateOpportunityForm} />
             <Route exact path='/instructorRegister' component={InstructorRegister} />
             <Route exact path='/StudentRegister' component={StudentRegister} />
             <Route exact path='/professorView' component={ProfessorView} />

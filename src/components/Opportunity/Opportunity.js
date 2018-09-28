@@ -123,37 +123,39 @@ class Opportunity extends Component {
             .then((response) => {
 				if (!response || response.data == "none" ||
 				 !response.data || response.data == "undergrad"){
-					 lab = false;  
+					return false;  
 				}
 				else {
-					lab = true; 
+					return true; 
 				}	
 
-		});
-		return lab; 
+		}); 
 		
 	}
 
 	render() {
-		return (
-			<div className="application-box" onClick={this.clickRow.bind(this)}>
-			<div className="row opp-box-row">
- 				<div className="column column-80">
-				<h4>{ this.props.title }</h4>
-					<h5>{this.props.labName}</h5>
+		if(!this.checkEdit()){
+			return (
+				<div className="application-box" onClick={this.clickRow.bind(this)}>
+				<div className="row opp-box-row">
+					 <div className="column column-80">
+					<h4>{ this.props.title }</h4>
+						<h5>{this.props.labName}</h5>
+					</div>
+					 <div className="column column-20">
+						<Calendar className="cal"/>
+						<span> Deadline { this.convertDate(this.props.closes) }</span>
+						{this.checkPrereqs()}
+					</div>
+				 </div>
+	
+					{ this.convertDescription(this.props.projectDescription) }
+	
+	
 				</div>
- 				<div className="column column-20">
-					<Calendar className="cal"/>
-					<span> Deadline { this.convertDate(this.props.closes) }</span>
-					{this.checkPrereqs()}
-				</div>
- 			</div>
-
-				{ this.convertDescription(this.props.projectDescription) }
-
-
-			</div>
-		)
+			)
+		}
+	
 		
 	}
 }
