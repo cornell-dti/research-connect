@@ -249,6 +249,9 @@ app.post('/', function (req, res) {
     if (data.maxHours !== undefined && data.maxHours !== null) {
         maxHours = data.maxHours;
     }
+    if (data.yearsAllowed && data.yearsAllowed.length === 0){
+        data.yearsAllowed = ["freshman", "sophomore", "junior", "senior"];
+    }
     debug("1");
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
