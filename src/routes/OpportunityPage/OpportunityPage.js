@@ -173,6 +173,8 @@ class OpportunityPage extends Component {
 
     convertDate(dateString) {
         let dateObj = new Date(dateString);
+        let year = dateObj.getUTCFullYear().toString();
+        year = year.substring(2,4);
         let month = dateObj.getUTCMonth() + 1;
         let day = dateObj.getUTCDay();
         let month0 = '';
@@ -184,7 +186,7 @@ class OpportunityPage extends Component {
             day0 = '0';
         }
 
-        return (month0 + (month).toString() + "/" + day0 + (day).toString());
+        return (month0 + (month).toString() + "/" + day0 + (day).toString() + "/" + year);
     }
 
     checkOpen() {
@@ -202,7 +204,7 @@ class OpportunityPage extends Component {
 
     parseYears(yearsArray) {
 
-        let yearDivArray = []
+        let yearDivArray = [];
         if (yearsArray) {
             let trackYear = false;
             if (yearsArray.includes("freshman")) {

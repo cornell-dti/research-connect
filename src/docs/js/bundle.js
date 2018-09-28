@@ -46905,6 +46905,8 @@ var OpportunityPage = function (_Component) {
         key: 'convertDate',
         value: function convertDate(dateString) {
             var dateObj = new Date(dateString);
+            var year = dateObj.getUTCFullYear().toString();
+            year = year.substring(2, 4);
             var month = dateObj.getUTCMonth() + 1;
             var day = dateObj.getUTCDay();
             var month0 = '';
@@ -46916,7 +46918,7 @@ var OpportunityPage = function (_Component) {
                 day0 = '0';
             }
 
-            return month0 + month.toString() + "/" + day0 + day.toString();
+            return month0 + month.toString() + "/" + day0 + day.toString() + "/" + year;
         }
     }, {
         key: 'checkOpen',
