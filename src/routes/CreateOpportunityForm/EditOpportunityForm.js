@@ -122,7 +122,29 @@ class EditOppForm extends React.Component {
         </div>;
 
     }
-
+     getUrlId(val) {
+       let url = window.location.href;
+      let  word = val.replace(/[\[\]]/g, '\\$&');
+     let regex = new RegExp('[?&]' + word + '(=([^&#]*)|&|#|$)'),
+            res = regex.exec(url);
+        if (!res){
+            return null;
+        } 
+        if (!res[2]) {
+            return '';
+        }
+        return decodeURIComponent(res[2].replace(/\+/g, ' '));
+    }
+    
+      
+        
+        
+      
+        
+    
+         
+         
+      
     deleteQuestion(data, e) {
 
         let deleted = parseInt(data.slice(1));
@@ -290,10 +312,32 @@ class EditOppForm extends React.Component {
         this.setState({closes: date});
     }
 
+    /*setValues(){
+        let id = this.getUrlId("Id");
+        axios.get(' /api/opportunity/' + id)
+        .then((response) => {
+            this.setState({areas: response.areas})
+            this.setState({projectDescription: response.projectDescription});
+                this.setState({undergradTasks: response.undergradTasks});
+                this.setState({qualifications: response.qualifications}); 
+                this.setState({compensation: response.compensation});
+                this.setState({yearsAllowed: response.yearsAllowed});
+                this.setState({questions:  response.questions});
+                this.setState({requiredClasses: response.requiredClasses}); 
+                this.setState({minGPA: response.minGPA});
+                this.setState({minHours: response.minHours}); 
+                this.setState({maxHours: response.maxHours}); 
+                this.setState({opens: response.opens}); 
+                this.setState({closes: response.closes}); 
+                this.setState({labName: response.labName}); 
+                this.setState({supervisor: response.supervisor});
+         }); 
+        }*/
+     
 
     //takes care of sending the form data to the back-end
     onSubmit = (e) => {
-        this.setState({triedSubmitting: true});
+      //  this.setState({triedSubmitting: true});
         e.preventDefault();
         // get our form data out of state
         const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result} = this.state;
@@ -356,6 +400,7 @@ class EditOppForm extends React.Component {
     };
 
     render() {
+        this.setValues();
         return (
             <div >
                 <ProfessorNavbar current={"newopp"}/>
