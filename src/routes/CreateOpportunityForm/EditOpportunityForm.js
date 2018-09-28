@@ -52,50 +52,58 @@ class EditOppForm extends React.Component {
 
 
     }
+
     getUrlId(val) {
         let url = window.location.href;
-       let  word = val.replace(/[\[\]]/g, '\\$&');
-      let regex = new RegExp('[?&]' + word + '(=([^&#]*)|&|#|$)'),
-             res = regex.exec(url);
-         if (!res){
-             return null;
-         } 
-         if (!res[2]) {
-             return '';
-         }
-         return decodeURIComponent(res[2].replace(/\+/g, ' '));
-     }
-     
-     componentDidMount() {
-         let id = parseInt(this.getUrlId("Id")); 
-         this.setValues(id);
-  }
-     setValues(id){
-         axios.get(' /api/opportunity?id=' + id)
-         .then((response) => {
-             if(response != null && response != undefined){
-              if(response.areas != undefined)  this.setState({areas: response.areas})
-              if(response.projectDescription != undefined)
-              { this.setState({projectDescription: response.projectDescription});}
-            if(response.undergradTasks != undefined) this.setState({undergradTasks: response.undergradTasks});
-            if (response.qualifications != undefined)   this.setState({qualifications: response.qualifications}); 
-            if (response.compensation != undefined) this.setState({compensation: response.compensation});
-                if(response.yearsAllowed != undefined)    this.setState({yearsAllowed: response.yearsAllowed});
-            if(response.questions != undefined)        this.setState({questions:  response.questions});
-            if(response.requiredClasses != undefined)       this.setState({requiredClasses: response.requiredClasses}); 
-            if (response.minGPA != undefined)       this.setState({minGPA: response.minGPA});
-            if (response.minHours != undefined)        this.setState({minHours: response.minHours}); 
-            if (response.maxHours != undefined)        this.setState({maxHours: response.maxHours}); 
-            if (response.opens != undefined)       this.setState({opens: response.opens}); 
-            if (response.closes != undefined)        this.setState({closes: response.closes}); 
-            if (response.labName != undefined)        this.setState({labName: response.labName}); 
-            if (response.supervisor != undefined)        this.setState({supervisor: response.supervisor});
-             }
-            
-          }); 
-         }
-        
-         
+        let word = val.replace(/[\[\]]/g, '\\$&');
+        let regex = new RegExp('[?&]' + word + '(=([^&#]*)|&|#|$)'),
+            res = regex.exec(url);
+        if (!res) {
+            return null;
+        }
+        if (!res[2]) {
+            return '';
+        }
+        return decodeURIComponent(res[2].replace(/\+/g, ' '));
+    }
+
+    componentDidMount() {
+        let id = this.getUrlId("Id");
+        this.setValues(id);
+    }
+
+    setValues(id) {
+        axios.get('/api/opportunities/' + id + '?netId=' + sessionStorage.getItem('token_id'))
+            .then((response) => {
+                if (response) {
+                    response = response.data;
+                    if (response.title) this.setState({title: response.title});
+                    if (response.areas) this.setState({areas: response.areas});
+                    if (response.projectDescription) {
+                        this.setState({projectDescription: response.projectDescription});
+                    }
+                    let openDate = moment(new Date(response.opens));
+                    let closeDate = moment(new Date(response.closes));
+                    if (response.startSeason) this.setState({startSeason: response.startSeason});
+                    if (response.startYear) this.setState({startYear: response.startYear});
+                    if (response.undergradTasks) this.setState({undergradTasks: response.undergradTasks});
+                    if (response.qualifications) this.setState({qualifications: response.qualifications});
+                    if (response.compensation) this.setState({compensation: response.compensation});
+                    if (response.yearsAllowed) this.setState({yearsAllowed: response.yearsAllowed});
+                    if (response.questions) this.setState({questions: response.questions});
+                    if (response.requiredClasses) this.setState({requiredClasses: response.requiredClasses});
+                    if (response.minGPA) this.setState({minGPA: response.minGPA});
+                    if (response.minHours !== undefined && response.minHours !== null) this.setState({minHours: response.minHours});
+                    if (response.maxHours) this.setState({maxHours: response.maxHours});
+                    if (response.opens) this.setState({opens: openDate});
+                    if (response.closes) this.setState({closes: closeDate});
+                    if (response.labName) this.setState({labName: response.labName});
+                    if (response.supervisor) this.setState({supervisor: response.supervisor});
+                }
+            });
+    }
+
+
     /**
      onSubmit = (e) => {
         this.setState({triedSubmitting: true});
@@ -164,7 +172,8 @@ class EditOppForm extends React.Component {
             {questionBoxes}
         </div>;
 
-    } 
+    }
+
     deleteQuestion(data, e) {
 
         let deleted = parseInt(data.slice(1));
@@ -219,7 +228,7 @@ class EditOppForm extends React.Component {
 
 
     createGpaOptions() {
-        if(this.state.minGPA != ''){
+        if (this.state.minGPA != '') {
             let options = [];
             for (let i = 25; i <= 43; i++) {
                 options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
@@ -232,11 +241,11 @@ class EditOppForm extends React.Component {
                 </select>
             );
         }
-       
+
     }
 
     setYears() {
-        if (this.state.yearsAllowed != []){
+        if (this.state.yearsAllowed != []) {
             let yearArray = [];
             if (this.freshman.checked) {
                 yearArray.push('freshman');
@@ -252,11 +261,11 @@ class EditOppForm extends React.Component {
             }
             this.setState({yearsAllowed: yearArray});
         }
-        }
-      
+    }
+
 
     setCompensation() {
-        if (this.state.compensation != []){
+        if (this.state.compensation != []) {
             let compensationArray = [];
             if (this.pay.checked) {
                 compensationArray.push('pay');
@@ -271,7 +280,7 @@ class EditOppForm extends React.Component {
             // this.setState({compensationIsValid: atLeastOneOptionSelected});
             this.setState({compensation: compensationArray});
         }
-       
+
     }
 
 
@@ -352,11 +361,11 @@ class EditOppForm extends React.Component {
     handleCloseDateChange(date) {
         this.setState({closes: date});
     }
-    
+
 
     //takes care of sending the form data to the back-end
     onSubmit = (e) => {
-      //  this.setState({triedSubmitting: true});
+        //  this.setState({triedSubmitting: true});
         e.preventDefault();
         // get our form data out of state
         const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result} = this.state;
@@ -369,7 +378,9 @@ class EditOppForm extends React.Component {
             this.state.yearIsValid)) {
             return;
         }
-        axios.post('/api/opportunities', {
+        console.log("ran");
+        console.log(this.getUrlId("Id"));
+        axios.put('/api/opportunities/' + this.getUrlId("Id"), {
             netId,
             creatorNetId,
             labPage,
@@ -399,6 +410,7 @@ class EditOppForm extends React.Component {
                 function sleep(time) {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
+
                 sleep(1200).then(() => {
                     document.location.href = "/professorView";
                 });
@@ -566,17 +578,17 @@ class EditOppForm extends React.Component {
                                 <input ref={(node) => {
                                     this.pay = node
                                 }} onChange={this.setCompensation.bind(this)} type="checkbox" name="pay"
-                                       value="pay"/>
+                                       value="pay" checked={this.state.compensation.indexOf("pay") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Pay </label>
                                 <input ref={(node) => {
                                     this.credit = node
                                 }} onChange={this.setCompensation.bind(this)} type="checkbox" name="credit"
-                                       value="credit"/>
+                                       value="credit" checked={this.state.compensation.indexOf("credit") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Course Credit </label>
                                 <input ref={(node) => {
                                     this.undetermined = node
                                 }} onChange={this.setCompensation.bind(this)} type="checkbox" name="undetermined"
-                                       value="undetermined"/>
+                                       value="undetermined" checked={this.state.compensation.indexOf("undetermined") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Not sure yet</label>
                             </div>
 
@@ -635,20 +647,20 @@ class EditOppForm extends React.Component {
                                 <input ref={(node) => {
                                     this.freshman = node
                                 }} onChange={this.setYears.bind(this)} type="checkbox" name="Freshman"
-                                       value="Freshman"/>
+                                       value="Freshman" checked={this.state.yearsAllowed.indexOf("freshman") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Freshmen </label>
                                 <input ref={(node) => {
                                     this.sophomore = node
                                 }} onChange={this.setYears.bind(this)} type="checkbox" name="Sophomore"
-                                       value="Sophomore"/>
+                                       value="Sophomore" checked={this.state.yearsAllowed.indexOf("sophomore") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Sophomores </label>
                                 <input ref={(node) => {
                                     this.junior = node
-                                }} onChange={this.setYears.bind(this)} type="checkbox" name="Junior" value="Junior"/>
+                                }} onChange={this.setYears.bind(this)} type="checkbox" name="Junior" value="Junior" checked={this.state.yearsAllowed.indexOf("junior") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Juniors</label>
                                 <input ref={(node) => {
                                     this.senior = node
-                                }} onChange={this.setYears.bind(this)} type="checkbox" name="Senior" value="Senior"/>
+                                }} onChange={this.setYears.bind(this)} type="checkbox" name="Senior" value="Senior" checked={this.state.yearsAllowed.indexOf("senior") !== -1 ? "checked" : ""}/>
                                 <label className="label-inline">Seniors </label>
                             </div>
                             <div className="row input-row optional">
@@ -712,7 +724,7 @@ class EditOppForm extends React.Component {
                             </div>
 
                             <div className="submit-div">
-                                <input className="button submit" type="submit" value="Submit New Position"/>
+                                <input className="button submit" type="submit" value="Update Position"/>
                             </div>
                         </form>
 

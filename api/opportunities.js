@@ -459,6 +459,7 @@ app.delete('/:id', function (req, res) {
 //gets the opportunity given its object id
 app.get('/:id', function (req, res) {
     debug("token: " + req.query.netId);
+    debug("id: " + req.params.id);
     verify(req.query.netId, function (tokenNetId) {
         debug("toke net id: " + tokenNetId);
         opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
@@ -466,6 +467,8 @@ app.get('/:id', function (req, res) {
                 debug(err);
                 res.send(err);
             }
+            debug("opportunity below:");
+            debug(opportunity);
             labModel.find({}, function (err2, labs) {
                 if (err2) {
                     debug(err);
