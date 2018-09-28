@@ -361,7 +361,8 @@ class OpportunityPage extends Component {
                                     <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}</p>
                                     <h5>Lab:</h5>
                                     {/*<a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>*/}
-                                    <p>{this.state.opportunity.labDescription}</p>
+                                    <p>{this.state.opportunity.labDescription ? this.state.opportunity.labDescription :
+                                        "No lab info available."}</p>
 
                                 </div>
 
