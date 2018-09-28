@@ -326,6 +326,7 @@ class OpportunityPage extends Component {
 
     render() {
         const notProvidedMessage = "Not specified";
+        if (this.state.role === "undergrad"){
         return (
             <div>
                 {this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
@@ -362,7 +363,7 @@ class OpportunityPage extends Component {
                                     <p>{this.state.opportunity.labDescription}</p>
 
                                 </div>
-
+                        
 
                                 <div id="Application" className="application-box">
                                     <h4>Apply Here: </h4>
@@ -416,6 +417,84 @@ class OpportunityPage extends Component {
             </div>
         );
     }
+    else{
+        return (
+            <div>
+                {this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
+                <div className="opportunities-page-wrapper">
+                    <div className="cover-photo"></div>
+                    <div className="container opportunityListing">
+                        <div className="row first-row">
+
+                            <div className="title-container column column-65">
+                                <div className="title-box">
+                                    <div className="title-first-col ">
+                                        <h4>{this.state.opportunity.title}</h4>
+                                        <h6> Lab: {this.state.opportunity.labName}</h6>
+                                        {/*<h6> Professor: {this.state.opportunity.pi}</h6>*/}
+                                    </div>
+                                    <div className="title-second-col">
+                                        <a className="button" href="/NewOpp">Edit Opportunity</a>
+
+                                    </div>
+                                </div>
+                                <div className="about-box">
+                                    <h5> Supervisor:</h5> <p>{this.state.opportunity.supervisor ? this.state.opportunity.supervisor : notProvidedMessage}</p>
+                                    <h5> Qualifications:</h5> <p>{this.state.opportunity.qualifications ? this.state.opportunity.qualifications : notProvidedMessage}</p>
+                                    <h5> Tasks:</h5> <p>{this.state.opportunity.undergradTasks ? this.state.opportunity.undergradTasks : notProvidedMessage}</p>
+                                    <h5> Start Season:</h5>
+                                    <p>{this.state.opportunity.startSeason ? this.state.opportunity.startSeason : "(Season not specified) "} {this.state.opportunity.startYear ? this.state.opportunity.startYear : "(Year not specified)"}</p>
+                                    <h5> Weekly Hours:</h5> <p>{ this.state.opportunity.minHours ? this.state.opportunity.minHours + " " : "No minimum "}
+                                    - { this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week. </p>
+                                    <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}</p>
+                                    <h5>Lab:</h5>
+                                    {/*<a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>*/}
+                                    <p>{this.state.opportunity.labDescription}</p>
+
+                                </div>
+                            </div>
+
+                            <div className="column column-25 qualifications">
+                                <div className="qual-title">
+                                    <h5 > Preferred Qualifications</h5>
+
+                                </div>
+                                <hr/>
+
+                                <div className="qual-section">
+                                    <h6>Year: </h6>
+                                    {this.parseYears(this.state.opportunity.yearsAllowed)}
+                                </div>
+                                <hr/>
+                                <div className="qual-section">
+                                    <h6> Major:</h6>
+                                    {this.parseMajors(this.state.opportunity.majorsAllowed)}
+                                </div>
+                                <hr/>
+                                <div className="qual-section">
+                                    <h6>GPA: </h6>
+                                    { this.parseGPA(this.state.opportunity.minGPA)}
+                                </div>
+                                <hr/>
+                                <div className="qual-section">
+                                    <h6>Courses: </h6>
+                                    {this.parseClasses(this.state.opportunity.requiredClasses)}
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        );
+
+    }
+}
 }
 
 export default OpportunityPage;
