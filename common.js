@@ -97,7 +97,8 @@ const undergradSchema = new Schema({
     email: {type: String},
     courses: {type: [String], required: false},
     resumeId: {type: String, required: false},
-    transcriptId: {type: String, required: false}
+    transcriptId: {type: String, required: false},
+    skills: {type: [String], required: false}
     // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
     // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });

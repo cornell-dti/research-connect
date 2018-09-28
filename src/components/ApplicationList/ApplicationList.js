@@ -11,15 +11,36 @@ class ApplicationList extends Component {
     }
 
     componentDidMount() {
-        console.log(sessionStorage.getItem('token_id'));
-        //'netId': sessionStorage.getItem('netId')
-        axios.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
+        axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
             .then((response) => {
                 this.setState({data: response.data});
             })
             .catch(function (error) {
                 Utils.handleTokenError(error);
             });
+    }
+
+    coursesSatisfied(studentCourses, filterCourses) {
+        studentCourses = studentCourses.map((course) => course.split(' ').join('').toUpperCase());
+        for (var i = 0; i < filterCourses.length; i++) {
+            const course = filterCourses[i];
+            if (!studentCourses.includes(course)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    skillsSatisfied(studentSkills, filterSkills) {
+        studentSkills = studentSkills.map((skill) => skill.toUpperCase());
+        filterSkills = filterSkills.map((skill) => skill.toUpperCase());
+        for (var i = 0; i < filterSkills.length; i++) {
+            const skill = filterSkills[i];
+            if (!studentSkills.includes(skill)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     shouldShow(application) {
@@ -48,7 +69,8 @@ class ApplicationList extends Component {
                 let minGPA = filter.gpaSelect.val;
 
                 if (minGPA === undefined || minGPA <= application.gpa) {
-                    return true;
+                    return this.coursesSatisfied(application.courses, filter.courses) &&
+                           this.skillsSatisfied(application.skills, filter.skills);
                 }
             }
         }
@@ -64,8 +86,6 @@ class ApplicationList extends Component {
             return (<div>There are currently no applications.</div>);
         }
         else {
-            console.log('not 0');
-            console.log(data);
             for (let opp in data) {
                 for (let app in data[opp].applications) {
                     let curApp = data[opp].applications[app];
