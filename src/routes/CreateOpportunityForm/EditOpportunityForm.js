@@ -400,7 +400,7 @@ class EditOppForm extends React.Component {
     };
 
     render() {
-        this.setValues();
+       // this.setValues();
         return (
             <div >
                 <ProfessorNavbar current={"newopp"}/>
