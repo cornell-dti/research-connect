@@ -340,12 +340,14 @@ class OpportunityPage extends Component {
                                 <div className="title-box">
                                     <div className="title-first-col ">
                                         <h4>{this.state.opportunity.title}</h4>
-                                        <h6> Lab: {this.state.opportunity.labName}</h6>
+                                        {this.state.opportunity.ghostPost ? "" : <h6> Lab: {this.state.opportunity.labName}</h6>}
                                         {/*<h6> Professor: {this.state.opportunity.pi}</h6>*/}
                                     </div>
                                     <div className="title-second-col">
                                         <a className="apply-button button" href="#Application">Apply</a>
-                                        <h6> Applications Due {this.convertDate(this.state.opportunity.closes)}</h6>
+                                        <h6> Applications Due {
+                                            this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes)
+                                        }</h6>
                                         {/*this.checkOpen()*/}
 
                                     </div>
@@ -360,8 +362,8 @@ class OpportunityPage extends Component {
                                     - { this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week. </p>
                                     <h5> Project Description:</h5> <p>{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}</p>
                                     <h5>Lab:</h5>
-                                    {/*<a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>*/}
-                                    <p>{this.state.opportunity.labDescription ? this.state.opportunity.labDescription :
+                                    {/*If there's no lab description or it's a ghost post*/}
+                                    <p>{this.state.opportunity.labDescription && (!this.state.opportunity.ghostPost)? this.state.opportunity.labDescription :
                                         "No lab info available."}</p>
 
                                 </div>
@@ -369,6 +371,9 @@ class OpportunityPage extends Component {
 
                                 <div id="Application" className="application-box">
                                     <h4>Apply Here: </h4>
+                                    {this.state.opportunity.ghostPost ? <div> Please email {this.state.opportunity.ghostEmail + " "}
+                                     with your resume and why you're interested in order to apply. You do not need to take
+                                        any action here.</div> : <div>
                                     <div className="error-div">
                                         { this.state.triedSubmitting && !this.state.submitted ?
                                             <p className="app-error-message">Please answer all questions in order to
@@ -376,7 +381,8 @@ class OpportunityPage extends Component {
                                     </div>
                                     { !this.state.submitted ? this.printQuestions() :
                                         <p>You have applied to this position.</p> }
-
+                                    </div>
+                                    }
                                 </div>
                             </div>
 

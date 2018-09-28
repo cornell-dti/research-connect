@@ -47245,7 +47245,7 @@ var OpportunityPage = function (_Component) {
                                             null,
                                             this.state.opportunity.title
                                         ),
-                                        _react2.default.createElement(
+                                        this.state.opportunity.ghostPost ? "" : _react2.default.createElement(
                                             'h6',
                                             null,
                                             ' Lab: ',
@@ -47264,7 +47264,7 @@ var OpportunityPage = function (_Component) {
                                             'h6',
                                             null,
                                             ' Applications Due ',
-                                            this.convertDate(this.state.opportunity.closes)
+                                            this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes)
                                         )
                                     )
                                 ),
@@ -47349,7 +47349,7 @@ var OpportunityPage = function (_Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        this.state.opportunity.labDescription ? this.state.opportunity.labDescription : "No lab info available."
+                                        this.state.opportunity.labDescription && !this.state.opportunity.ghostPost ? this.state.opportunity.labDescription : "No lab info available."
                                     )
                                 ),
                                 _react2.default.createElement(
@@ -47360,19 +47360,29 @@ var OpportunityPage = function (_Component) {
                                         null,
                                         'Apply Here: '
                                     ),
-                                    _react2.default.createElement(
+                                    this.state.opportunity.ghostPost ? _react2.default.createElement(
                                         'div',
-                                        { className: 'error-div' },
-                                        this.state.triedSubmitting && !this.state.submitted ? _react2.default.createElement(
-                                            'p',
-                                            { className: 'app-error-message' },
-                                            'Please answer all questions in order to submit.'
-                                        ) : ''
-                                    ),
-                                    !this.state.submitted ? this.printQuestions() : _react2.default.createElement(
-                                        'p',
                                         null,
-                                        'You have applied to this position.'
+                                        ' Please email ',
+                                        this.state.opportunity.ghostEmail + " ",
+                                        'with your resume and why you\'re interested in order to apply. You do not need to take any action here.'
+                                    ) : _react2.default.createElement(
+                                        'div',
+                                        null,
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'error-div' },
+                                            this.state.triedSubmitting && !this.state.submitted ? _react2.default.createElement(
+                                                'p',
+                                                { className: 'app-error-message' },
+                                                'Please answer all questions in order to submit.'
+                                            ) : ''
+                                        ),
+                                        !this.state.submitted ? this.printQuestions() : _react2.default.createElement(
+                                            'p',
+                                            null,
+                                            'You have applied to this position.'
+                                        )
                                     )
                                 )
                             ),

@@ -204,7 +204,10 @@ const opportunitySchema = new Schema({
     prereqsMatch: {type: Boolean, default: false},
     labDescription: {type: String, required: false},
     fundOption: {type: Number, min: 0, default: 0},
-    labName: {type: String, required: false}
+    labName: {type: String, required: false},
+    ghostPost: {type: Boolean, default: false, required: false},
+    ghostEmail: {type: String, default: "hello@research-connect.com", required: false}
+    // ghostLab: {type: String, default: "", required: false}
 });
 opportunitySchema.index({'$**': 'text'});
 opportunitySchema.pre('validate', function (next) {
