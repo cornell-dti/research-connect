@@ -363,8 +363,6 @@ app.post('/', function (req, res) {
                 ]
             },
             function (err, studentsWhoMatch) {
-            //TODO remove this once debugging is done
-            return;
                 for (let undergrad1 in studentsWhoMatch) {
                     const msg = {
                         to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
