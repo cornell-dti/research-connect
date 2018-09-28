@@ -67,7 +67,7 @@ function createLabAndAdmin(req, res) {
     let lab = new labModel({
         name: data.name,
         labPage: data.labPage,
-        labDescription: data.labDescription,
+        labDescription: (data.labDescription ? data.labDescription : "No lab info available."),
         labAdmins: [data.netId],
         pi: data.pi
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
