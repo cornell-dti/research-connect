@@ -3,7 +3,7 @@
 # dependencies
 node_modules
 src/node_modules
-
+src/docs/js/bundle.js
 # testing
 /coverage
 
