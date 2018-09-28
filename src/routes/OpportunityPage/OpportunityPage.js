@@ -427,7 +427,7 @@ class OpportunityPage extends Component {
                                         <h4>{this.state.opportunity.title}</h4>
                                         <h6> Lab: {this.state.opportunity.labName}</h6>
                                         {/*<h6> Professor: {this.state.opportunity.pi}</h6>*/}
-                                    </div>
+                                    /*</div>
                                     <div className="title-second-col">
                                         <a className="apply-button button" href="#Application">Apply</a>
                                         <h6> Applications Due {this.convertDate(this.state.opportunity.closes)}</h6>
@@ -502,8 +502,10 @@ class OpportunityPage extends Component {
         
             </div>
         );
+
     }
 }
 }
+
 
 export default OpportunityPage;
