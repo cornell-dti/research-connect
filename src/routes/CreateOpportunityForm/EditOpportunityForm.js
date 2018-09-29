@@ -139,7 +139,6 @@ class EditOppForm extends React.Component {
                 supervisor,
                 numQuestions
             })
-
                 .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
@@ -371,13 +370,13 @@ class EditOppForm extends React.Component {
         const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result} = this.state;
 
         //makes sure all the fields that are required are valid
-        if (!(this.state.titleIsValid &&
-            this.state.tasksAreValid &&
-            this.state.seasonIsValid &&
-            // this.state.compensationIsValid &&
-            this.state.yearIsValid)) {
-            return;
-        }
+        // if (!(this.state.titleIsValid &&
+        //     this.state.tasksAreValid &&
+        //     this.state.seasonIsValid &&
+        //     // this.state.compensationIsValid &&
+        //     this.state.yearIsValid)) {
+        //     return;
+        // }
         console.log("ran");
         console.log(this.getUrlId("Id"));
         axios.put('/api/opportunities/' + this.getUrlId("Id"), {
