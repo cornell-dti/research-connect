@@ -94,7 +94,7 @@ class Opportunity extends Component {
 			str2 = str2.slice(0,250)+"... ";
 			return(<h6>{str2}<span className="viewDetails">View Details</span> </h6>);
 		  } else {
-			return(<h6>{str2} </h6>);
+			return(<h6>{("Tasks: ")+str2} </h6>);
 		  }
 		}
 	else{
@@ -102,7 +102,7 @@ class Opportunity extends Component {
 			str1 = str1.slice(0,250)+"... ";
 			return(<h6>{str1}<span className="viewDetails">View Details</span> </h6>);
 		  } else {
-			return(<h6>{str1} </h6>);
+			return(<h6>{("Description: ")+str1} </h6>);
 		  }
 	}
 	 
