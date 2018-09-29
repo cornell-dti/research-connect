@@ -50221,27 +50221,51 @@ var Opportunity = function (_Component) {
 		}
 	}, {
 		key: 'convertDescription',
-		value: function convertDescription(str) {
-			if (str.length > 250) {
-				str = str.slice(0, 250) + "... ";
-				return _react2.default.createElement(
-					'h6',
-					null,
-					str,
-					_react2.default.createElement(
-						'span',
-						{ className: 'viewDetails' },
-						'View Details'
-					),
-					' '
-				);
+		value: function convertDescription(str1, str2) {
+			if (str1.length === 0) {
+				if (str2.length > 250) {
+					str2 = str2.slice(0, 250) + "... ";
+					return _react2.default.createElement(
+						'h6',
+						null,
+						str2,
+						_react2.default.createElement(
+							'span',
+							{ className: 'viewDetails' },
+							'View Details'
+						),
+						' '
+					);
+				} else {
+					return _react2.default.createElement(
+						'h6',
+						null,
+						"Tasks: " + str2,
+						' '
+					);
+				}
 			} else {
-				return _react2.default.createElement(
-					'h6',
-					null,
-					str,
-					' '
-				);
+				if (str1.length > 250) {
+					str1 = str1.slice(0, 250) + "... ";
+					return _react2.default.createElement(
+						'h6',
+						null,
+						str1,
+						_react2.default.createElement(
+							'span',
+							{ className: 'viewDetails' },
+							'View Details'
+						),
+						' '
+					);
+				} else {
+					return _react2.default.createElement(
+						'h6',
+						null,
+						"Description: " + str1,
+						' '
+					);
+				}
 			}
 		}
 	}, {
@@ -50336,7 +50360,7 @@ var Opportunity = function (_Component) {
 							this.checkPrereqs()
 						)
 					),
-					this.convertDescription(this.props.projectDescription)
+					this.convertDescription(this.props.projectDescription, this.props.undergradTasks)
 				);
 			}
 		}
@@ -56866,12 +56890,14 @@ var EditOppForm = function (_React$Component) {
                 result = _this$state.result;
 
             //makes sure all the fields that are required are valid
+            // if (!(this.state.titleIsValid &&
+            //     this.state.tasksAreValid &&
+            //     this.state.seasonIsValid &&
+            //     // this.state.compensationIsValid &&
+            //     this.state.yearIsValid)) {
+            //     return;
+            // }
 
-            if (!(_this.state.titleIsValid && _this.state.tasksAreValid && _this.state.seasonIsValid &&
-            // this.state.compensationIsValid &&
-            _this.state.yearIsValid)) {
-                return;
-            }
             console.log("ran");
             console.log(_this.getUrlId("Id"));
             _axios2.default.put('/api/opportunities/' + _this.getUrlId("Id"), {
@@ -57051,7 +57077,7 @@ var EditOppForm = function (_React$Component) {
                     supervisor,
                     numQuestions
                 })
-                      .then((result) => {
+                    .then((result) => {
                         //access the results here....
                         document.location.href = "/professorView"
                     });
