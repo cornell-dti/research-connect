@@ -88,13 +88,24 @@ class Opportunity extends Component {
 	}
 
 
-	convertDescription(str){
-	  if (str.length > 250) {
-		str = str.slice(0,250)+"... ";
-		return(<h6>{str}<span className="viewDetails">View Details</span> </h6>);
-	  } else {
-		return(<h6>{str} </h6>);
-	  }
+	convertDescription(str1, str2){
+		if(str1.length === 0){
+		if (str2.length > 250) {
+			str2 = str2.slice(0,250)+"... ";
+			return(<h6>{str2}<span className="viewDetails">View Details</span> </h6>);
+		  } else {
+			return(<h6>{str2} </h6>);
+		  }
+		}
+	else{
+		if (str1.length > 250) {
+			str1 = str1.slice(0,250)+"... ";
+			return(<h6>{str1}<span className="viewDetails">View Details</span> </h6>);
+		  } else {
+			return(<h6>{str1} </h6>);
+		  }
+	}
+	 
 	}
 
 	checkPrereqs() {
@@ -149,7 +160,7 @@ class Opportunity extends Component {
 					</div>
 				 </div>
 	
-					{ this.convertDescription(this.props.projectDescription) }
+					{ this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
 	
 	
 				</div>
