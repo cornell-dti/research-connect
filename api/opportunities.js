@@ -245,9 +245,24 @@ app.post('/', function (req, res) {
     debug("opens: " + data.opens);
     debug("closes: " + data.closes);
     debug("areas: " + data.areas);
-    let maxHours = 168;
-    if (data.maxHours !== undefined && data.maxHours !== null) {
+    let maxHours;
+    data.minHours = parseInt(data.minHours);
+    debug(data.minHours);
+    if (isNaN(data.minHours)){
+        data.minHours = 0;
+    }
+    if (data.maxHours) {
         maxHours = data.maxHours;
+    }
+    else {
+        maxHours = data.minHours + 10;
+    }
+    if (maxHours < data.minHours){
+        data.minHours = 0;
+        maxHours = 10;
+    }
+    if (data.yearsAllowed && data.yearsAllowed.length === 0){
+        data.yearsAllowed = ["freshman", "sophomore", "junior", "senior"];
     }
     debug("1");
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
@@ -316,12 +331,14 @@ app.post('/', function (req, res) {
             maxHours: maxHours,
             opens: data.opens,
             closes: data.closes,
-            areas: data.areas
+            areas: data.areas,
+            ghostPost: false,
+            ghostEmail: ""
         });
         opportunity.save(function (err, response) {
             if (err) {
-                res.status(500).send({"errors": err.errors});
                 debug(err);
+                res.status(500).send({"errors": err.errors});
                 return;
             }
             let oppId = response.id;

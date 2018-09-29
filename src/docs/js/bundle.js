@@ -45150,14 +45150,6 @@ var Opportunities = function (_Component) {
                             _react2.default.createElement('hr', null),
                             _react2.default.createElement(
                                 'label',
-                                { htmlFor: 'depField' },
-                                'Area of Interest'
-                            ),
-                            _react2.default.createElement(_MajorSelect2.default, { updateMajor: this.handleUpdateMajor.bind(this) }),
-                            _react2.default.createElement('br', null),
-                            _react2.default.createElement('hr', null),
-                            _react2.default.createElement(
-                                'label',
                                 { htmlFor: 'yearField' },
                                 'School Year'
                             ),
@@ -50723,6 +50715,8 @@ var OpportunityPage = function (_Component) {
         key: 'convertDate',
         value: function convertDate(dateString) {
             var dateObj = new Date(dateString);
+            var year = dateObj.getUTCFullYear().toString();
+            year = year.substring(2, 4);
             var month = dateObj.getUTCMonth() + 1;
             var day = dateObj.getUTCDay();
             var month0 = '';
@@ -50734,7 +50728,7 @@ var OpportunityPage = function (_Component) {
                 day0 = '0';
             }
 
-            return month0 + month.toString() + "/" + day0 + day.toString();
+            return month0 + month.toString() + "/" + day0 + day.toString() + "/" + year;
         }
     }, {
         key: 'checkOpen',
@@ -51262,7 +51256,7 @@ var OpportunityPage = function (_Component) {
                                                 null,
                                                 this.state.opportunity.title
                                             ),
-                                            _react2.default.createElement(
+                                            this.state.opportunity.ghostPost ? "" : _react2.default.createElement(
                                                 'h6',
                                                 null,
                                                 ' Lab: ',
@@ -51282,7 +51276,7 @@ var OpportunityPage = function (_Component) {
                                                 'h6',
                                                 null,
                                                 ' Applications Due ',
-                                                this.convertDate(this.state.opportunity.closes)
+                                                this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes)
                                             )
                                         )
                                     ),
@@ -51365,14 +51359,9 @@ var OpportunityPage = function (_Component) {
                                             'Lab:'
                                         ),
                                         _react2.default.createElement(
-                                            'a',
-                                            { href: this.state.opportunity.labPage },
-                                            this.state.opportunity.labName
-                                        ),
-                                        _react2.default.createElement(
                                             'p',
                                             null,
-                                            this.state.opportunity.labDescription
+                                            this.state.opportunity.labDescription && !this.state.opportunity.ghostPost ? this.state.opportunity.labDescription : "No lab info available."
                                         )
                                     ),
                                     _react2.default.createElement(
@@ -51383,19 +51372,29 @@ var OpportunityPage = function (_Component) {
                                             null,
                                             'Apply Here: '
                                         ),
-                                        _react2.default.createElement(
+                                        this.state.opportunity.ghostPost ? _react2.default.createElement(
                                             'div',
-                                            { className: 'error-div' },
-                                            this.state.triedSubmitting && !this.state.submitted ? _react2.default.createElement(
-                                                'p',
-                                                { className: 'app-error-message' },
-                                                'Please answer all questions in order to submit.'
-                                            ) : ''
-                                        ),
-                                        !this.state.submitted ? this.printQuestions() : _react2.default.createElement(
-                                            'p',
                                             null,
-                                            'You have applied to this position.'
+                                            ' Please email ',
+                                            this.state.opportunity.ghostEmail + " ",
+                                            'with your resume and why you\'re interested in order to apply. You do not need to take any action here.'
+                                        ) : _react2.default.createElement(
+                                            'div',
+                                            null,
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'error-div' },
+                                                this.state.triedSubmitting && !this.state.submitted ? _react2.default.createElement(
+                                                    'p',
+                                                    { className: 'app-error-message' },
+                                                    'Please answer all questions in order to submit.'
+                                                ) : ''
+                                            ),
+                                            !this.state.submitted ? this.printQuestions() : _react2.default.createElement(
+                                                'p',
+                                                null,
+                                                'You have applied to this position.'
+                                            )
                                         )
                                     )
                                 ),
@@ -52631,7 +52630,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.new-opp-form {\n  margin: auto;\n  margin-top: 100px;\n  width: 40%;\n  background-color: #f6f6f6; }\n\n.new-opp-form .submit {\n  margin-top: 60px;\n  margin-bottom: 100px; }\n\n.question-adder {\n  text-align: left; }\n\n.remove {\n  margin-left: 5%; }\n\n.form-title {\n  text-align: center; }\n\n.new-opp-form textarea {\n  resize: none; }\n\n.years-allowed {\n  text-align: center;\n  align-items: center; }\n\n.question-adder .button-small {\n  font-size: .8rem;\n  height: 2.8rem;\n  line-height: 2.8rem;\n  padding: 0 1.5rem; }\n\n.question-boxes .question {\n  display: inline;\n  width: 85%;\n  margin-left: 10px; }\n\n.question-boxes {\n  margin: 20px 0px 20px 0px; }\n\n.question-adder {\n  text-align: center; }\n\n.new-opp-form .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.new-opp-form .button:focus {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.submit-div {\n  text-align: center; }\n\n.react-datepicker__navigation {\n  all: unset; }\n\n.label-inline {\n  font: 400 11px system-ui; }\n\n.date-pick-container {\n  text-align: center; }\n\n.datePicker {\n  display: inline; }\n\n.new-opp-form input:focus, .new-opp-form textarea:focus, .new-opp-form select:focus {\n  border-color: #b31b1b; }\n\n.row .new-opp-form input, .row .new-opp-form textarea, .row .new-opp-form select {\n  padding: 10px; }\n\n.row .new-opp-form .button {\n  padding: 0 1.5rem; }\n\n.years-allowed input[type=checkbox]:checked {\n  color: #b31b1b; }\n\n.row .startYear, .row .max-hours {\n  width: 42.5%;\n  margin-left: 5%; }\n\n.row .startSeason, .row .min-hours {\n  width: 42.5%; }\n\n.info-icon {\n  color: #adafb2;\n  margin: 8px 0px 0px 5px; }\n\n.info-icon-title {\n  color: #adafb2;\n  margin: 0px 0px 3px 5px; }\n\n.info-icon:hover, .info-icon-title:hover {\n  color: #b31b1b; }\n\n.info-text {\n  width: 200px;\n  margin-bottom: 0px; }\n\n.question-adder p.info-text-large {\n  width: 300px;\n  margin: 0px;\n  padding: 0px; }\n\n.info-text li {\n  margin: 0;\n  list-style-type: disc;\n  list-style-position: outside;\n  margin-left: 1em; }\n\n.row .input-row {\n  margin: 0px 0px 8px 0px;\n  width: 100%; }\n\nform {\n  padding: 0px;\n  margin-top: 10px; }\n\n.deleter-icon {\n  color: black;\n  padding: 5px 0px 0px 5px;\n  display: inline;\n  float: right; }\n\n.deleter-icon:hover {\n  opacity: .5; }\n\n.add-question .adder-icon {\n  color: white;\n  margin-left: 5px;\n  margin-bottom: 1px; }\n\n.add-question {\n  background-color: gray;\n  border-radius: 4px;\n  padding: 7px 10px;\n  cursor: pointer;\n  width: 100px;\n  text-align: center;\n  display: inline;\n  color: white; }\n\n.add-question:hover {\n  opacity: .7; }\n\n.add-question span {\n  font-family: Roboto;\n  font-size: 13px;\n  font-weight: 500;\n  letter-spacing: .1em; }\n\n.question-adder h4 {\n  display: inline; }\n\n.question-adder {\n  margin-top: 30px;\n  font-family: Roboto; }\n\n.question-adder p {\n  margin: 10px 40px;\n  text-align: justify; }\n\n.required-star {\n  color: #b31b1b;\n  font-size: 30px;\n  width: 5%;\n  font-weight: 500;\n  padding-right: 21px; }\n\n.required-star-top {\n  color: #b31b1b;\n  font-weight: 500;\n  font-family: Roboto; }\n\n.new-opp-form .optional input, .new-opp-form .optional textarea, .new-opp-form .optional select {\n  margin-left: 5%; }\n\n.row .wrong textarea, .row .wrong input, .row .wrong-select {\n  border: 3px solid #b31b1b; }\n", ""]);
+exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.new-opp-form {\n  margin: auto;\n  margin-top: 100px;\n  width: 40%;\n  background-color: #f6f6f6; }\n\n.new-opp-form * {\n  font-family: 'Roboto', serif; }\n\n.new-opp-form .submit {\n  margin-top: 60px;\n  margin-bottom: 100px; }\n\n.question-adder {\n  text-align: left; }\n\n.remove {\n  margin-left: 5%; }\n\n.form-title {\n  text-align: center; }\n\n.new-opp-form textarea {\n  resize: none; }\n\n.years-allowed {\n  text-align: center;\n  align-items: center; }\n\n.question-adder .button-small {\n  font-size: .8rem;\n  height: 2.8rem;\n  line-height: 2.8rem;\n  padding: 0 1.5rem; }\n\n.question-boxes .question {\n  display: inline;\n  width: 85%;\n  margin-left: 10px; }\n\n.question-boxes {\n  margin: 20px 0px 20px 0px; }\n\n.question-adder {\n  text-align: center; }\n\n.new-opp-form .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.new-opp-form .button:focus {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.submit-div {\n  text-align: center; }\n\n.react-datepicker__navigation {\n  all: unset; }\n\n.label-inline {\n  font: 400 11px system-ui; }\n\n.date-pick-container {\n  text-align: center; }\n\n.datePicker {\n  display: inline; }\n\n.new-opp-form input:focus, .new-opp-form textarea:focus, .new-opp-form select:focus {\n  border-color: #b31b1b; }\n\n.row .new-opp-form input, .row .new-opp-form textarea, .row .new-opp-form select {\n  padding: 10px; }\n\n.row .new-opp-form .button {\n  padding: 0 1.5rem; }\n\n.years-allowed input[type=checkbox]:checked {\n  color: #b31b1b; }\n\n.row .startYear, .row .max-hours {\n  width: 42.5%;\n  margin-left: 5%; }\n\n.row .startSeason, .row .min-hours {\n  width: 42.5%; }\n\n.info-icon {\n  color: #adafb2;\n  margin: 8px 0px 0px 5px; }\n\n.info-icon-title {\n  color: #adafb2;\n  margin: 0px 0px 3px 5px; }\n\n.info-icon:hover, .info-icon-title:hover {\n  color: #b31b1b; }\n\n.info-text {\n  width: 200px;\n  margin-bottom: 0px; }\n\n.question-adder p.info-text-large {\n  width: 300px;\n  margin: 0px;\n  padding: 0px; }\n\n.info-text li {\n  margin: 0;\n  list-style-type: disc;\n  list-style-position: outside;\n  margin-left: 1em; }\n\n.row .input-row {\n  margin: 0px 0px 8px 0px;\n  width: 100%; }\n\nform {\n  padding: 0px;\n  margin-top: 10px; }\n\n.deleter-icon {\n  color: black;\n  padding: 5px 0px 0px 5px;\n  display: inline;\n  float: right; }\n\n.deleter-icon:hover {\n  opacity: .5; }\n\n.add-question .adder-icon {\n  color: white;\n  margin-left: 5px;\n  margin-bottom: 1px; }\n\n.add-question {\n  background-color: gray;\n  border-radius: 4px;\n  padding: 7px 10px;\n  cursor: pointer;\n  width: 100px;\n  text-align: center;\n  display: inline;\n  color: white; }\n\n.add-question:hover {\n  opacity: .7; }\n\n.add-question span {\n  font-family: Roboto;\n  font-size: 13px;\n  font-weight: 500;\n  letter-spacing: .1em; }\n\n.question-adder h4 {\n  display: inline; }\n\n.question-adder {\n  margin-top: 30px;\n  font-family: Roboto; }\n\n.question-adder p {\n  margin: 10px 40px;\n  text-align: justify; }\n\n.required-star {\n  color: #b31b1b;\n  font-size: 30px;\n  width: 5%;\n  font-weight: 500;\n  padding-right: 21px; }\n\n.required-star-top {\n  color: #b31b1b;\n  font-weight: 500;\n  font-family: Roboto; }\n\n.new-opp-form .optional input, .new-opp-form .optional textarea, .new-opp-form .optional select {\n  margin-left: 5%; }\n\n.row .wrong textarea, .row .wrong input, .row .wrong-select {\n  border: 3px solid #b31b1b; }\n", ""]);
 
 // exports
 
@@ -58054,6 +58053,7 @@ var InstructorRegister = function (_React$Component) {
         value: function handleUpdateLab(labName, id) {
             if (!this.state.newLab) {
                 this.setState({ labId: id });
+                this.setState({ name: labName });
                 if (labName !== "") {
                     this.setState({ labNameValid: true });
                 } else {

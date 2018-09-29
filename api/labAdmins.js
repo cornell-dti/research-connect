@@ -63,11 +63,11 @@ function createLabAndAdmin(req, res) {
     debug("This means we had to go somewhere else");
 
     let data = req.body;
-
+    debug(data);
     let lab = new labModel({
         name: data.name,
         labPage: data.labPage,
-        labDescription: data.labDescription,
+        labDescription: (data.labDescription ? data.labDescription : "No lab info available."),
         labAdmins: [data.netId],
         pi: data.pi
         // labAdmins and opportunities not needed during lab admin signup. so commented out.
@@ -78,8 +78,8 @@ function createLabAndAdmin(req, res) {
     lab.save(function (err, labObject) {
 
         if (err) {
-            res.status(500).send({"errors": err.errors});
             debug(err);
+            return res.status(500).send({"errors": err.errors});
         }
 
         if (data.notifications === undefined || data.notifications === -2){
@@ -93,8 +93,8 @@ function createLabAndAdmin(req, res) {
 
         labAdmin.save(function (err) {
             if (err) {
-                res.status(500).send({"errors": err.errors});
                 debug(err);
+                return res.status(500).send({"errors": err.errors});
             }
         });
     });
