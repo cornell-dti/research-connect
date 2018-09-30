@@ -160,7 +160,7 @@ let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
 
 //The code below can be used to update information in all the faculty documents.
-/**
+
 facultyModel.find({}, function(err, facultyArray){
     for (let i = 0; i < facultyArray.length; i++){
         let currentFaculty = facultyArray[i];
@@ -177,7 +177,7 @@ facultyModel.find({}, function(err, facultyArray){
         });
     }
 });
- **/
+
 
 
 /** OPPORTUNITY SCHEMA */
