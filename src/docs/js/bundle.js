@@ -51261,8 +51261,7 @@ var OpportunityPage = function (_Component) {
                                                 null,
                                                 ' Lab: ',
                                                 this.state.opportunity.labName
-                                            ),
-                                            '/*'
+                                            )
                                         ),
                                         _react2.default.createElement(
                                             'div',
