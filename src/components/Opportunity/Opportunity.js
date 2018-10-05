@@ -88,13 +88,24 @@ class Opportunity extends Component {
 	}
 
 
-	convertDescription(str){
-	  if (str.length > 250) {
-		str = str.slice(0,250)+"... ";
-		return(<h6>{str}<span className="viewDetails">View Details</span> </h6>);
-	  } else {
-		return(<h6>{str} </h6>);
-	  }
+	convertDescription(str1, str2){
+		if(str1.length === 0){
+		if (str2.length > 250) {
+			str2 = str2.slice(0,250)+"... ";
+			return(<h6>{str2}<span className="viewDetails">View Details</span> </h6>);
+		  } else {
+			return(<h6>{("Tasks: ")+str2} </h6>);
+		  }
+		}
+	else{
+		if (str1.length > 250) {
+			str1 = str1.slice(0,250)+"... ";
+			return(<h6>{str1}<span className="viewDetails">View Details</span> </h6>);
+		  } else {
+			return(<h6>{("Description: ")+str1} </h6>);
+		  }
+	}
+	 
 	}
 
 	checkPrereqs() {
@@ -123,37 +134,39 @@ class Opportunity extends Component {
             .then((response) => {
 				if (!response || response.data == "none" ||
 				 !response.data || response.data == "undergrad"){
-					 lab = false;  
+					return false;  
 				}
 				else {
-					lab = true; 
+					return true; 
 				}	
 
-		});
-		return lab; 
+		}); 
 		
 	}
 
 	render() {
-		return (
-			<div className="application-box" onClick={this.clickRow.bind(this)}>
-			<div className="row opp-box-row">
- 				<div className="column column-80">
-				<h4>{ this.props.title }</h4>
-					<h5>{this.props.labName}</h5>
+		if(!this.checkEdit()){
+			return (
+				<div className="application-box" onClick={this.clickRow.bind(this)}>
+				<div className="row opp-box-row">
+					 <div className="column column-80">
+					<h4>{ this.props.title }</h4>
+						<h5>{this.props.labName}</h5>
+					</div>
+					 <div className="column column-20">
+						<Calendar className="cal"/>
+						<span> Deadline { this.convertDate(this.props.closes) }</span>
+						{this.checkPrereqs()}
+					</div>
+				 </div>
+	
+					{ this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
+	
+	
 				</div>
- 				<div className="column column-20">
-					<Calendar className="cal"/>
-					<span> Deadline { this.convertDate(this.props.closes) }</span>
-					{this.checkPrereqs()}
-				</div>
- 			</div>
-
-				{ this.convertDescription(this.props.projectDescription) }
-
-
-			</div>
-		)
+			)
+		}
+	
 		
 	}
 }

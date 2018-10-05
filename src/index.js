@@ -6,7 +6,8 @@ import OpportunityPage from './routes/OpportunityPage/OpportunityPage';
 import Error from './components/Error/Error';
 import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import CreateOpportunityForm from './routes/CreateOpportunityForm/CreateOpportunityForm';
-import InstructorRegister from './routes/InstructorRegister/InstructorRegister';
+import EditOpportunityForm from './routes/CreateOpportunityForm/EditOpportunityForm';
+import InstructorRegister from './routes/InstructorRegister/InstructorRegister'; 
 import StudentRegister from './routes/StudentRegister/StudentRegister';
 import ProfessorView from './routes/ProfessorView/ProfessorView';
 import ApplicationPage from './routes/ApplicationPage/ApplicationPage';
@@ -24,6 +25,7 @@ ReactDOM.render(
             <Route path='/faculty/:id' component={FacultyPage} />
             <Route path='/application/:id' component={ApplicationPage} />
             <Route exact path='/newopp' component={CreateOpportunityForm} />
+            <Route path='/editopp' component={EditOpportunityForm} />
             <Route exact path='/instructorRegister' component={InstructorRegister} />
             <Route exact path='/StudentRegister' component={StudentRegister} />
             <Route exact path='/professorView' component={ProfessorView} />
