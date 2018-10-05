@@ -11,8 +11,10 @@ import GPASelect from '../../components/GPASelect/GPASelect'
 import StartDate from '../../components/StartDate/StartDate'
 import CourseSelect from '../../components/CourseSelect/CourseSelect'
 import SkillSelect from '../../components/SkillSelect/SkillSelect'
+import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect'
 import * as Utils from "../../components/Utils";
-
+import { css } from 'react-emotion';
+import { ClipLoader } from 'react-spinners';
 
 class ProfessorView extends Component {
 	constructor(props) {
@@ -23,7 +25,10 @@ class ProfessorView extends Component {
 			majorSelect: {},
 			startDate: {},
 			courses: [],
-			skills: []
+			skills: [],
+			opportunity: 'All',
+			opportunities: [],
+			loading: true
 		};
 	}
 
@@ -51,25 +56,58 @@ class ProfessorView extends Component {
 		this.setState({skills: skillList});
 	}
 
+	handleUpdateOpportunity(opp) {
+		this.setState({opportunity: opp});
+	}
+
 	componentWillMount() {
-		axios.get('/api/role/' +  sessionStorage.getItem('token_id') /* 'prk57' */)
-		.then((response) => {
-			if (response.data !== 'grad' &&
-				  response.data !== 'labtech' &&
-				  response.data !== 'postdoc' &&
-				  response.data !== 'staffscientist' &&
-				  response.data !== 'pi') {
-                window.location.href = "/";			}
-		})
-		.catch(function (error) {
-            Utils.handleTokenError(error);
-		});
+    axios.all([
+	    axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
+	    axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
+	  ])
+	  .then(axios.spread((role, apps) => {
+	  	if (role.data !== 'grad' &&
+				  role.data !== 'labtech' &&
+				  role.data !== 'postdoc' &&
+				  role.data !== 'staffscientist' &&
+				  role.data !== 'pi') {
+      	window.location.href = "/";
+      }
+      let opps = Object.keys(apps.data);
+      opps.unshift('All');
+      this.setState({opportunities: opps});
+	  }));
+	}
+
+	componentDidMount() {
+		this.state.loading = false;
 	}
 
 	render() {
+		const override = css`
+	    display: block;
+	    margin: 0 auto;
+	    border-color: red;
+		`;
+
+		if (this.state.loading) {
+			return (
+				<div className='sweet-loading'>
+	        <ClipLoader
+	          className={override}
+	          sizeUnit={"px"}
+	          size={150}
+	          color={'#ff0000'}
+	          loading={this.state.loading} />
+	      </div> 
+			);
+		}
+
 		return (
 			<div>
+
 				<Navbar current="professorView"/>
+
 				<div className='professor-view-container'>
 					<div className='row'>
 						<div className="column column-20">
@@ -77,10 +115,9 @@ class ProfessorView extends Component {
 
 							<h3>Filters</h3>
 
-							{/*<hr />*/}
-
-							{/*<label htmlFor="depField">Area of Interest</label>*/}
-							{/*<MajorSelect updateMajor={this.handleUpdateMajor.bind(this)} />*/}
+							<hr />
+							<label htmlFor="opportunityField">Opportunity</label>
+							<OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
 
 							<hr />
 							<label htmlFor="yearField">School Year</label>
@@ -101,12 +138,13 @@ class ProfessorView extends Component {
 						</div>
 						<div className='column'>
 							<div className='application-list-container'>
-								<div className='application-list-header'>Viewing: Applications for All Opportunities in your Lab</div>
+								<div className='application-list-header'>Applications For Your Lab:</div>
 								<ApplicationList filter={ this.state } />
 							</div>
 						</div>
 					</div>
 				</div>
+
 				<Footer/>
 			</div>
 		);

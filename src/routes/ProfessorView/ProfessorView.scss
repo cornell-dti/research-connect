@@ -31,3 +31,10 @@
 .filter-box label {
   padding-top: 20px;
 }
+
+.sweet-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
