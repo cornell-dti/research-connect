@@ -22,8 +22,6 @@ class ApplicationList extends Component {
 
     coursesSatisfied(studentCourses, filterCourses) {
         studentCourses = studentCourses.map((course) => course.split(' ').join('').toUpperCase());
-        console.log(studentCourses);
-        console.log(filterCourses);
         for (var i = 0; i < filterCourses.length; i++) {
             const course = filterCourses[i];
             if (!studentCourses.includes(course)) {
@@ -47,6 +45,9 @@ class ApplicationList extends Component {
 
     shouldShow(application) {
         const filter = this.props.filter;
+
+        if (filter.opportunity.toLowerCase() !== 'all' && 
+            filter.opportunity !== application.opportunity) return false;
 
         let froshSelected = filter.yearSelect.Freshman;
         let sophSelected = filter.yearSelect.Sophomore;
