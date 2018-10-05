@@ -46,6 +46,9 @@ class ApplicationList extends Component {
     shouldShow(application) {
         const filter = this.props.filter;
 
+        if (filter.opportunity.toLowerCase() !== 'all' && 
+            filter.opportunity !== application.opportunity) return false;
+
         let froshSelected = filter.yearSelect.Freshman;
         let sophSelected = filter.yearSelect.Sophomore;
         let juniorSelected = filter.yearSelect.Junior;
