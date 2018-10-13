@@ -23,7 +23,7 @@ class StudentNavbar extends Component {
                 <div className="logo-div">
                     <a href='/opportunities'><img className="logo" src={logo}/></a>
                     <p className="partnership">with</p>
-                    <a href="http://curb.cornell.edu/" target="_blank"><img className="CURBlogo" src={curblogo}/></a>
+                    <a href="https://cis.cornell.edu/" target="_blank"><img className="CURBlogo" src={cislogo}/></a>
                 </div>
                 <nav>
                     <li className={this.props.current === "opportunities" ? "current-page" : ""}><a
