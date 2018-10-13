@@ -7078,9 +7078,9 @@ var _axios = __webpack_require__(7);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _CURB = __webpack_require__(86);
+var _cis_logo = __webpack_require__(86);
 
-var _CURB2 = _interopRequireDefault(_CURB);
+var _cis_logo2 = _interopRequireDefault(_cis_logo);
 
 var _reactRouterDom = __webpack_require__(24);
 
@@ -7159,7 +7159,7 @@ var ProfessorNavbar = function (_Component) {
                     _react2.default.createElement(
                         'a',
                         { href: 'http://curb.cornell.edu/', target: '_blank' },
-                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _cis_logo2.default })
                     )
                 ),
                 _react2.default.createElement(
@@ -7414,9 +7414,9 @@ var _wordlogo = __webpack_require__(85);
 
 var _wordlogo2 = _interopRequireDefault(_wordlogo);
 
-var _CURB = __webpack_require__(86);
+var _cis_logo = __webpack_require__(86);
 
-var _CURB2 = _interopRequireDefault(_CURB);
+var _cis_logo2 = _interopRequireDefault(_cis_logo);
 
 var _reactRouterDom = __webpack_require__(24);
 
@@ -7468,8 +7468,8 @@ var StudentNavbar = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'a',
-                        { href: 'http://curb.cornell.edu/', target: '_blank' },
-                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                        { href: 'https://www.cis.cornell.edu/', target: '_blank' },
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _cis_logo2.default })
                     )
                 ),
                 _react2.default.createElement(
@@ -9830,7 +9830,7 @@ module.exports = __webpack_require__.p + "./img/fb812cb9739fa616e1558dfc0503f5a5
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./img/8bee1bdb34a6afec9bb93cf840bfd0f6.png";
+module.exports = __webpack_require__.p + "./img/30faece801dbb4ad7295cbc9322cdfd1.png";
 
 /***/ }),
 /* 87 */
@@ -59974,6 +59974,8 @@ var InstructorRegister = function (_React$Component) {
                 }).then(function (result) {
                     //access the results here....
                     document.location.href = "/professorView";
+                    _this.setState({ buttonDisabled: true,
+                        buttonValue: "Submitted" });
                 }).catch(function (error) {
                     Utils.handleTokenError(error);
                 });
@@ -60002,7 +60004,9 @@ var InstructorRegister = function (_React$Component) {
             labNameValid: false,
             labURLValid: false,
             piValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            buttonDisabled: false,
+            buttonValue: "Register"
         };
 
         _this.loadOpportunitiesFromServer = _this.loadOpportunitiesFromServer.bind(_this);
@@ -60413,7 +60417,9 @@ var InstructorRegister = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'submit-container' },
-                            _react2.default.createElement('input', { className: 'button button-small registration', type: 'submit', value: 'Register' })
+                            _react2.default.createElement('input', { className: 'button button-small registration', type: 'submit',
+                                value: this.state.buttonValue,
+                                disabled: this.state.buttonDisabled })
                         )
                     )
                 ),
@@ -60836,6 +60842,8 @@ var StudentRegister = function (_React$Component) {
                 _axios2.default.post('/api/undergrads', { firstName: firstName, lastName: lastName, gradYear: gradYear, major: major, GPA: GPA, netId: netId, email: email, courses: courses, token_id: token_id }).then(function (result) {
                     console.log("undergrad created, result:");
                     console.log(result);
+                    _this.setState({ isButtonDisabled: true });
+                    _this.setState({ buttonValue: "Submitted!" });
                     //access the results here....
                     if (_this.state.transcript != null && _this.state.transcript.length !== 0) {
                         _axios2.default.post('/api/docs', { token_id: token_id, transcript: transcript }).then(function (result) {
@@ -60915,7 +60923,9 @@ var StudentRegister = function (_React$Component) {
             majorValid: false,
             GPAValid: false,
             resumeValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false,
+            buttonValue: "Submit"
 
         };
         return _this;
@@ -61098,7 +61108,8 @@ var StudentRegister = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'centered' },
-                            _react2.default.createElement('input', { type: 'submit', className: 'button', value: 'Submit' })
+                            _react2.default.createElement('input', { type: 'submit', className: 'button',
+                                value: this.state.buttonValue, disabled: this.state.isButtonDisabled })
                         )
                     )
                 ),

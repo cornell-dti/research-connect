@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../Navbar.scss';
 import logo from '../../../images/wordlogo.png';
-import curblogo from '../../../images/CURB.png';
+import cislogo from '../../../images/cis_logo.png';
 import {Link} from 'react-router-dom';
 import {logoutGoogle} from "../../Utils";
 
@@ -23,7 +23,7 @@ class StudentNavbar extends Component {
                 <div className="logo-div">
                     <a href='/opportunities'><img className="logo" src={logo}/></a>
                     <p className="partnership">in partnership with</p>
-                    <a href="http://curb.cornell.edu/" target="_blank"><img className="CURBlogo" src={curblogo}/></a>
+                    <a href="https://www.cis.cornell.edu/" target="_blank"><img className="CURBlogo" src={cislogo}/></a>
                 </div>
                 <nav>
                     <li className={this.props.current === "opportunities" ? "current-page" : ""}><a
