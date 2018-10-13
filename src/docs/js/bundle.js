@@ -5325,6 +5325,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.gradYearToString = gradYearToString;
 exports.convertDate = convertDate;
+exports.capitalizeFirstLetter = capitalizeFirstLetter;
 exports.handleTokenError = handleTokenError;
 exports.getParameterByName = getParameterByName;
 exports.logoutGoogle = logoutGoogle;
@@ -5357,6 +5358,13 @@ function convertDate(dateString) {
     return month0 + month.toString() + "/" + day0 + day.toString();
 }
 
+function capitalizeFirstLetter(string) {
+    if (!string || string.length < 1) {
+        return string;
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /**
  * Takes care of the response and checking for errors specifically due to outdated tokens.
  * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
@@ -5365,7 +5373,6 @@ function convertDate(dateString) {
  * the promise callback for axios
  * @return {boolean} returns false if there was no token-related error.
  */
-
 function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
@@ -47276,7 +47283,8 @@ var Opportunities = function (_Component) {
                                     'div',
                                     { className: 'opp-list-container' },
                                     _react2.default.createElement(_OpportunityBox2.default, { filteredOptions: this.state,
-                                        url: 'opportunities' })
+                                        url: 'opportunities',
+                                        searching: this.state.clickedEnter })
                                 )
                             )
                         )
@@ -51906,7 +51914,7 @@ var OpportunityBox = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return _react2.default.createElement(_OpportunityList2.default, { countOpps: this.countOpps.bind(this), filteredOptions: this.props.filteredOptions, data: this.state.data });
+			return _react2.default.createElement(_OpportunityList2.default, { countOpps: this.countOpps.bind(this), filteredOptions: this.props.filteredOptions, data: this.state.data, searching: this.props.searching });
 		}
 	}]);
 
@@ -52021,7 +52029,6 @@ var OpportunityList = function (_Component) {
         if (!(csSelected && opp.areas.indexOf("Computer Science") != -1 || bioSelected && opp.areas.indexOf("Biology") != -1 || !csSelected && !bioSelected)) {
           willShow = false;
         }
-
         if (minGPA != null && minGPA < opp.minGPA) {
           willShow = false;
         }
@@ -52029,7 +52036,6 @@ var OpportunityList = function (_Component) {
           willShow = false;
         }
         if (willShow) {
-
           return _react2.default.createElement(_Opportunity2.default, {
             filteredOptions: _this2.props.filteredOptions,
             key: opp['_id'],
@@ -52059,18 +52065,19 @@ var OpportunityList = function (_Component) {
         }
       });
       var nodeCount = this.countNodes(oppNodes);
+      var searchCrit = this.props.searching ? _react2.default.createElement(
+        'p',
+        null,
+        nodeCount,
+        ' matching your search criteria.'
+      ) : _react2.default.createElement('span', null);
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'div',
           { className: 'node-list-div' },
-          _react2.default.createElement(
-            'p',
-            null,
-            nodeCount,
-            ' matching your search criteria.'
-          )
+          searchCrit
         ),
         oppNodes
       );
@@ -61822,9 +61829,6 @@ var ApplicationBox = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			function capitalizeFirstLetter(string) {
-				return string.charAt(0).toUpperCase() + string.slice(1);
-			}
 			return _react2.default.createElement(
 				'div',
 				{ className: 'prof-application-box', onClick: this.clickRow.bind(this), style: { display: this.props.show ? "" : "none" } },
@@ -61837,9 +61841,9 @@ var ApplicationBox = function (_Component) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'name' },
-							capitalizeFirstLetter(this.props.data.lastName),
+							Utils.capitalizeFirstLetter(this.props.data.lastName),
 							', ',
-							capitalizeFirstLetter(this.props.data.firstName)
+							Utils.capitalizeFirstLetter(this.props.data.firstName)
 						),
 						_react2.default.createElement(
 							'div',
