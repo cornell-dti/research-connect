@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../Navbar.scss';
 import logo from '../../../images/wordlogo.png';
 import axios from 'axios';
-import curblogo from '../../../images/CURB.png';
+import cislogo from '../../../images/cis_logo.png';
 import {Link} from 'react-router-dom';
 import {logoutGoogle} from "../../Utils";
 import * as Utils from "../../Utils";

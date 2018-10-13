@@ -5325,6 +5325,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.gradYearToString = gradYearToString;
 exports.convertDate = convertDate;
+exports.capitalizeFirstLetter = capitalizeFirstLetter;
 exports.handleTokenError = handleTokenError;
 exports.getParameterByName = getParameterByName;
 exports.logoutGoogle = logoutGoogle;
@@ -5357,6 +5358,13 @@ function convertDate(dateString) {
     return month0 + month.toString() + "/" + day0 + day.toString();
 }
 
+function capitalizeFirstLetter(string) {
+    if (!string || string.length < 1) {
+        return string;
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /**
  * Takes care of the response and checking for errors specifically due to outdated tokens.
  * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
@@ -5365,7 +5373,6 @@ function convertDate(dateString) {
  * the promise callback for axios
  * @return {boolean} returns false if there was no token-related error.
  */
-
 function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
@@ -7078,9 +7085,9 @@ var _axios = __webpack_require__(7);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _CURB = __webpack_require__(86);
+var _cis_logo = __webpack_require__(86);
 
-var _CURB2 = _interopRequireDefault(_CURB);
+var _cis_logo2 = _interopRequireDefault(_cis_logo);
 
 var _reactRouterDom = __webpack_require__(24);
 
@@ -7159,7 +7166,7 @@ var ProfessorNavbar = function (_Component) {
                     _react2.default.createElement(
                         'a',
                         { href: 'http://curb.cornell.edu/', target: '_blank' },
-                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _cis_logo2.default })
                     )
                 ),
                 _react2.default.createElement(
@@ -7414,9 +7421,9 @@ var _wordlogo = __webpack_require__(85);
 
 var _wordlogo2 = _interopRequireDefault(_wordlogo);
 
-var _CURB = __webpack_require__(86);
+var _cis_logo = __webpack_require__(86);
 
-var _CURB2 = _interopRequireDefault(_CURB);
+var _cis_logo2 = _interopRequireDefault(_cis_logo);
 
 var _reactRouterDom = __webpack_require__(24);
 
@@ -7468,8 +7475,8 @@ var StudentNavbar = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'a',
-                        { href: 'http://curb.cornell.edu/', target: '_blank' },
-                        _react2.default.createElement('img', { className: 'CURBlogo', src: _CURB2.default })
+                        { href: 'https://www.cis.cornell.edu/', target: '_blank' },
+                        _react2.default.createElement('img', { className: 'CURBlogo', src: _cis_logo2.default })
                     )
                 ),
                 _react2.default.createElement(
@@ -9830,7 +9837,7 @@ module.exports = __webpack_require__.p + "./img/fb812cb9739fa616e1558dfc0503f5a5
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "./img/8bee1bdb34a6afec9bb93cf840bfd0f6.png";
+module.exports = __webpack_require__.p + "./img/30faece801dbb4ad7295cbc9322cdfd1.png";
 
 /***/ }),
 /* 87 */
@@ -47276,7 +47283,8 @@ var Opportunities = function (_Component) {
                                     'div',
                                     { className: 'opp-list-container' },
                                     _react2.default.createElement(_OpportunityBox2.default, { filteredOptions: this.state,
-                                        url: 'opportunities' })
+                                        url: 'opportunities',
+                                        searching: this.state.clickedEnter })
                                 )
                             )
                         )
@@ -51906,7 +51914,7 @@ var OpportunityBox = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return _react2.default.createElement(_OpportunityList2.default, { countOpps: this.countOpps.bind(this), filteredOptions: this.props.filteredOptions, data: this.state.data });
+			return _react2.default.createElement(_OpportunityList2.default, { countOpps: this.countOpps.bind(this), filteredOptions: this.props.filteredOptions, data: this.state.data, searching: this.props.searching });
 		}
 	}]);
 
@@ -52021,7 +52029,6 @@ var OpportunityList = function (_Component) {
         if (!(csSelected && opp.areas.indexOf("Computer Science") != -1 || bioSelected && opp.areas.indexOf("Biology") != -1 || !csSelected && !bioSelected)) {
           willShow = false;
         }
-
         if (minGPA != null && minGPA < opp.minGPA) {
           willShow = false;
         }
@@ -52029,7 +52036,6 @@ var OpportunityList = function (_Component) {
           willShow = false;
         }
         if (willShow) {
-
           return _react2.default.createElement(_Opportunity2.default, {
             filteredOptions: _this2.props.filteredOptions,
             key: opp['_id'],
@@ -52059,18 +52065,19 @@ var OpportunityList = function (_Component) {
         }
       });
       var nodeCount = this.countNodes(oppNodes);
+      var searchCrit = this.props.searching ? _react2.default.createElement(
+        'p',
+        null,
+        nodeCount,
+        ' matching your search criteria.'
+      ) : _react2.default.createElement('span', null);
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'div',
           { className: 'node-list-div' },
-          _react2.default.createElement(
-            'p',
-            null,
-            nodeCount,
-            ' matching your search criteria.'
-          )
+          searchCrit
         ),
         oppNodes
       );
@@ -53741,6 +53748,10 @@ var CreateOppForm = function (_React$Component) {
             }).then(function (result) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
+                _this.setState({
+                    isButtonDisabled: true
+                });
+                _this.setState({ buttonValue: "Submitted!" });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -53791,7 +53802,9 @@ var CreateOppForm = function (_React$Component) {
             seasonIsValid: false,
             // compensationIsValid: false,
             yearIsValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false,
+            buttonValue: "Submit New Position"
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -54354,6 +54367,7 @@ var CreateOppForm = function (_React$Component) {
                                     { className: 'label-inline' },
                                     'Student Compensation (leave blank if just experience): '
                                 ),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('input', { ref: function ref(node) {
                                         _this2.pay = node;
                                     }, onChange: this.setCompensation.bind(this), type: 'checkbox', name: 'pay',
@@ -54605,7 +54619,8 @@ var CreateOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position' })
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: this.state.buttonValue,
+                                    disabled: this.state.isButtonDisabled })
                             )
                         )
                     )
@@ -58898,6 +58913,8 @@ var EditOppForm = function (_React$Component) {
             }).then(function (result) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
+                _this.setState({ isButtonDisabled: true });
+                _this.setState({ buttonValue: "Submitted!" });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -58949,7 +58966,9 @@ var EditOppForm = function (_React$Component) {
             seasonIsValid: false,
             // compensationIsValid: false,
             yearIsValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false,
+            buttonValue: "Update Position"
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -59582,6 +59601,7 @@ var EditOppForm = function (_React$Component) {
                                     { className: 'label-inline' },
                                     'Student Compensation (leave blank if just experience): '
                                 ),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('input', { ref: function ref(node) {
                                         _this3.pay = node;
                                     }, onChange: this.setCompensation.bind(this), type: 'checkbox', name: 'pay',
@@ -59833,7 +59853,8 @@ var EditOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Update Position' })
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: this.state.buttonValue,
+                                    disabled: this.state.isButtonDisabled })
                             )
                         )
                     )
@@ -59960,6 +59981,8 @@ var InstructorRegister = function (_React$Component) {
                 }).then(function (result) {
                     //access the results here....
                     document.location.href = "/professorView";
+                    _this.setState({ buttonDisabled: true,
+                        buttonValue: "Submitted" });
                 }).catch(function (error) {
                     Utils.handleTokenError(error);
                 });
@@ -59988,7 +60011,9 @@ var InstructorRegister = function (_React$Component) {
             labNameValid: false,
             labURLValid: false,
             piValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            buttonDisabled: false,
+            buttonValue: "Register"
         };
 
         _this.loadOpportunitiesFromServer = _this.loadOpportunitiesFromServer.bind(_this);
@@ -60399,7 +60424,9 @@ var InstructorRegister = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'submit-container' },
-                            _react2.default.createElement('input', { className: 'button button-small registration', type: 'submit', value: 'Register' })
+                            _react2.default.createElement('input', { className: 'button button-small registration', type: 'submit',
+                                value: this.state.buttonValue,
+                                disabled: this.state.buttonDisabled })
                         )
                     )
                 ),
@@ -60822,6 +60849,8 @@ var StudentRegister = function (_React$Component) {
                 _axios2.default.post('/api/undergrads', { firstName: firstName, lastName: lastName, gradYear: gradYear, major: major, GPA: GPA, netId: netId, email: email, courses: courses, token_id: token_id }).then(function (result) {
                     console.log("undergrad created, result:");
                     console.log(result);
+                    _this.setState({ isButtonDisabled: true });
+                    _this.setState({ buttonValue: "Submitted!" });
                     //access the results here....
                     if (_this.state.transcript != null && _this.state.transcript.length !== 0) {
                         _axios2.default.post('/api/docs', { token_id: token_id, transcript: transcript }).then(function (result) {
@@ -60901,7 +60930,9 @@ var StudentRegister = function (_React$Component) {
             majorValid: false,
             GPAValid: false,
             resumeValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false,
+            buttonValue: "Submit"
 
         };
         return _this;
@@ -61084,7 +61115,8 @@ var StudentRegister = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'centered' },
-                            _react2.default.createElement('input', { type: 'submit', className: 'button', value: 'Submit' })
+                            _react2.default.createElement('input', { type: 'submit', className: 'button',
+                                value: this.state.buttonValue, disabled: this.state.isButtonDisabled })
                         )
                     )
                 ),
@@ -61822,9 +61854,6 @@ var ApplicationBox = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			function capitalizeFirstLetter(string) {
-				return string.charAt(0).toUpperCase() + string.slice(1);
-			}
 			return _react2.default.createElement(
 				'div',
 				{ className: 'prof-application-box', onClick: this.clickRow.bind(this), style: { display: this.props.show ? "" : "none" } },
@@ -61837,9 +61866,9 @@ var ApplicationBox = function (_Component) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'name' },
-							capitalizeFirstLetter(this.props.data.lastName),
+							Utils.capitalizeFirstLetter(this.props.data.lastName),
 							', ',
-							capitalizeFirstLetter(this.props.data.firstName)
+							Utils.capitalizeFirstLetter(this.props.data.firstName)
 						),
 						_react2.default.createElement(
 							'div',

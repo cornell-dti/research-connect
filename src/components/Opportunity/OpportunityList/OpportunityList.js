@@ -3,20 +3,22 @@ import Opportunity from '../Opportunity'
 import './OpportunityList.scss'
 
 class OpportunityList extends Component {
+
     constructor(props) {
-    super(props);
-	 }
+      super(props);
+    }
+
     countNodes(nodes){
       let tempCount = 0;
       let countString = "";
-      for (let k in nodes){
-        if (nodes[k]!=null){
+      for (let k in nodes) {
+        if (nodes[k]!=null) {
           tempCount++;
         }
       }
-      if (tempCount==1){
+      if (tempCount == 1) {
         countString = "There is 1 result"
-      }else{
+      } else{
         countString = "There are " + tempCount.toString() +" results"
       }
       return(countString);
@@ -75,7 +77,6 @@ class OpportunityList extends Component {
               willShow = false;
 
           }
-
           if ((minGPA!=null)&&(minGPA < opp.minGPA)){
               willShow = false;
           }
@@ -83,46 +84,46 @@ class OpportunityList extends Component {
               willShow = false;
           }
           if (willShow){
-
             return (
               <Opportunity
-                          filteredOptions={this.props.filteredOptions }
-                           key={ opp['_id'] }
-                           title={ opp.title }
-                           area={ opp.areas }
-                           labId={ opp.labId }
-                           labName={ opp.labName }
-                           pi={ opp.pi }
-                           supervisor={ opp.supervisor }
-                           projectDescription={ opp.projectDescription }
-                           undergradTasks={ opp.undergradTasks}
-                           opens={ opp.opens }
-                           closes={ opp.closes }
-                           startSeason={ opp.startSeason }
-                           startYear={ opp.startYear}
-                           minSemesters={ opp.minSemesters }
-                           minHours={ opp.minHours }
-                           maxHours={ opp.maxHours }
-                           qualifications={ opp.qualifications }
-                           minGPA={ opp.minGPA }
-                           requiredClasses={ opp.requiredClasses }
-                           questions={ opp.questions }
-                           yearsAllowed={ opp.yearsAllowed }
-                           prereqsMatch={opp.prereqsMatch}
-                           spots={ opp.spots }
-                           opId={opp._id}/>
-                         )
-              }
+                filteredOptions={this.props.filteredOptions }
+                key={ opp['_id'] }
+                title={ opp.title }
+                area={ opp.areas }
+                labId={ opp.labId }
+                labName={ opp.labName }
+                pi={ opp.pi }
+                supervisor={ opp.supervisor }
+                projectDescription={ opp.projectDescription }
+                undergradTasks={ opp.undergradTasks}
+                opens={ opp.opens }
+                closes={ opp.closes }
+                startSeason={ opp.startSeason }
+                startYear={ opp.startYear}
+                minSemesters={ opp.minSemesters }
+                minHours={ opp.minHours }
+                maxHours={ opp.maxHours }
+                qualifications={ opp.qualifications }
+                minGPA={ opp.minGPA }
+                requiredClasses={ opp.requiredClasses }
+                questions={ opp.questions }
+                yearsAllowed={ opp.yearsAllowed }
+                prereqsMatch={opp.prereqsMatch}
+                spots={ opp.spots }
+                opId={opp._id}/>
+              )
+          }
 
 
         });
         let nodeCount = this.countNodes(oppNodes);
+        let searchCrit = this.props.searching ? <p>{nodeCount} matching your search criteria.</p> : <span></span>;
         return (
           <div>
             <div className="node-list-div">
-            <p>{nodeCount} matching your search criteria.</p>
+              { searchCrit }
               </div>
-              {oppNodes}
+              { oppNodes }
           </div>
 
         )

@@ -14,7 +14,6 @@ import DeleteIcon from 'react-icons/lib/ti/delete';
 import * as Utils from "../../components/Utils";
 import ProfessorNavbar from "../../components/Navbars/ProfessorNavbar/ProfessorNavbar";
 
-
 class Opportunities extends Component {
 
     constructor(props) {
@@ -131,8 +130,6 @@ class Opportunities extends Component {
                             <hr />
                             <label htmlFor="datesField">Start Date</label>
                             <StartDate updateDate={this.handleUpdateDate.bind(this)}/>
-
-
                         </div>
                     </div>
                     <div className="column column-80">
@@ -154,7 +151,8 @@ class Opportunities extends Component {
                             <div className="column column-70">
                                 <div className="opp-list-container">
                                     <OpportunityBox filteredOptions={this.state}
-                                                    url='opportunities'/>
+                                                    url='opportunities'
+                                                    searching={this.state.clickedEnter}/>
                                 </div>
                             </div>
                         </div>
