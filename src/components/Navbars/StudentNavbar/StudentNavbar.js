@@ -22,7 +22,7 @@ class StudentNavbar extends Component {
             <div className="header-all">
                 <div className="logo-div">
                     <a href='/opportunities'><img className="logo" src={logo}/></a>
-                    <p className="partnership">in partnership with</p>
+                    <p className="partnership">with</p>
                     <a href="http://curb.cornell.edu/" target="_blank"><img className="CURBlogo" src={curblogo}/></a>
                 </div>
                 <nav>
