@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../App/App.scss';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
+import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import Dropzone from 'react-dropzone';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils.js'
@@ -119,8 +120,13 @@ class StudentRegister extends React.Component {
         else {
             this.setState({[e.target.name]: (e.target.value).replace(/ /g, '').split(",")});
         }
+
+        console.log("COURSES " + this.state.courses);
     };
 
+    handleUpdateCourses(courseList) {
+        this.setState({courses: courseList});
+    }
 
     createGpaOptions() {
         let options = [];
@@ -270,13 +276,9 @@ class StudentRegister extends React.Component {
 
                         {this.createGpaOptions()}
 
-                        <label>
-
-                            <textarea className="left-input"
-                                      placeholder="Relevant courses past and present (separate with commas, i.e. CS 1110, BIOMG 1350)"
-                                      name="courses"
-                                      value={courses} id="courses" onChange={this.onChange}/>
-                        </label>
+                        <div className="student-register-course-select">
+                            <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+                        </div>
 
                         <div className="dropzone">
 

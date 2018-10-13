@@ -60692,6 +60692,10 @@ var _Footer = __webpack_require__(14);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
+var _CourseSelect = __webpack_require__(371);
+
+var _CourseSelect2 = _interopRequireDefault(_CourseSelect);
+
 var _reactDropzone = __webpack_require__(235);
 
 var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
@@ -60785,6 +60789,8 @@ var StudentRegister = function (_React$Component) {
             } else {
                 _this.setState(_defineProperty({}, e.target.name, e.target.value.replace(/ /g, '').split(",")));
             }
+
+            console.log("COURSES " + _this.state.courses);
         };
 
         _this.onSubmit = function (e) {
@@ -60946,6 +60952,11 @@ var StudentRegister = function (_React$Component) {
             );
         }
     }, {
+        key: 'handleUpdateCourses',
+        value: function handleUpdateCourses(courseList) {
+            this.setState({ courses: courseList });
+        }
+    }, {
         key: 'createGpaOptions',
         value: function createGpaOptions() {
             var options = [];
@@ -61016,12 +61027,9 @@ var StudentRegister = function (_React$Component) {
                         this.optionify(majorList, "major"),
                         this.createGpaOptions(),
                         _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement('textarea', { className: 'left-input',
-                                placeholder: 'Relevant courses past and present (separate with commas, i.e. CS 1110, BIOMG 1350)',
-                                name: 'courses',
-                                value: courses, id: 'courses', onChange: this.onChange })
+                            'div',
+                            { className: 'student-register-course-select' },
+                            _react2.default.createElement(_CourseSelect2.default, { updateCourses: this.handleUpdateCourses.bind(this) })
                         ),
                         _react2.default.createElement(
                             'div',
@@ -61248,7 +61256,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.student-reg-form {\n  margin: 20px;\n  width: 70%;\n  margin-top: 120px;\n  margin-left: 15%;\n  background-color: #f6f6f6; }\n\n.student-reg-form .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.student-reg-form .button:focus {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.student-reg-form .button:hover {\n  background-color: #b31b1b;\n  border-color: #b31b1b;\n  opacity: .7; }\n\n.dropzone p {\n  margin-bottom: 0px;\n  text-align: center; }\n\n.dropzone .uploaded-message {\n  font-size: 12px;\n  text-align: center; }\n\n.student-reg-form textarea {\n  resize: none; }\n\n.student-reg-form input:hover, .student-reg-form textarea:hover, .student-reg-form select:hover, .student-reg-form .button:hover {\n  border-color: #b31b1b; }\n\n.student-reg-form input:focus, .student-reg-form textarea:focus, .student-reg-form select:focus, .student-reg-form .button:focus {\n  border-color: #b31b1b; }\n\n.student-reg-form .left-input {\n  width: 50%;\n  margin-left: 25%; }\n\n.student-reg-form h3, .student-reg-form .centered {\n  text-align: center; }\n\n.student-reg-form form {\n  margin-top: 0px; }\n\n.student-reg-form form .error {\n  border: 3px #b31b1b solid; }\n\n.student-reg-form .edit-drop {\n  border-radius: 4px; }\n", ""]);
+exports.push([module.i, ".header {\n  background-color: #b31b1b;\n  width: 100%;\n  height: 50px; }\n\n.student-reg-form {\n  margin: 20px;\n  width: 70%;\n  margin-top: 120px;\n  margin-left: 15%;\n  background-color: #f6f6f6; }\n\n.student-reg-form .button {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.student-reg-form .button:focus {\n  background-color: #b31b1b;\n  border-color: #b31b1b; }\n\n.student-reg-form .button:hover {\n  background-color: #b31b1b;\n  border-color: #b31b1b;\n  opacity: .7; }\n\n.dropzone p {\n  margin-bottom: 0px;\n  text-align: center; }\n\n.dropzone .uploaded-message {\n  font-size: 12px;\n  text-align: center; }\n\n.student-reg-form textarea {\n  resize: none; }\n\n.student-reg-form input:hover, .student-reg-form textarea:hover, .student-reg-form select:hover, .student-reg-form .button:hover {\n  border-color: #b31b1b; }\n\n.student-reg-form input:focus, .student-reg-form textarea:focus, .student-reg-form select:focus, .student-reg-form .button:focus {\n  border-color: #b31b1b; }\n\n.student-reg-form .left-input {\n  width: 50%;\n  margin-left: 25%; }\n\n.student-reg-form h3, .student-reg-form .centered {\n  text-align: center; }\n\n.student-reg-form form {\n  margin-top: 0px; }\n\n.student-reg-form form .error {\n  border: 3px #b31b1b solid; }\n\n.student-reg-form .edit-drop {\n  border-radius: 4px; }\n\n.student-register-course-select {\n  width: 50%;\n  margin: auto;\n  margin-bottom: 50px; }\n  .student-register-course-select .course-select {\n    padding: 0px; }\n", ""]);
 
 // exports
 
