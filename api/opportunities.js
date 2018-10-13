@@ -401,7 +401,6 @@ app.put('/:id', function (req, res) {
         else {
             // Update each attribute with any possible attribute that may have been submitted in the body of the request
             // If that attribute isn't in the request body, default back to whatever it was before.
-            opportunity.creatorNetId = req.body.creatorNetId || opportunity.creatorNetId;
             opportunity.labPage = req.body.labPage || opportunity.labPage;
             opportunity.title = req.body.title || opportunity.title;
             opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;

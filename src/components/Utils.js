@@ -28,6 +28,9 @@ export function convertDate(dateString) {
 }
 
 export function capitalizeFirstLetter(string) {
+    if (!string || string.length < 1){
+        return string;
+    }
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 

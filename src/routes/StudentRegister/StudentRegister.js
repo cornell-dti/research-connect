@@ -34,7 +34,9 @@ class StudentRegister extends React.Component {
             majorValid: false,
             GPAValid: false,
             resumeValid: false,
-            triedSubmitting: false
+            triedSubmitting: false, 
+            isButtonDisabled: false, 
+            buttonValue: "Submit"
 
         };
     };
@@ -174,6 +176,8 @@ class StudentRegister extends React.Component {
                 .then((result) => {
                     console.log("undergrad created, result:");
                     console.log(result);
+                    this.setState({isButtonDisabled: true});
+                    this.setState({buttonValue: "Submitted!"});
                     //access the results here....
                     if (this.state.transcript != null && this.state.transcript.length !== 0) {
                         axios.post('/api/docs', {token_id, transcript})
@@ -321,7 +325,8 @@ class StudentRegister extends React.Component {
 
                         <br/>
                         <div className="centered">
-                            <input type="submit" className="button" value="Submit"/>
+                            <input type="submit" className="button" 
+                            value= {this.state.buttonValue} disabled = {this.state.isButtonDisabled}/>
                         </div>
                     </form>
 
