@@ -27,6 +27,10 @@ export function convertDate(dateString) {
     return (month0 + (month).toString() + "/" + day0 + (day).toString());
 }
 
+export function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /**
  * Takes care of the response and checking for errors specifically due to outdated tokens.
  * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
@@ -35,7 +39,6 @@ export function convertDate(dateString) {
  * the promise callback for axios
  * @return {boolean} returns false if there was no token-related error.
  */
-
 export function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
@@ -90,8 +93,7 @@ export function logoutGoogle() {
         setTimeout(function () {
             if (window.gapi) {
                 tryLoggingOut();
-            }
-            else{
+            } else {
                 //if it's still not there for some reason, just do the "works half the time" solution
                 console.log("no gapi");
                 sessionStorage.clear();
