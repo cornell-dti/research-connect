@@ -34,7 +34,9 @@ class InstructorRegister extends React.Component {
             labNameValid: false,
             labURLValid: false,
             piValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            buttonDisabled: false, 
+            buttonValue: "Register"
         };
 
 
@@ -229,6 +231,8 @@ class InstructorRegister extends React.Component {
                 .then((result) => {
                     //access the results here....
                     document.location.href = "/professorView"
+                    this.setState({buttonDisabled: true, 
+                    buttonValue: "Submitted"})
                 }).catch(function (error) {
                 Utils.handleTokenError(error);
             });
@@ -365,7 +369,9 @@ class InstructorRegister extends React.Component {
                             <br/>
                         </div>
                         <div className="submit-container">
-                            <input className="button button-small registration" type="submit" value="Register"/>
+                            <input className="button button-small registration" type="submit"
+                             value= {this.state.buttonValue} 
+                            disabled = {this.state.buttonDisabled}/>
                         </div>
                     </form>
 
