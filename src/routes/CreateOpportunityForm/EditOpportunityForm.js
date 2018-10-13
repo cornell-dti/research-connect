@@ -44,7 +44,8 @@ class EditOppForm extends React.Component {
             // compensationIsValid: false,
             yearIsValid: false,
             triedSubmitting: false, 
-            isButtonDisabled: false
+            isButtonDisabled: false, 
+            buttonValue: "Update Position"
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -408,6 +409,7 @@ class EditOppForm extends React.Component {
                 //access the results here....
                 this.setState({submit: "Submitted!"});
                 this.setState({isButtonDisabled: true})
+                this.setState({buttonValue: "Submitted!"})
                 function sleep(time) {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
@@ -726,7 +728,7 @@ class EditOppForm extends React.Component {
                             </div>
 
                             <div className="submit-div">
-                                <input className="button submit" type="submit" value="Update Position" 
+                                <input className="button submit" type="submit" value= {this.state.buttonValue} 
                                 disabled = {this.state.isButtonDisabled} />
                             </div>
                         </form>

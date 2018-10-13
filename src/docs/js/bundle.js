@@ -53744,6 +53744,7 @@ var CreateOppForm = function (_React$Component) {
                 _this.setState({
                     isButtonDisabled: true
                 });
+                _this.setState({ buttonValue: "Submitted!" });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -53795,7 +53796,8 @@ var CreateOppForm = function (_React$Component) {
             // compensationIsValid: false,
             yearIsValid: false,
             triedSubmitting: false,
-            isButtonDisabled: false
+            isButtonDisabled: false,
+            buttonValue: "Submit New Position"
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -54610,7 +54612,7 @@ var CreateOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position',
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: this.state.buttonValue,
                                     disabled: this.state.isButtonDisabled })
                             )
                         )
@@ -58905,6 +58907,7 @@ var EditOppForm = function (_React$Component) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
                 _this.setState({ isButtonDisabled: true });
+                _this.setState({ buttonValue: "Submitted!" });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -58957,7 +58960,8 @@ var EditOppForm = function (_React$Component) {
             // compensationIsValid: false,
             yearIsValid: false,
             triedSubmitting: false,
-            isButtonDisabled: false
+            isButtonDisabled: false,
+            buttonValue: "Update Position"
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -59842,7 +59846,7 @@ var EditOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Update Position',
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: this.state.buttonValue,
                                     disabled: this.state.isButtonDisabled })
                             )
                         )
