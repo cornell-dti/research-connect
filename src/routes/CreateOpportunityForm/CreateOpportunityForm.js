@@ -43,7 +43,8 @@ class CreateOppForm extends React.Component {
             seasonIsValid: false,
             // compensationIsValid: false,
             yearIsValid: false,
-            triedSubmitting: false
+            triedSubmitting: false, 
+            isButtonDisabled: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -333,6 +334,9 @@ class CreateOppForm extends React.Component {
             .then((result) => {
                 //access the results here....
                 this.setState({submit: "Submitted!"});
+                this.setState({
+                    isButtonDisabled: true
+                })
                 function sleep(time) {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
@@ -500,6 +504,7 @@ class CreateOppForm extends React.Component {
 
                                 <label className="label-inline">Student Compensation (leave blank if just
                                     experience): </label>
+                                    <br/>
                                 <input ref={(node) => {
                                     this.pay = node
                                 }} onChange={this.setCompensation.bind(this)} type="checkbox" name="pay"
@@ -649,7 +654,8 @@ class CreateOppForm extends React.Component {
                             </div>
 
                             <div className="submit-div">
-                                <input className="button submit" type="submit" value="Submit New Position"/>
+                                <input className="button submit" type="submit" value="Submit New Position" 
+                                disabled = {this.state.isButtonDisabled}/>
                             </div>
                         </form>
 

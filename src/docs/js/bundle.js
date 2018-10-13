@@ -53741,6 +53741,9 @@ var CreateOppForm = function (_React$Component) {
             }).then(function (result) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
+                _this.setState({
+                    isButtonDisabled: true
+                });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -53791,7 +53794,8 @@ var CreateOppForm = function (_React$Component) {
             seasonIsValid: false,
             // compensationIsValid: false,
             yearIsValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -54354,6 +54358,7 @@ var CreateOppForm = function (_React$Component) {
                                     { className: 'label-inline' },
                                     'Student Compensation (leave blank if just experience): '
                                 ),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('input', { ref: function ref(node) {
                                         _this2.pay = node;
                                     }, onChange: this.setCompensation.bind(this), type: 'checkbox', name: 'pay',
@@ -54605,7 +54610,8 @@ var CreateOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position' })
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Submit New Position',
+                                    disabled: this.state.isButtonDisabled })
                             )
                         )
                     )
@@ -58898,6 +58904,7 @@ var EditOppForm = function (_React$Component) {
             }).then(function (result) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
+                _this.setState({ isButtonDisabled: true });
                 function sleep(time) {
                     return new Promise(function (resolve) {
                         return setTimeout(resolve, time);
@@ -58949,7 +58956,8 @@ var EditOppForm = function (_React$Component) {
             seasonIsValid: false,
             // compensationIsValid: false,
             yearIsValid: false,
-            triedSubmitting: false
+            triedSubmitting: false,
+            isButtonDisabled: false
         };
 
         _this.handleChange = _this.handleChange.bind(_this);
@@ -59582,6 +59590,7 @@ var EditOppForm = function (_React$Component) {
                                     { className: 'label-inline' },
                                     'Student Compensation (leave blank if just experience): '
                                 ),
+                                _react2.default.createElement('br', null),
                                 _react2.default.createElement('input', { ref: function ref(node) {
                                         _this3.pay = node;
                                     }, onChange: this.setCompensation.bind(this), type: 'checkbox', name: 'pay',
@@ -59833,7 +59842,8 @@ var EditOppForm = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'submit-div' },
-                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Update Position' })
+                                _react2.default.createElement('input', { className: 'button submit', type: 'submit', value: 'Update Position',
+                                    disabled: this.state.isButtonDisabled })
                             )
                         )
                     )
