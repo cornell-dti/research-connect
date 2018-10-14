@@ -364,8 +364,9 @@ app.post('/', function (req, res) {
             },
             function (err, studentsWhoMatch) {
                 for (let undergrad1 in studentsWhoMatch) {
+                    //studentsWhoMatch[undergrad1].netId + '@cornell.edu'
                     const msg = {
-                        to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
+                        to: "acb352@cornell.edu",
                         from: {
                             name: "Research Connect",
                             email: 'hello@research-connect.com'
@@ -373,7 +374,8 @@ app.post('/', function (req, res) {
                         replyTo: "acb352@cornell.edu",
                         subject: 'New Research Opportunity Available!',
                         html: 'Hi,<br />' +
-                        'A new opportunity was just posted in an area you expressed interest in. You can apply to it here: http://research-connect.com/opportunity/' + opportunity._id + '<br />' +
+                        'A new opportunity with the title "'+ opportunity.title + '" was just posted in an area you expressed interest in. You can apply to it here: http://research-connect.com' +
+                        '<br />' +
                         '<br />' +
                         'Thanks,<br />' +
                         'The Research Connect Team<br />'
