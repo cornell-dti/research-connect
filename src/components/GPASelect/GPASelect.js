@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import '../../routes/Opportunities/Opportunities.scss';
+import './GPASelect.scss';
 
 class GPASelect extends React.Component {
 	constructor(props) {
@@ -37,9 +37,9 @@ class GPASelect extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<div>
 				{this.createGpaOptions()}
-			</form>
+			</div>
 		);
 	}
 }

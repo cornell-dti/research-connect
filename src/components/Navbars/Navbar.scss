@@ -1,90 +1,69 @@
-.header-all {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: black;
-  height: 80px;
-  background-color: #f6f6f6;
-  border-bottom:  rgb(166,57,45) 4px solid;
-  padding: 30px 10%;
-}
+.header-wrapper {
+	margin-top: 150px;
 
-@media only screen and (max-width: 1480px) {
-  .header-all {
-    padding: 30px 1%;
-  }
-}
+	.header-all {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 95px;
+		background-color: #B31B1B;
+		box-shadow: 0 12px 5px -6px #808080;
+		padding: 0 6%;
 
-.logo {
-  height: 50px;
-}
+		.logo {
+			width: 58px;
+		}
 
-.CURBlogo {
-  height: 50px;
-  vertical-align: text-top;
-}
+		.logo:hover {
+			opacity: .7;
+		}
 
-.logo:hover, .CURBlogo:hover {
-  opacity: .7;
-}
+		.logo-div {
+			display: flex;
+		}
 
-.logo-div {
-  display: flex;
-}
+		nav {
+			display: flex;
 
-.partnership {
-  color: #2d2f91;
-  font-size: 13px;
-  margin: 0px 10px;
-  padding-top: 25px;
-}
+			li {
+				padding: 0 40px;
+				margin: 0;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				color: #FFFFFF;
+				font-family: "Helvetica Neue";
+				font-size: 20px;
+				font-weight: 100;
+				line-height: 24px;
+				text-align: center;
+				text-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 
-.header-all h2 {
-	font-family: 'Roboto', sans-serif;
-}
+				a {
+					color: white;
+				}
+			}
 
-.header-all nav {
-	display: flex;
-}
+			li:first-child {
+				margin-left: 0;
+			}
 
-.header-all nav li {
-	padding: 0 15px;
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+			li:last-child {
+				margin-right: 0;
+			}
+		}
 
-.header-all nav li a {
-  color: black;
-}
+		.button:hover {
+			opacity: 0.9;
+		}
 
-.header-all nav li a:hover {
-  color: gray;
-}
-
-.header-all nav li:first-child {
-	margin-left: 0;
-}
-.header-all nav li:last-child {
-	margin-right: 0;
-}
-
-.header-all .button:hover {
-  opacity: 0.9;
-}
-
-.header-all .current-page {
-  font-weight: bold;
-  height: 76px;
-}
-
-.header-all nav .current-page a:hover{
-  color: black;
-  cursor: auto;
+		.current-page {
+			font-weight: bolder;
+		}
+	}
 }

@@ -112,33 +112,49 @@ class ProfessorView extends Component {
 					<div className='row'>
 						<div className="column column-20">
 							<div className="filter-box">
+								<div className="filter-child">
+									Filter by...
+								</div>
 
-							<h3>Filters</h3>
+								<hr />
 
-							<hr />
-							<label htmlFor="opportunityField">Opportunity</label>
-							<OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
+								<div className="filter-child">
+									<label htmlFor="opportunityField">Opportunity</label>
+									<OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
+								</div>
 
-							<hr />
-							<label htmlFor="yearField">School Year</label>
-							<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
+								<hr />
 
-							<hr />
-							<label htmlFor="gpaField">GPA Requirement</label>
-							<GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
+								<div className="filter-child">
+									<label htmlFor="yearField">School Year</label>
+									<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
+								</div>
 
-							<hr />
-							<label htmlFor="courseField">Required Courses</label>
-							<CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+								<hr />
 
-							<hr />
-							<label htmlFor="skillField">Required Skills</label>
-							<SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
-						</div>
+								<div className="filter-child">
+									<label htmlFor="gpaField">GPA Requirement</label>
+									<GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
+								</div>
+
+								<hr />
+
+								<div className="filter-child">
+									<label htmlFor="courseField">Required Courses</label>
+									<CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+								</div>
+
+								<hr />
+
+								<div className="filter-child">
+									<label htmlFor="skillField">Required Skills</label>
+									<SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
+								</div>
+							</div>
 						</div>
 						<div className='column'>
 							<div className='application-list-container'>
-								<div className='application-list-header'>Applications For Your Lab:</div>
+								<div className='application-list-header'>Applications For Your Lab</div>
 								<ApplicationList filter={ this.state } />
 							</div>
 						</div>

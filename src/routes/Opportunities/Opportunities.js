@@ -107,7 +107,7 @@ class Opportunities extends Component {
 
     render() {
         return (
-            <div>
+            <div className="opportunities-wrapper">
                 {this.state.role === "undergrad" ? <Navbar current={"opportunities"}/> : <ProfessorNavbar/>}
 
                 <div className="opp-container row">

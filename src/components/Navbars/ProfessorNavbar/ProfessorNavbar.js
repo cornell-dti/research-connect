@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import '../Navbar.scss';
-import logo from '../../../images/wordlogo.png';
+import logo from '../../../images/white-logo.png';
 import axios from 'axios';
-import cislogo from '../../../images/cis_logo.png';
 import {Link} from 'react-router-dom';
 import {logoutGoogle} from "../../Utils";
 import * as Utils from "../../Utils";
@@ -44,22 +43,20 @@ class ProfessorNavbar extends Component {
 
     render() {
         return (
-            <div className="header-all">
-                <div className="logo-div">
-                    <a href='/'><img className="logo" src={logo}/></a>
-                    <p className="partnership">with</p>
-                    <a href="https://cis.cornell.edu/" target="_blank"><img className="CURBlogo" src={cislogo}/></a>
+            <div className="header-wrapper">
+                <div className="header-all">
+                    <div className="logo-div">
+                        <a href='/'><img className="logo" src={logo}/></a>
+                    </div>
+                    <nav>
+                        <li className={this.props.current === "newopp" ? "current-page" : ""}><a href='/newopp'>Post</a></li>
+                        <li className={this.props.current === "professorView" ? "current-page" : ""}><a
+                            href='/professorView'>Applications</a></li>
+                        <li className={this.props.current === "opportunities" ? "current-page" : ""}><a
+                            href={'/opportunities?labId=' + this.state.labId}>Opportunities</a></li>
+                        <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
+                    </nav>
                 </div>
-                <nav>
-                    <li className={this.props.current === "newopp" ? "current-page" : ""}><a href='/newopp'>Post New
-                        Opportunity</a></li>
-                    <li className={this.props.current === "professorView" ? "current-page" : ""}><a
-                        href='/professorView'>View Applications</a></li>
-                    <li className={this.props.current === "opportunities" ? "current-page" : ""}><a
-                        href={'/opportunities?labId=' + this.state.labId}>Your Opportunities</a></li>
-                    <li><a href="mailto:acb352@cornell.edu">Contact Us</a></li>
-                    <li><a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a></li>
-                </nav>
             </div>
         );
     }

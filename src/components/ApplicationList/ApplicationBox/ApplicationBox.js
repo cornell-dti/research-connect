@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './ApplicationBox.scss';
 import '../../../index.css';
-import * as Utils from '../../Utils.js'
+import * as Utils from '../../Utils.js';
+import Calendar from 'react-icons/lib/fa/calendar-check-o';
+import Info from 'react-icons/lib/fa/info-circle';
 
 class ApplicationBox extends Component {
 	constructor(props) {
@@ -26,8 +28,11 @@ class ApplicationBox extends Component {
 					</div>
 
 					<div className="column right-column">
-						<div className="status">Status: { this.props.data.status }</div>
-						<div className="date-applied">Date Applied: { Utils.convertDate(this.props.data.timeSubmitted) }</div>
+						<div className="status">
+							<Info style={{ verticalAlign: 'top'}} className="info-icon" /> Status: { this.props.data.status }</div>
+						<div className="date-applied">
+							<Calendar style={{ verticalAlign: 'text-top'}} className="cal-icon" /> Date Applied: { Utils.convertDate(this.props.data.timeSubmitted) }
+						</div>
 						<div className="opportunity">Opportunity: { this.props.opportunity.title }</div>
 					</div>
 				</div>
