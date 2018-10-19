@@ -48,7 +48,7 @@ class LandingPage extends Component {
                         logoutGoogle();
                     }
                     else {
-                        endUrl = '/professorView';
+                        endUrl = '/professorDashboard';
                         window.location.href = endUrl;
                     }
                 })
@@ -113,7 +113,7 @@ class LandingPage extends Component {
             axios.get("/api/hasRegistered/" + response.profileObj.email).then((hasRegistered) => {
                 console.log("registerd? " + hasRegistered);
                 if (hasRegistered.data) {
-                    window.location.href = '/professorView';
+                    window.location.href = '/professorDashboard';
                 }
                 else {
                     window.location.href = '/instructorRegister';

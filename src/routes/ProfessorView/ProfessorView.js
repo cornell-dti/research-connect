@@ -2,16 +2,16 @@ import React, {Component} from 'react';
 import '../App/App.scss';
 import './ProfessorView.scss';
 import axios from 'axios';
-import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar'
+import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
-import YearSelect from '../../components/YearSelect/YearSelect'
+import YearSelect from '../../components/YearSelect/YearSelect';
 import Footer from '../../components/Footer/Footer';
-import MajorSelect from '../../components/MajorSelect/MajorSelect'
-import GPASelect from '../../components/GPASelect/GPASelect'
-import StartDate from '../../components/StartDate/StartDate'
-import CourseSelect from '../../components/CourseSelect/CourseSelect'
-import SkillSelect from '../../components/SkillSelect/SkillSelect'
-import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect'
+import MajorSelect from '../../components/MajorSelect/MajorSelect';
+import GPASelect from '../../components/GPASelect/GPASelect';
+import StartDate from '../../components/StartDate/StartDate';
+import CourseSelect from '../../components/CourseSelect/CourseSelect';
+import SkillSelect from '../../components/SkillSelect/SkillSelect';
+import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import * as Utils from "../../components/Utils";
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
