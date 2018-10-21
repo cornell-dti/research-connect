@@ -46,7 +46,7 @@ class ProfessorNavbar extends Component {
             <div className="header-wrapper">
                 <div className="header-all">
                     <div className="logo-div">
-                        <a href='/'><img className="logo" src={logo}/></a>
+                        <a href='/professorDashboard'><img className="logo" src={logo}/></a>
                     </div>
                     <nav>
                         <li className={this.props.current === "professorDashboard" ? "current-page" : ""}><a href='/professorDashboard'>Dashboard</a></li>

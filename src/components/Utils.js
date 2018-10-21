@@ -14,17 +14,9 @@ export function gradYearToString(gradYear) {
 export function convertDate(dateString) {
     let dateObj = new Date(dateString);
     let month = dateObj.getUTCMonth() + 1;
-    let day = dateObj.getUTCDay();
-    let month0 = '';
-    let day0 = '';
-    if (month < 10) {
-        month0 = '0';
-    }
-    if (day0 < 10) {
-        day0 = '0';
-    }
-
-    return (month0 + (month).toString() + "/" + day0 + (day).toString());
+    let day = dateObj.getUTCDay() + 1;
+    let year = dateObj.getUTCFullYear();
+    return month.toString() + "/" + day.toString() + "/" + year.toString();
 }
 
 export function capitalizeFirstLetter(string) {

@@ -1,3 +1,21 @@
-.email-text {
+.modal {
+
+	.submit-button {
+		color: white;
+		background-color: green;
+		border: 0;
+		margin-top: 10px;
+	}
+
+	.close-button {
+		color: white;
+		background-color: red;
+		border: 0;
+		margin-top: 10px;
+		margin-left: 2px;
+	}
+
+	.email-text {
     height: 250px;
+	}
 }
