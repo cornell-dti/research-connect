@@ -1,0 +1,46 @@
+.opportunity-card {
+
+  padding: 20px 30px;
+  margin-bottom: 15px;
+  background-color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  position: relative;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  color: #4A4A4A;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+  }
+
+  .opp-box-row {
+    margin-bottom: 10px;
+
+    .title {
+      font-size: 24px;
+      color: black;
+    }
+  }
+
+  .description-div {
+    line-height: 26px;
+  }
+
+  .viewDetails {
+    color: #4a90e2;
+    text-decoration: underline;
+  }
+
+  .greenCheck {
+    color: #417505;
+  }
+
+  .redX {
+    color: #d0021b;
+  }
+
+  .cal {
+    color: #f5a623;
+  }
+}

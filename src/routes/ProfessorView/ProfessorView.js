@@ -80,6 +80,7 @@ class ProfessorView extends Component {
 	}
 
 	componentDidMount() {
+		// temporary
 		this.state.loading = false;
 	}
 

@@ -47,7 +47,7 @@ class CreateOppForm extends React.Component {
             triedSubmitting: false, 
             isButtonDisabled: false, 
             buttonValue: "Submit New Position",
-            loading: true
+            loading: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -364,8 +364,8 @@ class CreateOppForm extends React.Component {
     };
 
     componentDidMount() {
-        console.log("MOUNT");
-        this.setState({ loading: false });
+        // temporary, breaks things here
+        // this.state.loading = false;
     }
 
     render() {
@@ -378,13 +378,13 @@ class CreateOppForm extends React.Component {
         if (this.state.loading) {
             return (
                 <div className='sweet-loading'>
-            <ClipLoader
-              className={override}
-              sizeUnit={"px"}
-              size={150}
-              color={'#ff0000'}
-              loading={this.state.loading} />
-          </div> 
+                    <ClipLoader
+                        className={override}
+                        sizeUnit={"px"}
+                        size={150}
+                        color={'#ff0000'}
+                        loading={this.state.loading} />
+                </div> 
             );
         }
 

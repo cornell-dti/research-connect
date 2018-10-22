@@ -1,182 +1,57 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic');
-
 .opportunities-wrapper {
 
-  .row .search-div-container {
-    padding: 0 !important;
-  }
-  .opp-container .row{
-    margin-left: 0rem;
-  }
-  .row .search-div-container input {
-    margin-bottom: inherit;
-    height: 50px;
-    font-size: 15px;
-    border-radius: 7px;
-    border: solid 1px #979797;
-    border-right-style: none;
-    color: black;
-    background:  url('../../images/search-icon.png') no-repeat;
-    /* source: http://www.clker.com/clipart-search-icon-1.html */
-    padding-left:40px;
-    background-size: 18px 18px;
-    background-position: 1% 50%;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    margin-left: 20px;
-    margin-top: 10px;
+  width: 85%;
+  margin: auto;
 
-  }
-  .row .search-div-container .delete-div{
-    height: 50px;
-    margin-top: 10px;
-    background-color: #f6f6f6;
-    border-radius: 7px;
-    border: solid 1px #979797;
-    border-left-style: none;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    text-align: right;
-    padding-top: 9px;
-    padding-right: 5px;
-
-  }
-  .opp-container .filter-box h3{
-    letter-spacing: 2px;
-  }
-
-
-  .row .delete-div .clear-icon{
-    opacity: .7;
-    cursor: pointer;
-  }
-  .row .delete-div .clear-icon:hover{
-    opacity: .2;
-  }
-
-
-  .filter-box .opp-filter-select:focus{
-    border-color: rgb(209, 209, 209);
-  }
-
-  /*** the opportunity cards are now .application-box ***/
-
-  .application-box{
-    margin: 10px;
-    border: solid #979797 1px;
-    border-radius: 2px;
-    margin-right: 0px;
-    margin-left: 0px;
-    background-color: white;
-    border: solid 1px #979797;
-
-    padding: 15px;
-    cursor: pointer;
-  }
-
-  .application-box h3 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-
-
-
-  h3, h2{
-    margin-top: 0px;
-    font-family: 'Roboto', sans-serif;
-    color: black;
-    font-weight: 500;
-  }
-  h4{
-    color: black;
-  }
-
-  .application-box p{
-    color: #4a4a4a;
-  }
-
-  /*** ***/
-
-  .opp-container {
-    width: 80%;
-    margin: auto;
-    margin-top: 100px;
-  }
-
-  .opp-list-container {
-    margin-left: 20px;
-    margin-bottom: 25px;
-  }
-
-  .viewDetails{
-    color: #4a90e2;
-    text-decoration: underline;
-  }
-
-  .greenCheck{
-    color: #417505;
-  }
-
-  .redX{
-    color: #d0021b;
-  }
-
-  .cal{
-    color: #f5a623;
-  }
-
-
-  .filterCheckFields input{
-    margin-left: 15px;
-    margin-bottom: 0px;
-  }
-  .filterCheckFields {
-      margin-bottom: 0px;
-  }
   .filter-box {
-    padding: 10px;
-    margin-top: 10px;
+    
     background-color: white;
-    border: solid #979797 1px;
-    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    border-radius: 5px;
+    
+    margin-bottom: 15px;
+    
+    .filter-child, label {
+      font-size: 24px;
+      font-weight: normal;
+    }
 
-  }
-  .filter-box select{
-    margin-bottom: 0px;
-  }
+    .filter-child {
+      padding: 10px;
 
+      label {
+        color: black;
+      }
+    }
 
-  .row h4{
-    letter-spacing: 1px;
-    font-weight: 400;
-    margin-bottom: 5px;
-    padding-left: 10px;
-    font-size: 1.9rem;
-  }
-  .row h5{
-
-    font-weight: 100;
-    letter-spacing: 1px;
-    font-size: 1.6rem;
-    margin-bottom: 5px;
-    padding-left: 10px;
-  }
-  hr {
-    margin: 15px 0px 15px 0px;
-    border-width: 1px;
-    width: 100%;
-    padding: 0px;
-    border-color: #979797;
-  }
-  .filter-box label{
-    padding-left: 5px;
-  }
-  .row h6{
-    padding-left: 0px;
-    margin-left: 0px;
-  }
-  .row .opp-box-row{
-    padding-left: 0px;
+    hr {
+      height: 3px;
+      background-color: #d0d0d0;
+    }
   }
 
+  .opportunities-list-wrapper {
+    margin-left: 20px;
+  }
+
+  .search-div-container {
+
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    border-radius: 5px;
+    height: 65px;
+    margin-bottom: 15px;
+    padding: 0 20px;
+
+    input {
+      font-size: 24px;
+      font-family: Roboto;
+      height: 100%;
+      border: 0;
+
+      &::placeholder {
+        color: #9B9B9B;
+      }
+    }
+  }
 }

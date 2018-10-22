@@ -171,6 +171,11 @@
 		}
 	}
 
+	.column-app-qual {
+		// temporary fix for button/column alignment
+		width: 44.5%;
+	}
+
 	.header {
 		color: black;
 		font-size: 24px;

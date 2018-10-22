@@ -18,6 +18,7 @@ class ProfessorDashboard extends Component {
 		this.state = {
 			applications: [],
 			opportunities: [],
+			labId: '',
 			loading: true
 		};
 	}
@@ -25,9 +26,10 @@ class ProfessorDashboard extends Component {
 	componentWillMount() {
     axios.all([
 	    axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
-	    axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
+	    axios.get('/api/applications?id=' + sessionStorage.getItem('token_id')),
+	    axios.get('/api/labAdmins/lab/' + sessionStorage.getItem('token_id'))
 	  ])
-	  .then(axios.spread((role, apps) => {
+	  .then(axios.spread((role, apps, lab) => {
 	  	if (role.data !== 'grad' &&
 				  role.data !== 'labtech' &&
 				  role.data !== 'postdoc' &&
@@ -39,6 +41,7 @@ class ProfessorDashboard extends Component {
       opps.unshift('All');
       this.setState({apps: apps});
       this.setState({opportunities: opps});
+      this.setState({labId: lab.data});
 	  }));
 	}
 
@@ -92,7 +95,7 @@ class ProfessorDashboard extends Component {
 								icon={ edit } 
 								iconColor="#A5CCFE" 
 								text="View or edit your opportunities" 
-								href="/opportunities" />
+								href={'/opportunities?labId=' + this.state.labId} />
 						</div>
 					</div>
 				</div>

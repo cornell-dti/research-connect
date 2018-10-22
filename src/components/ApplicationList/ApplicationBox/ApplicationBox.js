@@ -29,7 +29,7 @@ class ApplicationBox extends Component {
 
 					<div className="column right-column">
 						<div className="status">
-							<Info style={{ verticalAlign: 'top'}} className="info-icon" /> Status: { this.props.data.status }</div>
+							<Info style={{ verticalAlign: 'top'}} className="info-icon" /> Status: { Utils.capitalizeFirstLetter(this.props.data.status) }</div>
 						<div className="date-applied">
 							<Calendar style={{ verticalAlign: 'text-top'}} className="cal-icon" /> Date Applied: { Utils.convertDate(this.props.data.timeSubmitted) }
 						</div>

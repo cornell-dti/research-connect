@@ -56,7 +56,9 @@ class ApplicationPage extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ loading: false });
+		// this.setState({ loading: false });
+		// temporary
+		this.state.loading = false;
 	}
 
 	toDivList(lst) {
@@ -157,7 +159,7 @@ class ApplicationPage extends Component {
 						</div>
 					</div>
 					<div className="row">
-						<div className="column column-75">
+						<div className="column">
 							<div className="row application-page-info">
 								<div className="column">
 									<div className="row app-page-info-top-row">
@@ -201,7 +203,7 @@ class ApplicationPage extends Component {
 								</div>
 							</div>
 						</div>
-						<div className="column column-25">
+						<div className="column column-app-qual">
 							<div className="app-qualifications">
 								<div className="app-qual-title header">
 									Qualifications
