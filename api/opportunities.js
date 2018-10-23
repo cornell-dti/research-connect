@@ -66,6 +66,51 @@ app.get('/check/:opportunityId', function (req, res) {
  });
  */
 
+function roleToInt (role){
+    if (role=='pi'){
+        return 6;
+    }
+    else if (role=='postdoc'){
+        return 5;
+    }
+    else if (rol==='staffscientists'){
+        return 4;
+    }
+    else if (role=='labtech'){
+        return 3;
+    }
+    else if (role=='grad'){
+        return 2;
+    }
+    else {
+        return 1;
+    }
+}
+
+function getLabAdmin (oppId){
+    "use strict";
+    console.log("The id we are working with is: "+oppId);
+    labModel.findOne({opportunities:{$eq:oppId}}, function(lab,err){
+        if (lab != null) {
+            var admins = lab["labAdmins"];
+            var maximum = "";
+            var maxStatus = "";
+            for(var i = 0; i<admins.length; i++){
+                labAdministratorModel.findOne({netId:admins[i]}, function(ad,err2){
+                    var r = ad['role'];
+                    if (roleToInt(r) > roleToInt(maxStatus)){
+                        maximum = ad['netId'];
+                        maxStatus = r;
+                    }
+                    if (i >= admins.length-1){
+                        return maximum;
+                    }
+                });
+            }
+        }
+    });
+}
+
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
 
@@ -175,7 +220,13 @@ app.get('/', function (req, res) {
                                 opportunities[i]["labDescription"] = thisLab.labDescription;
                                 debug(opportunities[i]);
                                 debug(Object.getOwnPropertyNames(opportunities[i]));
-
+                                if (opportunities[i]["contactName"] == 'dummy value'){
+                                    console.log("In here");
+                                    var contact = getLabAdmin(opportunities[i]._id);
+                                    opportunities[i]["contactName"] = contact;
+                                }
+                                console.log("Here is the contactName: "+opportunities[i]["contactName"]);
+                                console.log("Here is the additional info: "+opportunities[i]["additionalInformation"]);
                             }
                             res.send(opportunities);
                         });
