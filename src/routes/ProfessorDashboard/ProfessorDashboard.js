@@ -50,6 +50,7 @@ class ProfessorDashboard extends Component {
 	}
 
 	render() {
+		console.log("rendering");
 		const override = css`
 	    display: block;
 	    margin: 0 auto;
@@ -65,7 +66,7 @@ class ProfessorDashboard extends Component {
 	          size={150}
 	          color={'#ff0000'}
 	          loading={this.state.loading} />
-	      </div> 
+	      </div>
 			);
 		}
 
@@ -81,20 +82,20 @@ class ProfessorDashboard extends Component {
 					<div className="row">
 						<div className="column column-50">
 							<div className="dashboard-header">Welcome back!</div>
-							<DashboardAction 
-								icon={ newspaper } 
-								iconColor="#91D781" 
-								text="Post a new opportunity" 
+							<DashboardAction
+								icon={ newspaper }
+								iconColor="#91D781"
+								text="Post a new opportunity"
 								href="/newopp" />
-							<DashboardAction 
-								icon={ inbox } 
-								iconColor="#E4CCF5" 
-								text="View applications to your lab" 
+							<DashboardAction
+								icon={ inbox }
+								iconColor="#E4CCF5"
+								text="View applications to your lab"
 								href="/professorView" />
-							<DashboardAction 
-								icon={ edit } 
-								iconColor="#A5CCFE" 
-								text="View or edit your opportunities" 
+							<DashboardAction
+								icon={ edit }
+								iconColor="#A5CCFE"
+								text="View or edit your opportunities"
 								href={'/opportunities?labId=' + this.state.labId} />
 						</div>
 					</div>
