@@ -107,6 +107,7 @@ class OpportunityList extends Component {
                 minGPA={ opp.minGPA }
                 requiredClasses={ opp.requiredClasses }
                 questions={ opp.questions }
+                additionalInformation = {opp.additionalInformation}
                 yearsAllowed={ opp.yearsAllowed }
                 prereqsMatch={opp.prereqsMatch}
                 spots={ opp.spots }
