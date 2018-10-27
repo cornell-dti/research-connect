@@ -85,7 +85,17 @@ class ApplicationList extends Component {
         let apps = [];
         let k = 0;
         const data = this.state.data;
-        if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
+        console.log("data");
+        console.log(data);
+        let applicationCount = 0;
+        for (let lab in data){
+            if (data.hasOwnProperty(lab)){
+                if (lab.applications) {
+                    applicationCount += lab.applications.length;
+                }
+            }
+        }
+        if (applicationCount === 0 || data.length === 0 || data === {} || Object.keys(data).length === 0) {
             return (<div>There are currently no applications.</div>);
         }
         else {

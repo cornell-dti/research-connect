@@ -61983,7 +61983,17 @@ var ApplicationList = function (_Component) {
             var apps = [];
             var k = 0;
             var data = this.state.data;
-            if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
+            console.log("data");
+            console.log(data);
+            var applicationCount = 0;
+            for (var lab in data) {
+                if (data.hasOwnProperty(lab)) {
+                    if (lab.applications) {
+                        applicationCount += lab.applications.length;
+                    }
+                }
+            }
+            if (applicationCount === 0 || data.length === 0 || data === {} || Object.keys(data).length === 0) {
                 return _react2.default.createElement(
                     'div',
                     null,
