@@ -52190,6 +52190,7 @@ var OpportunityList = function (_Component) {
             minGPA: opp.minGPA,
             requiredClasses: opp.requiredClasses,
             questions: opp.questions,
+            additionalInformation: opp.additionalInformation,
             yearsAllowed: opp.yearsAllowed,
             prereqsMatch: opp.prereqsMatch,
             spots: opp.spots,
@@ -52465,43 +52466,41 @@ var Opportunity = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			if (!this.checkEdit()) {
-				return _react2.default.createElement(
+			return _react2.default.createElement(
+				'div',
+				{ className: 'application-box', onClick: this.clickRow.bind(this) },
+				_react2.default.createElement(
 					'div',
-					{ className: 'application-box', onClick: this.clickRow.bind(this) },
+					{ className: 'row opp-box-row' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'row opp-box-row' },
+						{ className: 'column column-80' },
 						_react2.default.createElement(
-							'div',
-							{ className: 'column column-80' },
-							_react2.default.createElement(
-								'h4',
-								null,
-								this.props.title
-							),
-							_react2.default.createElement(
-								'h5',
-								null,
-								this.props.labName
-							)
+							'h4',
+							null,
+							this.props.title
 						),
 						_react2.default.createElement(
-							'div',
-							{ className: 'column column-20' },
-							_react2.default.createElement(_calendarCheckO2.default, { className: 'cal' }),
-							_react2.default.createElement(
-								'span',
-								null,
-								' Deadline ',
-								this.convertDate(this.props.closes)
-							),
-							this.checkPrereqs()
+							'h5',
+							null,
+							this.props.labName
 						)
 					),
-					this.convertDescription(this.props.projectDescription, this.props.undergradTasks)
-				);
-			}
+					_react2.default.createElement(
+						'div',
+						{ className: 'column column-20' },
+						_react2.default.createElement(_calendarCheckO2.default, { className: 'cal' }),
+						_react2.default.createElement(
+							'span',
+							null,
+							' Deadline ',
+							this.convertDate(this.props.closes)
+						),
+						this.checkPrereqs()
+					)
+				),
+				this.convertDescription(this.props.projectDescription, this.props.undergradTasks)
+			);
 		}
 	}]);
 
@@ -52514,7 +52513,7 @@ exports.default = Opportunity;
 /* 322 */
 /***/ (function(module, exports) {
 
-module.exports = {"title":"","area":[],"labName":"","labId":"","pi":"","supervisor":"","projectDescription":"","undergradTasks":"","opens":null,"closes":null,"startDate":"","minSemesters":0,"minHours":0,"maxHours":0,"qualifications":"","minGPA":0,"requiredClasses":[],"questions":[],"yearsAllowed":[],"spots":0}
+module.exports = {"title":"","area":[],"labName":"","labId":"","pi":"","supervisor":"","projectDescription":"","undergradTasks":"","opens":null,"closes":null,"startDate":"","minSemesters":0,"minHours":0,"maxHours":0,"qualifications":"","minGPA":0,"requiredClasses":[],"questions":[],"yearsAllowed":[],"additonalInformation":"","spots":0}
 
 /***/ }),
 /* 323 */
@@ -53302,6 +53301,16 @@ var OpportunityPage = function (_Component) {
                                             'p',
                                             null,
                                             this.state.opportunity.labDescription
+                                        ),
+                                        _react2.default.createElement(
+                                            'h5',
+                                            null,
+                                            'Additional Information:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'p',
+                                            null,
+                                            this.state.opportunity.additionalInformation
                                         )
                                     )
                                 ),
@@ -53500,6 +53509,16 @@ var OpportunityPage = function (_Component) {
                                             'p',
                                             null,
                                             this.state.opportunity.labDescription && !this.state.opportunity.ghostPost ? this.state.opportunity.labDescription : "No lab info available."
+                                        ),
+                                        _react2.default.createElement(
+                                            'h5',
+                                            null,
+                                            'Additional Information:'
+                                        ),
+                                        _react2.default.createElement(
+                                            'p',
+                                            null,
+                                            this.state.opportunity.labDescription
                                         )
                                     ),
                                     _react2.default.createElement(
@@ -53840,6 +53859,7 @@ var CreateOppForm = function (_React$Component) {
                 minGPA = _this$state.minGPA,
                 minHours = _this$state.minHours,
                 maxHours = _this$state.maxHours,
+                additionalInformation = _this$state.additionalInformation,
                 opens = _this$state.opens,
                 closes = _this$state.closes,
                 labName = _this$state.labName,
@@ -53872,6 +53892,7 @@ var CreateOppForm = function (_React$Component) {
                 minGPA: minGPA,
                 minHours: minHours,
                 maxHours: maxHours,
+                additionalInformation: additionalInformation,
                 opens: opens,
                 closes: closes,
                 labName: labName,
@@ -53928,6 +53949,7 @@ var CreateOppForm = function (_React$Component) {
             closes: (0, _moment2.default)().add(365, 'days'),
             labName: '',
             supervisor: '',
+            additionalInformation: '',
             numQuestions: 0,
             titleIsValid: false,
             tasksAreValid: false,
@@ -54181,6 +54203,8 @@ var CreateOppForm = function (_React$Component) {
                 this.setState({ minHours: event.target.value });
             } else if (event.target.name === "max") {
                 this.setState({ maxHours: event.target.value });
+            } else if (event.target.name === "additional") {
+                this.setState({ additionalInformation: event.target.value });
             }
         }
     }, {
@@ -54683,6 +54707,29 @@ var CreateOppForm = function (_React$Component) {
                                                 null,
                                                 'Protein Classification'
                                             )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('textarea', { className: 'column column-90',
+                                    placeholder: 'Additional Information',
+                                    name: 'additional', type: 'text', value: this.state.additionalInformation,
+                                    onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-additional', className: 'column column-5 info-icon',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-additional', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Include any other relevant information to your opportunity not already described in the form.'
                                         )
                                     )
                                 )
@@ -59006,6 +59053,7 @@ var EditOppForm = function (_React$Component) {
                 labName = _this$state.labName,
                 supervisor = _this$state.supervisor,
                 numQuestions = _this$state.numQuestions,
+                additionalInformation = _this$state.additionalInformation,
                 result = _this$state.result;
 
             //makes sure all the fields that are required are valid
@@ -59041,7 +59089,8 @@ var EditOppForm = function (_React$Component) {
                 closes: closes,
                 labName: labName,
                 supervisor: supervisor,
-                numQuestions: numQuestions
+                numQuestions: numQuestions,
+                additionalInformation: additionalInformation
             }).then(function (result) {
                 //access the results here....
                 _this.setState({ submit: "Submitted!" });
@@ -59092,6 +59141,7 @@ var EditOppForm = function (_React$Component) {
             closes: (0, _moment2.default)().add(365, 'days'),
             labName: '',
             supervisor: '',
+            additionalInformation: '',
             numQuestions: 0,
             titleIsValid: false,
             tasksAreValid: false,
@@ -59161,6 +59211,8 @@ var EditOppForm = function (_React$Component) {
                     if (response.closes) _this2.setState({ closes: closeDate });
                     if (response.labName) _this2.setState({ labName: response.labName });
                     if (response.supervisor) _this2.setState({ supervisor: response.supervisor });
+                    if (response.additionalInformation) _this2.setState({ additionalInformation: response.additionalInformation });
+                    console.log(response.additionalInformation);
                 }
             });
         }
@@ -59295,27 +59347,25 @@ var EditOppForm = function (_React$Component) {
     }, {
         key: 'createGpaOptions',
         value: function createGpaOptions() {
-            if (this.state.minGPA != '') {
-                var options = [];
-                for (var i = 25; i <= 43; i++) {
-                    options.push(_react2.default.createElement(
-                        'option',
-                        { key: i, value: (i / 10).toString() },
-                        (i / 10).toString()
-                    ));
-                }
-                return _react2.default.createElement(
-                    'select',
-                    { name: 'gpa', className: 'gpa-select column column-90', value: this.state.minGPA,
-                        onChange: this.handleChange },
-                    _react2.default.createElement(
-                        'option',
-                        { key: '', value: '' },
-                        'Select Minimum GPA'
-                    ),
-                    options
-                );
+            var options = [];
+            for (var i = 25; i <= 43; i++) {
+                options.push(_react2.default.createElement(
+                    'option',
+                    { key: i, value: (i / 10).toString() },
+                    (i / 10).toString()
+                ));
             }
+            return _react2.default.createElement(
+                'select',
+                { name: 'gpa', className: 'gpa-select column column-90', value: this.state.minGPA,
+                    onChange: this.handleChange },
+                _react2.default.createElement(
+                    'option',
+                    { key: '', value: '' },
+                    'Select Minimum GPA'
+                ),
+                options
+            );
         }
     }, {
         key: 'setYears',
@@ -59415,6 +59465,8 @@ var EditOppForm = function (_React$Component) {
                 this.setState({ minHours: event.target.value });
             } else if (event.target.name === "max") {
                 this.setState({ maxHours: event.target.value });
+            } else if (event.target.name === "additional") {
+                this.setState({ additionalInformation: event.target.value });
             }
         }
     }, {
@@ -59917,6 +59969,29 @@ var EditOppForm = function (_React$Component) {
                                                 null,
                                                 'Protein Classification'
                                             )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row input-row optional' },
+                                _react2.default.createElement('textarea', { className: 'column column-90',
+                                    placeholder: 'Additional Information',
+                                    name: 'additional', type: 'text', value: this.state.additionalInformation,
+                                    onChange: this.handleChange }),
+                                _react2.default.createElement(_info2.default, { 'data-tip': true, 'data-for': 'info-additional', className: 'column column-5 info-icon',
+                                    size: 20 }),
+                                _react2.default.createElement(
+                                    _reactTooltip2.default,
+                                    { place: 'right', id: 'info-additional', 'aria-haspopup': 'true', role: 'example' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'info-text' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            null,
+                                            'Include any other relevant information to your opportunity not already described in the form.'
                                         )
                                     )
                                 )
@@ -61908,7 +61983,17 @@ var ApplicationList = function (_Component) {
             var apps = [];
             var k = 0;
             var data = this.state.data;
-            if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
+            console.log("data");
+            console.log(data);
+            var applicationCount = 0;
+            for (var lab in data) {
+                if (data.hasOwnProperty(lab)) {
+                    if (lab.applications) {
+                        applicationCount += lab.applications.length;
+                    }
+                }
+            }
+            if (applicationCount === 0 || data.length === 0 || data === {} || Object.keys(data).length === 0) {
                 return _react2.default.createElement(
                     'div',
                     null,

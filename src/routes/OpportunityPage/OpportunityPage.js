@@ -370,6 +370,9 @@ class OpportunityPage extends Component {
                                         <h5>Lab:</h5>
                                         {/*<a href={this.state.opportunity.labPage}>{this.state.opportunity.labName}</a>*/}
                                         <p>{this.state.opportunity.labDescription}</p>
+                                        <h5>Additional Information:</h5>
+                                        <p>{this.state.opportunity.additionalInformation}</p>
+                                        
     
                                     </div>
                                 </div>
@@ -400,6 +403,7 @@ class OpportunityPage extends Component {
                                         <h6>Courses: </h6>
                                         {this.parseClasses(this.state.opportunity.requiredClasses)}
                                     </div>
+                               
     
     
                                 </div>
@@ -452,6 +456,8 @@ class OpportunityPage extends Component {
                                     {/*If there's no lab description or it's a ghost post*/}
                                     <p>{this.state.opportunity.labDescription && (!this.state.opportunity.ghostPost)? this.state.opportunity.labDescription :
                                         "No lab info available."}</p>
+                                    <h5>Additional Information:</h5>
+                                        <p>{this.state.opportunity.labDescription}</p>
                                 </div>
                         
         
