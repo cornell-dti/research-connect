@@ -11,7 +11,8 @@ import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
 import * as Utils from "../../components/Utils";
-
+import { css } from 'react-emotion';
+import { ClipLoader } from 'react-spinners';
 
 class CreateOppForm extends React.Component {
     constructor(props) {
@@ -46,7 +47,8 @@ class CreateOppForm extends React.Component {
             yearIsValid: false,
             triedSubmitting: false, 
             isButtonDisabled: false, 
-            buttonValue: "Submit New Position" 
+            buttonValue: "Submit New Position",
+            loading: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -366,7 +368,31 @@ class CreateOppForm extends React.Component {
         });
     };
 
+    componentDidMount() {
+        // temporary, breaks things here
+        // this.state.loading = false;
+    }
+
     render() {
+        const override = css`
+        display: block;
+        margin: 0 auto;
+        border-color: red;
+        `;
+
+        if (this.state.loading) {
+            return (
+                <div className='sweet-loading'>
+                    <ClipLoader
+                        className={override}
+                        sizeUnit={"px"}
+                        size={150}
+                        color={'#ff0000'}
+                        loading={this.state.loading} />
+                </div> 
+            );
+        }
+
         return (
             <div >
                 <ProfessorNavbar current={"newopp"}/>

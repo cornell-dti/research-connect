@@ -1,14 +1,26 @@
 .prof-application-box {
+
     padding: 20px 30px;
     margin-top: 15px;
     background-color: white;
-    border: solid #979797 1px;
-    border-radius: 2px;
-    font-weight: 500;
+    border-radius: 5px;
+    font-size: 20px;
     position: relative;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    color: #4A4A4A;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #e0e0e0;
+    }
 
     .left-column {
         text-align: left;
+
+        .name {
+            color: black;
+            font-size: 24px;
+        }
 
         .grad-year {
             margin-bottom: 30px;
@@ -24,14 +36,12 @@
             bottom: 20px;
         }
     }
-}
 
-.prof-application-box:hover {
-    padding: 20px 30px;
-    margin-top: 15px;
-    background-color: #e0e0e0;
-    border: solid #979797 1px;
-    border-radius: 2px;
-    font-weight: 500;
-    cursor: pointer;
+    .cal-icon {
+        color: #417505
+    }
+
+    .info-icon {
+        color: #f5a623;
+    }
 }

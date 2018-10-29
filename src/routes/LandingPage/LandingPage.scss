@@ -518,12 +518,15 @@ section.why-us .students-title{
   letter-spacing: 1px;
 
 }
-.CDTIlogo{
-  width: 25%;
-  margin-bottom: 25px;
-}
-.CDTIlogo:hover{
-  opacity: 0.7
+
+.landingPage {
+  .CDTIlogo{
+    width: 25%;
+    margin-bottom: 25px;
+  }
+  .CDTIlogo:hover{
+    opacity: 0.7
+  }
 }
 
 @media (max-width: 700px) {

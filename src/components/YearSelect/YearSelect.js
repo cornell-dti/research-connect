@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../../routes/Opportunities/Opportunities.scss';
+import './YearSelect.scss';
 
 class YearSelect extends React.Component {
 	constructor(props) {
@@ -26,7 +26,7 @@ class YearSelect extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit} className="filterCheckFields">
+			<div className="year-select-wrapper">
 				<input ref={(node) => {
 					this.freshman = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Freshman" value="Freshman"/>Freshman
@@ -42,7 +42,7 @@ class YearSelect extends React.Component {
 				<input ref={(node) => {
 					this.senior = node
 				}} onChange={this.handleChange.bind(this)} type="checkbox" name="Senior" value="Senior"/>Senior
-			</form>
+			</div>
 		);
 	}
 }

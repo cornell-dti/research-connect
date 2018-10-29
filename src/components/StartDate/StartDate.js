@@ -38,18 +38,18 @@ class StartDate extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit}>
-      <select className="opp-filter-select" value={this.state.currentVal} onChange={this.handleChange.bind(this)}>
-        <option value="Select" >Select</option>
-                <option value="Fall 2017" >Fall 2017</option>
-          <option value="Spring 2018" >Spring 2018</option>
-        <option value="Summer 2018" >Summer 2018</option>
-        <option value="Fall 2018" >Fall 2018</option>
-          <option value="Spring 2019" >Spring 2019</option>
-            <option value="Summer 2019" >Summer 2019</option>
+			<div className="start-date-form">
+        <select className="opp-filter-select" value={this.state.currentVal} onChange={this.handleChange.bind(this)}>
+          <option value="Select" >Select</option>
+                  <option value="Fall 2017" >Fall 2017</option>
+            <option value="Spring 2018" >Spring 2018</option>
+          <option value="Summer 2018" >Summer 2018</option>
+          <option value="Fall 2018" >Fall 2018</option>
+            <option value="Spring 2019" >Spring 2019</option>
+              <option value="Summer 2019" >Summer 2019</option>
 
-      </select>
-			</form>
+        </select>
+			</div>
 		);
 	}
 }

@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../../index.css';
 import {BrowserRouter as Router} from 'react-router-dom'
-
 import OpportunityJSON from './Opportunity.json'
-import '../../routes/Opportunities/Opportunities.scss';
+import './Opportunity.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import Calendar from 'react-icons/lib/fa/calendar-check-o';
+import * as Utils from '../Utils.js';
 
 class Opportunity extends Component {
 	constructor(props) {
@@ -71,23 +71,6 @@ class Opportunity extends Component {
 		document.location.href = ('/opportunity/' + this.props.opId);
 	}
 
-	convertDate(dateString) {
-		let dateObj = new Date(dateString);
-		let month = dateObj.getUTCMonth()+1;
-		let day = dateObj.getUTCDay();
-		let month0 = '';
-		let day0 = '';
-		if (month<10){
-		  month0 = '0';
-		}
-		if (day0<10){
-		  day0='0';
-		}
-
-		return(month0+ (month).toString()+"/"+day0+(day).toString());
-	}
-
-
 	convertDescription(str1, str2){
 		if(str1.length === 0){
 		if (str2.length > 250) {
@@ -100,9 +83,9 @@ class Opportunity extends Component {
 	else{
 		if (str1.length > 250) {
 			str1 = str1.slice(0,250)+"... ";
-			return(<h6>{str1}<span className="viewDetails">View Details</span> </h6>);
+			return(<div className="description-div">{str1}<span className="viewDetails">View Details</span></div>);
 		  } else {
-			return(<h6>{("Description: ")+str1} </h6>);
+			return(<div className="description-div">{("Description: ")+str1} </div>);
 		  }
 	}
 	 
@@ -128,40 +111,36 @@ class Opportunity extends Component {
 			return "Open";
 		}
 	}
-	checkEdit (){
+
+	checkEdit () {
 		let lab = false; 
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
-            .then((response) => {
+      .then((response) => {
 				if (!response || response.data == "none" ||
 				 !response.data || response.data == "undergrad"){
 					return false;  
-				}
-				else {
+				} else {
 					return true; 
 				}	
-
 		}); 
-		
 	}
 
 	render() {
 			return (
-				<div className="application-box" onClick={this.clickRow.bind(this)}>
-				<div className="row opp-box-row">
-					 <div className="column column-80">
-					<h4>{ this.props.title }</h4>
-						<h5>{this.props.labName}</h5>
+				<div className="opportunity-card" onClick={this.clickRow.bind(this)}>
+					<div className="row opp-box-row">
+						<div className="column column-75">
+							<div className="title">{ this.props.title }</div>
+							<div className="lab-name">{this.props.labName}</div>
+						</div>
+
+						<div className="column column-25">
+							<Calendar className="cal"/> <span>Deadline { Utils.convertDate(this.props.closes) }</span>
+							{this.checkPrereqs()}
+						</div>
 					</div>
-					 <div className="column column-20">
-						<Calendar className="cal"/>
-						<span> Deadline { this.convertDate(this.props.closes) }</span>
-						{this.checkPrereqs()}
-					</div>
-				 </div>
-	
+
 					{ this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
-	
-	
 				</div>
 			)
 
