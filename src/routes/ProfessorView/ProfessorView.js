@@ -61,22 +61,22 @@ class ProfessorView extends Component {
 	}
 
 	componentWillMount() {
-    axios.all([
-	    axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
-	    axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
-	  ])
-	  .then(axios.spread((role, apps) => {
-	  	if (role.data !== 'grad' &&
-				  role.data !== 'labtech' &&
-				  role.data !== 'postdoc' &&
-				  role.data !== 'staffscientist' &&
-				  role.data !== 'pi') {
-      	window.location.href = "/";
-      }
-      let opps = Object.keys(apps.data);
-      opps.unshift('All');
-      this.setState({opportunities: opps});
-	  }));
+		axios.all([
+			axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
+			axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
+		])
+		.then(axios.spread((role, apps) => {
+			if (role.data !== 'grad' &&
+					role.data !== 'labtech' &&
+					role.data !== 'postdoc' &&
+					role.data !== 'staffscientist' &&
+					role.data !== 'pi') {
+				window.location.href = "/";
+			}
+			let opps = Object.keys(apps.data);
+			opps.unshift('All');
+			this.setState({opportunities: opps});
+		}));
 	}
 
 	componentDidMount() {
@@ -86,21 +86,21 @@ class ProfessorView extends Component {
 
 	render() {
 		const override = css`
-	    display: block;
-	    margin: 0 auto;
-	    border-color: red;
+			display: block;
+			margin: 0 auto;
+			border-color: red;
 		`;
 
 		if (this.state.loading) {
 			return (
 				<div className='sweet-loading'>
-	        <ClipLoader
-	          className={override}
-	          sizeUnit={"px"}
-	          size={150}
-	          color={'#ff0000'}
-	          loading={this.state.loading} />
-	      </div> 
+					<ClipLoader
+						className={override}
+						sizeUnit={"px"}
+						size={150}
+						color={'#ff0000'}
+						loading={this.state.loading} />
+				</div> 
 			);
 		}
 

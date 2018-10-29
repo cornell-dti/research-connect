@@ -39,9 +39,9 @@ class ProfessorDashboard extends Component {
       }
       let opps = Object.keys(apps.data);
       opps.unshift('All');
-      this.setState({apps: apps});
-      this.setState({opportunities: opps});
-      this.setState({labId: lab.data});
+	      this.setState({apps: apps});
+	      this.setState({opportunities: opps});
+	      this.setState({labId: lab.data});
 	  }));
 	}
 
@@ -59,19 +59,19 @@ class ProfessorDashboard extends Component {
 		if (this.state.loading) {
 			return (
 				<div className='sweet-loading'>
-	        <ClipLoader
-	          className={override}
-	          sizeUnit={"px"}
-	          size={150}
-	          color={'#ff0000'}
-	          loading={this.state.loading} />
-	      </div> 
+		        	<ClipLoader
+			          className={override}
+			          sizeUnit={"px"}
+			          size={150}
+			          color={'#ff0000'}
+			          loading={this.state.loading} />
+		      	</div> 
 			);
 		}
 
 		const newspaper = <Newspaper />;
-		const inbox = <Inbox />
-		const edit = <Edit />
+		const inbox = <Inbox />;
+		const edit = <Edit />;
 
 		return (
 			<div>
