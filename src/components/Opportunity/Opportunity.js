@@ -126,7 +126,6 @@ class Opportunity extends Component {
 	}
 
 	render() {
-		if(!this.checkEdit()){
 			return (
 				<div className="opportunity-card" onClick={this.clickRow.bind(this)}>
 					<div className="row opp-box-row">
@@ -144,7 +143,7 @@ class Opportunity extends Component {
 					{ this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
 				</div>
 			)
-		}
+
 	
 		
 	}
