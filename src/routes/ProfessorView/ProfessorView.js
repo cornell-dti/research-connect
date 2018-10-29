@@ -110,7 +110,7 @@ class ProfessorView extends Component {
 				<Navbar current="professorView"/>
 
 				<div className='professor-view-container'>
-					<div className='row'>
+					<div className='row professor-view-container-row'>
 						<div className="column column-20">
 							<div className="filter-box">
 								<div className="filter-child">

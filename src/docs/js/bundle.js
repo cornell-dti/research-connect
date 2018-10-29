@@ -48445,7 +48445,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".opportunities-wrapper {\n  width: 85%;\n  margin: auto; }\n  .opportunities-wrapper .filter-box {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    margin-bottom: 15px; }\n    .opportunities-wrapper .filter-box .filter-child, .opportunities-wrapper .filter-box label {\n      font-size: 24px;\n      font-weight: 300; }\n    .opportunities-wrapper .filter-box .filter-child {\n      padding: 10px; }\n      .opportunities-wrapper .filter-box .filter-child label {\n        color: black; }\n    .opportunities-wrapper .filter-box hr {\n      height: 3px;\n      background-color: #d0d0d0; }\n  .opportunities-wrapper .opportunities-list-wrapper {\n    margin-left: 20px; }\n  .opportunities-wrapper .search-div-container {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    height: 65px;\n    margin-bottom: 15px;\n    padding: 0 20px; }\n    .opportunities-wrapper .search-div-container input {\n      font-size: 24px;\n      font-family: Roboto;\n      font-weight: 300;\n      height: 100%;\n      border: 0; }\n      .opportunities-wrapper .search-div-container input::placeholder {\n        color: #9B9B9B; }\n", ""]);
+exports.push([module.i, ".opportunities-wrapper {\n  width: 85%;\n  margin: auto; }\n  .opportunities-wrapper .opp-container {\n    margin-bottom: 100px; }\n  .opportunities-wrapper .filter-box {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    margin-bottom: 15px; }\n    .opportunities-wrapper .filter-box .filter-child, .opportunities-wrapper .filter-box label {\n      font-size: 24px;\n      font-weight: 300; }\n    .opportunities-wrapper .filter-box .filter-child {\n      padding: 10px; }\n      .opportunities-wrapper .filter-box .filter-child label {\n        color: black; }\n    .opportunities-wrapper .filter-box hr {\n      height: 3px;\n      background-color: #d0d0d0; }\n  .opportunities-wrapper .opportunities-list-wrapper {\n    margin-left: 20px; }\n  .opportunities-wrapper .search-div-container {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    height: 65px;\n    margin-bottom: 15px;\n    padding: 0 20px; }\n    .opportunities-wrapper .search-div-container input {\n      font-size: 24px;\n      font-family: Roboto;\n      font-weight: 300;\n      height: 100%;\n      border: 0; }\n      .opportunities-wrapper .search-div-container input::placeholder {\n        color: #9B9B9B; }\n", ""]);
 
 // exports
 
@@ -67736,7 +67736,7 @@ var ProfessorView = function (_Component) {
 					{ className: 'professor-view-container' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'row' },
+						{ className: 'row professor-view-container-row' },
 						_react2.default.createElement(
 							'div',
 							{ className: 'column column-20' },
@@ -67871,7 +67871,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".professor-view-container {\n  width: 85%;\n  margin: auto; }\n  .professor-view-container .filter-box {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    margin-bottom: 15px; }\n    .professor-view-container .filter-box .filter-child, .professor-view-container .filter-box label {\n      font-size: 24px;\n      font-weight: 300; }\n    .professor-view-container .filter-box .filter-child {\n      padding: 10px; }\n      .professor-view-container .filter-box .filter-child label {\n        color: black; }\n    .professor-view-container .filter-box hr {\n      height: 3px;\n      background-color: #d0d0d0; }\n  .professor-view-container .application-list-header {\n    font-size: 28px;\n    color: black; }\n  .professor-view-container .application-list-container {\n    margin-top: 15px;\n    margin-left: 20px; }\n\n.sweet-loading {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%); }\n", ""]);
+exports.push([module.i, ".professor-view-container {\n  width: 85%;\n  margin: auto; }\n  .professor-view-container .professor-view-container-row {\n    margin-bottom: 100px; }\n  .professor-view-container .filter-box {\n    background-color: white;\n    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);\n    border-radius: 5px;\n    margin-bottom: 15px; }\n    .professor-view-container .filter-box .filter-child, .professor-view-container .filter-box label {\n      font-size: 24px;\n      font-weight: 300; }\n    .professor-view-container .filter-box .filter-child {\n      padding: 10px; }\n      .professor-view-container .filter-box .filter-child label {\n        color: black; }\n    .professor-view-container .filter-box hr {\n      height: 3px;\n      background-color: #d0d0d0; }\n  .professor-view-container .application-list-header {\n    font-size: 28px;\n    color: black; }\n  .professor-view-container .application-list-container {\n    margin-top: 15px;\n    margin-left: 20px; }\n\n.sweet-loading {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%); }\n", ""]);
 
 // exports
 
