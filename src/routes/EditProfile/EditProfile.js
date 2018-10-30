@@ -47,20 +47,6 @@ class EditProfile extends Component {
         console.log(this.state.relevantCourses);
     }
 
-    gradYearToYear(gY) {
-        if (gY == 2021) {
-            return "Freshman"
-        }
-        else if (gY == 2020) {
-            return "Sophomore"
-        }
-        else if (gY == 2019) {
-            return "Junior"
-        }
-        else {
-            return "Senior"
-        }
-    }
 
     loadInfoFromServer() {
         console.log("Begin loadInfoFromServer")
@@ -72,7 +58,7 @@ class EditProfile extends Component {
                 let skills = info.skills === undefined ? [] : info.skills;
                 this.setState({firstName: info.firstName});
                 this.setState({lastName: info.lastName});
-                this.setState({year: this.gradYearToYear(info.gradYear)});
+                this.setState({year: this.gradYearToString(info.gradYear)});
                 this.setState({major: info.major})
                 this.setState({gpa: info.gpa});
                 this.setState({relevantCourses: info.courses});
