@@ -10,6 +10,7 @@ import EditOpportunityForm from './routes/CreateOpportunityForm/EditOpportunityF
 import InstructorRegister from './routes/InstructorRegister/InstructorRegister'; 
 import StudentRegister from './routes/StudentRegister/StudentRegister';
 import ProfessorView from './routes/ProfessorView/ProfessorView';
+import ProfessorDashboard from './routes/ProfessorDashboard/ProfessorDashboard';
 import ApplicationPage from './routes/ApplicationPage/ApplicationPage';
 import EditProfile from './routes/EditProfile/EditProfile';
 import FacultySearch from './routes/FacultySearch/FacultySearch';
@@ -28,6 +29,7 @@ ReactDOM.render(
             <Route path='/editopp' component={EditOpportunityForm} />
             <Route exact path='/instructorRegister' component={InstructorRegister} />
             <Route exact path='/StudentRegister' component={StudentRegister} />
+            <Route exact path='/professorDashboard' component={ProfessorDashboard} />
             <Route exact path='/professorView' component={ProfessorView} />
             <Route path = '/doc/:id' component={Doc} />
             <Route exact path='/editProfile' component={EditProfile} />
