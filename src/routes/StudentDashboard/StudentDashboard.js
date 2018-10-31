@@ -23,23 +23,23 @@ class StudentDashboard extends Component{
 
   componentWillMount() {
     axios.all([
-      axios.get('/api/role/' +  sessionStorage.getItem('token_id'))/*,
-      axios.get('/api/name/' + sessionStorage.getItem(''))
-      */
+      axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
+      axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
     ])
-    .then(axios.spread((role/*,name*/) => {
+    .then(axios.spread((role, res) => {
       if (role.data !== 'undergrad') {
         window.location.href = "/";
       }
+      let info = res.data[0];
+      this.setState({name: info.firstName});
+      if (this.state.name == '') {
+          console.log("Looks like we didn't load it");
+      } else {
+          console.log("We did load it :D");
+      }
     }));
-    this.setState({name: "placholder"});
-    this.state.loading = false;//using this b/c render() runs after, but not multiple times
-    //this.setState({name: name});
   }
 
-  // for some reason this doesn't work
-  // setState() calls render()
-  // but componentWillMount() does not call setState()
   componentDidMount() {
     this.state.loading = false;
   }
