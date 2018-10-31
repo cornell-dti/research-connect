@@ -246,14 +246,17 @@ app.get('/', function (req, res) {
                                 opportunities[i]["labName"] = thisLab.name;
                                 opportunities[i]["labPage"] = thisLab.labPage;
                                 opportunities[i]["labDescription"] = thisLab.labDescription;
-                                if (opportunities[i]["contactName"] == 'dummy value') {
+                                /**
+                                if (opportunities[i]["contactName"] === 'dummy value') {
                                     console.log("In here");
-                                    var contact = getLabAdmin(opportunities[i]._id);
+                                    let contact = getLabAdmin(opportunities[i]._id);
+                                    //TODO this won't work because getLabAdmin has asynchronous functions, use a promise
                                     //var contact = getLabAdmin();
                                     opportunities[i]["contactName"] = contact;
                                 }
                                 console.log("Here is the contactName: " + opportunities[i]["contactName"]);
                                 console.log("Here is the additional info: " + opportunities[i]["additionalInformation"]);
+                                 */
                             }
                             res.send(opportunities);
                         });
@@ -415,7 +418,8 @@ app.post('/', function (req, res) {
             closes: data.closes,
             areas: data.areas,
             ghostPost: false,
-            ghostEmail: ""
+            ghostEmail: "",
+            datePosted: (new Date()).toISOString(),
         });
         opportunity.save(function (err, response) {
             if (err) {

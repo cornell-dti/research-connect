@@ -233,7 +233,7 @@ const opportunitySchema = new Schema({
     ghostEmail: {type: String, default: "hello@research-connect.com", required: false},
     additionalInformation: {type: String, default: "", required: false},
     contactName: {type: String, default:"N/A"},
-    // ghostLab: {type: String, default: "", required: false},
+    datePosted: {type: String, default: (new Date()).toISOString(), required: false},
 });
 opportunitySchema.index({'$**': 'text'});
 opportunitySchema.pre('validate', function (next) {
