@@ -335,7 +335,8 @@ app.post('/', function (req, res) {
             closes: data.closes,
             areas: data.areas,
             ghostPost: false,
-            ghostEmail: ""
+            ghostEmail: "",
+            datePosted: (new Date()).toISOString(),
         });
         opportunity.save(function (err, response) {
             if (err) {
