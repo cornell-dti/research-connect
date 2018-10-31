@@ -87,27 +87,34 @@ function roleToInt (role){
     }
 }
 
-function getLabAdmin (){
-    //console.log("The id we are working with is: "+oppId);
-    labModel.find({}, function(lab,err){
-        if (!err) {
+function getLabAdmin (oppId){
+    console.log("The id we are working with is: "+oppId);
+    labModel.find({opportunities:mongoose.Types.ObjectId(oppId)},function(err,lab){
+        if (lab != null) {
             console.log("The lab is not null");
             var admins = [];
             for (var i = 0; i<lab.length;i++){
-                admins.push(lab[i]);
+                console.log("This lab is: "+lab[i]);
+                for (var j = 0; j<lab[i].labAdmins.length; j++){
+                    admins.push(lab[i].labAdmins[j]);
+                }
             }
-            console.log("our labs are: "+admins);
             var maximum = "";
             var maxStatus = "";
             for(var i = 0; i<admins.length; i++){
-                labAdministratorModel.findOne({netId:admins[i]}, function(ad,err2){
-                    var r = ad['role'];
-                    if (roleToInt(r) > roleToInt(maxStatus)){
-                        maximum = ad['netId'];
-                        maxStatus = r;
-                    }
-                    if (i >= admins.length-1){
-                        return maximum;
+                //console.log("We are working with netid: "+admins[i]);
+                labAdministratorModel.findOne({netId:admins[i]}, function(err2,ad){
+                    if (ad!=null){
+                        console.log("Ad is not null");
+                        var r = ad['role'];
+                        if (roleToInt(r) > roleToInt(maxStatus)){
+                            maximum = ad['netId'];
+                            maxStatus = r;
+                        }
+                        if (i >= admins.length-1){
+                            console.log("Here maximum is this: "+maximum);
+                            return maximum;
+                        }
                     }
                 });
             }
@@ -228,8 +235,8 @@ app.get('/', function (req, res) {
                                 debug(Object.getOwnPropertyNames(opportunities[i]));
                                 if (opportunities[i]["contactName"] == 'dummy value'){
                                     console.log("In here");
-                                    //var contact = getLabAdmin(opportunities[i]._id);
-                                    var contact = getLabAdmin();
+                                    var contact = getLabAdmin(opportunities[i]._id);
+                                    //var contact = getLabAdmin();
                                     opportunities[i]["contactName"] = contact;
                                 }
                                 console.log("Here is the contactName: "+opportunities[i]["contactName"]);
