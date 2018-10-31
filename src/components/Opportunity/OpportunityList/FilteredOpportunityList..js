@@ -19,29 +19,20 @@ class OpportunityList extends Component {
         }
       }
       if (tempCount == 1) {
-        countString = "Here is one opportunity"
+        countString = "Here is a top opportunity for you"
       } else{
         countString = "Here are " + tempCount.toString() +" good opportunities for you"
       }
       return(countString);
     }
 
-
-    render() {
+    filterOpps(opp){
       axios.get('/api/undergrads/' + (sessionStorage.getItem('token_id')))
       .then(res => {
           let info = res.data[0];
-          let uGradSkills = info.skills === undefined ? [] : info.skills;
           let uGradYear =  Utils.gradYearToString(info.gradYear);
           let uGradMajor = info.major;
           let uGradGPA = info.gpa;
-          let uGradCourses = info.courses;
-          let netId = info.netId;
-          
-
-        let oppNodes = this.props.data.map(opp => {
-        /*These variables will limit what filters are applicable based on year, minGPA, major, etc. Each filter will be false 
-        if the filter limits all opportunities and true otherwise*/
         let hasOptionsYear = true;
         let hasOptionsCS = true;
         let hasOptionsBio = true; 
@@ -53,29 +44,19 @@ class OpportunityList extends Component {
           {
             hasOptionsYear = false;
           }
-          /**
-           * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-           * and also checks to see if this opportunity is in the cs area.
-           * */
-        
           if ((uGradMajor === "Computer Science" && opp.areas.indexOf("Computer Science") == -1)){
             hasOptionsCS = false; 
           } 
           if (
-            (bioSelected && opp.areas.indexOf("Biology") != -1)) {
+            (uGradMajor === "Biology" && opp.areas.indexOf("Biology") != -1)) {
               hasOptionsBio = false;
           }
-          if ((minGPA!=null)&&(minGPA < opp.minGPA)){
-              willShow = false;
+          if ((uGradGPA < opp.minGPA)){
+              hasMinGPA = false;
           }
-          if ((season!=null)&&((season!=opp.startSeason) || (year!=opp.startYear))){
-              willShow = false;
-          }
-        });
-          if (willShow){
+          if (hasMinGPA && (hasOptionsBio||hasOptionsCS)&&hasOptionsYear){
             return (
               <Opportunity
-                filteredOptions={this.props.filteredOptions }
                 key={ opp['_id'] }
                 title={ opp.title }
                 area={ opp.areas }
@@ -104,16 +85,18 @@ class OpportunityList extends Component {
               )
           }
       
-
+        });
+    }
+    render() {
+      //FIX THIS!!!
+      let oppNodes = this.props.data.map(opp => {
+      
 
         });
         let nodeCount = this.countNodes(oppNodes);
-        let searchCrit = this.props.searching ? <p>{nodeCount} matching your search criteria.</p> : <span></span>;
+     
         return (
-          <div>
             <div className="node-list-div">
-              { searchCrit }
-              </div>
               { oppNodes }
           </div>
 
