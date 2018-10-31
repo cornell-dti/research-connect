@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack -p --progress --config webpack.config.prod.js",
-    "start": "./node_modules/.bin/webpack --progress --watch",
+    "build": "webpack -p --progress --config webpack.config.prod.js",
+    "start": "webpack --progress --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
