@@ -34,7 +34,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1",
+    "concurrently": "^3.6.1",
     "nodemon": "^1.18.5"
   },
   "engines": {
@@ -45,7 +45,7 @@
     "build:client": "cd src && npm run build",
     "heroku-postbuild": "npm run build:client",
     "start": "node server.js",
-    "start:dev": "./node_modules/.bin/concurrently \"cd src && npm start\" \"set DEBUG=server:app && ./node_modules/.bin/nodemon server.js\"",
-    "start:dev-verbose": "./node_modules/.bin/concurrently \"cd src && npm start\" \"set DEBUG=* && ./node_modules/.bin/nodemon server.js\""
+    "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
+    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\""
   }
 }
