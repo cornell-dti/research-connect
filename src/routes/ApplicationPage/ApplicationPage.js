@@ -73,7 +73,15 @@ class ApplicationPage extends Component {
 		}
 		return res;
 	}
-
+	getNoGPA(gpa)
+	{
+		if (gpa === 5.0){
+			return "No GPA";
+		}
+		else {
+			return gpa;
+		}
+	}
 	renderTranscript() {
 		console.log("transcriptid: " + this.state.transcriptId);
 		if (!this.state.transcriptId) {
@@ -225,7 +233,7 @@ class ApplicationPage extends Component {
 
 								<div className="app-qual-section">
 									<h6 className="header">GPA</h6>
-									{ this.state.application.gpa }
+									{ this.getNoGPA(this.state.application.gpa) }
 								</div>
 
 								<hr/>

@@ -68023,6 +68023,9 @@ var ApplicationList = function (_Component) {
 				for (var opp in data) {
 					for (var app in data[opp].applications) {
 						var curApp = data[opp].applications[app];
+						if (curApp.gpa == 5.0) {
+							curApp.gpa = "No GPA";
+						}
 						var curOpp = data[opp].opportunity;
 						if (curApp !== undefined) {
 							apps.push(_react2.default.createElement(_ApplicationBox2.default, {
@@ -69253,6 +69256,15 @@ var ApplicationPage = function (_Component) {
 			return res;
 		}
 	}, {
+		key: 'getNoGPA',
+		value: function getNoGPA(gpa) {
+			if (gpa === 5.0) {
+				return "No GPA";
+			} else {
+				return gpa;
+			}
+		}
+	}, {
 		key: 'renderTranscript',
 		value: function renderTranscript() {
 			console.log("transcriptid: " + this.state.transcriptId);
@@ -69502,7 +69514,7 @@ var ApplicationPage = function (_Component) {
 										{ className: 'header' },
 										'GPA'
 									),
-									this.state.application.gpa
+									this.getNoGPA(this.state.application.gpa)
 								),
 								_react2.default.createElement('hr', null),
 								_react2.default.createElement(

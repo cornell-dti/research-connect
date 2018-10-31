@@ -71,7 +71,7 @@ class ApplicationList extends Component {
 
 				let minGPA = filter.gpaSelect.val;
 
-				if (minGPA === undefined || minGPA <= application.gpa) {
+				if (minGPA === undefined ||minGPA <= application.gpa) {
 					return this.coursesSatisfied(application.courses, filter.courses) &&
 						  	 this.skillsSatisfied(application.skills, filter.skills);
 				}
@@ -92,6 +92,9 @@ class ApplicationList extends Component {
 			for (let opp in data) {
 				for (let app in data[opp].applications) {
 					let curApp = data[opp].applications[app];
+					if (curApp.gpa == 5.0){
+						curApp.gpa = "No GPA"; 
+					}
 					let curOpp = data[opp].opportunity;
 					if (curApp !== undefined) {
 						apps.push(
