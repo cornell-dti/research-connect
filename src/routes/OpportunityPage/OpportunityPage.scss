@@ -1,158 +1,160 @@
-.cover-letter{
-  min-height: 200px;
-}
+.opportunities-page-wrapper {
 
-.opportunityListing {
-  width: 80%;
-  background-color: #f6f6f6;
-  /*background-image: url('writing-picture.jpg');*/
-  margin-left: 10%;
-  padding: 0px;
-  padding-left: 10px;
-
-}
-.opportunities-page-wrapper{
-  margin-top: 80px;
-}
-.row .title-box,.row .about-box,.row .qualifications{
-  background-color: white;
-  border: solid #979797 1px;
-  border-radius: 2px;
-
-}
-.first-row{
-
-    height: 300px;
-}
-
-.row .title-container, .row .about-box{
-  margin-top: 40px;
-  width: 100%;
-}
-.row .title-box{
-  display: flex;
-  flex-direction: row;
-  padding: 30px;
-  margin-top: 0px;
-}
-.row .qualifications{
-  margin-top: 40px;
-  margin-left: 30px;
-  height: 600px;
-}
-.about-box{
-  padding: 30px;
-
-}
-.about-box h5{
-    color: #0b0b0b;
-}
-.row .column h5{
-  font-weight: 700;
-  padding-left: 0px;
-}
-.row .column h4{
-  font-weight: 700;
-  padding-left: 0px;
-}
-.title-first-col{
-  width: 72%;
-
-}
-.title-second-col{
- text-align: right;
-
-}
-.opp-box-row{
-  padding: 10px;
-  padding-bottom: 0px;
-}
-.row .title-box h6{
-  margin-bottom: 0px;
-  padding-bottom: 5px;
-  letter-spacing: 1px;
-}
-.qual-title{
-  background-color: #b31b1b;
-  width: 100%;
-  text-align: center;
-  color: white;
-  margin-bottom: 0px;
-  padding: 10px;
-
-}
-.row .qual-title h5{
-  font-weight: 300;
-  margin-bottom: 0px;
-}
-.row .qualifications hr{
-  margin-top: 0px;
-}
-.row .qualifications h6{
+  width: 90%;
+  margin: auto;
+  margin-top: 220px;
   font-size: 20px;
-  font-weight: bold;
-  color: #0b0b0b;
-  font-size: 1.6rem;
-  margin-bottom: 5px;
-}
-.row .qualifications ul{
-  margin-bottom: 0px;
-  margin-left: 30px;
-  list-style: none;
-}
-.qualifications p{
-  margin-left: 30px;
-}
-.row .column .button{
-  background-color: #b31b1b;
-}
-.qualifications li::before {content: "•"; color: #b31b1b;
-  display: inline-block; width: 1em;
-  margin-left: -1em}
+  color: black;
 
-.opportunities-page-wrapper .button{
-  background-color: #b31b1b;
-  border-color:#b31b1b;
+  .wallpaper {
+    background: url('../../images/wallpaper-bg.png');
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 62px;
+    z-index: -1;
+  }
+
+  .opp-details-column {
+    flex: 0 0 69%;
+  }
+
+  .opportunity-row {
+    margin-bottom: 100px;
+  }
+
+  .opp-title-card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    height: 165px;
+    padding: 40px 30px;
+    margin-bottom: 40px;
+
+    .right-column {
+      text-align: right;
+    }
+
+    .button {
+      margin-right: 20px;
+    }
+  }
+
+  .opp-details-card {
+
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    padding: 30px;
+    width: 100%;
+    margin-bottom: 40px;
+
+    .opp-details-section {
+      margin-bottom: 20px;
+    }
+  }
+
+  .opp-application-box {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    padding: 30px;
+
+    .submit-button-div {
+      text-align: center;
+    }
+  }
+
+  .opp-qualifications {
+
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    margin-top: 80px;
+    margin-left: 45px;
+
+    h6 {
+      color: #0b0b0b;
+      margin-bottom: 5px;
+    }
+
+    ul {
+      margin-bottom: 0;
+      list-style: none;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    li::before {
+      content: "•"; color: #b31b1b;
+      display: inline-block; width: 1em;
+      margin-left: -1em
+    }
+
+    .opp-qual-title {
+      background-color: #b31b1b;
+      width: 100%;
+      text-align: center;
+      color: white;
+      margin-bottom: 0px;
+      padding: 10px;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .opp-qual-section {
+      padding: 10px;
+    }
+
+    .greenCheck {
+      color: #417505;
+    }
+
+    .cross {
+      color: gray;
+    }
+
+    hr {
+      margin: 0;
+    }
+
+    .no-margin {
+      margin: 0;
+    }
+
+    .red-link {
+      color: #B31B1B;
+    }
+
+    .resume-link {
+      cursor: pointer;
+    }
+  }
+
+  .header {
+    color: black;
+    font-size: 24px;
+    font-weight: bolder;
+  }
+
+  .button {
+    background-color: #b31b1b;
+    color: white;
+    border-color: #b31b1b;
+    height: 54px;
+    width: 219px;
+    line-height: 54px;
+    font-size: 14px;
+    font-weight: 300;
+  }
 }
-.opportunities-page-wrapper .button:hover{
-  background-color: #606c76;
-  border-color:#606c76;
-  color: white;
-}
-.row .qual-section{
-  padding: 10px;
-}
-.about-box p{
-  font-size: 15px;
-  margin-bottom: 5px;
-}
-.application-box textarea{
-  resize: none;
-}
-.application-box textarea:focus{
-  border-color:#b31b1b;
-}
-.application-box{
-  padding:30px;
-}
-.row .column{
-  padding: 0px;
-}
-.apply-button{
-  width: 100%;
-}
-.application-box  .app-error-message{
-  color: white;
-  text-align: center;
-  border: 1px #b31b1b solid;
-  border-radius: 5px;
-  background-color: #b31b1b;
-  padding: 7px;
-  margin-bottom: 5px;
-  margin-top: 10px;
-}
-.error-div{
-  align-items: center;
-  display: inline;
-  cursor: auto;
+
+.opportunity-lab {
+
+  .cross, .greenCheck {
+    display: none;
+  }
 }

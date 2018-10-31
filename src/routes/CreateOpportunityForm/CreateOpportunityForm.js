@@ -38,6 +38,7 @@ class CreateOppForm extends React.Component {
             closes: moment().add(365, 'days'),
             labName: '',
             supervisor: '',
+            additionalInformation: '',
             numQuestions: 0,
             titleIsValid: false,
             tasksAreValid: false,
@@ -272,6 +273,9 @@ class CreateOppForm extends React.Component {
         } else if (event.target.name === "max") {
             this.setState({maxHours: event.target.value});
         }
+        else if (event.target.name === "additional"){
+            this.setState({additionalInformation: event.target.value})
+        }
 
 
     }
@@ -300,7 +304,7 @@ class CreateOppForm extends React.Component {
         this.setState({triedSubmitting: true});
         e.preventDefault();
         // get our form data out of state
-        const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, result} = this.state;
+        const {netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result} = this.state;
 
         //makes sure all the fields that are required are valid
         if (!(this.state.titleIsValid &&
@@ -328,6 +332,7 @@ class CreateOppForm extends React.Component {
             minGPA,
             minHours,
             maxHours,
+            additionalInformation, 
             opens,
             closes,
             labName,
@@ -339,8 +344,8 @@ class CreateOppForm extends React.Component {
                 this.setState({submit: "Submitted!"});
                 this.setState({
                     isButtonDisabled: true
-                })
-                this.setState({buttonValue: "Submitted!"})
+                });
+                this.setState({buttonValue: "Submitted!"});
                 function sleep(time) {
                     return new Promise((resolve) => setTimeout(resolve, time));
                 }
@@ -640,6 +645,22 @@ class CreateOppForm extends React.Component {
                                 </ReactTooltip>
                             </div>
 
+                             <div className="row input-row optional">
+                                <textarea className="column column-90"
+                                          placeholder="Additional Information"
+                                          name="additional" type="text" value={this.state.additionalInformation}
+                                          onChange={this.handleChange}/>
+
+                                <InfoIcon data-tip data-for="info-additional" className="column column-5 info-icon"
+                                          size={20}/>
+                                <ReactTooltip place='right' id='info-additional' aria-haspopup='true' role='example'>
+                                <div className="info-text">
+                                        <span>Include any other relevant information to your opportunity not already described in the form.</span>
+
+                                    </div>
+
+                                </ReactTooltip>
+                            </div>
 
                             <div className="date-pick-container ">
                                 <label className="label-inline">Open Application Window: </label>

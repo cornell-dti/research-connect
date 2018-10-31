@@ -39,9 +39,9 @@ class ProfessorDashboard extends Component {
       }
       let opps = Object.keys(apps.data);
       opps.unshift('All');
-      this.setState({apps: apps});
-      this.setState({opportunities: opps});
-      this.setState({labId: lab.data});
+	      this.setState({apps: apps});
+	      this.setState({opportunities: opps});
+	      this.setState({labId: lab.data});
 	  }));
 	}
 
@@ -71,8 +71,8 @@ class ProfessorDashboard extends Component {
 		}
 
 		const newspaper = <Newspaper />;
-		const inbox = <Inbox />
-		const edit = <Edit />
+		const inbox = <Inbox />;
+		const edit = <Edit />;
 
 		return (
 			<div>

@@ -1,5 +1,5 @@
 @import url('./node_modules/milligram/dist/milligram.css');
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i');
 
 html {
   position: relative;
@@ -10,6 +10,7 @@ body {
   margin: 0 0 175px 0;
   padding: 0;
   font-family: "Roboto";
+  font-weight: 300;
   background-color: #f6f6f6;
   margin-bottom: 250px;
 }
@@ -29,4 +30,8 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.row .column {
+  padding: 0;
 }

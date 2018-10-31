@@ -16,6 +16,7 @@ class ApplicationBox extends Component {
 	}
 
 	render() {
+		console.log('' === this.props.data.status);
 		return (
 			<div className="prof-application-box" onClick={this.clickRow.bind(this)} style={{ display: this.props.show ? "" : "none" }}>
 				<div className="row">
@@ -29,7 +30,10 @@ class ApplicationBox extends Component {
 
 					<div className="column right-column">
 						<div className="status">
-							<Info style={{ verticalAlign: 'top'}} className="info-icon" /> Status: { Utils.capitalizeFirstLetter(this.props.data.status) }</div>
+							<Info style={{ verticalAlign: 'top'}} className="info-icon" /> Status: { 
+								this.props.data.status ? Utils.capitalizeFirstLetter(this.props.data.status) : 'Applied'
+							}
+						</div>
 						<div className="date-applied">
 							<Calendar style={{ verticalAlign: 'text-top'}} className="cal-icon" /> Date Applied: { Utils.convertDate(this.props.data.timeSubmitted) }
 						</div>

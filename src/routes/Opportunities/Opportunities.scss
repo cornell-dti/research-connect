@@ -3,6 +3,10 @@
   width: 85%;
   margin: auto;
 
+  .opp-container {
+    margin-bottom: 100px;
+  }
+
   .filter-box {
     
     background-color: white;
@@ -13,7 +17,7 @@
     
     .filter-child, label {
       font-size: 24px;
-      font-weight: normal;
+      font-weight: 300;
     }
 
     .filter-child {
@@ -46,6 +50,7 @@
     input {
       font-size: 24px;
       font-family: Roboto;
+      font-weight: 300;
       height: 100%;
       border: 0;
 
