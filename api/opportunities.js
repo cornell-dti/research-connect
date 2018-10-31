@@ -87,12 +87,16 @@ function roleToInt (role){
     }
 }
 
-function getLabAdmin (oppId){
-    "use strict";
-    console.log("The id we are working with is: "+oppId);
-    labModel.findOne({opportunities:{$eq:oppId}}, function(lab,err){
-        if (lab != null) {
-            var admins = lab["labAdmins"];
+function getLabAdmin (){
+    //console.log("The id we are working with is: "+oppId);
+    labModel.find({}, function(lab,err){
+        if (!err) {
+            console.log("The lab is not null");
+            var admins = [];
+            for (var i = 0; i<lab.length;i++){
+                admins.push(lab[i]);
+            }
+            console.log("our labs are: "+admins);
             var maximum = "";
             var maxStatus = "";
             for(var i = 0; i<admins.length; i++){
@@ -107,6 +111,8 @@ function getLabAdmin (oppId){
                     }
                 });
             }
+        } else {
+            console.log("We done goofed");
         }
     });
 }
@@ -222,7 +228,8 @@ app.get('/', function (req, res) {
                                 debug(Object.getOwnPropertyNames(opportunities[i]));
                                 if (opportunities[i]["contactName"] == 'dummy value'){
                                     console.log("In here");
-                                    var contact = getLabAdmin(opportunities[i]._id);
+                                    //var contact = getLabAdmin(opportunities[i]._id);
+                                    var contact = getLabAdmin();
                                     opportunities[i]["contactName"] = contact;
                                 }
                                 console.log("Here is the contactName: "+opportunities[i]["contactName"]);
