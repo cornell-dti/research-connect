@@ -67205,6 +67205,11 @@ var StudentRegister = function (_React$Component) {
                     (i / 10).toString()
                 ));
             }
+            options.push(_react2.default.createElement(
+                'option',
+                { key: 50, value: 5.0.toString() },
+                "No GPA"
+            ));
             return _react2.default.createElement(
                 'select',
                 { name: 'GPA', id: 'GPA',
