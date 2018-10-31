@@ -40,7 +40,7 @@ class LandingPage extends Component {
                 console.log(response.data);
                 let endUrl;
                     if (response.data === 'undergrad') {
-                        endUrl = '/opportunities';
+                        endUrl = '/studentDashboard';
                         window.location.href = endUrl;
                     }
                     //'none' means they're not an undergrad or professor
@@ -48,7 +48,7 @@ class LandingPage extends Component {
                         logoutGoogle();
                     }
                     else {
-                        endUrl = '/professorView';
+                        endUrl = '/professorDashboard';
                         window.location.href = endUrl;
                     }
                 })
@@ -85,7 +85,7 @@ class LandingPage extends Component {
             console.log("has registered");
             console.log(hasRegistered);
             if (hasRegistered.data) {
-                window.location.href = '/opportunities';
+                window.location.href = '/studentDashboard';
             }
             else {
                 window.location.href = '/studentRegister';
@@ -113,7 +113,7 @@ class LandingPage extends Component {
             axios.get("/api/hasRegistered/" + response.profileObj.email).then((hasRegistered) => {
                 console.log("registerd? " + hasRegistered);
                 if (hasRegistered.data) {
-                    window.location.href = '/professorView';
+                    window.location.href = '/professorDashboard';
                 }
                 else {
                     window.location.href = '/instructorRegister';

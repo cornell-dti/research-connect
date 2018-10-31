@@ -73,7 +73,7 @@ function roleToInt (role){
     else if (role=='postdoc'){
         return 5;
     }
-    else if (rol==='staffscientists'){
+    else if (role=='staffscientists'){
         return 4;
     }
     else if (role=='labtech'){
@@ -126,7 +126,8 @@ function getLabAdmin (oppId){
 
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
-
+    let sortOrder = req.query.date;
+    console.log("sortOrder is: "+req.query.date);
     //list courses that are prereqs that can be skipped or are the same
     //make sure no spaces inbetween course letters and numbers
     let coursePrereqs = {
@@ -307,6 +308,7 @@ app.post('/', function (req, res) {
     debug("minGPA: " + data.minGPA);
     debug("minHours: " + data.minHours);
     debug("maxHours: " + data.maxHours);
+    debug("additionalInformation: " + data.additionalInformation);
     debug("opens: " + data.opens);
     debug("closes: " + data.closes);
     debug("areas: " + data.areas);
@@ -394,6 +396,7 @@ app.post('/', function (req, res) {
             minGPA: data.minGPA,
             minHours: data.minHours,
             maxHours: maxHours,
+            additionalInformation: data.additionalInformation,
             opens: data.opens,
             closes: data.closes,
             areas: data.areas,
@@ -438,12 +441,12 @@ app.post('/', function (req, res) {
                         replyTo: "acb352@cornell.edu",
                         subject: 'New Research Opportunity Available!',
                         html: 'Hi,<br />' +
-                        'A new opportunity was just posted in an area you expressed interest in. You can apply to it here: http://research-connect.com/opportunity/' + opportunity._id + '<br />' +
+                        'A new opportunity was just posted in an area you expressed interest in. You can apply to it ' +
+                        'under "opportunities" on the Research-Connnect.com website! <br />' +
                         '<br />' +
                         'Thanks,<br />' +
                         'The Research Connect Team<br />'
                     };
-
                     sgMail.send(msg);
                 }
                 debug("finished emailling students");
@@ -482,6 +485,7 @@ app.put('/:id', function (req, res) {
             opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
             opportunity.minHours = req.body.minHours || opportunity.minHours;
             opportunity.maxHours = req.body.maxHours || opportunity.maxHours;
+            opportunity.additionalInformation = req.body.additionalInformation || opportunity.additionalInformation; 
             opportunity.opens = req.body.opens || opportunity.opens;
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;

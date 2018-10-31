@@ -21,7 +21,8 @@ class OpportunityBox extends Component {
   }
 
 	loadOpportunitiesFromServer() {
-		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + getParameterByName("labId", window.location.href))
+        console.log("Deploying loadopportunityfromserver");
+		axios.get('/api/' + this.props.url + '?netId=' + sessionStorage.getItem('token_id') + '&netIdPlain=' + sessionStorage.getItem('netId') + "&labId=" + getParameterByName("labId", window.location.href) + "&date=DESC")
 			.then(res => {
 				this.setState({ data: res.data });
 			})

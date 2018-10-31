@@ -231,8 +231,7 @@ const opportunitySchema = new Schema({
     labName: {type: String, required: false},
     ghostPost: {type: Boolean, default: false, required: false},
     ghostEmail: {type: String, default: "hello@research-connect.com", required: false},
-    contactName: {type: String, default:"N/A"},
-    additionalInformation: {type: String}
+    additionalInformation: {type: String, default: "", required: false}
     // ghostLab: {type: String, default: "", required: false}
 });
 opportunitySchema.index({'$**': 'text'});

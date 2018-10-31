@@ -1,0 +1,19 @@
+.professor-dash-container {
+  
+  width: 85%;
+  margin: auto;
+  min-height: 500px;
+
+  .dashboard-header {
+    font-size: 48px;
+    color: black;
+    margin-bottom: 50px;
+  }
+}
+
+.sweet-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

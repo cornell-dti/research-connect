@@ -1,8 +1,4 @@
-.header{
-  background-color: #b31b1b;
-  width: 100%;
-  height: 50px;
-}
+
 
 .instructor-reg-form{
     margin: 20px;
@@ -10,7 +6,14 @@
     margin-top: 100px;
     margin-left: 15%;
     background-color: #f6f6f6;
+
+    .header{
+      background-color: #b31b1b;
+      width: 100%;
+      height: 50px;
+    }
 }
+
 .instructor-reg-form .left-input{
   width: 50%;
   margin-left: 25%;

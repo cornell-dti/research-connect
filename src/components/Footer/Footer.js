@@ -15,11 +15,20 @@ class Navbar extends Component {
     render() {
         return (
             <div className="footer-all">
-                <p>Made by</p>
-                <a href="http://cornelldti.org/" target="_blank"><img className="CDTIlogo" src={CDTIlogo}
-                                                                      alt="CDTI logo"/></a>
+                <div className="footer-child">Made by</div>
 
-                <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
+                <div className="footer-child">
+                    <a href="http://cornelldti.org/" target="_blank">
+                        <img className="logo" src={CDTIlogo} alt="CDTI logo"/>
+                    </a>
+                </div>
+
+                <div className="footer-child">
+                    <a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">
+                        Report a bug
+                    </a>
+                </div>
+
                 {/*putting this in the footer so window.gapi is not null so we can use window.gapi to log out */}
                 <div style={{display: "none"}}>
                 <GoogleLogin
@@ -28,8 +37,8 @@ class Navbar extends Component {
                     className="signup button"/>
                 </div>
             </div>
-    )
-        ;
+        );
     }
 }
+
 export default Navbar;
