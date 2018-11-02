@@ -46,6 +46,9 @@ class OpportunityList extends Component {
 				let minGPA = filteredOptions.gpaSelect.val;
 				let season = filteredOptions.startDate.season;
 				let year = filteredOptions.startDate.year;
+				let moneySelected = filteredOptions.compensationSelect.Money;
+				let creditSelected = filteredOptions.compensationSelect.Credit;
+				let compensations = opp.compensation;
 
 				if (filteredOptions.searchBar!="" && filteredOptions.clickedEnter){
 					let matches = false
@@ -65,25 +68,33 @@ class OpportunityList extends Component {
 					(seniorSelected && yearsAllowed.indexOf("senior") != -1) ||
 					(!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)))  {
 						willShow = false;
-					}
-					/**
-					 * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-					 * and also checks to see if this opportunity is in the cs area.
-					 * */
-				
-					if (!((csSelected && opp.areas.indexOf("Computer Science") != -1) ||
+				}
+
+				/**
+					* Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
+					* and also checks to see if this opportunity is in the cs area.
+					* */
+				if (!((csSelected && opp.areas.indexOf("Computer Science") != -1) ||
 						(bioSelected && opp.areas.indexOf("Biology") != -1) ||
 						(!csSelected && !bioSelected))) {
 							willShow = false;
+				}
 
-					}
-					if ((minGPA!=null)&&(minGPA < opp.minGPA)){
+				if ((minGPA!=null)&&(minGPA < opp.minGPA)){
 							willShow = false;
-					}
-					if ((season!=null)&&((season!=opp.startSeason) || (year!=opp.startYear))){
+				}
+
+				if ((season!=null)&&((season!=opp.startSeason) || (year!=opp.startYear))){
 							willShow = false;
-					}
-					if (willShow){
+				}
+
+				if (!((moneySelected && compensations.indexOf("pay") != -1) ||
+					(creditSelected && compensations.indexOf("credit") != -1) ||
+					(!moneySelected && !creditSelected)))  {
+						willShow = false;
+				}
+
+				if (willShow){
 						return (
 							<Opportunity
 								filteredOptions={this.props.filteredOptions }
@@ -112,11 +123,10 @@ class OpportunityList extends Component {
 								prereqsMatch={opp.prereqsMatch}
 								spots={ opp.spots }
 								opId={opp._id}/>
-							)
-					}
-
-
+						)
+				}
 				});
+
 				let nodeCount = this.countNodes(oppNodes);
 				let searchCrit = this.props.searching ? <p>{nodeCount} matching your search criteria.</p> : <span></span>;
 				return (
