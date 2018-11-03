@@ -351,13 +351,14 @@ class OpportunityPage extends Component {
 									<div>{this.state.opportunity.labName}</div>
 								</div>
 								<div className="column right-column">
-									{ isLab &&
-									<a className="button" href={"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
-									}
-									{ !isLab &&
+								{ !isLab &&
 									<a className="button" href="#Application">Apply</a>
 									/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
 									}
+									{ isLab &&
+									<a className="button" href={"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
+									}
+									
 								</div>
 							</div>
 							<div className="row">
@@ -386,6 +387,13 @@ class OpportunityPage extends Component {
 										<div>
 											{ this.state.opportunity.minHours ? this.state.opportunity.minHours : "No minimum" }- 
 											{ this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week.
+										</div>
+									</div>
+									<div className="opp-details-section">
+										<div className="header">Compensation</div>
+										<div>
+											{ this.state.opportunity.compensation ? this.state.opportunity.compensation : "No compensation" } 
+											
 										</div>
 									</div>
 									<div className="opp-details-section">

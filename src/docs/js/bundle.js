@@ -53450,18 +53450,18 @@ var OpportunityPage = function (_Component) {
 								_react2.default.createElement(
 									'div',
 									{ className: 'column right-column' },
-									isLab && _react2.default.createElement(
-										'a',
-										{ className: 'button', href: "/EditOpp?Id=" + this.getId() + "/" },
-										'Edit Opportunity'
-									),
 									!isLab && _react2.default.createElement(
 										'a',
 										{ className: 'button', href: '#Application' },
 										'Apply'
 									)
 									/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
-
+									,
+									isLab && _react2.default.createElement(
+										'a',
+										{ className: 'button', href: "/EditOpp?Id=" + this.getId() + "/" },
+										'Edit Opportunity'
+									)
 								)
 							),
 							_react2.default.createElement(
@@ -53542,6 +53542,20 @@ var OpportunityPage = function (_Component) {
 											'-',
 											this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum",
 											' hours a week.'
+										)
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'opp-details-section' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'header' },
+											'Compensation'
+										),
+										_react2.default.createElement(
+											'div',
+											null,
+											this.state.opportunity.compensation ? this.state.opportunity.compensation : "No compensation"
 										)
 									),
 									_react2.default.createElement(
