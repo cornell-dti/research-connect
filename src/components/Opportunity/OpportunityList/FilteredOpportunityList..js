@@ -4,7 +4,7 @@ import * as Utils from '../../Utils.js';
 import Opportunity from '../Opportunity'
 import './OpportunityList.scss'
 
-class OpportunityList extends Component {
+class FilteredOpportunityList extends Component {
 
     constructor(props) {
       super(props);
@@ -89,11 +89,12 @@ class OpportunityList extends Component {
     }
     render() {
       //FIX THIS!!!
+      //Once you get a way to get the request, have a while loop that either goes until oppNodes.length = 5
+      //Or you're out of requests. 
       let oppNodes = this.props.data.map(opp => {
       
 
         });
-        let nodeCount = this.countNodes(oppNodes);
      
         return (
             <div className="node-list-div">
@@ -104,4 +105,4 @@ class OpportunityList extends Component {
     }
 }
 
-export default OpportunityList
+export default FilteredOpportunityList
