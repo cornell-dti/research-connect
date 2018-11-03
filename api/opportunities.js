@@ -87,7 +87,8 @@ function roleToInt (role){
     }
 }
 
-function getLabAdmin (oppId){
+/*
+function getLabAdmin (oppId,opp){
     console.log("The id we are working with is: "+oppId);
     labModel.find({opportunities:mongoose.Types.ObjectId(oppId)},function(err,lab){
         if (lab != null) {
@@ -113,7 +114,7 @@ function getLabAdmin (oppId){
                         }
                         if (i >= admins.length-1){
                             console.log("Here maximum is this: "+maximum);
-                            return maximum;
+                            opp["contactName"] = maximum;
                         }
                     }
                 });
@@ -123,6 +124,7 @@ function getLabAdmin (oppId){
         }
     });
 }
+*/
 
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
@@ -236,9 +238,47 @@ app.get('/', function (req, res) {
                                 debug(Object.getOwnPropertyNames(opportunities[i]));
                                 if (opportunities[i]["contactName"] == 'dummy value'){
                                     console.log("In here");
-                                    var contact = getLabAdmin(opportunities[i]._id);
+                                    //var contact = getLabAdmin(opportunities[i]._id,opportunities[i]);
+
                                     //var contact = getLabAdmin();
-                                    opportunities[i]["contactName"] = contact;
+                                    //opportunities[i]["contactName"] = contact;
+                                    var oppId = opportunities[i]._id;
+                                    labModel.find({opportunities:mongoose.Types.ObjectId(oppId)},function(err,lab){
+                                        if (lab != null) {
+                                            console.log("The lab is not null");
+                                            var admins = [];
+                                            for (var i = 0; i<lab.length;i++){
+                                                console.log("This lab is: "+lab[i]);
+                                                for (var j = 0; j<lab[i].labAdmins.length; j++){
+                                                    admins.push(lab[i].labAdmins[j]);
+                                                }
+                                            }
+                                            var maximum = "";
+                                            var maxStatus = "";
+                                            for(var i = 0; i<admins.length; i++){
+                                                //console.log("We are working with netid: "+admins[i]);
+                                                labAdministratorModel.findOne({netId:admins[i]}, function(err2,ad){
+                                                    if (ad!=null){
+                                                        console.log("Ad is not null");
+                                                        var r = ad['role'];
+                                                        if (roleToInt(r) > roleToInt(maxStatus)){
+                                                            maximum = ad['netId'];
+                                                            maxStatus = r;
+                                                        }
+                                                        if (i >= admins.length-1){
+                                                            console.log("Here maximum is this: "+maximum);
+                                                            opportunities[i]["contactName"] = maximum;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            console.log("We done goofed");
+                                        }
+                                    });
+
+                                } else {
+                                    console.log("Contact names are already in");
                                 }
                                 console.log("Here is the contactName: "+opportunities[i]["contactName"]);
                                 console.log("Here is the additional info: "+opportunities[i]["additionalInformation"]);
