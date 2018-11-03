@@ -84,6 +84,9 @@ class FilteredOpportunityList extends Component {
                 opId={opp._id}/>
               )
           }
+          else {
+              return ""; 
+          }
       
         });
     }
@@ -91,11 +94,16 @@ class FilteredOpportunityList extends Component {
       //FIX THIS!!!
       //Once you get a way to get the request, have a while loop that either goes until oppNodes.length = 5
       //Or you're out of requests. 
-      let oppNodes = this.props.data.map(opp => {
-      
-
-        });
-     
+let opps = loadOpportunitiesFromServer();
+let filteredOpps = []; 
+let x = 0; 
+while (filteredOpps.length <=5 || x < opps.length){
+    let saveOpp = filterOpps (opps[x]); 
+    if (saveOpp != ""){
+        filteredOpps[x] = saveOpp; 
+        x++; 
+    }
+}
         return (
             <div className="node-list-div">
               { oppNodes }
