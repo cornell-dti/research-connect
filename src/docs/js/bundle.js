@@ -5159,37 +5159,55 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+function refreshStorage() {
+    sessionStorage.clear();
+    window.location.href = "/";
+}
+
 //helper function for logoutGoogle
 function tryLoggingOut() {
+    if (!window.gapi || !window.gapi.auth2) {
+        refreshStorage();
+        return;
+    }
     var auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2 != null) {
-        auth2.signOut().then(auth2.disconnect().then(function (e) {
-            sessionStorage.clear();
-            window.location.href = "/";
-        }, function (e) {
-            //auth2.disconnect didn't work...
-            sessionStorage.clear();
-            window.location.href = "/";
-        }));
+    if (auth2) {
+        //sometimes auth2.signout and disconnect cause some obscure error with the google api that is impossbile to debug
+        //with their compiled code, but this workaround seems to wrok...
+        try {
+            refreshStorage();
+            auth2.signOut().then(function (e1) {
+                auth2.disconnect().then(function (e2) {
+                    refreshStorage();
+                }, function (e3) {
+                    //auth2.disconnect didn't work...
+                    refreshStorage();
+                });
+            });
+        } catch (e) {
+            refreshStorage();
+        }
+    } else {
+        refreshStorage();
     }
 }
 
 function logoutGoogle() {
-    if (window.gapi) {
-        tryLoggingOut();
-    } else {
-        //if window.gapi hasn't loaded yet, wait 2 seconds and try again
-        setTimeout(function () {
-            if (window.gapi) {
-                tryLoggingOut();
-            } else {
-                //if it's still not there for some reason, just do the "works half the time" solution
-                console.log("no gapi");
-                sessionStorage.clear();
-                window.location.href = "/";
-            }
-        }, 2000);
-    }
+    setTimeout(function () {
+        if (window.gapi) {
+            tryLoggingOut();
+        } else {
+            //if window.gapi hasn't loaded yet, wait 2 seconds and try again
+            setTimeout(function () {
+                if (window.gapi.auth2) {
+                    tryLoggingOut();
+                } else {
+                    //if it's still not there for some reason, just do the "works half the time" solution
+                    refreshStorage();
+                }
+            }, 2000);
+        }
+    }, 500);
 }
 
 /***/ }),
@@ -73591,7 +73609,7 @@ var LandingPage = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'footer',
-                    { 'class': 'footer-all' },
+                    { className: 'footer-all' },
                     _react2.default.createElement(
                         'ul',
                         null,
