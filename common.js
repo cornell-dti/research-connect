@@ -232,7 +232,7 @@ const opportunitySchema = new Schema({
     ghostPost: {type: Boolean, default: false, required: false},
     ghostEmail: {type: String, default: "hello@research-connect.com", required: false},
     additionalInformation: {type: String, default: "", required: false},
-    // ghostLab: {type: String, default: "", required: false},
+    contactName: {type: String, default:"N/A"},
     datePosted: {type: String, default: (new Date()).toISOString(), required: false},
 });
 opportunitySchema.index({'$**': 'text'});
