@@ -565,6 +565,9 @@ app.get('/:id', function (req, res) {
     debug("id: " + req.params.id);
     verify(req.query.netId, function (tokenNetId) {
         debug("toke net id: " + tokenNetId);
+        if (!req.params || !req.params.id){
+            return res.send("");
+        }
         opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
             if (err) {
                 debug(err);
@@ -572,12 +575,18 @@ app.get('/:id', function (req, res) {
             }
             debug("opportunity below:");
             debug(opportunity);
+            if (!opportunity){
+                return res.send("");
+            }
+            //get all labs, then find the lab that has an opportunity equal to this opportunity's id
+            //TODO convert this into a mongoose query if possible
             labModel.find({}, function (err2, labs) {
                 if (err2) {
                     debug(err);
                     res.send(err);
                     return;
                 }
+                //loop through all labs to find the one whose opportunities field contains the id of this opportunity
                 let labAdmins = [];
                 for (let i = 0; i < labs.length; i++) {
                     let currentLab = labs[i];
@@ -594,6 +603,7 @@ app.get('/:id', function (req, res) {
                 }
                 debug("here");
                 debug(labAdmins);
+                //get the info of one of the lab admins
                 labAdministratorModel.findOne(
                     {
                         $and: [
@@ -601,15 +611,25 @@ app.get('/:id', function (req, res) {
                             {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
                         ]
                     },
+
+                    //in this section, we attach the info of the student who requested this. This is used to fill in the
+                    //qualifications section (I think) on the front-end. This should probably only happen if there is
+                    //some query parameter, but we never got around to doing that. TODO
                     function (err, labAdmin) {
                         debug(labAdmin);
-                        opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
+                        if (!labAdmin){
+                            opportunity.pi = "No lab members found"
+                        }
+                        else {
+                            //TODO how do we know this is the PI? I think ".pi" may be a misleading name.
+                            opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
+                        }
                         undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
                             if (student === undefined) {
                                 opportunity.student = {
-                                    "firstName": "rachel",
-                                    "lastName": "nash",
-                                    "gradYear": 2020,
+                                    "firstName": "John",
+                                    "lastName": "Smith",
+                                    "gradYear": (new Date()).getFullYear() + 1,
                                     "major": "Computer Science",
                                     "gpa": 4.3,
                                     "netId": "rsn55",
