@@ -22,8 +22,12 @@ app.get("/sandbox", function (req, res){
         'The Research Connect Team<br />'
     };
 
-    sgMail.send(msg); //TODO uncomment
-
+    // sgMail.send(msg);
+    undergradModel.findOne({lastName: null}, function(err,data){
+        debug("err data");
+        debug(err);
+        debug(data);
+    });
 
     return res.send();
 });

@@ -116,12 +116,12 @@ class Opportunity extends Component {
 		let lab = false; 
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
       .then((response) => {
-				if (!response || response.data == "none" ||
-				 !response.data || response.data == "undergrad"){
-					return false;  
+				if (!response || response.data === "none" ||
+				 !response.data || response.data === "undergrad"){
+					return false;
 				} else {
-					return true; 
-				}	
+					return true;
+				}
 		}); 
 	}
 

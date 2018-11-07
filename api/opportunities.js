@@ -149,7 +149,7 @@ app.get('/', function (req, res) {
     let token = req.query.netId;
     let urlLabId = req.query.labId;
     let sortOrderObj = {opens: sortOrder};
-    if (token != undefined) {
+    if (token) {
         verify(token, function (undergradNetId) {
             debug("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
