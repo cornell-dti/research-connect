@@ -38,8 +38,9 @@ export function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
         if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-            alert("You were either inactive for too long or visited this page without being signed in. " +
-                "You'll be signed out and taken to the home page. Sign up/in and then come back to this page to view its contents.");
+            alert("You either visited this page without being signed in or were inactive too long. " +
+                "Sign up on the home page and you'll be able to see all the research opportunities available!");
+            window.location.href = "/";
             logoutGoogle();
             return true;
         }

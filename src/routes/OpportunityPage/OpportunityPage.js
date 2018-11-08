@@ -22,7 +22,8 @@ class OpportunityPage extends Component {
 			student: null,
 			coverLetter: '',
 			netId: 'unknown',
-			role: ''
+			role: '',
+			detectedLoggedOut: false,
 		};
 
 		this.parseClasses = this.parseClasses.bind(this);
@@ -49,6 +50,14 @@ class OpportunityPage extends Component {
 		return true;
 	}
 
+	sendToHome(error){
+        if (!this.state.detectedLoggedOut) {
+            Utils.handleTokenError(error);
+            window.location.href = "/test.com";
+            console.log("done");
+            this.setState({detectedLoggedOut: true});
+        }
+	}
 
 	handleChange(key) {
 		let answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers));
@@ -92,7 +101,8 @@ class OpportunityPage extends Component {
 					.then((result) => {
 						console.log(result);
 					}).catch(function (error) {
-					Utils.handleTokenError(error);
+						this.sendToHome(error);
+					// Utils.handleTokenError(error);
 				});
 
 			}
@@ -120,7 +130,7 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
 			});
 		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
@@ -129,7 +139,8 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
+				// Utils.handleTokenError(error);
 			});
 	}
 
@@ -330,7 +341,8 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
+				// Utils.handleTokenError(error);
 			});
 	}
 
