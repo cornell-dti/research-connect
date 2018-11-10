@@ -7,7 +7,7 @@ class NameForm extends React.Component {
     super(props);
     this.state = {
       firstName: '',
-      lastname: ' '
+      lastname: ' ',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -15,11 +15,11 @@ class NameForm extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value});
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.firstname + ' ' + this.state.lastname);
+    alert(`A name was submitted: ${this.state.firstname} ${this.state.lastname}`);
 
     // TODO: form validation
     event.preventDefault();
@@ -29,9 +29,13 @@ class NameForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          First Name: <input type="text" value={this.state.firstname} name="firstname" onChange={this.handleChange} />
+          First Name:
+          {' '}
+          <input type="text" value={this.state.firstname} name="firstname" onChange={this.handleChange} />
           <br />
-          Last Name: <input type="text" value={this.state.lastname} name="lastname" onChange={this.handleChange} />
+          Last Name:
+          {' '}
+          <input type="text" value={this.state.lastname} name="lastname" onChange={this.handleChange} />
         </label>
         <br />
         <input type="submit" value="Submit" />
@@ -39,7 +43,6 @@ class NameForm extends React.Component {
     );
   }
 }
-
 
 
 class App extends Component {
