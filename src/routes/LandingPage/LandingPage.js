@@ -40,7 +40,7 @@ class LandingPage extends Component {
                 console.log(response.data);
                 let endUrl;
                     if (response.data === 'undergrad') {
-                        endUrl = '/opportunities';
+                        endUrl = '/studentDashboard';
                         window.location.href = endUrl;
                     }
                     //'none' means they're not an undergrad or professor
@@ -85,7 +85,7 @@ class LandingPage extends Component {
             console.log("has registered");
             console.log(hasRegistered);
             if (hasRegistered.data) {
-                window.location.href = '/opportunities';
+                window.location.href = '/studentDashboard';
             }
             else {
                 window.location.href = '/studentRegister';
@@ -265,7 +265,7 @@ class LandingPage extends Component {
                 </section>
 
 
-                <footer class="footer-all">
+                <footer className="footer-all">
                     <ul>
                         <li><a href="#"><i className="fa fa-twitter-square"></i></a></li>
                         <li><a href="#"><i className="fa fa-facebook-square"></i></a></li>

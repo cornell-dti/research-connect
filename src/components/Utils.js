@@ -38,8 +38,9 @@ export function handleTokenError(error) {
     if (error.response) {
         console.log(error.response.data);
         if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-            alert("You were either inactive for too long or visited this page without being signed in. " +
-                "You'll be signed out and taken to the home page. Sign up/in and then come back to this page to view its contents.");
+            alert("You either visited this page without being signed in or were inactive too long. " +
+                "Sign up on the home page and you'll be able to see all the research opportunities available!");
+            window.location.href = "/";
             logoutGoogle();
             return true;
         }
@@ -62,38 +63,57 @@ export function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+function refreshStorage() {
+    sessionStorage.clear();
+    window.location.href = "/";
+}
+
 //helper function for logoutGoogle
-function tryLoggingOut(){
+function tryLoggingOut() {
+    if (!window.gapi || !window.gapi.auth2) {
+        refreshStorage();
+        return;
+    }
     const auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2 != null) {
-        auth2.signOut().then(
-            auth2.disconnect().then(function (e) {
-                sessionStorage.clear();
-                window.location.href = "/";
-            }, function (e) {
-                //auth2.disconnect didn't work...
-                sessionStorage.clear();
-                window.location.href = "/"
-            })
-        )
+    if (auth2) {
+        //sometimes auth2.signout and disconnect cause some obscure error with the google api that is impossbile to debug
+        //with their compiled code, but this workaround seems to wrok...
+        try {
+            refreshStorage();
+            auth2.signOut().then(function (e1) {
+                    auth2.disconnect().then(function (e2) {
+                        refreshStorage();
+                    }, function (e3) {
+                        //auth2.disconnect didn't work...
+                        refreshStorage();
+                    })
+                }
+            )
+        }
+        catch (e) {
+            refreshStorage();
+        }
+    }
+    else {
+        refreshStorage();
     }
 }
 
 export function logoutGoogle() {
-    if (window.gapi) {
-        tryLoggingOut();
-    }
-    else {
-        //if window.gapi hasn't loaded yet, wait 2 seconds and try again
-        setTimeout(function () {
-            if (window.gapi) {
-                tryLoggingOut();
-            } else {
-                //if it's still not there for some reason, just do the "works half the time" solution
-                console.log("no gapi");
-                sessionStorage.clear();
-                window.location.href = "/"
-            }
-        }, 2000);
-    }
+    setTimeout(function () {
+        if (window.gapi) {
+            tryLoggingOut();
+        }
+        else {
+            //if window.gapi hasn't loaded yet, wait 2 seconds and try again
+            setTimeout(function () {
+                if (window.gapi.auth2) {
+                    tryLoggingOut();
+                } else {
+                    //if it's still not there for some reason, just do the "works half the time" solution
+                    refreshStorage();
+                }
+            }, 2000);
+        }
+    }, 500);
 }

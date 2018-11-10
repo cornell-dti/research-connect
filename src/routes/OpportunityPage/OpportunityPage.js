@@ -22,7 +22,8 @@ class OpportunityPage extends Component {
 			student: null,
 			coverLetter: '',
 			netId: 'unknown',
-			role: ''
+			role: '',
+			detectedLoggedOut: false,
 		};
 
 		this.parseClasses = this.parseClasses.bind(this);
@@ -49,6 +50,14 @@ class OpportunityPage extends Component {
 		return true;
 	}
 
+	sendToHome(error){
+        if (!this.state.detectedLoggedOut) {
+            Utils.handleTokenError(error);
+            window.location.href = "/test.com";
+            console.log("done");
+            this.setState({detectedLoggedOut: true});
+        }
+	}
 
 	handleChange(key) {
 		let answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers));
@@ -92,7 +101,8 @@ class OpportunityPage extends Component {
 					.then((result) => {
 						console.log(result);
 					}).catch(function (error) {
-					Utils.handleTokenError(error);
+						this.sendToHome(error);
+					// Utils.handleTokenError(error);
 				});
 
 			}
@@ -120,7 +130,7 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
 			});
 		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
@@ -129,7 +139,8 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
+				// Utils.handleTokenError(error);
 			});
 	}
 
@@ -316,6 +327,17 @@ class OpportunityPage extends Component {
 
 	}
 
+	parseCompensation(compensation){
+		if(this.state.opportunity && this.state.opportunity.compensation){
+			if(this.state.opportunity.compensation.indexOf("pay") != -1){
+				if(this.state.opportunity.compensation.indexOf("credit") != -1){ return <div> Credit or pay. </div>; }
+				return <div> Pay only.</div>;
+			}
+			if(this.state.opportunity.compensation.indexOf("credit") != -1){ return <div> Credit only.</div>;}
+		}
+		return <div> None.</div>
+	}
+
 	componentDidMount() {
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
@@ -330,10 +352,10 @@ class OpportunityPage extends Component {
 				}
 			})
 			.catch(function (error) {
-				Utils.handleTokenError(error);
+				this.sendToHome(error);
+				// Utils.handleTokenError(error);
 			});
 	}
-
 
 	render() {
 		const notProvidedMessage = "Not specified";
@@ -385,7 +407,7 @@ class OpportunityPage extends Component {
 									<div className="opp-details-section">
 										<div className="header">Weekly Hours</div>
 										<div>
-											{ this.state.opportunity.minHours ? this.state.opportunity.minHours : "No minimum" }- 
+											{ this.state.opportunity.minHours ? this.state.opportunity.minHours : "No minimum" }-
 											{ this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week.
 										</div>
 									</div>
@@ -404,27 +426,27 @@ class OpportunityPage extends Component {
 									</div>
 								</div>
 							</div>
-							{ 
-							!isLab && 
+							{
+							!isLab &&
 							<div id="Application" className="row opp-application-box">
 								<div className="column">
 									<div className="header">Apply Here</div>
-									{ this.state.opportunity.ghostPost ? 
+									{ this.state.opportunity.ghostPost ?
 										<div>
 											Please email { this.state.opportunity.ghostEmail + " " }
-											with your resume and why you're interested in order to apply. You do not need to take 
+											with your resume and why you're interested in order to apply. You do not need to take
 											any action here.
-										</div> : 
+										</div> :
 										<div>
 											<div className="error-div">
-												{ 
+												{
 													this.state.triedSubmitting && !this.state.submitted ?
-													<p className="app-error-message">Please answer all questions in order to submit.</p> : '' 
+													<p className="app-error-message">Please answer all questions in order to submit.</p> : ''
 												}
 											</div>
-											{ 
+											{
 												!this.state.submitted ? this.printQuestions() :
-												<p>You have applied to this position.</p> 
+												<p>You have applied to this position.</p>
 											}
 										</div>
 									}
