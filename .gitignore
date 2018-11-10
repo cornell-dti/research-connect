@@ -8,7 +8,7 @@ src/node_modules
 
 # production
 /build
-
+bundle.js
 
 # misc
 .DS_Store
