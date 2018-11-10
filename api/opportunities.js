@@ -90,27 +90,29 @@ function roleToInt(role) {
 function getLabAdmin(oppId) {
     console.log("The id we are working with is: " + oppId);
     labModel.find({opportunities: mongoose.Types.ObjectId(oppId)}, function (err, lab) {
-        if (lab != null) {
-            var admins = [];
-            for (var i = 0; i < lab.length; i++) {
+        if (lab) {
+            let admins = [];
+            for (let i = 0; i < lab.length; i++) {
                 console.log("This lab is: " + lab[i]);
-                for (var j = 0; j < lab[i].labAdmins.length; j++) {
+                for (let j = 0; j < lab[i].labAdmins.length; j++) {
                     admins.push(lab[i].labAdmins[j]);
                 }
             }
-            var maximum = "";
-            var maxStatus = "";
-            for (var i = 0; i < admins.length; i++) {
+            let maximum = "";
+            let maxStatus = "";
+            for (let i = 0; i < admins.length; i++) {
                 //console.log("We are working with netid: "+admins[i]);
                 labAdministratorModel.findOne({netId: admins[i]}, function (err2, ad) {
-                    if (ad != null) {
-                        var r = ad['role'];
+                    if (ad) {
+                        let r = ad['role'];
                         if (roleToInt(r) > roleToInt(maxStatus)) {
                             maximum = ad['netId'];
                             maxStatus = r;
                         }
                         if (i >= admins.length - 1) {
-                            return maximum;
+                          console.log("Here maximum is this: "+maximum);
+                          opp["contactName"] = maximum;
+                          return maximum;
                         }
                     }
                 });
@@ -149,7 +151,7 @@ app.get('/', function (req, res) {
     let token = req.query.netId;
     let urlLabId = req.query.labId;
     let sortOrderObj = {opens: sortOrder};
-    if (token != undefined) {
+    if (token) {
         verify(token, function (undergradNetId) {
             debug("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
@@ -239,6 +241,7 @@ app.get('/', function (req, res) {
                                     opportunities[i].yearsAllowed.includes(common.gradYearToString(undergrad1.gradYear))) {
                                     prereqsMatch = true;
                                 }
+                                debug("h");
                                 let thisLab = findLabWithAdmin(labs, opportunities[i].creatorNetId);
                                 //prevent "undefined" values if there's some error
                                 if (thisLab === undefined) thisLab = {name: "", labPage: "", labDescription: ""};
@@ -246,17 +249,54 @@ app.get('/', function (req, res) {
                                 opportunities[i]["labName"] = thisLab.name;
                                 opportunities[i]["labPage"] = thisLab.labPage;
                                 opportunities[i]["labDescription"] = thisLab.labDescription;
-                                /**
-                                if (opportunities[i]["contactName"] === 'dummy value') {
+                                debug(opportunities[i]);
+                                debug(Object.getOwnPropertyNames(opportunities[i]));
+                                if (opportunities[i]["contactName"] === 'dummy value'){
                                     console.log("In here");
-                                    let contact = getLabAdmin(opportunities[i]._id);
-                                    //TODO this won't work because getLabAdmin has asynchronous functions, use a promise
+                                    //var contact = getLabAdmin(opportunities[i]._id,opportunities[i]);
+
                                     //var contact = getLabAdmin();
-                                    opportunities[i]["contactName"] = contact;
+                                    //opportunities[i]["contactName"] = contact;
+                                    let oppId = opportunities[i]._id;
+                                    labModel.find({opportunities:mongoose.Types.ObjectId(oppId)},function(err,lab){
+                                        if (lab) {
+                                            debug("The lab is not null");
+                                            let admins = [];
+                                            for (let i = 0; i<lab.length;i++){
+                                                debug("This lab is: "+lab[i]);
+                                                for (let j = 0; j<lab[i].labAdmins.length; j++){
+                                                    admins.push(lab[i].labAdmins[j]);
+                                                }
+                                            }
+                                            let maximum = "";
+                                            let maxStatus = "";
+                                            for(let i = 0; i<admins.length; i++){
+                                                //console.log("We are working with netid: "+admins[i]);
+                                                labAdministratorModel.findOne({netId:admins[i]}, function(err2,ad){
+                                                    if (ad){
+                                                        debug("Ad is not null");
+                                                        let r = ad['role'];
+                                                        if (roleToInt(r) > roleToInt(maxStatus)){
+                                                            maximum = ad['netId'];
+                                                            maxStatus = r;
+                                                        }
+                                                        if (i >= admins.length-1){
+                                                            debug("Here maximum is this: "+maximum);
+                                                            opportunities[i]["contactName"] = maximum;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            debug("We done goofed");
+                                        }
+                                    });
+
+                                } else {
+                                    console.log("Contact names are already in");
                                 }
-                                console.log("Here is the contactName: " + opportunities[i]["contactName"]);
-                                console.log("Here is the additional info: " + opportunities[i]["additionalInformation"]);
-                                 */
+                                debug("Here is the contactName: "+opportunities[i]["contactName"]);
+                                debug("Here is the additional info: "+opportunities[i]["additionalInformation"]);
                             }
                             res.send(opportunities);
                         });
@@ -566,7 +606,7 @@ app.get('/:id', function (req, res) {
     verify(req.query.netId, function (tokenNetId) {
         debug("toke net id: " + tokenNetId);
         if (!req.params || !req.params.id){
-            return res.send("");
+            return res.send({});
         }
         opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
             if (err) {
@@ -586,7 +626,6 @@ app.get('/:id', function (req, res) {
                     res.send(err);
                     return;
                 }
-                //loop through all labs to find the one whose opportunities field contains the id of this opportunity
                 let labAdmins = [];
                 for (let i = 0; i < labs.length; i++) {
                     let currentLab = labs[i];
