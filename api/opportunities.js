@@ -26,7 +26,7 @@ app.get('/check/:opportunityId', function (req, res) {
     }
 
     opportunityModel.findById(req.params.opportunityId)
-        .skip(skip)
+        .skip(parseInt(skip))
         .limit(parseInt(limit))
         .sort({name: "ascending"})
         .exec(function (err, opportunity) {
@@ -193,7 +193,7 @@ app.get('/', function (req, res) {
                         }
                     }
                     opportunityModel.find(timeRange)
-                        .skip(skip)
+                        .skip(parseInt(skip))
                         .limit(parseInt(limit))
                         .sort({name: "ascending"})
                         .exec(function (err, opportunities) {
@@ -232,7 +232,7 @@ app.get('/', function (req, res) {
                             $gte: new Date()
                         }
                     })
-                        .skip(skip)
+                        .skip(parseInt(skip))
                         .limit(parseInt(limit))
                         .sort(sortOrderObj)
                         .lean()
@@ -352,7 +352,7 @@ app.get('/', function (req, res) {
                 $gte: new Date()
             }
         })
-            .skip(skip)
+            .skip(parseInt(skip))
             .limit(parseInt(limit))
             .sort(sortOrderObj)
             .exec(function (err, opportunities) {
@@ -605,7 +605,7 @@ app.get('/search', function (req, res) {
     }
 
     opportunityModel.find({$text: {$search: req.query.search}})
-        .skip(skip)
+        .skip(parseInt(skip))
         .limit(parseInt(limit))
         .sort({name: "ascending"})
         .exec(function (err, search) {
@@ -660,7 +660,7 @@ app.get('/:id', function (req, res) {
         }
 
         opportunityModel.findById(req.params.id)
-            .skip(skip)
+            .skip(parseInt(skip))
             .limit(parseInt(limit))
             .lean()
             .sort({name: "ascending"})
