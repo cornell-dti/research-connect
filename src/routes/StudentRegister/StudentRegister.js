@@ -135,6 +135,7 @@ class StudentRegister extends React.Component {
         for (let i = 25; i <= 43; i++) {
             options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
         }
+        options.push(<option key={50} value={(5.0).toString()}>{"No GPA"}</option>);
         return (
             <select name="GPA" id="GPA"
                     className={!this.state.GPAValid && this.state.triedSubmitting ? "error gpa-select left-input" : "gpa-select left-input"}

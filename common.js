@@ -92,7 +92,7 @@ const undergradSchema = new Schema({
     major: {type: String},
     secondMajor: {type: String},
     minor: {type: String},
-    gpa: {type: Number, min: 0, max: 4.3},
+    gpa: {type: Number, min: 0, max: 5.0},
     netId: {type: String, required: true},
     email: {type: String},
     courses: {type: [String], required: false},
@@ -219,7 +219,7 @@ const opportunitySchema = new Schema({
     applications: {type: [Schema.Types.Mixed], default: []},
     questions: Schema.Types.Mixed,    //can be empty
     requiredClasses: {type: [String], default: []}, //can be empty
-    minGPA: {type: Number, min: 0, max: 4.3, default: 0}, //0 if no minimum gpa required
+    minGPA: {type: Number, min: 0, max: 5.0, default: 0}, //0 if no minimum gpa required
     minHours: {type: Number, min: 0, max: 500, default: 6}, //can be null, indicating no minimum
     maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
     opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
