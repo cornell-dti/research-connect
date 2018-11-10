@@ -7,10 +7,11 @@ import Error from './components/Error/Error';
 import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import CreateOpportunityForm from './routes/CreateOpportunityForm/CreateOpportunityForm';
 import EditOpportunityForm from './routes/CreateOpportunityForm/EditOpportunityForm';
-import InstructorRegister from './routes/InstructorRegister/InstructorRegister'; 
+import InstructorRegister from './routes/InstructorRegister/InstructorRegister';
 import StudentRegister from './routes/StudentRegister/StudentRegister';
 import ProfessorView from './routes/ProfessorView/ProfessorView';
 import ProfessorDashboard from './routes/ProfessorDashboard/ProfessorDashboard';
+import StudentDashboard from './routes/StudentDashboard/StudentDashboard';
 import ApplicationPage from './routes/ApplicationPage/ApplicationPage';
 import EditProfile from './routes/EditProfile/EditProfile';
 import FacultySearch from './routes/FacultySearch/FacultySearch';
@@ -31,6 +32,7 @@ ReactDOM.render(
             <Route exact path='/StudentRegister' component={StudentRegister} />
             <Route exact path='/professorDashboard' component={ProfessorDashboard} />
             <Route exact path='/professorView' component={ProfessorView} />
+            <Route exact path='/studentDashboard' component={StudentDashboard} />
             <Route path = '/doc/:id' component={Doc} />
             <Route exact path='/editProfile' component={EditProfile} />
             <Route exact path='/facultySearch' component={FacultySearch} />

@@ -66,9 +66,77 @@ app.get('/check/:opportunityId', function (req, res) {
  });
  */
 
+function roleToInt(role) {
+    if (role === 'pi') {
+        return 6;
+    }
+    else if (role === 'postdoc') {
+        return 5;
+    }
+    else if (role === 'staffscientists') {
+        return 4;
+    }
+    else if (role === 'labtech') {
+        return 3;
+    }
+    else if (role === 'grad') {
+        return 2;
+    }
+    else {
+        return 1;
+    }
+}
+
+function getLabAdmin(oppId) {
+    console.log("The id we are working with is: " + oppId);
+    labModel.find({opportunities: mongoose.Types.ObjectId(oppId)}, function (err, lab) {
+        if (lab != null) {
+            var admins = [];
+            for (var i = 0; i < lab.length; i++) {
+                console.log("This lab is: " + lab[i]);
+                for (var j = 0; j < lab[i].labAdmins.length; j++) {
+                    admins.push(lab[i].labAdmins[j]);
+                }
+            }
+            var maximum = "";
+            var maxStatus = "";
+            for (var i = 0; i < admins.length; i++) {
+                //console.log("We are working with netid: "+admins[i]);
+                labAdministratorModel.findOne({netId: admins[i]}, function (err2, ad) {
+                    if (ad != null) {
+                        var r = ad['role'];
+                        if (roleToInt(r) > roleToInt(maxStatus)) {
+                            maximum = ad['netId'];
+                            maxStatus = r;
+                        }
+                        if (i >= admins.length - 1) {
+                            return maximum;
+                        }
+                    }
+                });
+            }
+        } else {
+            console.log("We done goofed");
+        }
+    });
+}
+
 //previously POST /getOpportunitiesListing
 app.get('/', function (req, res) {
-
+    let sortOrder = req.query.date;
+    if (typeof sortOrder === "string") {
+        sortOrder = sortOrder.toLowerCase();
+        if (sortOrder === "asc") {
+            sortOrder = 1;
+        }
+        else {
+            //sortOrder is default descending
+            sortOrder = -1;
+        }
+    }
+    else {
+        sortOrder = -1;
+    }
     //list courses that are prereqs that can be skipped or are the same
     //make sure no spaces inbetween course letters and numbers
     let coursePrereqs = {
@@ -80,6 +148,7 @@ app.get('/', function (req, res) {
 
     let token = req.query.netId;
     let urlLabId = req.query.labId;
+    let sortOrderObj = {opens: sortOrder};
     if (token != undefined) {
         verify(token, function (undergradNetId) {
             debug("here! " + undergradNetId);
@@ -103,7 +172,7 @@ app.get('/', function (req, res) {
                             }
                         }
                     }
-                    opportunityModel.find(timeRange, function (err, opportunities) {
+                    opportunityModel.find(timeRange).sort(sortOrderObj).exec(function (err, opportunities) {
                         for (let i = 0; i < opportunities.length; i++) {
                             opportunities[i]["prereqsMatch"] = true;
                         }
@@ -138,7 +207,12 @@ app.get('/', function (req, res) {
                         closes: {
                             $gte: new Date()
                         }
-                    }).lean().exec(function (err, opportunities) {
+                    }).sort(sortOrderObj).lean().exec(function (err, opportunities) {
+                        debug("length!!!!");
+                        debug(opportunities);
+                        if (!opportunities) {
+                            return res.send({});
+                        }
                         let labs = [];
                         //get all the labs so you have the info to update
                         labModel.find({}, function (labErr, labs2) {
@@ -165,7 +239,6 @@ app.get('/', function (req, res) {
                                     opportunities[i].yearsAllowed.includes(common.gradYearToString(undergrad1.gradYear))) {
                                     prereqsMatch = true;
                                 }
-                                debug("h");
                                 let thisLab = findLabWithAdmin(labs, opportunities[i].creatorNetId);
                                 //prevent "undefined" values if there's some error
                                 if (thisLab === undefined) thisLab = {name: "", labPage: "", labDescription: ""};
@@ -173,18 +246,28 @@ app.get('/', function (req, res) {
                                 opportunities[i]["labName"] = thisLab.name;
                                 opportunities[i]["labPage"] = thisLab.labPage;
                                 opportunities[i]["labDescription"] = thisLab.labDescription;
-                                debug(opportunities[i]);
-                                debug(Object.getOwnPropertyNames(opportunities[i]));
-
+                                /**
+                                if (opportunities[i]["contactName"] === 'dummy value') {
+                                    console.log("In here");
+                                    let contact = getLabAdmin(opportunities[i]._id);
+                                    //TODO this won't work because getLabAdmin has asynchronous functions, use a promise
+                                    //var contact = getLabAdmin();
+                                    opportunities[i]["contactName"] = contact;
+                                }
+                                console.log("Here is the contactName: " + opportunities[i]["contactName"]);
+                                console.log("Here is the additional info: " + opportunities[i]["additionalInformation"]);
+                                 */
                             }
                             res.send(opportunities);
                         });
-                        for (let i = 0; i < opportunities.length; i++) {
-                            debug(opportunities[i].prereqsMatch);
-                        }
-                        if (err) {
-                            //handle the error appropriately
-                            res.send(err);
+                        if (opportunities) {
+                            for (let i = 0; i < opportunities.length; i++) {
+                                debug(opportunities[i].prereqsMatch);
+                            }
+                            if (err) {
+                                //handle the error appropriately
+                                res.send(err);
+                            }
                         }
                     });
                 }
@@ -201,7 +284,7 @@ app.get('/', function (req, res) {
             closes: {
                 $gte: new Date()
             }
-        }, function (err, opportunities) {
+        }).sort(sortOrderObj).exec(function (err, opportunities) {
             for (let i = 0; i < opportunities.length; i++) {
                 opportunities[i]["prereqsMatch"] = true;
             }
@@ -249,7 +332,7 @@ app.post('/', function (req, res) {
     let maxHours;
     data.minHours = parseInt(data.minHours);
     debug(data.minHours);
-    if (isNaN(data.minHours)){
+    if (isNaN(data.minHours)) {
         data.minHours = 0;
     }
     if (data.maxHours) {
@@ -258,11 +341,11 @@ app.post('/', function (req, res) {
     else {
         maxHours = data.minHours + 10;
     }
-    if (maxHours < data.minHours){
+    if (maxHours < data.minHours) {
         data.minHours = 0;
         maxHours = 10;
     }
-    if (data.yearsAllowed && data.yearsAllowed.length === 0){
+    if (data.yearsAllowed && data.yearsAllowed.length === 0) {
         data.yearsAllowed = ["freshman", "sophomore", "junior", "senior"];
     }
     debug("1");
@@ -335,7 +418,8 @@ app.post('/', function (req, res) {
             closes: data.closes,
             areas: data.areas,
             ghostPost: false,
-            ghostEmail: ""
+            ghostEmail: "",
+            datePosted: (new Date()).toISOString(),
         });
         opportunity.save(function (err, response) {
             if (err) {
@@ -419,7 +503,7 @@ app.put('/:id', function (req, res) {
             opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
             opportunity.minHours = req.body.minHours || opportunity.minHours;
             opportunity.maxHours = req.body.maxHours || opportunity.maxHours;
-            opportunity.additionalInformation = req.body.additionalInformation || opportunity.additionalInformation; 
+            opportunity.additionalInformation = req.body.additionalInformation || opportunity.additionalInformation;
             opportunity.opens = req.body.opens || opportunity.opens;
             opportunity.closes = req.body.closes || opportunity.closes;
             opportunity.areas = req.body.areas || opportunity.areas;

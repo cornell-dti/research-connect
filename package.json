@@ -8,40 +8,36 @@
     "async": "^2.6.0",
     "aws-sdk": "^2.224.1",
     "axios": "^0.18.0",
-    "body-parser": "~1.17.1",
-    "concurrently": "^3.5.1",
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "^2.6.9",
     "dotenv": "^5.0.1",
-    "express": "~4.15.2",
+    "express": "^4.16.4",
     "express-fileupload": "^0.4.0",
-    "font-awesome": "^4.7.0",
     "foreman": "^2.0.0",
     "google-auth-library": "^1.4.0",
-    "history": "^4.7.2",
     "marked": "^0.3.19",
-    "milligram": "^1.3.0",
-    "milligram-react": "0.0.0",
     "mississippi": "^3.0.0",
     "mississippi2": "^1.0.5",
     "moment": "^2.22.0",
     "mongodb": "^2.2.35",
     "mongoose": "^4.13.12",
-    "morgan": "~1.8.1",
+    "morgan": "^1.9.1",
     "nodemailer": "^4.6.4",
-    "nodemon": "^1.17.3",
-    "npm": "^6.1.0",
     "prop-types": "^15.6.1",
-    "react-tooltip": "^3.6.1",
     "request": "^2.85.0",
-    "scroll-element": "^1.0.0",
-    "scroll-to-element": "^2.0.0",
     "sendgrid-web": "0.0.5",
     "serve-favicon": "~2.4.2",
     "supports-color": "^5.3.0",
     "through2": "^2.0.3",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "webpack": "^4.24.0",
+    "webpack-cli": "^3.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^3.6.1",
+    "nodemon": "^1.18.5"
   },
   "engines": {
     "node": "9.11.1",
@@ -49,16 +45,9 @@
   },
   "scripts": {
     "build:client": "cd src && npm run build",
+    "heroku-postbuild": "cd src && npm install && npm run build",
     "start": "node server.js",
     "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
-    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\"",
-    "start:dev-backend": "set DEBUG=* && nodemon server.js"
-  },
-  "devDependencies": {
-    "css-loader": "^1.0.0",
-    "node-sass": "^4.9.3",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.0",
-    "webpack": "^4.17.1"
+    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\""
   }
 }
