@@ -60,7 +60,6 @@ class Opportunity extends Component {
 				return index;
 			};
 		}
-
 		return indexOf.call(this, needle) > -1;
 	};
 
@@ -73,22 +72,21 @@ class Opportunity extends Component {
 
 	convertDescription(str1, str2){
 		if(str1.length === 0){
-		if (str2.length > 250) {
-			str2 = str2.slice(0,250)+"... ";
-			return(<h6>{str2}<span className="viewDetails">View Details</span> </h6>);
-		  } else {
-			return(<h6>{("Tasks: ")+str2} </h6>);
-		  }
+			if (str2.length > 250) {
+				str2 = str2.slice(0,250)+"... ";
+				return(<h6>{str2}<span className="viewDetails">View Details</span> </h6>);
+			  } else {
+				return(<h6>{("Tasks: ")+str2} </h6>);
+			  }
 		}
-	else{
-		if (str1.length > 250) {
-			str1 = str1.slice(0,250)+"... ";
-			return(<div className="description-div">{str1}<span className="viewDetails">View Details</span></div>);
-		  } else {
-			return(<div className="description-div">{("Description: ")+str1} </div>);
-		  }
-	}
-	 
+		else{
+			if (str1.length > 250) {
+				str1 = str1.slice(0,250)+"... ";
+				return(<div className="description-div">{str1}<span className="viewDetails">View Details</span></div>);
+			  } else {
+				return(<div className="description-div">{("Description: ")+str1} </div>);
+			  }
+		}
 	}
 
 	checkPrereqs() {
@@ -113,16 +111,16 @@ class Opportunity extends Component {
 	}
 
 	checkEdit () {
-		let lab = false; 
+		let lab = false;
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
       .then((response) => {
 				if (!response || response.data == "none" ||
 				 !response.data || response.data == "undergrad"){
-					return false;  
+					return false;
 				} else {
-					return true; 
-				}	
-		}); 
+					return true;
+				}
+		});
 	}
 
 	render() {
@@ -143,9 +141,6 @@ class Opportunity extends Component {
 					{ this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
 				</div>
 			)
-
-	
-		
 	}
 }
 

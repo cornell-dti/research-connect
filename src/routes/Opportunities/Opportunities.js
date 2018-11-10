@@ -10,6 +10,7 @@ import YearSelect from '../../components/YearSelect/YearSelect';
 import MajorSelect from '../../components/MajorSelect/MajorSelect';
 import GPASelect from '../../components/GPASelect/GPASelect';
 import StartDate from '../../components/StartDate/StartDate';
+import CompensationSelect from '../../components/CompensationSelect/CompensationSelect';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
 import * as Utils from "../../components/Utils";
@@ -24,6 +25,7 @@ class Opportunities extends Component {
 			gpaSelect: {},
 			majorSelect: {},
 			startDate: {},
+			compensationSelect: {},
 			searchBar: '',
 			matchingSearches: [],
 			searching: false,
@@ -60,8 +62,12 @@ class Opportunities extends Component {
 		this.setState({majorSelect: majorObj});
 	}
 
-	handleUpdateDate(majorObj) {
-		this.setState({startDate: majorObj});
+	handleUpdateDate(dateObj) {
+		this.setState({startDate: dateObj});
+	}
+
+	handleUpdateCompensation(compensationObj){
+		this.setState({compensationSelect: compensationObj});
 	}
 
 	handleUpdateSearch(e) {
@@ -113,22 +119,22 @@ class Opportunities extends Component {
 					<div className="search-icon-div">
 						<SearchIcon style={{ height: '100%' }} size={36} />
 					</div>
-					<input 
-						onFocus={this.onFocus.bind(this)} 
+					<input
+						onFocus={this.onFocus.bind(this)}
 						onBlur={this.onBlur.bind(this)}
 						className="search-bar" onKeyPress={this.handleKeyPress.bind(this)}
 						onChange={this.handleUpdateSearch.bind(this)} value={this.state.searchBar}
 						type="text" name="search"
 						placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)" />
 					<div className="delete-div">
-						{ 
+						{
 						this.state.searchBar != "" ?
-							<DeleteIcon 
-								onClick={this.clearSearch.bind(this)} 
+							<DeleteIcon
+								onClick={this.clearSearch.bind(this)}
 								className="clear-icon"
 								style={{ height: '100%' }}
 								size={36} />
-						: "" 
+						: ""
 						}
 					</div>
 				</div>
@@ -160,11 +166,19 @@ class Opportunities extends Component {
 								<label htmlFor="startDateField">Start Date</label>
 								<StartDate updateDate={this.handleUpdateDate.bind(this)}/>
 							</div>
+
+							<hr />
+
+							<div className="filter-child">
+								<label htmlFor="compensationField">Compensation</label>
+								<CompensationSelect updateCompensation={this.handleUpdateCompensation.bind(this)}/>
+							</div>
+
 						</div>
 					</div>
 
 					<div className="column opportunities-list-wrapper">
-						<OpportunityBox 
+						<OpportunityBox
 							filteredOptions={this.state}
 							url='opportunities'
 							searching={this.state.clickedEnter} />
