@@ -18,27 +18,38 @@ app.get('/check/:opportunityId', function (req, res) {
     let idToCheck = req.query.netId;
     debug("THIS IS WHERE WE START");
 
-    opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
-        //debug(err);
-        debug("callback function is being run");
-        //debug(opportunity);
-        if (!opportunity) {
-            debug("could not find matching opportunity");
-            res.send(false);
-            return;
-        } else {
-            let toSearch = opportunity.applications;
-            for (let i = 0; i < toSearch.length; i++) {
-                if (toSearch[i].undergradNetId === idToCheck) {
-                    debug("You have already applied to this lab");
-                    res.send(true);
-                    return;
+    let skip = req.query.skip;
+    skip = (!skip || isNaN(skip)) ? 0 : skip;
+    let limit = req.query.limit;
+    if (!limit || limit=="null" || isNaN(limit)){
+        limit = 0;
+    }
+
+    opportunityModel.findById(req.params.opportunityId)
+        .skip(skip)
+        .limit(parseInt(limit))
+        .sort({name: "ascending"})
+        .exec(function (err, opportunity) {
+            //debug(err);
+            debug("callback function is being run");
+            //debug(opportunity);
+            if (!opportunity) {
+                debug("could not find matching opportunity");
+                res.send(false);
+                return;
+            } else {
+                let toSearch = opportunity.applications;
+                for (let i = 0; i < toSearch.length; i++) {
+                    if (toSearch[i].undergradNetId === idToCheck) {
+                        debug("You have already applied to this lab");
+                        res.send(true);
+                        return;
+                    }
                 }
+                debug("You have not yet applied to this lab");
+                res.send(false);
             }
-            debug("You have not yet applied to this lab");
-            res.send(false);
-        }
-    });
+        });
 });
 
 /*
@@ -148,6 +159,13 @@ app.get('/', function (req, res) {
         "CHEM2090": ["CHEM2080"]
     };
 
+    let skip = req.query.skip;
+    skip = (!skip || isNaN(skip)) ? 0 : skip;
+    let limit = req.query.limit;
+    if (!limit || limit=="null" || isNaN(limit)){
+        limit = 0;
+    }
+
     let token = req.query.netId;
     let urlLabId = req.query.labId;
     let sortOrderObj = {opens: sortOrder};
@@ -174,29 +192,33 @@ app.get('/', function (req, res) {
                             }
                         }
                     }
-                    opportunityModel.find(timeRange).sort(sortOrderObj).exec(function (err, opportunities) {
-                        for (let i = 0; i < opportunities.length; i++) {
-                            opportunities[i]["prereqsMatch"] = true;
-                        }
-                        //make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
-                        if (urlLabId && urlLabId !== "null") {
-                            debug("2");
-                            labModel.findById(urlLabId, function (err, lab) {
-                                debug(lab);
-                                let oppIdsToOnlyInclude = lab.opportunities;
-                                //right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
-                                oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(opp => opp.toString());
-                                //remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
-                                opportunities = opportunities.filter(opp =>
-                                    oppIdsToOnlyInclude.includes(opp._id.toString())
-                                );
+                    opportunityModel.find(timeRange)
+                        .skip(skip)
+                        .limit(parseInt(limit))
+                        .sort({name: "ascending"})
+                        .exec(function (err, opportunities) {
+                            for (let i = 0; i < opportunities.length; i++) {
+                                opportunities[i]["prereqsMatch"] = true;
+                            }
+                            //make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
+                            if (urlLabId && urlLabId !== "null") {
+                                debug("2");
+                                labModel.findById(urlLabId, function (err, lab) {
+                                    debug(lab);
+                                    let oppIdsToOnlyInclude = lab.opportunities;
+                                    //right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
+                                    oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(opp => opp.toString());
+                                    //remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
+                                    opportunities = opportunities.filter(opp =>
+                                        oppIdsToOnlyInclude.includes(opp._id.toString())
+                                    );
+                                    return res.send(opportunities);
+                                });
+                            }
+                            else {
                                 return res.send(opportunities);
-                            });
-                        }
-                        else {
-                            return res.send(opportunities);
-                        }
-                    })
+                            }
+                        });
                 } else {
                     undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, " ", ""));
                     debug(undergrad1);
@@ -209,7 +231,12 @@ app.get('/', function (req, res) {
                         closes: {
                             $gte: new Date()
                         }
-                    }).sort(sortOrderObj).lean().exec(function (err, opportunities) {
+                    })
+                        .skip(skip)
+                        .limit(parseInt(limit))
+                        .sort(sortOrderObj)
+                        .lean()
+                        .exec(function (err, opportunities) {
                         debug("length!!!!");
                         debug(opportunities);
                         if (!opportunities) {
@@ -324,7 +351,11 @@ app.get('/', function (req, res) {
             closes: {
                 $gte: new Date()
             }
-        }).sort(sortOrderObj).exec(function (err, opportunities) {
+        })
+            .skip(skip)
+            .limit(parseInt(limit))
+            .sort(sortOrderObj)
+            .exec(function (err, opportunities) {
             for (let i = 0; i < opportunities.length; i++) {
                 opportunities[i]["prereqsMatch"] = true;
             }
@@ -565,19 +596,31 @@ app.put('/:id', function (req, res) {
 });
 app.get('/search', function (req, res) {
     debug(req.query.search);
-    opportunityModel.find({$text: {$search: req.query.search}}, '_id', function (err, search) {
-        if (err) {
-            debug(err);
-            res.send(err);
-        }
-        else {
-            if (search === null) {
-                res.send("Search not found :(");
+
+    let skip = req.query.skip;
+    skip = (!skip || isNaN(skip)) ? 0 : skip;
+    let limit = req.query.limit;
+    if (!limit || limit=="null" || isNaN(limit)){
+        limit = 0;
+    }
+
+    opportunityModel.find({$text: {$search: req.query.search}})
+        .skip(skip)
+        .limit(parseInt(limit))
+        .sort({name: "ascending"})
+        .exec(function (err, search) {
+            if (err) {
+                debug(err);
+                res.send(err);
             }
-            debug(search);
-            res.send(search);
-        }
-    });
+            else {
+                if (search === null) {
+                    res.send("Search not found :(");
+                }
+                debug(search);
+                res.send(search);
+            }
+        });
 
 
 });
@@ -608,7 +651,20 @@ app.get('/:id', function (req, res) {
         if (!req.params || !req.params.id){
             return res.send({});
         }
-        opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
+
+        let skip = req.query.skip;
+        skip = (!skip || isNaN(skip)) ? 0 : skip;
+        let limit = req.query.limit;
+        if (!limit || limit=="null" || isNaN(limit)){
+            limit = 0;
+        }
+
+        opportunityModel.findById(req.params.id)
+            .skip(skip)
+            .limit(parseInt(limit))
+            .lean()
+            .sort({name: "ascending"})
+            .exec(function (err, opportunity) {
             if (err) {
                 debug(err);
                 res.send(err);
