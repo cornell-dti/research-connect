@@ -61,6 +61,10 @@ class ProfessorNavbar extends Component {
                         <li className={this.props.current === "opportunities" ? "current-page" : ""}>
                             <a href={'/opportunities?labId=' + this.state.labId}>Opportunities</a>
                         </li>
+                        {//professor does not have edit profile
+                          /*<li className={this.props.current === "editprofile" ? "current-page" : ""}>
+                          <a href='/editprofile'>Profile</a>
+                        </li>*/}
                         <li>
                             <a className="sign-out" onClick={this.logout.bind(this)}>Sign Out</a>
                         </li>
