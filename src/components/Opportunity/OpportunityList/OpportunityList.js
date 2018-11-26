@@ -26,6 +26,9 @@ class OpportunityList extends Component {
 
 
 		render() {
+			if (!this.props.data){
+        return (<div></div>);
+      }
 				let oppNodes = this.props.data.map(opp => {
 				/*The variable 'willshow' will be set to false if any filter excludes this opportunity */
 				let willShow = true;
