@@ -132,6 +132,12 @@ class OpportunityPage extends Component {
 			.catch(function (error) {
 				this.sendToHome(error);
 			});
+
+		if (!sessionStorage.getItem('token_id')) {
+			this.setState({netId: null});
+			return;
+		}
+			
 		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
 				if (!this.isEmpty(response.data)) {
@@ -339,6 +345,11 @@ class OpportunityPage extends Component {
 	}
 
 	componentDidMount() {
+		if (!sessionStorage.getItem('token_id')) {
+			this.setState({role: null});
+			return;
+		}
+
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
 				//if they don't have a role or it's just not showing up for some reason, go to home page
@@ -364,7 +375,9 @@ class OpportunityPage extends Component {
 		const isNotLoggedIn = !(this.state.role);
 		return (
 			<div>
-				{this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
+				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"}/>}
+				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
+
 				<div className={ 'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '') }>
 					<div className="wallpaper"></div>
 					<div className="row opportunity-row">

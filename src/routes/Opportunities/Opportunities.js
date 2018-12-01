@@ -35,8 +35,7 @@ class Opportunities extends Component {
 	}
 
 	componentDidMount() {
-		if (sessionStorage.getItem('token_id') === null) {
-			console.log('HERE');
+		if (!sessionStorage.getItem('token_id')) {
 			this.setState({role: null});
 			return;
 		}
@@ -120,7 +119,8 @@ class Opportunities extends Component {
 	render() {
 		return (
 			<div className="opportunities-wrapper">
-				{this.state.role === "undergrad" ? <Navbar current={"opportunities"}/> : <ProfessorNavbar current={"opportunities"}/>}
+				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"}/>}
+				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
 
 				<div className="row search-div-container">
 					<div className="search-icon-div">
