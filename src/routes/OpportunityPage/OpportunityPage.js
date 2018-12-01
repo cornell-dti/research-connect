@@ -343,13 +343,14 @@ class OpportunityPage extends Component {
 			.then((response) => {
 				//if they don't have a role or it's just not showing up for some reason, go to home page
 				//remove this line if you want anybody to be able to view opportunity page
-				if (!response || response.data === "none" || !response.data) {
+				/*if (!response || response.data === "none" || !response.data) {
 					alert("You must be signed in to view this.");
 					window.location.href = '/';
 				}
 				else {
 					this.setState({role: response.data});
-				}
+				}*/
+				this.setState({role: response.data});
 			})
 			.catch(function (error) {
 				this.sendToHome(error);
@@ -360,6 +361,7 @@ class OpportunityPage extends Component {
 	render() {
 		const notProvidedMessage = "Not specified";
 		const isLab = this.state.role !== "undergrad";
+		const isNotLoggedIn = !(this.state.role);
 		return (
 			<div>
 				{this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
@@ -450,6 +452,14 @@ class OpportunityPage extends Component {
 											}
 										</div>
 									}
+								</div>
+							</div>
+							}
+							{
+							isNotLoggedIn && 
+							<div id="Application" className="row opp-application-box">
+								<div className="column">
+									<div className="header">Please create an account to apply!</div>
 								</div>
 							</div>
 							}

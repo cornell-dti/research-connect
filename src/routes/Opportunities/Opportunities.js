@@ -35,15 +35,22 @@ class Opportunities extends Component {
 	}
 
 	componentDidMount() {
+		if (sessionStorage.getItem('token_id') === null) {
+			console.log('HERE');
+			this.setState({role: null});
+			return;
+		}
+
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
-				if (!response || response.data === "none" || !response.data) {
+				/*if (!response || response.data === "none" || !response.data) {
 					alert("You must be signed in to view this.");
 					window.location.href = '/';
 				}
 				else{
 					this.setState({role: response.data});
-				}
+				}*/
+				this.setState({role: response.data});
 			})
 			.catch(function (error) {
 				Utils.handleTokenError(error);
