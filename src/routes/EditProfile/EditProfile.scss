@@ -1,44 +1,75 @@
-.profile-page-wrapper{
+.profile-page-wrapper {
   margin-top: 80px;
    background-color: #f6f6f6;
+   width: 90%;
+   margin: auto;
+   margin-top: 220px;
+   font-size: 20px;
+
+.wallpaper {
+  background: url('../../images/wallpaper-bg.png');
+  height: 300px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  top: 90px;
+  z-index: -1;
 }
-.row .title-box-prof, .row .qual-box{
+.title_box_prof {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  padding: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: auto; 
+  margin-right: auto; 
+
+  .right-column {
+    text-align: right;
+  }
+
+}
+.row .qual-box{
   border: solid 1px #979797;
   background-color: #ffffff;
 
 }
-.row .title-box-prof  h6{
-  font-size: 15px;
-  padding-left: 5px;
+.header {
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left; 
 }
-.row .title-box-prof h5{
-  padding-left: 5px;
-  padding-top: 4px;
-  padding-bottom: 0px;
+
+.left-column {
+  text-align: left; 
 }
-.row .title-box-prof h4{
-  padding-bottom: 0px;
-  font-size: 27px;
-  margin-bottom: 0px;
-  padding-left: 5px;
-}
-.row .title-box-prof{
-  margin-top: 50px;
+
+.row {
+  margin-top: 20px;
   padding: 20px;
+  width: 80%;
+  margin-left: auto; 
+  margin-right: auto;
 }
-.row .red-box{
-  background-color: #b31b1b;
+.row .grey-box{
+  background-color: #444242;
   width: 100%;
   margin: 0px;
-  padding: 10px;
-  padding-left: 20px;
+  padding: 5px; 
+  color: white; 
+
+  .grey-box .h4{
+  color: white; 
+  margin: 0px; 
+  padding: 5px; 
+  }
 }
 .qual-box{
-  margin-top: 16px;
-}
-.red-box h5{
-  color: white;
-  margin-bottom: 0px;
+  width: 100%;
+  margin-bottom: 40px;
 }
 .row .column hr{
   margin: 0px;
@@ -62,11 +93,11 @@
 .pencil-icon{
   margin-left: 15px;
   display: inline;
-  color: black;
+  color: red;
   padding-bottom: 3px;
 }
 .delete-icon{
-  color: black;
+  color: red;
   padding-bottom: 5px;
   display: inline;
   float: right;
@@ -75,7 +106,7 @@
   opacity: .5;
 }
 .pencil-icon:hover, .row .check-icon:hover, .add-icon:hover{
-  color: #979797;
+  color: #ff8888;
 }
 
 
@@ -87,7 +118,7 @@
   margin-right: 5px;
 }
 .add-icon{
-  color:black;
+  color:red;
   margin-left: 5px;
 }
 .row .edit-input{
@@ -130,6 +161,12 @@
   font-weight: 500;
   margin-top: 5px;
 }
+.edit-row {
+  margin-bottom: 50px;
+}
+.edit-details-col{
+  flex: 0 0 69%;
+}
 .trans-resume h5{
   margin-top: 5px;
 }
@@ -162,6 +199,7 @@
 .edit-container .editting p{
   display: inline;
 }
+
 .display-list .addTag{
   margin-top: 10px;
   height: 29px;
@@ -174,4 +212,5 @@
 }
 .display-list .addTag:focus{
   border-color: gray;
+}
 }

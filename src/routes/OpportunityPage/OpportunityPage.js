@@ -342,7 +342,7 @@ class OpportunityPage extends Component {
 			<div>
 				{this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
 				<div className={ 'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '') }>
-					<div className="wallpaper"></div>
+				<div className="wallpaper"></div>
 					<div className="row opportunity-row">
 						<div className="column opp-details-column">
 							<div className="row opp-title-card">

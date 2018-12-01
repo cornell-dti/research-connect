@@ -48,7 +48,9 @@ class CreateOppForm extends React.Component {
             triedSubmitting: false, 
             isButtonDisabled: false, 
             buttonValue: "Submit New Position",
-            loading: false
+            loading: false, 
+            selectedOptions: null, 
+            areaData: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -104,7 +106,25 @@ class CreateOppForm extends React.Component {
         }
     };
      */
+    //Returns an array of CS areas
+    displayAreas() {
+        let arrayOfAreas = []; 
+        for (let i = 0; i < this.state.areaData.length; i++) {
+            arrayOfAreas.push({label:this.state.areaData[i].name, value: this.state.areaData[i]._id});
+       return arrayOfAreas;
+          }
+    }
 
+    loadAreasFromServer() {
+//Need code for getting areas
+        axios.get('/api/labs')
+            .then(res => {
+                this.setState({areaData: res.data});
+                console.log(res.data);
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
+    }
     //display the questions interface to add/delete questions
     displayQuestions() {
 
@@ -200,7 +220,6 @@ class CreateOppForm extends React.Component {
         }
         this.setState({yearsAllowed: yearArray});
     }
-
     setCompensation() {
         let compensationArray = [];
         if (this.pay.checked) {
@@ -231,10 +250,10 @@ class CreateOppForm extends React.Component {
                 this.setState({titleIsValid: false});
             }
             this.setState({title: event.target.value});
-        } else if (event.target.name === "areas") {
-            let areaArray = event.target.value.split(",");
-            this.setState({areas: areaArray});
-        } else if (event.target.name === "pi") {
+        // } else if (event.target.name === "areas") {
+        //     let areaArray = event.target.value.split(",");
+        //     this.setState({areas: areaArray});
+        // } else if (event.target.name === "pi") {
             this.setState({pi: event.target.value});
         } else if (event.target.name === "supervisor") {
             this.setState({supervisor: event.target.value});
@@ -275,6 +294,9 @@ class CreateOppForm extends React.Component {
         }
         else if (event.target.name === "additional"){
             this.setState({additionalInformation: event.target.value})
+        }
+        else if (event.target.name === "areas"){//THIS IS SET IN THE RETURN{
+            this.setState ({areas: event.target.value})
         }
 
 

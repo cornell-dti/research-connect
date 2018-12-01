@@ -26,8 +26,10 @@ class EditProfile extends Component {
             editYear: false,
             editMajor: false,
             editGPA: false,
-            editCourses: false,
-            editSkills: false,
+            editCourses: true,
+            editSkills: true,
+            editResume: false,
+            editTranscript: false,
             invalidYear: false,
             invalidMajor: false,
             invalidGPA: false,
@@ -47,21 +49,6 @@ class EditProfile extends Component {
         console.log(this.state.relevantCourses);
     }
 
-    gradYearToYear(gY) {
-        if (gY == 2021) {
-            return "Freshman"
-        }
-        else if (gY == 2020) {
-            return "Sophomore"
-        }
-        else if (gY == 2019) {
-            return "Junior"
-        }
-        else {
-            return "Senior"
-        }
-    }
-
     loadInfoFromServer() {
         console.log("Begin loadInfoFromServer")
         axios.get('/api/undergrads/' + (sessionStorage.getItem('token_id')))
@@ -72,7 +59,7 @@ class EditProfile extends Component {
                 let skills = info.skills === undefined ? [] : info.skills;
                 this.setState({firstName: info.firstName});
                 this.setState({lastName: info.lastName});
-                this.setState({year: this.gradYearToYear(info.gradYear)});
+                this.setState({year: utils.gradYearToString(info.gradYear)});
                 this.setState({major: info.major})
                 this.setState({gpa: info.gpa});
                 this.setState({relevantCourses: info.courses});
@@ -114,6 +101,7 @@ class EditProfile extends Component {
         else if (event.target.id === "new-skill") {
             this.setState({newSkill: event.target.value});
         }
+        //else if (event.target.id === "")
     }
 
     handleEditYear(event) {
@@ -136,7 +124,9 @@ class EditProfile extends Component {
         }
 
     }
-
+    handleEditResume(event) {
+        this.setState({editGPA: !this.state.editTranscript});
+    }
     handleEditGPA(event) {
         if (this.state.gpa == "") {
             this.setState({invalidGPA: true});
@@ -204,10 +194,11 @@ class EditProfile extends Component {
                     </div>
                 );
             }
-            return <div className="display-list">{list}
+            return <div className="display-list">
                 <input className="addTag" onChange={this.handleChange.bind(this)} id="new-course" type="text"
                        name="new-course" key="new-course" placeholder="Add Course" value={this.state.newCourse}/>
                 <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse.bind(this)}/>
+                {list}
             </div>;
         } else {
             for (let i = 0; i < this.state.relevantCourses.length; i++) {
@@ -233,10 +224,11 @@ class EditProfile extends Component {
                     </div>
                 );
             }
-            return <div className="display-list">{list}
+            return <div className="display-list">
                 <input className="addTag" onChange={this.handleChange.bind(this)} id="new-skill" type="text"
                        name="new-skill" key="new-skill" placeholder="Add Skill" value={this.state.newSkill}/>
                 <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill.bind(this)}/>
+                {list}
             </div>;
         }
         else {
@@ -312,6 +304,8 @@ class EditProfile extends Component {
             editGPA,
             editCourses,
             editSkills,
+            editResume, 
+            editTranscript,
             invalidYear,
             invalidMajor,
             invalidGPA,
@@ -351,10 +345,14 @@ class EditProfile extends Component {
         return (
             <div>
                 <Navbar current={"editprofile"}/>
-                <div className="profile-page-wrapper container">
-                    <div className="row">
-                        <div className="title-box-prof column column-50 column-offset-25">
-                            <h4>{this.state.firstName + " " + this.state.lastName}</h4>
+                <div className="profile-page-wrapper">
+                    <div className="wallpaper"></div>
+                    <div className="row edit-row">
+                    <div className = "column edit-details-col">
+                        <div className=" row title-box-prof">
+                        <div className = "column left-column">
+                        <div className = "header"> 
+                            <h4>{this.state.firstName + " " + this.state.lastName}</h4> </div>
                             <h6>{this.state.netId + "@cornell.edu"}</h6>
                             {this.state.editYear ?
                                 <div className="input-div">
@@ -382,21 +380,30 @@ class EditProfile extends Component {
                                                                onClick={this.handleEditMajor.bind(this)}/></h5>
 
                             }
-
+                            
+                            </div>
+                            </div>
                         </div>
                     </div>
 
 
                     <div className="row">
-                        <div className="qual-box column  column-50 column-offset-25">
-                            <div className="row red-box">
-                                <h5>Qualifications</h5>
+                        <div className="qual-box column">
+                            <div className="row grey-box">
+                                <h4>Your Qualifications</h4>
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
                                 <h5>Resume:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewResume}/>
+                                 {this.state.editResume ?
+                                        <h5><Check size={23} className="check-icon"
+                                                                   onClick={this.handleEditResume.bind(this)}/></h5>
+                                        :
+                                        <h5> <Pencil size={20} className="pencil-icon"
+                                                                    onClick={this.handleEditResume.bind(this)}/></h5>
+                                    }
                                 <Dropzone className="edit-drop" style={{
                                     position: 'relative',
                                     background: '#ededed',
@@ -435,23 +442,6 @@ class EditProfile extends Component {
                             </div>
                             <hr/>
                             <div className="row qual-row">
-                                {this.state.editGPA ?
-                                    <div className="input-div gpa-edit">
-                                        <h5>GPA: </h5>
-                                        <input className="gpa edit-input" type="text" name="gpa" id="gpa"
-                                               value={this.state.gpa} onChange={this.handleChange.bind(this)}/>
-                                        <Check size={25} onClick={this.handleEditGPA.bind(this)}
-                                               className="check-icon"/>
-                                        {this.state.invalidGPA ? <p className="gpa-error">Required</p> : ""}
-                                    </div>
-                                    :
-                                    <div className="gpa-div">
-                                        <h5>GPA: <span className="clear-offset"></span> {this.state.gpa} <Pencil
-                                            size={20} className="pencil-icon" onClick={this.handleEditGPA.bind(this)}/>
-                                        </h5>
-                                    </div>
-                                }
-
 
                             </div>
 
@@ -460,11 +450,9 @@ class EditProfile extends Component {
 
                                 <div className="column column-49">
                                     {this.state.editCourses ?
-                                        <h5>Relevant Courses <Check size={23} className="check-icon"
-                                                                    onClick={this.handleEditCourses.bind(this)}/></h5>
+                                        <h5>Coursework</h5>
                                         :
-                                        <h5>Relevant Courses <Pencil size={20} className="pencil-icon"
-                                                                     onClick={this.handleEditCourses.bind(this)}/></h5>
+                                        <h5>Coursework</h5>
                                     }
                                     {this.displayCourses()}
                                 </div>
@@ -473,11 +461,9 @@ class EditProfile extends Component {
 
                                 <div className="column column-49">
                                     {this.state.editSkills ?
-                                        <h5>Relevant Skills <Check size={23} className="check-icon"
-                                                                   onClick={this.handleEditSkills.bind(this)}/></h5>
+                                        <h5>Skills </h5>
                                         :
-                                        <h5>Relevant Skills <Pencil size={20} className="pencil-icon"
-                                                                    onClick={this.handleEditSkills.bind(this)}/></h5>
+                                        <h5>Skills </h5> //This can be used if the pencil icon is added back into this. 
                                     }
                                     {this.displaySkills()}
 
