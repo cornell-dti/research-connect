@@ -59,7 +59,7 @@ class ProfessorNavbar extends Component {
                             <a href='/professorView'>Applications</a>
                         </li>
                         <li className={this.props.current === "opportunities" ? "current-page" : ""}>
-                            <a href={'/opportunities?labId=' + this.state.labId}>Opportunities</a>
+                            <a href={'/opportunities?labId=' + this.state.labId}>Your Opportunities</a>
                         </li>
                         {//professor does not have edit profile
                           /*<li className={this.props.current === "editprofile" ? "current-page" : ""}>
