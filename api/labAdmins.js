@@ -17,6 +17,9 @@ app.get('/:netId', function (req, res) {
 
 //return the labid of a labAdmin when given their token (id)
 app.get('/lab/:id', function (req, res){
+    if (!req.params.id){
+        return res.send(null);
+    }
     verify(req.params.id, function(email) {
         debug(2);
         labAdministratorModel.findOne({email: email}, function (err, labAdmin) {
