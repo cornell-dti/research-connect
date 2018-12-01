@@ -366,7 +366,7 @@ class EditProfile extends Component {
                                 </div>
                                 :
 
-                                <h5>{this.state.year}<Pencil size={20} className="pencil-icon"
+                                <h5>{this.state.year}<Pencil size={20} className="pencil-icon right-column"
                                                              onClick={this.handleEditYear.bind(this)}/></h5>
 
                             }
@@ -379,7 +379,7 @@ class EditProfile extends Component {
                                 </div>
                                 :
 
-                                <h5>{this.state.major} <Pencil size={20} className="pencil-icon"
+                                <h5>{this.state.major} <Pencil size={20} className="pencil-icon right-column"
                                                                onClick={this.handleEditMajor.bind(this)}/></h5>
 
                             }
@@ -427,7 +427,7 @@ class EditProfile extends Component {
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
-                                <h5  className = "subSection">Transcript:</h5>
+                                <h5  className = "sub-section">Transcript:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewTranscript}/>
                                   {this.state.editTranscript ?
@@ -457,16 +457,12 @@ class EditProfile extends Component {
                                     }
                             </div>
                             <hr/>
-                            <div className="row qual-row">
-
-                            </div>
-
                             <hr/>
                             <div className="row relevant-row">
 
                                 <div className="column column-49">
                                    
-                                        <h5 className = "subSection" >Coursework</h5>
+                                        <h5 className = "sub-section" >Coursework</h5>
                                    
                                     {this.displayCourses()}
                                 </div>
@@ -475,7 +471,7 @@ class EditProfile extends Component {
 
                                 <div className="column column-49">
                                     
-                                        <h5  className = "subSection">Skills </h5>
+                                        <h5  className = "sub-section">Skills </h5>
                                       
                                     {this.displaySkills()}
 
@@ -484,7 +480,7 @@ class EditProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "20px"}}
+                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "10px"}}
                             onClick={this.onClick}>Submit
                     </button>
                 </div>
