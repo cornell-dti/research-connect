@@ -135,14 +135,14 @@ class EditProfile extends Component {
             this.setState({editGPA: !this.state.editGPA});
         }
     }
+//Was useful when there was a pencil icon for skills and course. It is commented out if needed
+    // handleEditSkills(event) {
+    //     this.setState({editSkills: !this.state.editSkills});
+    // }
 
-    handleEditSkills(event) {
-        this.setState({editSkills: !this.state.editSkills});
-    }
-
-    handleEditCourses(event) {
-        this.setState({editCourses: !this.state.editCourses});
-    }
+    // handleEditCourses(event) {
+    //     this.setState({editCourses: !this.state.editCourses});
+    // }
 
     handleDeleteCourse(data, e) {
         let currentCourses = this.state.relevantCourses;
@@ -349,7 +349,7 @@ class EditProfile extends Component {
                     <div className="wallpaper"></div>
                     <div className="row edit-row">
                     <div className = "column edit-details-col">
-                        <div className=" row title-box-prof">
+                        <div className=" row title_box_prof">
                         <div className = "column left-column">
                         <div className = "header"> 
                             <h4>{this.state.firstName + " " + this.state.lastName}</h4> </div>
