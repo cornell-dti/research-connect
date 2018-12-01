@@ -125,10 +125,13 @@ class EditProfile extends Component {
 
     }
     handleEditResume(event) {
-        this.setState({editGPA: !this.state.editTranscript});
+        this.setState({editResume: !this.state.editResume});
+    }
+    handleEditTranscript(event) {
+        this.setState({editTranscript: !this.state.editTranscript});
     }
     handleEditGPA(event) {
-        if (this.state.gpa == "") {
+        if (this.state.gpa === "") {
             this.setState({invalidGPA: true});
         } else {
             this.setState({invalidGPA: false});
@@ -349,7 +352,7 @@ class EditProfile extends Component {
                     <div className="wallpaper"></div>
                     <div className="row edit-row">
                     <div className = "column edit-details-col">
-                        <div className=" row title_box_prof">
+                        <div className=" row title-box-prof">
                         <div className = "column left-column">
                         <div className = "header"> 
                             <h4>{this.state.firstName + " " + this.state.lastName}</h4> </div>
@@ -387,44 +390,52 @@ class EditProfile extends Component {
                     </div>
 
 
-                    <div className="row">
+                    <div className="edit-row row">
                         <div className="qual-box column">
-                            <div className="row grey-box">
+                            <div className="edit-row grey-box">
                                 <h4>Your Qualifications</h4>
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
-                                <h5  className = "subSection">Resume:</h5>
+                                <h5  className = "sub-section">Resume:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewResume}/>
                                  {this.state.editResume ?
+                                 <div className = "handleResume">
                                         <h5><Check size={23} className="check-icon"
                                                                    onClick={this.handleEditResume.bind(this)}/></h5>
+                                                                   <Dropzone className="edit-drop" style={{
+                                                                    position: 'relative',
+                                                                    background: '#ededed',
+                                                                    padding: '10px',
+                                                                    width: '50%',
+                                                                    margin: '0 0 0 25%',
+                                                                    border: !this.state.resumeValid 
+                                                                    && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
+                                                                }} onDrop={this.onDropResume.bind(this)}>
+                                                                    <p>Click/drag to update resume</p>
+                                                                </Dropzone>
+                                                                <div className="uploaded-message">
+                                                                    {this.state.resume != null ? 
+                                                                    <p>Uploaded: {this.state.resume.name}</p> : ""}
+                                                                </div>
+                                        </div>
                                         :
                                         <h5> <Pencil size={20} className="pencil-icon"
                                                                     onClick={this.handleEditResume.bind(this)}/></h5>
                                     }
-                                <Dropzone className="edit-drop" style={{
-                                    position: 'relative',
-                                    background: '#ededed',
-                                    padding: '10px',
-                                    width: '50%',
-                                    margin: '0 0 0 25%',
-                                    border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
-                                }} onDrop={this.onDropResume.bind(this)}>
-                                    <p>Click/drag to update resume</p>
-
-                                </Dropzone>
-                                <div className="uploaded-message">
-                                    {this.state.resume != null ? <p>Uploaded: {this.state.resume.name}</p> : ""}
-                                </div>
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
                                 <h5  className = "subSection">Transcript:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewTranscript}/>
-                                <Dropzone className="edit-drop" style={{
+                                  {this.state.editTranscript ?
+                                  <div className = "handleTranscript">
+                                        <h5><Check size={23} className="check-icon"
+                                                                   onClick={this.handleEditTranscript.bind(this)}/></h5>
+                                  
+                                  <Dropzone className="edit-drop" style={{
                                     position: 'relative',
                                     background: '#ededed',
                                     padding: '10px',
@@ -438,7 +449,12 @@ class EditProfile extends Component {
                                 <div className="uploaded-message">
                                     {this.state.transcript != null ?
                                         <p >Uploaded: {this.state.transcript.name}</p> : ""}
-                                </div>
+                                 </div>
+                            </div>
+                                        :
+                                        <h5> <Pencil size={20} className="pencil-icon"
+                                                                    onClick={this.handleEditTranscript.bind(this)}/></h5>
+                                    }
                             </div>
                             <hr/>
                             <div className="row qual-row">
