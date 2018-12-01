@@ -196,7 +196,7 @@ class EditProfile extends Component {
             }
             return <div className="display-list">
                 <input className="addTag" onChange={this.handleChange.bind(this)} id="new-course" type="text"
-                       name="new-course" key="new-course" placeholder="Add Course" value={this.state.newCourse}/>
+                       name="new-course" key="new-course" placeholder="Add new course here" value={this.state.newCourse}/>
                 <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse.bind(this)}/>
                 {list}
             </div>;
@@ -226,7 +226,7 @@ class EditProfile extends Component {
             }
             return <div className="display-list">
                 <input className="addTag" onChange={this.handleChange.bind(this)} id="new-skill" type="text"
-                       name="new-skill" key="new-skill" placeholder="Add Skill" value={this.state.newSkill}/>
+                       name="new-skill" key="new-skill" placeholder= "Add new skill here" value={this.state.newSkill}/>
                 <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill.bind(this)}/>
                 {list}
             </div>;
@@ -394,7 +394,7 @@ class EditProfile extends Component {
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
-                                <h5>Resume:</h5>
+                                <h5  className = "subSection">Resume:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewResume}/>
                                  {this.state.editResume ?
@@ -421,7 +421,7 @@ class EditProfile extends Component {
                             </div>
                             <hr/>
                             <div className="row qual-row trans-resume">
-                                <h5>Transcript:</h5>
+                                <h5  className = "subSection">Transcript:</h5>
                                 <input type="button" className="button viewLink"
                                        value="View" onClick={this.viewTranscript}/>
                                 <Dropzone className="edit-drop" style={{
@@ -449,22 +449,18 @@ class EditProfile extends Component {
                             <div className="row relevant-row">
 
                                 <div className="column column-49">
-                                    {this.state.editCourses ?
-                                        <h5>Coursework</h5>
-                                        :
-                                        <h5>Coursework</h5>
-                                    }
+                                   
+                                        <h5 className = "subSection" >Coursework</h5>
+                                   
                                     {this.displayCourses()}
                                 </div>
 
                                 <div className="vl"></div>
 
                                 <div className="column column-49">
-                                    {this.state.editSkills ?
-                                        <h5>Skills </h5>
-                                        :
-                                        <h5>Skills </h5> //This can be used if the pencil icon is added back into this. 
-                                    }
+                                    
+                                        <h5  className = "subSection">Skills </h5>
+                                      
                                     {this.displaySkills()}
 
                                 </div>
