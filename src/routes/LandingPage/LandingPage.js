@@ -204,7 +204,7 @@ class LandingPage extends Component {
                 <section id="forstudents" className="our-work for-students">
                     <div className="students-title">
                         <h2>Made for students by students.</h2>
-                        <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and
+                        <h3 id="student-sign-up">Get a research position at a Cornell lab of your choice. The days of cold emailing and
                             knocking
                             on professors{"'"} doors are over.</h3>
                     </div>

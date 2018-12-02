@@ -475,7 +475,7 @@ class OpportunityPage extends Component {
 							isNotLoggedIn && 
 							<div id="Application" className="row opp-application-box">
 								<div className="column">
-									<div className="header">Please <a href="/studentRegister">create an account</a> to apply!</div>
+									<div className="header">Please <a href="/#student-sign-up">create an account</a> to apply!</div>
 								</div>
 							</div>
 							}
