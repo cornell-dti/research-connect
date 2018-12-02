@@ -15,6 +15,7 @@ import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
 import * as Utils from "../../components/Utils";
 import ProfessorNavbar from "../../components/Navbars/ProfessorNavbar/ProfessorNavbar";
+import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 
 class Opportunities extends Component {
 
@@ -35,15 +36,21 @@ class Opportunities extends Component {
 	}
 
 	componentDidMount() {
+		if (!sessionStorage.getItem('token_id')) {
+			this.setState({role: null});
+			return;
+		}
+
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
-				if (!response || response.data === "none" || !response.data) {
+				/*if (!response || response.data === "none" || !response.data) {
 					alert("You must be signed in to view this.");
 					window.location.href = '/';
 				}
 				else{
 					this.setState({role: response.data});
-				}
+				}*/
+				this.setState({role: response.data});
 			})
 			.catch(function (error) {
 				Utils.handleTokenError(error);
@@ -110,10 +117,16 @@ class Opportunities extends Component {
 		this.setState({clickedEnter: false});
 	}
 
+	goHome() {
+		window.location.href = '/';
+	}
+
 	render() {
 		return (
 			<div className="opportunities-wrapper">
-				{this.state.role === "undergrad" ? <Navbar current={"opportunities"}/> : <ProfessorNavbar current={"opportunities"}/>}
+				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"}/>}
+				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
+				{!this.state.role && <div className="go-home" onClick={() => this.goHome()}><FaLongArrowLeft style={{ verticalAlign: "text-top", position: "relative", top: "2px" }} className="black-arrow"/>Home</div>}
 
 				<div className="row search-div-container">
 					<div className="search-icon-div">

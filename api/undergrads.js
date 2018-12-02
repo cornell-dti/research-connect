@@ -31,7 +31,9 @@ app.get('/la/:netId', function (req, res) {
 
 app.get('/:tokenId', function (req, res) {
     verify(req.params.tokenId, function(decrypted){
-
+        if (!decrypted){
+            return res.send([]);
+        }
         undergradModel.find({netId: decrypted}, function (err, undergrad) {
             if (err) {
                 debug("Not found");

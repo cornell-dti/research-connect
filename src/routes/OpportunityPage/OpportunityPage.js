@@ -132,6 +132,12 @@ class OpportunityPage extends Component {
 			.catch(function (error) {
 				this.sendToHome(error);
 			});
+
+		if (!sessionStorage.getItem('token_id')) {
+			this.setState({netId: null});
+			return;
+		}
+			
 		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
 				if (!this.isEmpty(response.data)) {
@@ -339,17 +345,23 @@ class OpportunityPage extends Component {
 	}
 
 	componentDidMount() {
+		if (!sessionStorage.getItem('token_id')) {
+			this.setState({role: null});
+			return;
+		}
+
 		axios.get('/api/role/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
 				//if they don't have a role or it's just not showing up for some reason, go to home page
 				//remove this line if you want anybody to be able to view opportunity page
-				if (!response || response.data === "none" || !response.data) {
+				/*if (!response || response.data === "none" || !response.data) {
 					alert("You must be signed in to view this.");
 					window.location.href = '/';
 				}
 				else {
 					this.setState({role: response.data});
-				}
+				}*/
+				this.setState({role: response.data});
 			})
 			.catch(function (error) {
 				this.sendToHome(error);
@@ -360,11 +372,14 @@ class OpportunityPage extends Component {
 	render() {
 		const notProvidedMessage = "Not specified";
 		const isLab = this.state.role !== "undergrad";
+		const isNotLoggedIn = !(this.state.role);
 		return (
 			<div>
-				{this.state.role === "undergrad" ? <Navbar/> : <ProfessorNavbar/>}
+				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"}/>}
+				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
+
 				<div className={ 'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '') }>
-					<div className="wallpaper"></div>
+					<div className={'wallpaper ' + (isNotLoggedIn ? 'wallpaper-no-sign-in' : '')}></div>
 					<div className="row opportunity-row">
 						<div className="column opp-details-column">
 							<div className="row opp-title-card">
@@ -373,12 +388,15 @@ class OpportunityPage extends Component {
 									<div>{this.state.opportunity.labName}</div>
 								</div>
 								<div className="column right-column">
-								{ !isLab &&
+									{ !isNotLoggedIn && !isLab &&
 									<a className="button" href="#Application">Apply</a>
 									/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
 									}
-									{ isLab &&
+									{ !isNotLoggedIn && isLab &&
 									<a className="button" href={"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
+									}
+									{ isNotLoggedIn &&
+									<a className={'button ' + (isNotLoggedIn ? 'back-to-opportunities' : '')} href="/opportunities">Back To Opportunities</a>
 									}
 									
 								</div>
@@ -450,6 +468,14 @@ class OpportunityPage extends Component {
 											}
 										</div>
 									}
+								</div>
+							</div>
+							}
+							{
+							isNotLoggedIn && 
+							<div id="Application" className="row opp-application-box">
+								<div className="column">
+									<div className="header">Please <a href="/#student-sign-up">create an account</a> to apply!</div>
 								</div>
 							</div>
 							}

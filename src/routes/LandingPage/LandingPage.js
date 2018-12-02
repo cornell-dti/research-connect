@@ -186,12 +186,15 @@ class LandingPage extends Component {
                 <section id="about" className="why-us reviews">
                     <div className="students-title">
                         <h2>Why use Research Connect?</h2>
-                        <h3>The abundance of undergraduate research opportunities is one of the great things about
+                        <h3>
+                            The abundance of undergraduate research opportunities is one of the great things about
                             Cornell, yet unfortunately the process of finding these opportunities is still very
                             unstructured. One must knock on doors, send countless emails to professors, and make do with
                             obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap
                             by providing a structured platform where students can find opportunities, and research labs
-                            can find the students they are looking for.</h3>
+                            can find the students they are looking for. View opportunities that are currently 
+                            available <a style={{ color: 'blue', textDecoration: 'underline' }} href="/opportunities">here</a>.
+                        </h3>
                     </div>
                     <div>
                         <img className="why-logo" src={logo} alt="research connect logo"/>
@@ -201,7 +204,7 @@ class LandingPage extends Component {
                 <section id="forstudents" className="our-work for-students">
                     <div className="students-title">
                         <h2>Made for students by students.</h2>
-                        <h3>Get a research position at a Cornell lab of your choice. The days of cold emailing and
+                        <h3 id="student-sign-up">Get a research position at a Cornell lab of your choice. The days of cold emailing and
                             knocking
                             on professors{"'"} doors are over.</h3>
                     </div>

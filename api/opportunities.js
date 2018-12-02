@@ -151,7 +151,7 @@ app.get('/', function (req, res) {
     let token = req.query.netId;
     let urlLabId = req.query.labId;
     let sortOrderObj = {opens: sortOrder};
-    if (token) {
+    if (token && token !== 'null') {
         verify(token, function (undergradNetId) {
             debug("here! " + undergradNetId);
             //find the undergrad so we can get their info to determine the "preqreqs match" field
@@ -597,100 +597,105 @@ app.delete('/:id', function (req, res) {
     });
 });
 
+function processOpportunity(tokenNetId, oppId, res){
+  debug("toke net id: " + tokenNetId);
+  opportunityModel.findById(oppId).lean().exec(function (err, opportunity) {
+    if (err) {
+      debug(err);
+      res.send(err);
+    }
+    if (!opportunity){
+      return res.send("");
+    }
+    //get all labs, then find the lab that has an opportunity equal to this opportunity's id
+    //TODO convert this into a mongoose query if possible
+    labModel.find({}, function (err2, labs) {
+      if (err2) {
+        debug(err);
+        res.send(err);
+        return;
+      }
+      let labAdmins = [];
+      for (let i = 0; i < labs.length; i++) {
+        let currentLab = labs[i];
+        for (let j = 0; j < currentLab.opportunities.length; j++) {
+          if (currentLab.opportunities[j].toString() === oppId) {
+            opportunity.labPage = currentLab.labPage;
+            opportunity.labDescription = currentLab.labDescription;
+            opportunity.labName = currentLab.name;
+            labAdmins = currentLab.labAdmins;
+          }
+        }
+      }
+      //get the info of one of the lab admins
+      //TODO change the array of positions to reference a constants file
+      labAdministratorModel.findOne(
+          {
+            $and: [
+              {netId: {$in: labAdmins}},
+              {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
+            ]
+          },
+
+          /*
+           in this section, we attach the info of the student who requested this. This is used to fill in the
+           qualifications section (I think) on the front-end. This should probably only happen if there is
+           some query parameter, but we never got around to doing that. TODO
+           */
+          function (err, labAdmin) {
+            if (!labAdmin){
+              opportunity.pi = "No lab members found"
+            }
+            else {
+              //TODO how do we know this is the PI? I think ".pi" may be a misleading name.
+              opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
+            }
+            undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
+              if (student === undefined) {
+                opportunity.student = {
+                  "firstName": "John",
+                  "lastName": "Smith",
+                  "gradYear": (new Date()).getFullYear() + 1,
+                  "major": "Computer Science",
+                  "gpa": 4.3,
+                  "netId": "rsn55",
+                  "courses": [
+                    "CS 1110",
+                    "INFO 4998",
+                    "CS 3110"
+                  ],
+                  "skills": [
+                    "HTML"
+                  ]
+                }
+              }
+              else {
+                opportunity.student = student;
+              }
+              res.send(opportunity);
+            });
+          });
+    });
+  });
+}
 
 //previous POST /getOpportunity
 //gets the opportunity given its object id
 app.get('/:id', function (req, res) {
+    if (!req.params || !req.params.id || req.params.id === "null"){
+      return res.send({});
+    }
+    let id = req.params.id;
+    //if no net id
+    if (!req.query || !req.query.netId || req.query.netId === "null"){
+      processOpportunity(null, id, res);
+      return;
+    }
     debug("token: " + req.query.netId);
     debug("id: " + req.params.id);
-    verify(req.query.netId, function (tokenNetId) {
-        debug("toke net id: " + tokenNetId);
-        if (!req.params || !req.params.id){
-            return res.send({});
-        }
-        opportunityModel.findById(req.params.id).lean().exec(function (err, opportunity) {
-            if (err) {
-                debug(err);
-                res.send(err);
-            }
-            debug("opportunity below:");
-            debug(opportunity);
-            if (!opportunity){
-                return res.send("");
-            }
-            //get all labs, then find the lab that has an opportunity equal to this opportunity's id
-            //TODO convert this into a mongoose query if possible
-            labModel.find({}, function (err2, labs) {
-                if (err2) {
-                    debug(err);
-                    res.send(err);
-                    return;
-                }
-                let labAdmins = [];
-                for (let i = 0; i < labs.length; i++) {
-                    let currentLab = labs[i];
-                    for (let j = 0; j < currentLab.opportunities.length; j++) {
-                        if (currentLab.opportunities[j].toString() === req.params.id) {
-                            opportunity.labPage = currentLab.labPage;
-                            opportunity.labDescription = currentLab.labDescription;
-                            opportunity.labName = currentLab.name;
-                            debug("found it");
-                            debug(currentLab);
-                            labAdmins = currentLab.labAdmins;
-                        }
-                    }
-                }
-                debug("here");
-                debug(labAdmins);
-                //get the info of one of the lab admins
-                labAdministratorModel.findOne(
-                    {
-                        $and: [
-                            {netId: {$in: labAdmins}},
-                            {role: {$in: ["pi", "postdoc", "grad", "staffscientist", "labtech"]}}
-                        ]
-                    },
-
-                    //in this section, we attach the info of the student who requested this. This is used to fill in the
-                    //qualifications section (I think) on the front-end. This should probably only happen if there is
-                    //some query parameter, but we never got around to doing that. TODO
-                    function (err, labAdmin) {
-                        debug(labAdmin);
-                        if (!labAdmin){
-                            opportunity.pi = "No lab members found"
-                        }
-                        else {
-                            //TODO how do we know this is the PI? I think ".pi" may be a misleading name.
-                            opportunity.pi = labAdmin.firstName + " " + labAdmin.lastName;
-                        }
-                        undergradModel.findOne({netId: tokenNetId}, function (error3, student) {
-                            if (student === undefined) {
-                                opportunity.student = {
-                                    "firstName": "John",
-                                    "lastName": "Smith",
-                                    "gradYear": (new Date()).getFullYear() + 1,
-                                    "major": "Computer Science",
-                                    "gpa": 4.3,
-                                    "netId": "rsn55",
-                                    "courses": [
-                                        "CS 1110",
-                                        "INFO 4998",
-                                        "CS 3110"
-                                    ],
-                                    "skills": [
-                                        "HTML"
-                                    ]
-                                }
-                            }
-                            else {
-                                opportunity.student = student;
-                            }
-                            res.send(opportunity);
-                        });
-                    });
-            });
-        });
-    }).catch(function (error) {
+  verify(req.query.netId, function (tokenNetId) {
+    processOpportunity(tokenNetId, id, res);
+  }).catch(function (error) {
         handleVerifyError(error, res);
     });
 });
