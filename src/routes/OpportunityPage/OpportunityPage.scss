@@ -17,6 +17,10 @@
     z-index: -1;
   }
 
+  .wallpaper-no-sign-in {
+    top: 0;
+  }
+
   .opp-details-column {
     flex: 0 0 69%;
   }
@@ -149,6 +153,10 @@
     line-height: 54px;
     font-size: 14px;
     font-weight: 300;
+  }
+
+  .back-to-opportunities {
+    width: 250px;
   }
 }
 

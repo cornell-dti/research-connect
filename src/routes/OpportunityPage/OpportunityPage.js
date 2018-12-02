@@ -379,7 +379,7 @@ class OpportunityPage extends Component {
 				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
 
 				<div className={ 'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '') }>
-					<div className="wallpaper"></div>
+					<div className={'wallpaper ' + (isNotLoggedIn ? 'wallpaper-no-sign-in' : '')}></div>
 					<div className="row opportunity-row">
 						<div className="column opp-details-column">
 							<div className="row opp-title-card">
@@ -388,12 +388,15 @@ class OpportunityPage extends Component {
 									<div>{this.state.opportunity.labName}</div>
 								</div>
 								<div className="column right-column">
-								{ !isLab &&
+									{ !isNotLoggedIn && !isLab &&
 									<a className="button" href="#Application">Apply</a>
 									/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
 									}
-									{ isLab &&
+									{ !isNotLoggedIn && isLab &&
 									<a className="button" href={"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
+									}
+									{ isNotLoggedIn &&
+									<a className={'button ' + (isNotLoggedIn ? 'back-to-opportunities' : '')} href="/opportunities">Back To Opportunities</a>
 									}
 									
 								</div>
@@ -472,7 +475,7 @@ class OpportunityPage extends Component {
 							isNotLoggedIn && 
 							<div id="Application" className="row opp-application-box">
 								<div className="column">
-									<div className="header">Please create an account to apply!</div>
+									<div className="header">Please <a href="/studentRegister">create an account</a> to apply!</div>
 								</div>
 							</div>
 							}
