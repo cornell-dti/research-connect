@@ -75,16 +75,17 @@ class StudentDashboard extends Component{
           <div className="row">
             <div className="column column-50">
               <div className="dashboard-header">Welcome back {this.state.name}!</div>
-              <DashboardAction
-                icon={ newspaper }
-                iconColor="#91D781"
-                text="Search for faculty"
-                href="/facultysearch" />
+
               <DashboardAction
                 icon={ edit }
                 iconColor="#A5CCFE"
                 text="View opportunities"
                 href='/opportunities' />
+              <DashboardAction
+              icon={ newspaper }
+              iconColor="#91D781"
+              text="Contact Us"
+              href="mailto:acb352@cornell.edu" />
               {/*<DashboardAction*/}
                 {/*icon={ edit }*/}
                 {/*iconColor="#A5CCFE"*/}
