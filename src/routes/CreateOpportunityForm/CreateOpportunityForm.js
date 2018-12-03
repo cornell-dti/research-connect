@@ -556,11 +556,11 @@ class CreateOppForm extends React.Component {
                             </div>
 
                             <div className="hours row input-row optional">
-                                <input className="min-hours" placeholder="Min Hours" type="text" name="min"
+                                <input className="min-hours" placeholder="Min Hours/Week" type="text" name="min"
                                        value={this.state.minHours} onChange={this.handleChange}/>
 
 
-                                <input className="max-hours" placeholder="Max Hours" type="text" name="max"
+                                <input className="max-hours" placeholder="Max Hours/Week" type="text" name="max"
                                        value={this.state.maxHours} onChange={this.handleChange}/>
                                 <InfoIcon data-tip data-for="info-hours" className="info-icon column column-5"
                                           size={20}/>
