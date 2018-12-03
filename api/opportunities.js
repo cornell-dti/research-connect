@@ -479,13 +479,7 @@ app.post('/', function (req, res) {
                     });
                 });
             let opportunityMajor = req.body.majorsAllowed;
-            undergradModel.find({
-                  $or: [
-                    {major: opportunityMajor},
-                    {secondMajor: opportunityMajor},
-                    {minor: opportunityMajor}
-                  ]
-                },
+            undergradModel.find({},
                 function (err, studentsWhoMatch) {
                   for (let undergrad1 in studentsWhoMatch) {
                     const msg = {
@@ -503,7 +497,6 @@ app.post('/', function (req, res) {
                       'The Research Connect Team<br />'
                     };
                     sgMail.send(msg);
-                    break;
                   }
                   debug("finished emailling students");
                 });
