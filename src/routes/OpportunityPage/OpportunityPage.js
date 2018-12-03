@@ -325,23 +325,24 @@ class OpportunityPage extends Component {
 	parseGPA(gpa, isStudent) {
 		//if minGPA is falsy or falls in range
 		if (!this.state.minGPA || (this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa)) {
-			return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA ? this.state.opportunity.minGPA : "No Preference"}</span></p>;
+			return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA ? this.state.opportunity.minGPA.toFixed(2) : "No Preference"}</span></p>;
 		}
 		else {
-			return <p key={1}><CrossCircle className="cross"/><span> {this.state.opportunity.minGPA}</span></p>;
+			return <p key={1}><CrossCircle className="cross"/><span> {this.state.opportunity.minGPA.toFixed(2)}</span></p>;
 		}
-
 	}
 
 	parseCompensation(compensation){
-		if(this.state.opportunity && this.state.opportunity.compensation){
-			if(this.state.opportunity.compensation.indexOf("pay") != -1){
-				if(this.state.opportunity.compensation.indexOf("credit") != -1){ return <div> Credit or pay. </div>; }
-				return <div> Pay only.</div>;
-			}
-			if(this.state.opportunity.compensation.indexOf("credit") != -1){ return <div> Credit only.</div>;}
+		let compString = 'None';
+		if (this.state.opportunity && this.state.opportunity.compensation) {
+			let pay = this.state.opportunity.compensation.indexOf("pay") !== -1;
+			let credit = this.state.opportunity.compensation.indexOf("credit") !== -1;
+
+			if (pay && credit) compString = 'Credit or Pay';
+			else if (pay) compString = 'Pay only';
+			else if (credit) compString = 'Credit only';
 		}
-		return <div> None.</div>
+		return <div>{compString}</div>
 	}
 
 	componentDidMount() {
@@ -432,7 +433,7 @@ class OpportunityPage extends Component {
 									<div className="opp-details-section">
 										<div className="header">Compensation</div>
 										<div>
-											{ this.state.opportunity.compensation ? this.state.opportunity.compensation : "None" } 
+											{ this.state.opportunity.compensation ? this.parseCompensation(this.state.opportunity.compensation) : "None" } 
 											
 										</div>
 									</div>
