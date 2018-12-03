@@ -443,6 +443,12 @@ class OpportunityPage extends Component {
 											{ this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage }
 										</div>
 									</div>
+									<div className="opp-details-section">
+										<div className="header">Additional Information</div>
+										<div>
+                      { this.state.opportunity.additionalInformation ? this.state.opportunity.additionalInformation : notProvidedMessage }
+										</div>
+									</div>
 								</div>
 							</div>
 							{
