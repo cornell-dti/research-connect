@@ -488,9 +488,8 @@ app.post('/', function (req, res) {
                 },
                 function (err, studentsWhoMatch) {
                   for (let undergrad1 in studentsWhoMatch) {
-                    // to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
                     const msg = {
-                      to: "acb352@cornell.edu",
+                      to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
                       from: {
                         name: "Research Connect",
                         email: 'hello@research-connect.com'
