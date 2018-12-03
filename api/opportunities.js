@@ -478,37 +478,37 @@ app.post('/', function (req, res) {
                     lab.save(function (saveError, response) {
                     });
                 });
-        });
-
-        let opportunityMajor = req.body.majorsAllowed;
-        undergradModel.find({
-                $or: [
+            let opportunityMajor = req.body.majorsAllowed;
+            undergradModel.find({
+                  $or: [
                     {major: opportunityMajor},
                     {secondMajor: opportunityMajor},
                     {minor: opportunityMajor}
-                ]
-            },
-            function (err, studentsWhoMatch) {
-                for (let undergrad1 in studentsWhoMatch) {
+                  ]
+                },
+                function (err, studentsWhoMatch) {
+                  for (let undergrad1 in studentsWhoMatch) {
+                    // to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
                     const msg = {
-                        to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
-                        from: {
-                            name: "Research Connect",
-                            email: 'hello@research-connect.com'
-                        },
-                        replyTo: "acb352@cornell.edu",
-                        subject: 'New Research Opportunity Available!',
-                        html: 'Hi,<br />' +
-                        'A new opportunity was just posted in an area you expressed interest in. You can apply to it ' +
-                        'under "opportunities" on the Research-Connnect.com website! <br />' +
-                        '<br />' +
-                        'Thanks,<br />' +
-                        'The Research Connect Team<br />'
+                      to: "acb352@cornell.edu",
+                      from: {
+                        name: "Research Connect",
+                        email: 'hello@research-connect.com'
+                      },
+                      replyTo: "acb352@cornell.edu",
+                      subject: 'New Research Opportunity Available!',
+                      html: 'Hi,<br />' +
+                      'A new opportunity called "' + opportunity.title + '" was just posted in an area you expressed interest in. You can view it here https://research-connect.com/opportunity/' + oppId + '! <br />' +
+                      '<br />' +
+                      'Thanks,<br />' +
+                      'The Research Connect Team<br />'
                     };
                     sgMail.send(msg);
-                }
-                debug("finished emailling students");
-            });
+                    break;
+                  }
+                  debug("finished emailling students");
+                });
+        });
         debug("done with function");
         res.send("Success!");
         // });
