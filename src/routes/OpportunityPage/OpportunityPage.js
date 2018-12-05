@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import './OpportunityPage.scss';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar'
@@ -36,8 +36,8 @@ class OpportunityPage extends Component {
 		// this.props.history.push({pathname: 'opportunity/' + this.props.opId});
 		const url = (window.location.href);
 		const length = url.length;
-		const finURL = url.slice(0, length-1);
-		return (finURL.slice((finURL.lastIndexOf("/")+1)));
+		const finURL = url.slice(0, length - 1);
+		return (finURL.slice((finURL.lastIndexOf("/") + 1)));
 
 
 	}
@@ -50,13 +50,13 @@ class OpportunityPage extends Component {
 		return true;
 	}
 
-	sendToHome(error){
-        if (!this.state.detectedLoggedOut) {
-            Utils.handleTokenError(error);
-            window.location.href = "/test.com";
-            console.log("done");
-            this.setState({detectedLoggedOut: true});
-        }
+	sendToHome(error) {
+		if (!this.state.detectedLoggedOut) {
+			Utils.handleTokenError(error);
+			window.location.href = "/test.com";
+			console.log("done");
+			this.setState({ detectedLoggedOut: true });
+		}
 	}
 
 	handleChange(key) {
@@ -69,7 +69,7 @@ class OpportunityPage extends Component {
 	}
 
 	coverChange(event) {
-		this.setState({coverLetter: event.target.value});
+		this.setState({ coverLetter: event.target.value });
 		let answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers));
 		answersCopy['coverLetter'] = event.target.value;
 		this.setState({
@@ -81,31 +81,26 @@ class OpportunityPage extends Component {
 	handleAppSubmit = (e) => {
 
 		e.preventDefault();
-		this.setState({triedSubmitting: true});
+		this.setState({ triedSubmitting: true });
 
 		// get our form data out of state
-		const {opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId} = this.state;
+		const { opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId } = this.state;
 		// if (coverLetter) {
-			let allQsAnswered = true;
-			for (let key in questionAnswers) {
-				if (questionAnswers[key] == '') {
-					let allQsAnswered = false;
-				}
-			}
-			if (allQsAnswered === true) {
-				this.setState({submitted: true});
-				console.log("submitting form");
-				let opportunityId = opportunity._id;
-				let responses = questionAnswers;
-				axios.post('/api/applications', {opportunityId, netId, responses})
-					.then((result) => {
-						console.log(result);
-					}).catch(function (error) {
-						this.sendToHome(error);
+		let allQsAnswered = Object.values(questionAnswers).reduce((allQs, currentQ) => allQs && (currentQ != ''));
+		if (allQsAnswered === true) {
+			this.setState({ submitted: true });
+			console.log("submitting form");
+			let opportunityId = opportunity._id;
+			let responses = questionAnswers;
+			axios.post('/api/applications', { opportunityId, netId, responses })
+				.then((result) => {
+					console.log(result);
+				}).catch(function (error) {
+					this.sendToHome(error);
 					// Utils.handleTokenError(error);
 				});
 
-			}
+		}
 
 		// }
 	};
@@ -114,8 +109,8 @@ class OpportunityPage extends Component {
 		console.log(this.props.match.params.id);
 		axios.get('/api/opportunities/' + this.props.match.params.id + '?netId=' + sessionStorage.getItem('token_id'))
 			.then((response) => {
-				this.setState({opportunity: response.data});
-				this.setState({student: response.data.student});
+				this.setState({ opportunity: response.data });
+				this.setState({ student: response.data.student });
 				if (!this.isEmpty(response.data)) {
 					let obj = {};
 					//get all the keys and put them in an array
@@ -126,7 +121,7 @@ class OpportunityPage extends Component {
 						}
 					}
 
-					this.setState({questionAnswers: obj});
+					this.setState({ questionAnswers: obj });
 				}
 			})
 			.catch(function (error) {
@@ -134,14 +129,14 @@ class OpportunityPage extends Component {
 			});
 
 		if (!sessionStorage.getItem('token_id')) {
-			this.setState({netId: null});
+			this.setState({ netId: null });
 			return;
 		}
-			
+
 		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
 			.then((response) => {
 				if (!this.isEmpty(response.data)) {
-					this.setState({netId: response.data[0].netId});
+					this.setState({ netId: response.data[0].netId });
 				}
 			})
 			.catch(function (error) {
@@ -171,27 +166,27 @@ class OpportunityPage extends Component {
 			});
 
 			let questionMapping = keys.map((key) => {
-					return <div id={key} key={key}>
-						{this.state.opportunity.questions[key]}
-						<br/>
-						<textarea style={{"min-height": "16rem"}} name={key} key={key} onChange={this.handleChange.bind(this, key)}/>
-						<br/>
-					</div>
-				}
+				return <div id={key} key={key}>
+					{this.state.opportunity.questions[key]}
+					<br />
+					<textarea style={{ "minHeight": "16rem" }} name={key} key={key} onChange={this.handleChange.bind(this, key)} />
+					<br />
+				</div>
+			}
 			);
 
 			return (
 				<form onSubmit={this.handleAppSubmit.bind(this)}>
 					{questionMapping}
 					<div className="submit-button-div">
-						<input className="button" type="submit" value="Submit"/>
+						<input className="button" type="submit" value="Submit" />
 					</div>
 				</form>
 			);
 		} else {
 			return (
 				<form onSubmit={this.handleAppSubmit.bind(this)}>
-					<input className="button" type="submit" value="Submit"/>
+					<input className="button" type="submit" value="Submit" />
 				</form>
 			);
 		}
@@ -200,7 +195,7 @@ class OpportunityPage extends Component {
 	convertDate(dateString) {
 		let dateObj = new Date(dateString);
 		let year = dateObj.getUTCFullYear().toString();
-		year = year.substring(2,4);
+		year = year.substring(2, 4);
 		let month = dateObj.getUTCMonth() + 1;
 		let day = dateObj.getUTCDay();
 		let month0 = '';
@@ -235,38 +230,38 @@ class OpportunityPage extends Component {
 			let trackYear = false;
 			if (yearsArray.includes("freshman")) {
 				if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Freshman") {
-					yearDivArray.push(<div key="f"><CheckBox className="greenCheck"/><span key="fresh"> Freshman</span>
+					yearDivArray.push(<div key="f"><CheckBox className="greenCheck" /><span key="fresh"> Freshman</span>
 					</div>)
 				}
 				else {
-					yearDivArray.push(<div key="f"><CrossCircle className="cross"/><span key="fresh"> Freshman</span>
+					yearDivArray.push(<div key="f"><CrossCircle className="cross" /><span key="fresh"> Freshman</span>
 					</div>)
 				}
 				trackYear = true;
 			}
 			if (yearsArray.includes("sophomore")) {
 				if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Sophomore") {
-					yearDivArray.push(<div key="so"><CheckBox className="greenCheck"/><span > Sophomore</span></div>)
+					yearDivArray.push(<div key="so"><CheckBox className="greenCheck" /><span > Sophomore</span></div>)
 				}
 				else {
-					yearDivArray.push(<div key="so"><CrossCircle className="cross"/><span > Sophomore</span></div>)
+					yearDivArray.push(<div key="so"><CrossCircle className="cross" /><span > Sophomore</span></div>)
 				}
 				trackYear = true;
 			}
 			if (yearsArray.includes("junior")) {
-				if (this.state.student  && Utils.gradYearToString(this.state.student.gradYear) === "Junior") {
-					yearDivArray.push(<div key="j"><CheckBox className="greenCheck"/><span > Junior</span></div>)
+				if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Junior") {
+					yearDivArray.push(<div key="j"><CheckBox className="greenCheck" /><span > Junior</span></div>)
 				} else {
-					yearDivArray.push(<div key="j"><CrossCircle className="cross"/><span > Junior</span></div>)
+					yearDivArray.push(<div key="j"><CrossCircle className="cross" /><span > Junior</span></div>)
 
 				}
 				trackYear = true;
 			}
 			if (yearsArray.includes("senior")) {
 				if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === "Senior") {
-					yearDivArray.push(<div key="se"><CheckBox className="greenCheck"/><span > Senior</span></div>)
+					yearDivArray.push(<div key="se"><CheckBox className="greenCheck" /><span > Senior</span></div>)
 				} else {
-					yearDivArray.push(<div key="se"><CrossCircle className="cross"/><span > Senior</span></div>)
+					yearDivArray.push(<div key="se"><CrossCircle className="cross" /><span > Senior</span></div>)
 
 				}
 				trackYear = true;
@@ -276,7 +271,7 @@ class OpportunityPage extends Component {
 			}
 			else {
 				return <ul>
-					<div key="n"><CheckBox className="greenCheck"/><span> No Preference</span></div>
+					<div key="n"><CheckBox className="greenCheck" /><span> No Preference</span></div>
 				</ul>
 			}
 		}
@@ -284,55 +279,61 @@ class OpportunityPage extends Component {
 	}
 
 	parseMajors(arrayIn, isStudent) {
-		let returnArray = [];
 		if (arrayIn) {
 			if (arrayIn.length === 0) {
-				returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span
-					key="n"> No Preference</span></div>);
+				return (
+					<ul>
+						<div key="none"><CheckBox key="no" className="greenCheck" />
+							<span key="n"> No Preference</span>
+						</div>
+					</ul>);
 			}
-			for (let i = 0; i < arrayIn.length; i++) {
-				if (this.state.student != null && this.state.student.major.indexOf(arrayIn[i]) != -1) {
-					returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span > {arrayIn[i]}</span></div>);
-				}
-				else {
-					returnArray.push(<div key={i}><CrossCircle className="cross"/><span > {arrayIn[i]}</span></div>);
-
-				}
+			else {
+				return (<ul>
+					{arrayIn.map(major => {
+						if (this.state.student != null && this.state.student.major.indexOf(major) != -1) {
+							return (<div key={major}><CheckBox className="greenCheck" /><span > {major}</span></div>);
+						} else {
+							return (<div key={major}><CrossCircle className="cross" /><span > {major}</span></div>);
+						}
+					})}</ul>);
 			}
-			return <ul>{returnArray}</ul>;
 		}
 	}
 
 	parseClasses(arrayIn, isStudent) {
-		let returnArray = []
 		if (arrayIn) {
 			if (arrayIn.length === 0) {
-				returnArray.push(<div key="none"><CheckBox key="no" className="greenCheck"/><span
-					key="n"> No Preference</span></div>);
+				return (
+					<ul>
+						<div key="none"><CheckBox key="no" className="greenCheck" /><span
+							key="n"> No Preference</span></div>
+					</ul>);
 			}
-			for (let i = 0; i < arrayIn.length; i++) {
-				if (this.state.student != null && this.state.student.courses.indexOf(arrayIn[i]) != -1) {
-					returnArray.push(<div key={i}><CheckBox className="greenCheck"/><span> {arrayIn[i]}</span></div>);
-				}
-				else {
-					returnArray.push(<div key={i}><CrossCircle className="cross"/><span> {arrayIn[i]}</span></div>);
-				}
+			else {
+				return (<ul>
+					{arrayIn.map(course => {
+						if (this.state.student != null && this.state.student.courses.indexOf(course) != -1) {
+							return (<div key={course}><CheckBox className="greenCheck" /><span > {course}</span></div>);
+						} else {
+							return (<div key={course}><CrossCircle className="cross" /><span > {course}</span></div>);
+						}
+					})}</ul>);
 			}
-			return <ul>{returnArray}</ul>;
 		}
 	}
 
 	parseGPA(gpa, isStudent) {
 		//if minGPA is falsy or falls in range
 		if (!this.state.minGPA || (this.state.student && this.state.opportunity && this.state.opportunity.minGPA <= this.state.student.gpa)) {
-			return <p key={0}><CheckBox className="greenCheck"/><span> {this.state.opportunity.minGPA ? this.state.opportunity.minGPA.toFixed(2) : "No Preference"}</span></p>;
+			return <p key={0}><CheckBox className="greenCheck" /><span> {this.state.opportunity.minGPA ? this.state.opportunity.minGPA.toFixed(2) : "No Preference"}</span></p>;
 		}
 		else {
-			return <p key={1}><CrossCircle className="cross"/><span> {this.state.opportunity.minGPA.toFixed(2)}</span></p>;
+			return <p key={1}><CrossCircle className="cross" /><span> {this.state.opportunity.minGPA.toFixed(2)}</span></p>;
 		}
 	}
 
-	parseCompensation(compensation){
+	parseCompensation(compensation) {
 		let compString = 'None';
 		if (this.state.opportunity && this.state.opportunity.compensation) {
 			let pay = this.state.opportunity.compensation.indexOf("pay") !== -1;
@@ -347,7 +348,7 @@ class OpportunityPage extends Component {
 
 	componentDidMount() {
 		if (!sessionStorage.getItem('token_id')) {
-			this.setState({role: null});
+			this.setState({ role: null });
 			return;
 		}
 
@@ -362,7 +363,7 @@ class OpportunityPage extends Component {
 				else {
 					this.setState({role: response.data});
 				}*/
-				this.setState({role: response.data});
+				this.setState({ role: response.data });
 			})
 			.catch(function (error) {
 				this.sendToHome(error);
@@ -376,10 +377,10 @@ class OpportunityPage extends Component {
 		const isNotLoggedIn = !(this.state.role);
 		return (
 			<div>
-				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"}/>}
-				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"}/>}
+				{this.state.role && this.state.role === "undergrad" && <Navbar current={"opportunities"} />}
+				{this.state.role && this.state.role !== "undergrad" && <ProfessorNavbar current={"opportunities"} />}
 
-				<div className={ 'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '') }>
+				<div className={'opportunities-page-wrapper ' + (isLab ? 'opportunity-lab' : '')}>
 					<div className={'wallpaper ' + (isNotLoggedIn ? 'wallpaper-no-sign-in' : '')}></div>
 					<div className="row opportunity-row">
 						<div className="column opp-details-column">
@@ -389,17 +390,17 @@ class OpportunityPage extends Component {
 									<div>{this.state.opportunity.labName}</div>
 								</div>
 								<div className="column right-column">
-									{ !isNotLoggedIn && !isLab &&
-									<a className="button" href="#Application">Apply</a>
-									/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
+									{!isNotLoggedIn && !isLab &&
+										<a className="button" href="#Application">Apply</a>
+										/* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
 									}
-									{ !isNotLoggedIn && isLab &&
-									<a className="button" href={"/EditOpp?Id=" + this.getId() + "/" }>Edit Opportunity</a>
+									{!isNotLoggedIn && isLab &&
+										<a className="button" href={"/EditOpp?Id=" + this.getId() + "/"}>Edit Opportunity</a>
 									}
-									{ isNotLoggedIn &&
-									<a className={'button ' + (isNotLoggedIn ? 'back-to-opportunities' : '')} href="/opportunities">Back To Opportunities</a>
+									{isNotLoggedIn &&
+										<a className={'button ' + (isNotLoggedIn ? 'back-to-opportunities' : '')} href="/opportunities">Back To Opportunities</a>
 									}
-									
+
 								</div>
 							</div>
 							<div className="row">
@@ -426,65 +427,65 @@ class OpportunityPage extends Component {
 									<div className="opp-details-section">
 										<div className="header">Weekly Hours</div>
 										<div>
-											{ this.state.opportunity.minHours ? this.state.opportunity.minHours : "No minimum" }-
-											{ this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum" } hours a week.
+											{this.state.opportunity.minHours ? this.state.opportunity.minHours : "No minimum"}-
+											{this.state.opportunity.maxHours ? this.state.opportunity.maxHours + " " : "No maximum"} hours a week.
 										</div>
 									</div>
 									<div className="opp-details-section">
 										<div className="header">Compensation</div>
 										<div>
-											{ this.state.opportunity.compensation ? this.parseCompensation(this.state.opportunity.compensation) : "None" } 
-											
+											{this.state.opportunity.compensation ? this.parseCompensation(this.state.opportunity.compensation) : "None"}
+
 										</div>
 									</div>
 									<div className="opp-details-section">
 										<div className="header">Project Description</div>
 										<div>
-											{ this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage }
+											{this.state.opportunity.projectDescription ? this.state.opportunity.projectDescription : notProvidedMessage}
 										</div>
 									</div>
 									<div className="opp-details-section">
 										<div className="header">Additional Information</div>
 										<div>
-                      { this.state.opportunity.additionalInformation ? this.state.opportunity.additionalInformation : notProvidedMessage }
+											{this.state.opportunity.additionalInformation ? this.state.opportunity.additionalInformation : notProvidedMessage}
 										</div>
 									</div>
 								</div>
 							</div>
 							{
-							!isLab &&
-							<div id="Application" className="row opp-application-box">
-								<div className="column">
-									<div className="header">Apply Here</div>
-									{ this.state.opportunity.ghostPost ?
-										<div>
-											Please email { this.state.opportunity.ghostEmail + " " }
-											with your resume and why you're interested in order to apply. You do not need to take
-											any action here.
+								!isLab &&
+								<div id="Application" className="row opp-application-box">
+									<div className="column">
+										<div className="header">Apply Here</div>
+										{this.state.opportunity.ghostPost ?
+											<div>
+												Please email {this.state.opportunity.ghostEmail + " "}
+												with your resume and why you're interested in order to apply. You do not need to take
+												any action here.
 										</div> :
-										<div>
-											<div className="error-div">
+											<div>
+												<div className="error-div">
+													{
+														this.state.triedSubmitting && !this.state.submitted ?
+															<p className="app-error-message">Please answer all questions in order to submit.</p> : ''
+													}
+												</div>
 												{
-													this.state.triedSubmitting && !this.state.submitted ?
-													<p className="app-error-message">Please answer all questions in order to submit.</p> : ''
+													!this.state.submitted ? this.printQuestions() :
+														<p>You have applied to this position.</p>
 												}
 											</div>
-											{
-												!this.state.submitted ? this.printQuestions() :
-												<p>You have applied to this position.</p>
-											}
-										</div>
-									}
+										}
+									</div>
 								</div>
-							</div>
 							}
 							{
-							isNotLoggedIn && 
-							<div id="Application" className="row opp-application-box">
-								<div className="column">
-									<div className="header">Please <a href="/#student-sign-up">create an account</a> to apply!</div>
+								isNotLoggedIn &&
+								<div id="Application" className="row opp-application-box">
+									<div className="column">
+										<div className="header">Please <a href="/#student-sign-up">create an account</a> to apply!</div>
+									</div>
 								</div>
-							</div>
 							}
 						</div>
 						<div className="column">
@@ -493,28 +494,28 @@ class OpportunityPage extends Component {
 									<div>Preferred Qualifications</div>
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="opp-qual-section">
 									<h6 className="header">Year</h6>
 									{this.parseYears(this.state.opportunity.yearsAllowed)}
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="opp-qual-section">
 									<h6 className="header">Major</h6>
 									{this.parseMajors(this.state.opportunity.majorsAllowed)}
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="opp-qual-section">
 									<h6 className="header">GPA</h6>
 									{this.parseGPA(this.state.opportunity.minGPA)}
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="opp-qual-section">
 									<h6 className="header">Courses</h6>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import './ApplicationPage.scss';
@@ -28,28 +28,27 @@ class ApplicationPage extends Component {
 				console.log("response.data!");
 				console.log(response.data);
 
-				// this is really bad
-				for (let opp in response.data) {
-					for (let app in response.data[opp].applications) {
-						let curApp = response.data[opp].applications[app];
-						let curOpp = response.data[opp].opportunity;
-						if (curApp !== undefined) {
-							if (curApp.id === this.props.match.params.id) {
-								this.setState({application: curApp, opportunity: curOpp});
+				response.data.forEach(opp => {
+					opp.applications.forEach(app => {
+						let curOpp = opp.opportunity;
+						if (app !== undefined) {
+							if (app.id === this.props.match.params.id) {
+								this.setState({ application: app, opportunity: curOpp });
 								console.log(this.state.opportunity);
 								console.log(this.state.application);
 								axios.get('/api/undergrads/la/' + this.state.application.undergradNetId + '?tokenId=' + sessionStorage.getItem('token_id'))
 									.then((response) => {
-										this.setState({"resumeId": response.data.resumeId});
+										this.setState({ "resumeId": response.data.resumeId });
 										let transcriptIdText = response.data.transcriptId != null ? "" : response.data.transcriptId;
-										this.setState({"transcriptId": transcriptIdText})
+										this.setState({ "transcriptId": transcriptIdText })
 									}).catch(function (error) {
-									Utils.handleTokenError(error);
-								});
+										Utils.handleTokenError(error);
+									});
 							}
 						}
-					}
-				}
+					});
+				});
+
 			}).catch(function (error) {
 				Utils.handleTokenError(error);
 			});
@@ -62,20 +61,10 @@ class ApplicationPage extends Component {
 	}
 
 	toDivList(lst) {
-		let i = 0;
-		let res = [];
-		for (i in lst) {
-			res.push(
-				<div key={ i }>
-					{ lst[i] }
-				</div>
-			);
-		}
-		return res;
+		return lst.map(e => <div key={e}> {e} </div>);
 	}
-	getNoGPA(gpa)
-	{
-		if (gpa === 5.0){
+	getNoGPA(gpa) {
+		if (gpa === 5.0) {
 			return "No GPA";
 		}
 		else {
@@ -94,12 +83,12 @@ class ApplicationPage extends Component {
 						<div className="resume-link">
 							<a href={this.state.transcriptId} target="_blank"><h6 className="no-margin">View Transcript
 								<ExternalLink
-									className="red-link"/>
+									className="red-link" />
 							</h6></a>
 						</div>
 
 					</div>
-					< hr/>
+					< hr />
 				</div>
 			)
 		}
@@ -119,13 +108,13 @@ class ApplicationPage extends Component {
 		if (this.state.loading) {
 			return (
 				<div className='sweet-loading'>
-	        <ClipLoader
-	          className={override}
-	          sizeUnit={"px"}
-	          size={150}
-	          color={'#ff0000'}
-	          loading={this.state.loading} />
-	      </div> 
+					<ClipLoader
+						className={override}
+						sizeUnit={"px"}
+						size={150}
+						color={'#ff0000'}
+						loading={this.state.loading} />
+				</div>
 			);
 		}
 
@@ -135,35 +124,35 @@ class ApplicationPage extends Component {
 		let c = 0;
 		for (let question in responses) {
 			questionsAndResponses.push(
-				<div className="question-and-response" key={ c++ }>
-					<div className='question header'>{ questions[question] ? questions[question] : "Cover Letter"}</div>
-					<div className='response'>{ responses[question] }</div>
+				<div className="question-and-response" key={c++}>
+					<div className='question header'>{questions[question] ? questions[question] : "Cover Letter"}</div>
+					<div className='response'>{responses[question]}</div>
 				</div>
 			);
 		}
 
 		return (
 			<div>
-				<Navbar/>
+				<Navbar />
 				<div className="application-page-container">
-					<div className="return-to-apps" onClick={ this.returnToApps.bind(this) }>
-						<FaLongArrowLeft className="black-arrow"/>Return to applications
+					<div className="return-to-apps" onClick={this.returnToApps.bind(this)}>
+						<FaLongArrowLeft className="black-arrow" />Return to applications
 					</div>
 					<div className="row button-bar">
 						<div className="column column-33 left-button">
-							<EmailDialog buttonText="Mark as Accepted" 
-								opp={ this.state.opportunity }
-								app={ this.state.application } />
+							<EmailDialog buttonText="Mark as Accepted"
+								opp={this.state.opportunity}
+								app={this.state.application} />
 						</div>
 						<div className="column column-33 center-button">
-							<EmailDialog buttonText="Edit & Send Interview Email" 
-								opp={ this.state.opportunity }
-								app={ this.state.application } />
+							<EmailDialog buttonText="Edit & Send Interview Email"
+								opp={this.state.opportunity}
+								app={this.state.application} />
 						</div>
 						<div className="column column-33 right-button">
 							<EmailDialog buttonText="Mark as Rejected"
-								opp={ this.state.opportunity }
-								app={ this.state.application } />
+								opp={this.state.opportunity}
+								app={this.state.application} />
 						</div>
 					</div>
 					<div className="row">
@@ -173,32 +162,32 @@ class ApplicationPage extends Component {
 									<div className="row app-page-info-top-row">
 										<div className="column app-info-left">
 											<div className="name header">
-												{ Utils.capitalizeFirstLetter(this.state.application.lastName) }, { Utils.capitalizeFirstLetter(this.state.application.firstName) }</div>
+												{Utils.capitalizeFirstLetter(this.state.application.lastName)}, {Utils.capitalizeFirstLetter(this.state.application.firstName)}</div>
 											<div className="email">
-												{ this.state.application.undergradNetId }@cornell.edu
+												{this.state.application.undergradNetId}@cornell.edu
 											</div>
 										</div>
 										<div className="column app-info-right">
 											<div className="date-applied">
-												Date Applied: { Utils.convertDate(this.state.application.timeSubmitted) }
+												Date Applied: {Utils.convertDate(this.state.application.timeSubmitted)}
 											</div>
 										</div>
 									</div>
 									<div className="row">
 										<div className="column column-33 app-info-left">
 											<div className="grad-year">
-												{ Utils.gradYearToString(this.state.application.gradYear) }
+												{Utils.gradYearToString(this.state.application.gradYear)}
 											</div>
 											<div className="major">
-												{ this.state.application.major }
+												{this.state.application.major}
 											</div>
 										</div>
 										<div className="column app-info-right">
 											<div className="status">
-												Status: { Utils.capitalizeFirstLetter(this.state.application.status) }
+												Status: {Utils.capitalizeFirstLetter(this.state.application.status)}
 											</div>
 											<div className="opportunity">
-												Opportunity: { this.state.opportunity.title }
+												Opportunity: {this.state.opportunity.title}
 											</div>
 										</div>
 									</div>
@@ -207,7 +196,7 @@ class ApplicationPage extends Component {
 							<div className="row application-page-responses">
 								<div className="column">
 									<div className="responses-header header">Application Responses</div>
-									{ questionsAndResponses }
+									{questionsAndResponses}
 								</div>
 							</div>
 						</div>
@@ -217,13 +206,13 @@ class ApplicationPage extends Component {
 									Qualifications
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="app-qual-section">
 									<div className="resume-link">
 										<a href={"/doc/" + this.state.resumeId} target="_blank"><h6
 											className="no-margin header">
-											View Resume <ExternalLink className="red-link"/></h6></a>
+											View Resume <ExternalLink className="red-link" /></h6></a>
 									</div>
 								</div>
 
@@ -233,27 +222,27 @@ class ApplicationPage extends Component {
 
 								<div className="app-qual-section">
 									<h6 className="header">GPA</h6>
-									{ this.getNoGPA(this.state.application.gpa) }
+									{this.getNoGPA(this.state.application.gpa)}
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="app-qual-section">
 									<h6 className="header">Relevant Courses</h6>
-									{ this.toDivList(this.state.application.courses) }
+									{this.toDivList(this.state.application.courses)}
 								</div>
 
-								<hr/>
+								<hr />
 
 								<div className="app-qual-section">
 									<h6 className="header">Skills</h6>
-									{ this.toDivList(this.state.application.skills) }
+									{this.toDivList(this.state.application.skills)}
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<Footer/>
+				<Footer />
 			</div>
 		);
 	}
