@@ -21,26 +21,14 @@ class ApplicationList extends Component {
 	}
 
 	coursesSatisfied(studentCourses, filterCourses) {
-		studentCourses = studentCourses.map((course) => course.split(' ').join('').toUpperCase());
-		for (var i = 0; i < filterCourses.length; i++) {
-			const course = filterCourses[i];
-			if (!studentCourses.includes(course)) {
-				return false;
-			}
-		}
-		return true;
+		studentCourses = studentCourses.map(course => course.split(' ').join('').toUpperCase());
+		return filterCourses.every(course => studentCourses.includes(course));
 	}
 
 	skillsSatisfied(studentSkills, filterSkills) {
-		studentSkills = studentSkills.map((skill) => skill.toUpperCase());
-		filterSkills = filterSkills.map((skill) => skill.toUpperCase());
-		for (var i = 0; i < filterSkills.length; i++) {
-			const skill = filterSkills[i];
-			if (!studentSkills.includes(skill)) {
-				return false;
-			}
-		}
-		return true;
+		studentSkills = studentSkills.map(skill => skill.toUpperCase());
+		filterSkills = filterSkills.map(skill => skill.toUpperCase());
+		return filterSkills.every(skill => studentSkills.includes(skill));
 	}
 
 	shouldShow(application) {
@@ -82,35 +70,35 @@ class ApplicationList extends Component {
 	}
 
 	render() {
+		const data = this.state.data;
+
+		if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
+			return (
+				<div>There are currently no applications.</div>
+			);
+		}
+
 		let apps = [];
 		let k = 0;
-		const data = this.state.data;
-		if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
-			return (<div>There are currently no applications.</div>);
-		}
-		else {
-			for (let opp in data) {
-				for (let app in data[opp].applications) {
-					let curApp = data[opp].applications[app];
-					if (curApp.gpa == 5.0){
-						curApp.gpa = "No GPA"; 
-					}
-					let curOpp = data[opp].opportunity;
-					if (curApp !== undefined) {
-						apps.push(
-							<ApplicationBox 
-								key={ k++ } 
-								data={ curApp } 
-								opportunity={ curOpp }
-								show={ this.shouldShow(curApp) } />
-						);
-					}
+
+		Object.entries(data).forEach(oppAppPair => {
+			oppAppPair[1].applications.forEach(app => {
+				if (app.gpa == 5.0) app.gpa = "No GPA";
+				if (app !== undefined) {
+					apps.push(
+						<ApplicationBox 
+							key={ k++ } 
+							data={ app } 
+							opportunity={ oppAppPair[1].opportunity }
+							show={ this.shouldShow(app) } />
+					);
 				}
-			}
-			return (
-				<div>{ apps }</div>
-			)
-		}
+			})
+		});
+
+		return (
+			<div>{ apps }</div>
+		);
 	}
 }
 
