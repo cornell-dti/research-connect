@@ -8,22 +8,10 @@ class OpportunityList extends Component {
 			super(props);
 		}
 
-		countNodes(nodes){
-			let tempCount = 0;
-			let countString = "";
-			for (let k in nodes) {
-				if (nodes[k]!=null) {
-					tempCount++;
-				}
-			}
-			if (tempCount == 1) {
-				countString = "There is 1 result"
-			} else{
-				countString = "There are " + tempCount.toString() +" results"
-			}
-			return(countString);
+		countNodes(nodes) {
+			let tempCount = nodes.filter(node => !(!node)).length;
+			return tempCount === 1 ? 'There is 1 result' :  'There are ' + tempCount + ' results';
 		}
-
 
 		render() {
 			if (!this.props.data){
@@ -54,12 +42,7 @@ class OpportunityList extends Component {
 				let compensations = opp.compensation;
 
 				if (filteredOptions.searchBar!="" && filteredOptions.clickedEnter){
-					let matches = false
-					for (let i = 0; i<matchingSearches.length; i++){
-						if(matchingSearches[i]==opp._id){
-							matches = true;
-						}
-					}
+					const matches = matchingSearches.some(search => search == opp._id);
 					if (!matches){
 						willShow = false;
 					}
