@@ -433,7 +433,7 @@ class OpportunityPage extends Component {
 									<div className="opp-details-section">
 										<div className="header">Compensation</div>
 										<div>
-											{ this.state.opportunity.compensation ? this.parseCompensation(this.state.opportunity.compensation) : "None" } 
+											{ this.state.opportunity.compensation ? this.parseCompensation(this.state.opportunity.compensation) : "Unknown" }
 											
 										</div>
 									</div>
