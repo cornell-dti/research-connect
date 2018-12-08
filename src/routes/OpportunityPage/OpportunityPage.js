@@ -333,7 +333,7 @@ class OpportunityPage extends Component {
 	}
 
 	parseCompensation(compensation){
-		let compString = 'None';
+		let compString = 'Unknown';
 		if (this.state.opportunity && this.state.opportunity.compensation) {
 			let pay = this.state.opportunity.compensation.indexOf("pay") !== -1;
 			let credit = this.state.opportunity.compensation.indexOf("credit") !== -1;
