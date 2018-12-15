@@ -190,17 +190,11 @@ class StudentRegister extends React.Component {
                                     oneRan = true;
                                 }
                             }).catch(function (error) {
-                            //if it's not a session error...
-                            if (!Utils.handleTokenError(error)){
                                 console.log("error in creating transcript");
                                 console.log(error);
-                                if (error.response.status === 400){
-                                    alert(error.response.data);
-                                }
-                                else {
-                                    console.log(error);
-                                    alert("Something went wrong on our side. Please refresh the page and try again");
-                                }
+                            //if it's not a session error...
+                            if (!Utils.handleTokenError(error)){
+                                Utils.handleNonTokenError(error);
                             }
                         });
                     }
@@ -220,13 +214,7 @@ class StudentRegister extends React.Component {
                             console.log(error);
                             //if it's not a session error...
                             if (!Utils.handleTokenError(error)){
-                                if (error.response.status === 400){
-                                    alert(error.response.data);
-                                }
-                                else {
-                                    console.log(error);
-                                    alert("Something went wrong on our side. Please refresh the page and try again");
-                                }
+                                Utils.handleNonTokenError(error);
                             }
                         });
                     }
@@ -235,13 +223,7 @@ class StudentRegister extends React.Component {
                     console.log(error);
                     //if it's not a session error...
                 if (!Utils.handleTokenError(error)){
-                    if (error.response.status === 400){
-                        alert(error.response.data);
-                    }
-                    else {
-                        console.log(error);
-                        alert("Something went wrong on our side. Please refresh the page and try again");
-                    }
+                    Utils.handleNonTokenError(error);
                 }
             });
         }

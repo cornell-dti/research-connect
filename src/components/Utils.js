@@ -47,6 +47,16 @@ export function handleTokenError(error) {
     }
 }
 
+export function handleNonTokenError(error) {
+    if (error.response.status === 400){
+        alert(error.response.data);
+    }
+    else {
+        console.log(error);
+        alert("Something went wrong on our side. Please refresh the page and try again");
+    }
+}
+
 /**
  * Gets query parameter from url. example url: google.com?id=bear
  * @param name is name of query parameter, in example it's id
