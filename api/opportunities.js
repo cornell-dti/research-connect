@@ -491,7 +491,7 @@ app.post('/', function (req, res) {
                       replyTo: "acb352@cornell.edu",
                       subject: 'New Research Opportunity Available!',
                       html: 'Hi,<br />' +
-                      'A new opportunity called "' + opportunity.title + '" was just posted in an area you expressed interest in. You can view it here https://research-connect.com/opportunity/' + oppId + '! <br />' +
+                      'A new opportunity called "' + opportunity.title + '" was just posted in an area you expressed interest in. You can view it here https://www.research-connect.com/opportunity/' + oppId + '! <br />' +
                       '<br />' +
                       'Thanks,<br />' +
                       'The Research Connect Team<br />'
