@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
 const fileUpload = require('express-fileupload');
 const request = require("request");
@@ -34,7 +34,7 @@ module.exports.sgAnnouncementsGroup = parseInt(process.env.SENDGRID_ANNOUNCEMENT
 module.exports.sgStatusGroup = parseInt(process.env.SENDGRID_STATUS_GROUP);
 
 function replaceAll(str, find, replace) {
-    if (!str){
+    if (!str) {
         return "";
     }
     return str.replace(new RegExp(find, 'g'), replace);
@@ -90,19 +90,19 @@ db.once('open', function () {
 let Schema = mongoose.Schema;
 
 const undergradSchema = new Schema({
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    gradYear: {type: Number, required: true, min: new Date().getFullYear()},
-    major: {type: String},
-    secondMajor: {type: String},
-    minor: {type: String},
-    gpa: {type: Number, min: 0, max: 5.0},
-    netId: {type: String, required: true},
-    email: {type: String},
-    courses: {type: [String], required: false},
-    resumeId: {type: String, required: false},
-    transcriptId: {type: String, required: false},
-    skills: {type: [String], required: false},
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    gradYear: { type: Number, required: true, min: new Date().getFullYear() },
+    major: { type: String },
+    secondMajor: { type: String },
+    minor: { type: String },
+    gpa: { type: Number, min: 0, max: 5.0 },
+    netId: { type: String, required: true },
+    email: { type: String },
+    courses: { type: [String], required: false },
+    resumeId: { type: String, required: false },
+    transcriptId: { type: String, required: false },
+    skills: { type: [String], required: false },
     subscribed: {type: Boolean, default: true},
     // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
     // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
@@ -111,56 +111,56 @@ let undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads')
 module.exports.undergradModel = undergradModel;
 
 const docSchema = new Schema({
-    doc: {type: String}
+    doc: { type: String }
 });
 
 let docModel = mongoose.model('Documents', docSchema, 'Documents');
 module.exports.docModel = docModel;
 
 const labSchema = new Schema({
-    name: {type: String, required: true},
-    labPage: {type: String, default: ""},
-    labDescription: {type: String, default: ""},
-    labAdmins: {type: [String], default: []},
-    opportunities: {type: [Schema.Types.ObjectId], ref: "Opportunities"}
+    name: { type: String, required: true },
+    labPage: { type: String, default: "" },
+    labDescription: { type: String, default: "" },
+    labAdmins: { type: [String], default: [] },
+    opportunities: { type: [Schema.Types.ObjectId], ref: "Opportunities" }
 });
 let labModel = mongoose.model('Labs', labSchema, 'Labs'); //a mongoose model = a Collection on mlab/mongodb
 module.exports.labModel = labModel;
 
 
 const labAdministratorSchema = new Schema({
-    role: {type: String, enum: ["pi", "postdoc", "grad", "staffscientist", "labtech", "undergrad"], required: true},
-    labId: {type: Schema.Types.ObjectId, required: true, ref: "Labs"},
-    netId: {type: String, required: true},
-    pi: {type: String, required: false},
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    notifications: {type: Number, required: true},
-    lastSent: {type: Number, default: Date.now()},
-    verified: {type: Boolean, default: false},
-    email: {type: String, default: "", required: true}
+    role: { type: String, enum: ["pi", "postdoc", "grad", "staffscientist", "labtech", "undergrad"], required: true },
+    labId: { type: Schema.Types.ObjectId, required: true, ref: "Labs" },
+    netId: { type: String, required: true },
+    pi: { type: String, required: false },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    notifications: { type: Number, required: true },
+    lastSent: { type: Number, default: Date.now() },
+    verified: { type: Boolean, default: false },
+    email: { type: String, default: "", required: true }
 });
 let labAdministratorModel = mongoose.model('LabAdministrators', labAdministratorSchema, 'LabAdministrators');
 module.exports.labAdministratorModel = labAdministratorModel;
 
 /** FACULTY SCHEMA */
 const facultySchema = new Schema({
-    name: {type: String, required: true},
-    office: {type: String},
-    photoId: {type: String},
-    researchInterests: {type:[String]},
-    researchDescription: {type: String},
-    phone: {type: String},
-    labName: {type: String},
-    labPage: {type: String},
-    department: {type: String},
-    email: {type: String},
-    accepting: {type: String, enum: ["yes", "no", "unknown", "maybe", ""]},
-    bio: {type: String},
-    teaching: {type: String}
+    name: { type: String, required: true },
+    office: { type: String },
+    photoId: { type: String },
+    researchInterests: { type: [String] },
+    researchDescription: { type: String },
+    phone: { type: String },
+    labName: { type: String },
+    labPage: { type: String },
+    department: { type: String },
+    email: { type: String },
+    accepting: { type: String, enum: ["yes", "no", "unknown", "maybe", ""] },
+    bio: { type: String },
+    teaching: { type: String }
 });
 //create text indices so we can use the mongo search functionality: https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
-facultySchema.index({'$**': 'text'});
+facultySchema.index({ '$**': 'text' });
 let facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
 
@@ -188,21 +188,21 @@ facultyModel.find({}, function(err, facultyArray){
 /** OPPORTUNITY SCHEMA */
 const opportunitySchema = new Schema({
 
-    creatorNetId: {type: String, required: [true, "Must have NetId for the user creating the opportunity"]},
-    labPage: {type: String, default: "This lab does not have a website", required: false},
-    title: {type: String, default: "TBD", required: [true, 'Must have title']}, //required
-    projectDescription: {type: String, default: "TBD"}, //required, add min length that you see fit
-    undergradTasks: {type: String, default: "TBD"},  //what the undergrad would be doing, can be null
-    qualifications: {type: String, default: "TBD"}, //can be null/empty
+    creatorNetId: { type: String, required: [true, "Must have NetId for the user creating the opportunity"] },
+    labPage: { type: String, default: "This lab does not have a website", required: false },
+    title: { type: String, default: "TBD", required: [true, 'Must have title'] }, //required
+    projectDescription: { type: String, default: "TBD" }, //required, add min length that you see fit
+    undergradTasks: { type: String, default: "TBD" },  //what the undergrad would be doing, can be null
+    qualifications: { type: String, default: "TBD" }, //can be null/empty
     compensation: {
         type: [String],
         enum: ["pay", "credit", "undetermined", "none"],
         default: ["none"]
     },
-    supervisor: {type: String, default: "TBD"}, //can be null
+    supervisor: { type: String, default: "TBD" }, //can be null
     // spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
-    startSeason: {type: String, enum: ["Summer", "Fall", "Winter", "Spring"]}, //null if start asap, string b/c it will prob be something like Fall 2018
-    startYear: {type: Number},
+    startSeason: { type: String, enum: ["Summer", "Fall", "Winter", "Spring"] }, //null if start asap, string b/c it will prob be something like Fall 2018
+    startYear: { type: Number },
     yearsAllowed: {
         type: [String],
         enum: ["freshman", "sophomore", "junior", "senior"],
@@ -217,30 +217,30 @@ const opportunitySchema = new Schema({
         type: Schema.Types.Mixed, default: {
             "accept": 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. Please email me to find out more about when you will start.',
             "reject": 'Hi, \nI regret to inform you that our lab will not be able to accept you for the position ' +
-            ' you applied for at our lab. Please consider applying again in the future.',
+                ' you applied for at our lab. Please consider applying again in the future.',
             "interview": 'Hi, \nWe reviewed your application and would love to learn more about you. Please email me with times in the next seven days that work for you for an interview regarding this opportunity.'
         }
     },
-    applications: {type: [Schema.Types.Mixed], default: []},
+    applications: { type: [Schema.Types.Mixed], default: [] },
     questions: Schema.Types.Mixed,    //can be empty
-    requiredClasses: {type: [String], default: []}, //can be empty
-    minGPA: {type: Number, min: 0, max: 5.0, default: 0}, //0 if no minimum gpa required
-    minHours: {type: Number, min: 0, max: 500, default: 6}, //can be null, indicating no minimum
-    maxHours: {type: Number, min: 0, max: 500, default: 9}, //can be null, indicating no max
-    opens: {type: Date, default: new Date()},   //if no date is sent use new Date()
-    closes: {type: Date, default: null},  //null if rolling
-    areas: {type: [String], default: []}, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
-    prereqsMatch: {type: Boolean, default: false},
-    labDescription: {type: String, required: false},
-    fundOption: {type: Number, min: 0, default: 0},
-    labName: {type: String, required: false},
-    ghostPost: {type: Boolean, default: false, required: false},
-    ghostEmail: {type: String, default: "hello@research-connect.com", required: false},
-    additionalInformation: {type: String, default: "", required: false},
-    contactName: {type: String, default:"N/A"},
-    datePosted: {type: String, default: (new Date()).toISOString(), required: false},
+    requiredClasses: { type: [String], default: [] }, //can be empty
+    minGPA: { type: Number, min: 0, max: 5.0, default: 0 }, //0 if no minimum gpa required
+    minHours: { type: Number, min: 0, max: 500, default: 6 }, //can be null, indicating no minimum
+    maxHours: { type: Number, min: 0, max: 500, default: 9 }, //can be null, indicating no max
+    opens: { type: Date, default: new Date() },   //if no date is sent use new Date()
+    closes: { type: Date, default: null },  //null if rolling
+    areas: { type: [String], default: [] }, //required, area(s) of research (molecular bio, bioengineering, electrical engineering, computer science, etc.)
+    prereqsMatch: { type: Boolean, default: false },
+    labDescription: { type: String, required: false },
+    fundOption: { type: Number, min: 0, default: 0 },
+    labName: { type: String, required: false },
+    ghostPost: { type: Boolean, default: false, required: false },
+    ghostEmail: { type: String, default: "hello@research-connect.com", required: false },
+    additionalInformation: { type: String, default: "", required: false },
+    contactName: { type: String, default: "N/A" },
+    datePosted: { type: String, default: (new Date()).toISOString(), required: false },
 });
-opportunitySchema.index({'$**': 'text'});
+opportunitySchema.index({ '$**': 'text' });
 opportunitySchema.pre('validate', function (next) {
     if (this.maxHours < this.minHours) {
         next(new Error('Min hours must be greater than or equal to max hours.'));
@@ -251,6 +251,25 @@ opportunitySchema.pre('validate', function (next) {
 let opportunityModel = mongoose.model('Opportunities', opportunitySchema, 'Opportunities'); //a mongoose model = a Collection on mlab/mongodb
 module.exports.opportunityModel = opportunityModel;
 
+
+
+/** Classes Schema  */
+//Classes collection.
+//Holds data about each class in the course roster.
+//
+const classesSchema = new Schema({
+    _id: { type: String },  // mongo-generated random id for this document
+    classSub: { type: String }, // subject, like "PHIL" or "CS"
+    classNum: { type: Number }, // course number, like 1110
+    classTitle: { type: String }, // class title, like 'Introduction to Algorithms'
+    classPrereq: { type: [String], optional: true }, // list of pre-req classes, a string of Classes _id.
+    crossList: { type: [String], optional: true }, // list of classes that are crosslisted with this one, a string of Classes _id.
+    classFull: { type: String }, // full class title to search by, formated as 'classSub classNum: classTitle'
+    classSems: { type: [String] }, // list of semesters this class was offered, like ['FA17', 'FA16']
+    classProfessors: { type: [String] } //list of professors that have taught the course over past semesters
+});
+let classesModel = mongoose.model('Classes', classesSchema, 'Classes');
+module.exports.classesModel = classesModel;
 
 let tokenRequest = {
     url: 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=',
@@ -291,12 +310,12 @@ async function verify(token, callback, justEmail) {
     }
     let emailBeforeAt = email.replace(("@" + payload["hd"]), "");
     //for undergrads, they're required to sign up with their cornell email so emailBeforeAt is their net id.
-    undergradModel.findOne({netId: emailBeforeAt}, function (err, undergrad) {
+    undergradModel.findOne({ netId: emailBeforeAt }, function (err, undergrad) {
         if (undergrad !== null) {
             callback(emailBeforeAt); //should be same as netid since they're forced to sign up with cornell emails
             return;
         }
-        labAdministratorModel.findOne({email: email}, function (err, labAdmin) {
+        labAdministratorModel.findOne({ email: email }, function (err, labAdmin) {
             //if the person googlge auth'ed but didn't make it past instructor/student register then they'll have an email but won't be in the database so just return null
             if (labAdmin === null) {
                 callback(null);
