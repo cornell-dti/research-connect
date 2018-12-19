@@ -28,6 +28,10 @@ module.exports.s3 = s3;
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sgMail = sgMail;
+module.exports.sgOppsGroup = process.env.SENDGRID_OPPS_GROUP;
+debug(typeof process.env.SENDGRID_OPPS_GROUP);
+module.exports.sgAnnouncementsGroup = parseInt(process.env.SENDGRID_ANNOUNCEMENTS_GROUP);
+module.exports.sgStatusGroup = parseInt(process.env.SENDGRID_STATUS_GROUP);
 
 function replaceAll(str, find, replace) {
     if (!str){
@@ -98,7 +102,8 @@ const undergradSchema = new Schema({
     courses: {type: [String], required: false},
     resumeId: {type: String, required: false},
     transcriptId: {type: String, required: false},
-    skills: {type: [String], required: false}
+    skills: {type: [String], required: false},
+    subscribed: {type: Boolean, default: true},
     // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
     // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });

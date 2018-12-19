@@ -1,7 +1,7 @@
 let express = require('express');
 let app = express.Router();
 let common = require('../common.js');
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify, handleVerifyError} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, decryptGoogleToken, mongoose, verify, handleVerifyError, sgOppsGroup, sgAnnouncementsGroup, sgStatusGroup} = require('../common.js');
 
 /**
  * Used to test quick functions that require the back-end
@@ -31,6 +31,36 @@ app.get("/sandbox", function (req, res){
 
     return res.send();
 });
+
+app.post("/sendManual", function(req, res){
+    return res.end(); //safety lock
+    //https://www.research-connect.com/opportunity/5c1554ee1f50380015487f12/
+  undergradModel.find({},
+      function (err, studentsWhoMatch) {
+        for (let undergrad1 in studentsWhoMatch) {
+          let firstName = studentsWhoMatch[undergrad1].firstName;
+          const msg = {
+              // to: "acb352@cornell.edu",
+            to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
+            from: {
+              name: "Research Connect",
+              email: 'hello@research-connect.com'
+            },
+            replyTo: "acb352@cornell.edu",
+            asm: {
+              groupId: parseInt(sgOppsGroup)
+            },
+            subject: 'Correction on Previous Opportunity',
+            html: `Hi ${firstName},<br /><br />
+            A link previously sent for the "Undergraduate Research Assistant" position was incorrect. The correct link is <a href="https://www.research-connect.com/opportunity/5c1554ee1f50380015487f12/"></a>https://www.research-connect.com/opportunity/5c1554ee1f50380015487f12/<br />
+            <br /> Thanks,<br /> The Research Connect Team<br /><br />`
+          };
+          sgMail.send(msg);
+        }
+        return res.end();
+      });
+});
+
 
 /**
  * A method to populate fields. Feel free to change it as need be.

@@ -2,7 +2,7 @@ let express = require('express');
 let app = express.Router();
 let {
     undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, verify, mongoose,
-    handleVerifyError
+    handleVerifyError, sgOppsGroup
 } = require('../common.js');
 let common = require('../common.js');
 
@@ -482,6 +482,7 @@ app.post('/', function (req, res) {
             undergradModel.find({},
                 function (err, studentsWhoMatch) {
                   for (let undergrad1 in studentsWhoMatch) {
+                    let firstName = studentsWhoMatch[undergrad1].firstName;
                     const msg = {
                       to: studentsWhoMatch[undergrad1].netId + '@cornell.edu',
                       from: {
@@ -489,12 +490,15 @@ app.post('/', function (req, res) {
                         email: 'hello@research-connect.com'
                       },
                       replyTo: "acb352@cornell.edu",
+                      asm: {
+                        groupId: sgOppsGroup
+                      },
                       subject: 'New Research Opportunity Available!',
-                      html: 'Hi,<br />' +
-                      'A new opportunity called "' + opportunity.title + '" was just posted in an area you expressed interest in. You can view it here https://www.research-connect.com/opportunity/' + oppId + '! <br />' +
-                      '<br />' +
-                      'Thanks,<br />' +
-                      'The Research Connect Team<br />'
+                      html: `Hi ${firstName},<br />
+                       A new opportunity called ${opportunity.title} was just posted in an area you expressed interest in. 
+                       You can view it <a href="https://www.research-connect.com/opportunity/${oppId}">here!</a> 
+                       <br /><br />Thanks,
+                       <br />The Research Connect Team<br /><br />`
                     };
                     sgMail.send(msg);
                   }

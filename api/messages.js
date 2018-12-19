@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express.Router();
-let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, mongoose, verify} = require('../common.js');
+let {undergradModel, labAdministratorModel, opportunityModel, labModel, debug, replaceAll, sgMail, mongoose, verify, sgStatusGroup} = require('../common.js');
 let common = require('../common.js');
 
 
@@ -64,6 +64,9 @@ app.post('/send', function (req, res) {
                         email: 'hello@research-connect.com'
                     },
                     replyTo: "acb352@cornell.edu",
+                  asm: {
+                    groupId: sgStatusGroup
+                  },
                     subject: "Research Connect Application Update for \"" + opportunity.title + "\"",
                     text: message,
                     html: replaceAll(message, "\n", "<br />")
