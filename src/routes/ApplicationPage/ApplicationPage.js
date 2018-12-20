@@ -23,16 +23,21 @@ class ApplicationPage extends Component {
 	}
 
 	componentWillMount() {
+		console.log(1);
 		axios.get('/api/applications?id=' + sessionStorage.getItem('token_id') + '&netId=' + 'prk57')
 			.then((response) => {
 				console.log("response.data!");
 				console.log(response.data);
-
-				response.data.forEach(opp => {
-					opp.applications.forEach(app => {
-						let curOpp = opp.opportunity;
+				let oppsList = response.data;
+				Object.keys(oppsList).forEach(opp => {
+          console.log(2);
+					oppsList[opp].applications.forEach(app => {
+            console.log(3);
+						let curOpp = oppsList[opp].opportunity;
 						if (app !== undefined) {
+              console.log(4);
 							if (app.id === this.props.match.params.id) {
+                console.log(5);
 								this.setState({ application: app, opportunity: curOpp });
 								console.log(this.state.opportunity);
 								console.log(this.state.application);
@@ -120,6 +125,8 @@ class ApplicationPage extends Component {
 
 		let questionsAndResponses = [];
 		const responses = this.state.application.responses;
+		console.log("at questions");
+		console.log(this.state.opportunity);
 		const questions = this.state.opportunity.questions;
 		let c = 0;
 		for (let question in responses) {
