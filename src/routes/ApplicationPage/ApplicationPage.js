@@ -29,8 +29,7 @@ class ApplicationPage extends Component {
 				console.log("response.data!");
 				console.log(response.data);
 				let oppsList = response.data;
-				Object.keys(oppsList).forEach(opp => {
-          console.log(2);
+``          console.log(2);
 					oppsList[opp].applications.forEach(app => {
             console.log(3);
 						let curOpp = oppsList[opp].opportunity;
