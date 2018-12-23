@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../App/App.scss';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
 import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import Dropzone from 'react-dropzone';

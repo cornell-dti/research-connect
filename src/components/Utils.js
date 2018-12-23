@@ -1,29 +1,29 @@
 function dateIsBetween(date, lowerBound, upperBound) {
-    return (lowerBound <= date && date <= upperBound);
+  return (lowerBound <= date && date <= upperBound);
 }
 
 export function gradYearToString(gradYear) {
-    let presentDate = new Date();
-    if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return "Freshman";
-    if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return "Sophomore";
-    if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return "Junior";
-    if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return "Senior";
-    return "Freshman";
+  const presentDate = new Date();
+  if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'Freshman';
+  if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'Sophomore';
+  if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return 'Junior';
+  if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return 'Senior';
+  return 'Freshman';
 }
 
 export function convertDate(dateString) {
-    let dateObj = new Date(dateString);
-    let month = dateObj.getUTCMonth() + 1;
-    let day = dateObj.getUTCDay() + 1;
-    let year = dateObj.getUTCFullYear();
-    return month.toString() + "/" + day.toString() + "/" + year.toString();
+  const dateObj = new Date(dateString);
+  const month = dateObj.getUTCMonth() + 1;
+  const day = dateObj.getUTCDay() + 1;
+  const year = dateObj.getUTCFullYear();
+  return `${month.toString()}/${day.toString()}/${year.toString()}`;
 }
 
 export function capitalizeFirstLetter(string) {
-    if (!string || string.length < 1){
-        return string;
-    }
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  if (!string || string.length < 1) {
+    return string;
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**
@@ -35,16 +35,16 @@ export function capitalizeFirstLetter(string) {
  * @return {boolean} returns false if there was no token-related error.
  */
 export function handleTokenError(error) {
-    if (error.response) {
-        console.log(error.response.data);
-        if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-            alert("You either visited this page without being signed in or were inactive too long. " +
-                "Sign up on the home page and you'll be able to see all the research opportunities available!");
-            window.location.href = "/";
-            logoutGoogle();
-            return true;
-        }
+  if (error.response) {
+    console.log(error.response.data);
+    if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
+      alert('You either visited this page without being signed in or were inactive too long. '
+                + "Sign up on the home page and you'll be able to see all the research opportunities available!");
+      window.location.href = '/';
+      logoutGoogle();
+      return true;
     }
+  }
 }
 
 /**
@@ -54,66 +54,64 @@ export function handleTokenError(error) {
  * @return string the value of that url param, in our example it'd be bear
  */
 export function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
+
+
+  const results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
 function refreshStorage() {
-    sessionStorage.clear();
-    window.location.href = "/";
+  sessionStorage.clear();
+  window.location.href = '/';
 }
 
-//helper function for logoutGoogle
+// helper function for logoutGoogle
 function tryLoggingOut() {
-    if (!window.gapi || !window.gapi.auth2) {
-        refreshStorage();
-        return;
+  if (!window.gapi || !window.gapi.auth2) {
+    refreshStorage();
+    return;
+  }
+  const auth2 = window.gapi.auth2.getAuthInstance();
+  if (auth2) {
+    // sometimes auth2.signout and disconnect cause some obscure error with the google api that is impossbile to debug
+    // with their compiled code, but this workaround seems to wrok...
+    try {
+      refreshStorage();
+      auth2.signOut().then((e1) => {
+        auth2.disconnect().then((e2) => {
+          refreshStorage();
+        }, (e3) => {
+          // auth2.disconnect didn't work...
+          refreshStorage();
+        });
+      });
+    } catch (e) {
+      refreshStorage();
     }
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2) {
-        //sometimes auth2.signout and disconnect cause some obscure error with the google api that is impossbile to debug
-        //with their compiled code, but this workaround seems to wrok...
-        try {
-            refreshStorage();
-            auth2.signOut().then(function (e1) {
-                    auth2.disconnect().then(function (e2) {
-                        refreshStorage();
-                    }, function (e3) {
-                        //auth2.disconnect didn't work...
-                        refreshStorage();
-                    })
-                }
-            )
-        }
-        catch (e) {
-            refreshStorage();
-        }
-    }
-    else {
-        refreshStorage();
-    }
+  } else {
+    refreshStorage();
+  }
 }
 
 export function logoutGoogle() {
-    setTimeout(function () {
-        if (window.gapi) {
-            tryLoggingOut();
+  setTimeout(() => {
+    if (window.gapi) {
+      tryLoggingOut();
+    } else {
+      // if window.gapi hasn't loaded yet, wait 2 seconds and try again
+      setTimeout(() => {
+        if (window.gapi.auth2) {
+          tryLoggingOut();
+        } else {
+          // if it's still not there for some reason, just do the "works half the time" solution
+          refreshStorage();
         }
-        else {
-            //if window.gapi hasn't loaded yet, wait 2 seconds and try again
-            setTimeout(function () {
-                if (window.gapi.auth2) {
-                    tryLoggingOut();
-                } else {
-                    //if it's still not there for some reason, just do the "works half the time" solution
-                    refreshStorage();
-                }
-            }, 2000);
-        }
-    }, 500);
+      }, 2000);
+    }
+  }, 500);
 }
