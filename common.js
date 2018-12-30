@@ -72,7 +72,7 @@ module.exports.gradYearToString = gradYearToString;
 /** DATABASE * */
 const mongoose = require('mongoose');
 
-// mongoose.Promise = bluebird;
+mongoose.Promise = bluebird;
 
 mongoose.plugin((schema) => {
   schema.options.usePushEach = true;
