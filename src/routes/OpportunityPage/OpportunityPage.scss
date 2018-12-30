@@ -33,17 +33,22 @@
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-    height: 165px;
-    padding: 40px 30px;
+    min-height: 165px;
+    padding: 30px;
     margin-bottom: 40px;
 
     .right-column {
       text-align: right;
     }
 
+    .left-column {
+      margin-bottom: 0;
+    }
+
     .button {
       margin-right: 20px;
     }
+    
   }
 
   .opp-details-card {
