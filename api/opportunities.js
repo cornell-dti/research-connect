@@ -345,9 +345,17 @@ function getUniqueTitle(title, supervisor) {
       if (otherTitles.length === 0) {
         resolve(title);
       }
-      const newTitle = `${title}(${supervisor})`;
+      let newTitle;
+      if (!supervisor) {
+        newTitle = `${title}`;
+      } else {
+        newTitle = `${title} (${supervisor})`;
+      }
       // find all opps that have the title that case insensitive starts with: title + supervisor
-      opportunityModel.find({ title: `/^${newTitle}$/i` }, 'title', (err, otherTitles2) => {
+      opportunityModel.find({ title: { $regex: '^Intern', $options: 'i' } }, 'title', (err2, otherTitles2) => {
+        if (err2) {
+          debug(err2);
+        }
         if (otherTitles2.length === 0) {
           resolve(newTitle);
         }
@@ -386,8 +394,8 @@ app.post('/', async (req, res, next) => {
     debug(`apps: ${data.applications}`);
     debug(`yearsAllowed: ${data.yearsAllowed}`);
     debug(`majorsAllowed: ${data.majorsAllowed}`);
-    debug(`question 1: ${JSON.parse(JSON.stringify(data.questions)).q0}`);
-    debug(`question 2: ${JSON.parse(JSON.stringify(data.questions)).q1}`);
+    // debug(`question 1: ${JSON.parse(JSON.stringify(data.questions)).q0}`);
+    // debug(`question 2: ${JSON.parse(JSON.stringify(data.questions)).q1}`);
     debug(`requiredClasses: ${data.requiredClasses}`);
     debug(`minGPA: ${data.minGPA}`);
     debug(`minHours: ${data.minHours}`);
@@ -419,12 +427,16 @@ app.post('/', async (req, res, next) => {
     debug('1');
     // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
     //     let netId = email.replace("@cornell.edu", "");
-    Object.keys(data.questions).forEach((key) => {
-      // if they added a question but then clicked the x then there would be q1 : null/undefined
-      if (!data.questions[key]) {
-        delete data.questions.key;
-      }
-    });
+    if (data.questions) {
+      Object.keys(data.questions).forEach((key) => {
+        // if they added a question but then clicked the x then there would be q1 : null/undefined
+        if (!data.questions[key]) {
+          delete data.questions.key;
+        }
+      });
+    } else {
+      data.questions = {};
+    }
     debug('2');
     // if the compensation array is empty, then that means they don't have any compensation
     if (data.compensation === undefined || data.compensation.length === 0) {
@@ -458,6 +470,7 @@ app.post('/', async (req, res, next) => {
     const newTitle = await getUniqueTitle(data.title, data.supervisor);
     debug('NEW TITLE!!!');
     debug(newTitle);
+    return res.sendStatus(403);
     verify(token, (netIdActual) => {
       // if they somehow reach this page without being logged in...
       if (netIdActual === null) {
