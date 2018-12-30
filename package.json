@@ -8,6 +8,7 @@
     "async": "^2.6.0",
     "aws-sdk": "^2.224.1",
     "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
@@ -54,6 +55,6 @@
     "start": "node server.js",
     "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
     "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\"",
-    "start:debug": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon %NODE_DEBUG_OPTION% server.js\""
+    "start:debug": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && node %NODE_DEBUG_OPTION% server.js\""
   }
 }

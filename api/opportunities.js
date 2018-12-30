@@ -27,15 +27,12 @@ app.get('/check/:opportunityId', (req, res) => {
       return;
     }
     const toSearch = opportunity.applications;
-    for (let i = 0; i < toSearch.length; i++) {
-      if (toSearch[i].undergradNetId === idToCheck) {
-        debug('You have already applied to this lab');
-        res.send(true);
-        return;
-      }
+    if (!toSearch) {
+      res.send(false);
+      return;
     }
-    debug('You have not yet applied to this lab');
-    res.send(false);
+    // check if at least one application has the net id of the student we're looking for
+    res.send(toSearch.some(applicationObj => applicationObj.undergradNetId === idToCheck));
   });
 });
 

@@ -77,7 +77,7 @@ class EmailDialog extends React.Component {
       labAdminNetId: this.props.opp.creatorNetId,
       undergradNetId: this.props.app.undergradNetId,
       message: this.state.emailContent,
-      status: this.getStatusAction(this.props.buttonText.toLowerCase()),
+      status: this.getStatusAction(this.props.statusText.toLowerCase()),
     }).then((response) => {
       // handle success
       console.log(response);

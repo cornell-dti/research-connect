@@ -168,6 +168,7 @@ class ApplicationPage extends Component {
             <div className="column column-33 left-button">
               <EmailDialog
                 buttonText="Mark as Accepted"
+                statusText="accept"
                 opp={this.state.opportunity}
                 app={this.state.application}
               />
@@ -175,6 +176,7 @@ class ApplicationPage extends Component {
             <div className="column column-33 center-button">
               <EmailDialog
                 buttonText="Edit & Send Interview Email"
+                statusText="interview"
                 opp={this.state.opportunity}
                 app={this.state.application}
               />
@@ -182,6 +184,7 @@ class ApplicationPage extends Component {
             <div className="column column-33 right-button">
               <EmailDialog
                 buttonText="Mark as Rejected"
+                statusText="reject"
                 opp={this.state.opportunity}
                 app={this.state.application}
               />

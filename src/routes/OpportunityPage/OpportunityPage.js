@@ -18,6 +18,7 @@ class OpportunityPage extends Component {
 			opportunity: {},
 			questionAnswers: {},
 			submitted: false,
+			previouslyApplied: false,
 			triedSubmitting: false,
 			student: null,
 			coverLetter: '',
@@ -105,6 +106,20 @@ class OpportunityPage extends Component {
 
 		// }
 	};
+
+	hasApplied(netId, opportunityId) {
+		return new Promise((resolve) => {
+			if (!netId || !opportunityId){
+				resolve(false);
+			}
+			axios.get(`/api/opportunities/check/${opportunityId}`)
+					.then((response) => {
+						// returns true or false
+						resolve(response);
+			})
+		});
+	}
+
 	//this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
 	componentWillMount() {
 		console.log(this.props.match.params.id);
@@ -114,9 +129,9 @@ class OpportunityPage extends Component {
 				this.setState({ student: response.data.student });
 				if (!this.isEmpty(response.data)) {
 					let obj = {};
-					//get all the keys and put them in an array
+					// get all the keys and put them in an array
 					for (let k in response.data.questions) {
-						//make sure it's an actual key and not a property that all objects have by default
+						// make sure it's an actual key and not a property that all objects have by default
 						if (response.data.questions.hasOwnProperty(k)) {
 							obj[k] = '';
 						}
@@ -124,6 +139,22 @@ class OpportunityPage extends Component {
 
 					this.setState({ questionAnswers: obj });
 				}
+
+			axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
+			.then(async (response) => {
+				if (!this.isEmpty(response.data)) {
+					this.setState({ netId: response.data[0].netId });
+					// check to see if they applied
+					const appliedAlready = await this.hasApplied(this.state.netId, this.state.opportunity._id);
+					this.setState({appliedAlready})
+				}
+			})
+			.catch(function (error) {
+				this.sendToHome(error);
+				// Utils.handleTokenError(error);
+			});
+
+
 			})
 			.catch(function (error) {
 				this.sendToHome(error);
@@ -133,17 +164,6 @@ class OpportunityPage extends Component {
 			this.setState({ netId: null });
 			return;
 		}
-
-		axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
-			.then((response) => {
-				if (!this.isEmpty(response.data)) {
-					this.setState({ netId: response.data[0].netId });
-				}
-			})
-			.catch(function (error) {
-				this.sendToHome(error);
-				// Utils.handleTokenError(error);
-			});
 	}
 
 	printQuestions() {
@@ -471,7 +491,7 @@ class OpportunityPage extends Component {
 													}
 												</div>
 												{
-													!this.state.submitted ? this.printQuestions() :
+													(!this.state.submitted && !this.state.appliedAlready) ? this.printQuestions() :
 														<p>You have applied to this position.</p>
 												}
 											</div>

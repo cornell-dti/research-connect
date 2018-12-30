@@ -13,6 +13,7 @@ const cors = require('cors');
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 const fileUpload = require('express-fileupload');
+const bluebird = require('bluebird');
 const request = require('request');
 const AWS = require('aws-sdk');
 
@@ -70,6 +71,8 @@ module.exports.gradYearToString = gradYearToString;
 
 /** DATABASE * */
 const mongoose = require('mongoose');
+
+// mongoose.Promise = bluebird;
 
 mongoose.plugin((schema) => {
   schema.options.usePushEach = true;
