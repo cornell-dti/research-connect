@@ -470,7 +470,6 @@ app.post('/', async (req, res, next) => {
     const newTitle = await getUniqueTitle(data.title, data.supervisor);
     debug('NEW TITLE!!!');
     debug(newTitle);
-    return res.sendStatus(403);
     verify(token, (netIdActual) => {
       // if they somehow reach this page without being logged in...
       if (netIdActual === null) {
@@ -573,7 +572,11 @@ app.put('/:id', (req, res) => {
       // Update each attribute with any possible attribute that may have been submitted in the body of the request
       // If that attribute isn't in the request body, default back to whatever it was before.
       opportunity.labPage = req.body.labPage || opportunity.labPage;
-      opportunity.title = req.body.title || opportunity.title;
+
+      const newTitle = req.body.title;
+      const titleChanged = newTitle && newTitle !== opportunity.title;
+      const hasApplications = opportunity.applications && opportunity.applications.length > 0;
+      opportunity.title = newTitle || opportunity.title;
       opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
       opportunity.qualifications = req.body.qualifications || opportunity.qualifications;
       opportunity.supervisor = req.body.supervisor || opportunity.supervisor;
@@ -581,6 +584,14 @@ app.put('/:id', (req, res) => {
       opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
       opportunity.startYear = req.body.startYear || opportunity.startYear;
       opportunity.applications = req.body.applications || opportunity.applications;
+      // TODO update skills field of undergrad in opportunity whenever the undergrad updates them
+      // each application has a title and skills field (among others), so update those when the opportunity is updated.
+      if (titleChanged && hasApplications) {
+        opportunity.applications.forEach((applicationObj) => {
+          applicationObj.opportunity = newTitle;
+        });
+      }
+
       opportunity.yearsAllowed = req.body.yearsAllowed || opportunity.yearsAllowed;
       opportunity.majorsAllowed = req.body.majorsAllowed || opportunity.majorsAllowed;
       opportunity.questions = req.body.questions || opportunity.questions;

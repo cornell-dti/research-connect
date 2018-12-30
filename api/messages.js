@@ -19,6 +19,7 @@ app.post('/send', (req, res) => {
   debug('top');
   const oppId = req.body.opportunityId;
   const profId = req.body.labAdminNetId;
+  debug(req.body);
   const ugradNetId = req.body.undergradNetId;
   let { message } = req.body;
   const { status } = req.body;
@@ -70,7 +71,7 @@ app.post('/send', (req, res) => {
           },
           subject: `Research Connect Application Update for "${opportunity.title}"`,
           text: message,
-          html: replaceAll(message, '\n', '<br />'),
+          html: replaceAll(message, '\n', '<br />') + '<br />',
         };
         debug(10);
         sgMail.send(msg);

@@ -4,7 +4,7 @@
  */
 const express = require('express');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, labModel, verify, handleVerifyError, mongoose, debug,
+  undergradModel, labAdministratorModel, opportunityModel, labModel, mongoose, debug,
 } = require('../common.js');
 
 const app = express.Router();

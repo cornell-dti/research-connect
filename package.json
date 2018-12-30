@@ -53,6 +53,7 @@
     "heroku-postbuild": "cd src && npm install && npm run build",
     "start": "node server.js",
     "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
-    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\""
+    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\"",
+    "start:debug": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon %NODE_DEBUG_OPTION% server.js\""
   }
 }
