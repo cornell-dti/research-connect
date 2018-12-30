@@ -36,31 +36,6 @@ app.get('/check/:opportunityId', (req, res) => {
   });
 });
 
-/*
- app.get('/check/:opportunityId', function(req, res){
- let idToCheck = req.query.netId;
- debug(idToCheck);
- opportunityModel.findById(req.params.opportunityId, function (err, opportunity) {
- if (err) {
- return err;
- }
- let toSearch = opportunity.applications;
- debug(toSearch);
- for (let i = 0; i<toSearch.length; i++){
- if (toSearch[i].undergradNetId === idToCheck) {
- debug("You have already applied to this lab");
- res.send(true);
- return;
- }
- }
- debug("We are here");
- res.send(false);
- debug("You did not apply previously");
- return;
- });
- });
- */
-
 function roleToInt(role) {
   if (role === 'pi') {
     return 6;
@@ -240,6 +215,7 @@ app.get('/', (req, res) => {
                 opportunities[i].labDescription = thisLab.labDescription;
                 debug(opportunities[i]);
                 debug(Object.getOwnPropertyNames(opportunities[i]));
+                /**
                 if (opportunities[i].contactName === 'dummy value') {
                   console.log('In here');
                   // var contact = getLabAdmin(opportunities[i]._id,opportunities[i]);
@@ -259,6 +235,7 @@ app.get('/', (req, res) => {
                           admins.push(labAdmin);
                         });
                       });
+
                       let maximum = '';
                       let maxStatus = '';
                       admins.forEach((admin) => {
@@ -288,6 +265,7 @@ app.get('/', (req, res) => {
                 }
                 debug(`Here is the contactName: ${opportunities[i].contactName}`);
                 debug(`Here is the additional info: ${opportunities[i].additionalInformation}`);
+                */
               }
               res.send(opportunities);
             });

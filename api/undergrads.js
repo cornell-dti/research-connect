@@ -39,17 +39,20 @@ app.get('/:tokenId', (req, res) => {
     if (!decrypted) {
       return res.send([]);
     }
-    undergradModel.find({ netId: decrypted }, (err, undergrad) => {
+    undergradModel.find({ netId: decrypted }, (err, undergrads) => {
       if (err) {
         debug('Not found');
         return err;
       }
       debug('Found');
-      debug(undergrad.netId);
+      if (undergrads.length) {
+        debug(undergrads[0].netId);
+      } else {
+        debug('no results found');
+      }
 
-      return res.send(undergrad);
+      return res.send(undergrads);
     });
-    return null;
   }).catch((error) => {
     handleVerifyError(error, res);
   });

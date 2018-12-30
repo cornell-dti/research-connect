@@ -80,8 +80,8 @@ app.get('/populate', (req, res) => {
                 + '\n{yourFirstName} {yourLastName}”.',
         interview: 'Hi {studentFirstName}, \nWe reviewed your application and would love to learn more about you. Please email {yourEmail} with times in the next seven days that work for you for an interview regarding the opportunity "{opportunityTitle}". \n\nSincerely, \n{yourFirstName} {yourLastName}',
       };
-      opps[i].contactName = 'dummy value';
-      opps[i].additionalInformation = 'dummy value';
+      opps[i].contactName = 'N/A';
+      opps[i].additionalInformation = '';
       opps[i].save((err2) => {
         debug(err2);
       });
