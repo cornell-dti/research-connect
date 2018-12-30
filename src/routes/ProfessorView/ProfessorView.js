@@ -67,10 +67,10 @@ class ProfessorView extends Component {
     ])
       .then(axios.spread((role, apps) => {
         if (role.data !== 'grad'
-					&& role.data !== 'labtech'
-					&& role.data !== 'postdoc'
-					&& role.data !== 'staffscientist'
-					&& role.data !== 'pi') {
+          && role.data !== 'labtech'
+          && role.data !== 'postdoc'
+          && role.data !== 'staffscientist'
+          && role.data !== 'pi') {
           window.location.href = '/';
         }
         const opps = Object.keys(apps.data);
@@ -86,12 +86,12 @@ class ProfessorView extends Component {
 
   render() {
     const override = css`
-			display: block;
-			margin: 0 auto;
-			border-color: red;
-		`;
-
-    if (this.state.loading) {
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `;
+    let { loading } = this.state;
+    if (loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
@@ -99,7 +99,7 @@ class ProfessorView extends Component {
             sizeUnit="px"
             size={150}
             color="#ff0000"
-            loading={this.state.loading}
+            loading={loading}
           />
         </div>
       );
@@ -115,7 +115,7 @@ class ProfessorView extends Component {
             <div className="column column-20">
               <div className="filter-box">
                 <div className="filter-child">
-									Filter by...
+                  Filter by...
 
                 </div>
 

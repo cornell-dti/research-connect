@@ -32,10 +32,10 @@ class ApplicationList extends Component {
   }
 
   shouldShow(application) {
-    const filter = this.props.filter;
+    const { filter } = this.props;
 
     if (filter.opportunity.toLowerCase() !== 'all'
-				&& filter.opportunity !== application.opportunity) return false;
+        && filter.opportunity !== application.opportunity) return false;
 
     const froshSelected = filter.yearSelect.Freshman;
     const sophSelected = filter.yearSelect.Sophomore;
@@ -44,22 +44,22 @@ class ApplicationList extends Component {
     const gradYear = application.gradYear;
 
     if ((froshSelected && Utils.gradYearToString(gradYear) === 'Freshman')
-			|| (sophSelected && Utils.gradYearToString(gradYear) === 'Sophomore')
-			|| (juniorSelected && Utils.gradYearToString(gradYear) === 'Junior')
-			|| (seniorSelected && Utils.gradYearToString(gradYear) === 'Senior')
-			|| (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
+      || (sophSelected && Utils.gradYearToString(gradYear) === 'Sophomore')
+      || (juniorSelected && Utils.gradYearToString(gradYear) === 'Junior')
+      || (seniorSelected && Utils.gradYearToString(gradYear) === 'Senior')
+      || (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
       const csSelected = filter.majorSelect.cs;
       const bioSelected = filter.majorSelect.biology;
       const major = application.major;
 
       if ((csSelected && major === 'CS')
-				|| (bioSelected && major === 'Biology')
-				|| (!csSelected && !bioSelected)) {
+        || (bioSelected && major === 'Biology')
+        || (!csSelected && !bioSelected)) {
         const minGPA = filter.gpaSelect.val;
 
         if (minGPA === undefined || minGPA <= application.gpa) {
           return this.coursesSatisfied(application.courses, filter.courses)
-						  	 && this.skillsSatisfied(application.skills, filter.skills);
+                 && this.skillsSatisfied(application.skills, filter.skills);
         }
       }
     }
@@ -68,7 +68,7 @@ class ApplicationList extends Component {
   }
 
   render() {
-    const data = this.state.data;
+    const { data } = this.state;
 
     if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
       return (
@@ -85,7 +85,7 @@ class ApplicationList extends Component {
         if (app !== undefined) {
           apps.push(
             <ApplicationBox
-              key={k++}
+              key={k += 1}
               data={app}
               opportunity={oppAppPair[1].opportunity}
               show={this.shouldShow(app)}

@@ -27,66 +27,72 @@ app.get('/:id', (req, res) => {
 // previously POST /getApplications
 app.get('/', (req, res) => {
   // decryptGoogleToken(req.query.id, function (tokenBody) {
-  verify(req.query.id, (labAdminId) => {
-    // let labAdminId = tokenBody.email.replace("@cornell.edu", "");
-    const opportunitiesArray = [];
-    const reformatted = {};
-    labAdministratorModel.findOne({ netId: labAdminId }, (err, labAdmin) => {
-      if (err) {
-        return res.send(err);
+  // verify(req.query.id, (labAdminId) => {
+  const labAdminId = 'acb352352';
+  // let labAdminId = tokenBody.email.replace("@cornell.edu", "");
+  const opportunitiesArray = [];
+  const reformatted = {};
+  // get the labAdmin object of the lab admin who made this requeste
+  labAdministratorModel.findOne({ netId: labAdminId }, (err, labAdmin) => {
+    if (err) {
+      return res.send(err);
+    }
+    if (labAdmin === null) {
+      return res.status(401).send({});
+    }
+    // get the lab of the lab admin who made this request
+    labModel.findById(labAdmin.labId, (err2, lab) => {
+      if (err2) {
+        return res.send(err2);
       }
-      if (labAdmin === null) {
-        return res.status(401).send({});
+      const mongooseLabIds = [];
+      for (let i = 0; i < lab.opportunities.length; i += 1) {
+        mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
       }
-      labModel.findById(labAdmin.labId, (err2, lab) => {
-        if (err2) {
-          return res.send(err2);
-        }
-        const mongooseLabIds = [];
-        for (let i = 0; i < lab.opportunities.length; i += 1) {
-          mongooseLabIds.push(mongoose.Types.ObjectId(lab.opportunities[i]));
-        }
-        opportunityModel.find({
-          _id: {
-            $in: mongooseLabIds,
-          },
-        }, (err3, docs) => { // docs = all opportunities in database
-          let applicationsArray = [];// all applications for all opportunities
-          const allApplications = {};// dict where key=title of opportunity / value=list of applications for that opportunity
-          const netIds = [];// netIds of all students that applied for any opportunity
-          for (let i = 0; i < docs.length; i++) {
-            const opportunityObject = docs[i];// an opportunityModel
-            for (let j = 0; j < opportunityObject.applications.length; j++) {
-              applicationsArray.push(opportunityObject.applications[j]);
-              netIds.push(opportunityObject.applications[j].undergradNetId);
-            }
-            allApplications[opportunityObject.title] = applicationsArray;
-            opportunitiesArray.push(opportunityObject);
-            applicationsArray = [];
+      // get all the opportunities of the lab of the lab admin who made this request
+      opportunityModel.find({
+        _id: {
+          $in: mongooseLabIds,
+        },
+      }, (err3, docs) => { // docs = all opportunities of the lab of the lab admin who made this request
+        let applicationsArray = [];// all applications for all opportunities
+        const allApplications = {};// dict where key=title of opportunity / value=list of applications for that opportunity
+        const netIds = [];// netIds of all students that applied for any opportunity
+        for (let i = 0; i < docs.length; i++) {
+          const opportunityObject = docs[i];// an opportunityModel
+          for (let j = 0; j < opportunityObject.applications.length; j++) {
+            applicationsArray.push(opportunityObject.applications[j]);
+            netIds.push(opportunityObject.applications[j].undergradNetId);
           }
-          undergradModel.find({
-            netId: {
-              $in: netIds,
-            },
-          }, (err4, studentInfoArray) => { // studentInfoArray is list of undergradModels
-            let count = 0;
-            Object.keys(allApplications).forEach((key) => { // For each opportunity in a list of all opportunities
-              const currentApplication = allApplications[key];// currentApplication is all applications of a given opportunity
-              for (let i = 0; i < currentApplication.length; i++) {
-                const currentStudent = currentApplication[i];
-                const undergradId = currentStudent.undergradNetId;
-                const undergradInfo = studentInfoArray.filter(student => student.netId === undergradId)[0];
-                currentStudent.firstName = undergradInfo.firstName;
-                currentStudent.lastName = undergradInfo.lastName;
-                currentStudent.gradYear = undergradInfo.gradYear;
-                currentStudent.major = undergradInfo.major;
-                currentStudent.gpa = undergradInfo.gpa;
-                currentStudent.courses = undergradInfo.courses;
-                currentStudent.skills = undergradInfo.skills;
-                currentStudent.opportunity = key; // The title of the opportunity this application is being sent to
-              }
-              // reformat it to match:
-              /**
+          // allApplications is object where key is opportunity name and value is array of all applications
+          allApplications[opportunityObject.title] = applicationsArray;
+          opportunitiesArray.push(opportunityObject);
+          applicationsArray = [];
+        }
+        undergradModel.find({
+          netId: {
+            $in: netIds,
+          },
+        }, (err4, studentInfoArray) => { // studentInfoArray is list of undergradModels
+          let count = 0;
+          Object.keys(allApplications).forEach((key) => { // For each opportunity in a list of all opportunities
+            const currentApplication = allApplications[key];// currentApplication is all applications of a given opportunity
+            for (let i = 0; i < currentApplication.length; i++) { // for each student's application for this opportunity...
+              const currentStudent = currentApplication[i];
+              const undergradId = currentStudent.undergradNetId;
+              const undergradInfo = studentInfoArray.filter(student => student.netId === undergradId)[0];
+              // now we add more info to it so we can send this applications object thing back to the front-end with the undergrad data for them to display, kind of like joining tables if we were using SQL
+              currentStudent.firstName = undergradInfo.firstName;
+              currentStudent.lastName = undergradInfo.lastName;
+              currentStudent.gradYear = undergradInfo.gradYear;
+              currentStudent.major = undergradInfo.major;
+              currentStudent.gpa = undergradInfo.gpa;
+              currentStudent.courses = undergradInfo.courses;
+              currentStudent.skills = undergradInfo.skills;
+              currentStudent.opportunity = key; // The title of the opportunity this application is being sent to
+            }
+            // reformat it to match:
+            /**
                                  * {
                                 "titleOpp": {
                                     "opportunity": {},
@@ -102,22 +108,23 @@ app.get('/', (req, res) => {
                                     ...
                                  }
                                  */
-              reformatted[key] = {
-                opportunity: opportunitiesArray[count],
-                applications: allApplications[key],
-              };
-              count += 1;
-            });
-            res.send(reformatted);
+            reformatted[key] = {
+              opportunity: opportunitiesArray[count],
+              applications: allApplications[key],
+              debugThis: opportunitiesArray[count]._doc.title,
+            };
+            count += 1;
           });
+          res.send(reformatted);
         });
-        return null;
       });
       return null;
     });
-  }).catch((error) => {
-    handleVerifyError(error, res);
+    return null;
   });
+  // }).catch((error) => {
+  //   handleVerifyError(error, res);
+  // });
 });
 
 // previously POST /storeApplication

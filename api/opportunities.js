@@ -327,187 +327,228 @@ app.get('/', (req, res) => {
   }
 });
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getUniqueTitle(title, supervisor) {
+  return new Promise(((resolve, reject) => {
+    opportunityModel.find({ title }, 'title', (err, otherTitles) => {
+      if (err) {
+        debug('error in get unique title');
+        debug(err);
+        // if there's an error, just append a random integer
+        resolve(`${title} (${getRandomInt(1, 15)})`);
+      }
+      if (otherTitles.length === 0) {
+        resolve(title);
+      }
+      const newTitle = `${title}(${supervisor})`;
+      // find all opps that have the title that case insensitive starts with: title + supervisor
+      opportunityModel.find({ title: `/^${newTitle}$/i` }, 'title', (err, otherTitles2) => {
+        if (otherTitles2.length === 0) {
+          resolve(newTitle);
+        }
+        const nextNum = otherTitles2.length + 1;
+        resolve(`${newTitle} ${nextNum}`);
+      });
+    });
+  }));
+}
+
 // previously POST /createOpportunity
-app.post('/', (req, res) => {
-  // req is json containing the stuff that was sent if there was anything
-  const data = req.body;
-  debug(data);
-  if (!data
+app.post('/', async (req, res, next) => {
+  // TODO test what next() does, create middleware from https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016 ?
+  try {
+    // req is json containing the stuff that was sent if there was anything
+    const data = req.body;
+    debug(data);
+    if (!data
         || !data.creatorNetId
         || !data.title
         || !data.undergradTasks
         || !data.startSeason
         || !data.compensation
         || !data.startYear) {
-    return res.status(400).send();
-  }
-  debug(`netid: ${data.creatorNetId}`);
-  debug(`labpage: ${data.labPage}`);
-  debug(`title: ${data.title}`);
-  debug(`projDesc: ${data.projectDescription}`);
-  debug(`undergradTasks: ${data.undergradTasks}`);
-  debug(`qualifs: ${data.qualifications}`);
-  debug(`supervisor: ${data.supervisor}`);
-  debug(`startSeason: ${data.startSeason}`);
-  debug(`startYear: ${data.startYear}`);
-  debug(`apps: ${data.applications}`);
-  debug(`yearsAllowed: ${data.yearsAllowed}`);
-  debug(`majorsAllowed: ${data.majorsAllowed}`);
-  debug(`question 1: ${JSON.parse(JSON.stringify(data.questions)).q0}`);
-  debug(`question 2: ${JSON.parse(JSON.stringify(data.questions)).q1}`);
-  debug(`requiredClasses: ${data.requiredClasses}`);
-  debug(`minGPA: ${data.minGPA}`);
-  debug(`minHours: ${data.minHours}`);
-  debug(`maxHours: ${data.maxHours}`);
-  debug(`additionalInformation: ${data.additionalInformation}`);
-  debug(`opens: ${data.opens}`);
-  debug(`closes: ${data.closes}`);
-  debug(`areas: ${data.areas}`);
-  let maxHours;
-  data.minHours = parseInt(data.minHours, 10);
-  debug(data.minHours);
-  data.minHours = Number(data.minHours);
-  if (Number.isNaN(data.minHours)) {
-    data.minHours = 0;
-  }
-  if (data.maxHours) {
-    // eslint-disable-next-line prefer-destructuring
-    maxHours = data.maxHours;
-  } else {
-    maxHours = data.minHours + 10;
-  }
-  if (maxHours < data.minHours) {
-    data.minHours = 0;
-    maxHours = 10;
-  }
-  if (data.yearsAllowed && data.yearsAllowed.length === 0) {
-    data.yearsAllowed = ['freshman', 'sophomore', 'junior', 'senior'];
-  }
-  debug('1');
-  // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
-  //     let netId = email.replace("@cornell.edu", "");
-  Object.keys(data.questions).forEach((key) => {
-    // if they added a question but then clicked the x then there would be q1 : null/undefined
-    if (!data.questions[key]) {
-      delete data.questions.key;
+      return res.status(400).send();
     }
-  });
-  debug('2');
-  // if the compensation array is empty, then that means they don't have any compensation
-  if (data.compensation === undefined || data.compensation.length === 0) {
-    debug('2.5');
-    data.compensation = ['none'];
-  }
-  debug('3');
-  data.questions.coverLetter = "Cover Letter: Describe why you're interested in this lab/position in particular, "
+    debug(`netid: ${data.creatorNetId}`);
+    debug(`labpage: ${data.labPage}`);
+    debug(`title: ${data.title}`);
+    debug(`projDesc: ${data.projectDescription}`);
+    debug(`undergradTasks: ${data.undergradTasks}`);
+    debug(`qualifs: ${data.qualifications}`);
+    debug(`supervisor: ${data.supervisor}`);
+    debug(`startSeason: ${data.startSeason}`);
+    debug(`startYear: ${data.startYear}`);
+    debug(`apps: ${data.applications}`);
+    debug(`yearsAllowed: ${data.yearsAllowed}`);
+    debug(`majorsAllowed: ${data.majorsAllowed}`);
+    debug(`question 1: ${JSON.parse(JSON.stringify(data.questions)).q0}`);
+    debug(`question 2: ${JSON.parse(JSON.stringify(data.questions)).q1}`);
+    debug(`requiredClasses: ${data.requiredClasses}`);
+    debug(`minGPA: ${data.minGPA}`);
+    debug(`minHours: ${data.minHours}`);
+    debug(`maxHours: ${data.maxHours}`);
+    debug(`additionalInformation: ${data.additionalInformation}`);
+    debug(`opens: ${data.opens}`);
+    debug(`closes: ${data.closes}`);
+    debug(`areas: ${data.areas}`);
+    let maxHours;
+    data.minHours = parseInt(data.minHours, 10);
+    debug(data.minHours);
+    data.minHours = Number(data.minHours);
+    if (Number.isNaN(data.minHours)) {
+      data.minHours = 0;
+    }
+    if (data.maxHours) {
+      // eslint-disable-next-line prefer-destructuring
+      maxHours = data.maxHours;
+    } else {
+      maxHours = data.minHours + 10;
+    }
+    if (maxHours < data.minHours) {
+      data.minHours = 0;
+      maxHours = 10;
+    }
+    if (data.yearsAllowed && data.yearsAllowed.length === 0) {
+      data.yearsAllowed = ['freshman', 'sophomore', 'junior', 'senior'];
+    }
+    debug('1');
+    // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
+    //     let netId = email.replace("@cornell.edu", "");
+    Object.keys(data.questions).forEach((key) => {
+      // if they added a question but then clicked the x then there would be q1 : null/undefined
+      if (!data.questions[key]) {
+        delete data.questions.key;
+      }
+    });
+    debug('2');
+    // if the compensation array is empty, then that means they don't have any compensation
+    if (data.compensation === undefined || data.compensation.length === 0) {
+      debug('2.5');
+      data.compensation = ['none'];
+    }
+    debug('3');
+    data.questions.coverLetter = "Cover Letter: Describe why you're interested in this lab/position in particular, "
         + 'as well as how any qualifications you have will help you excel in this lab. Please be concise.';
-  if (data.areas) {
-    data.areas = data.areas.map((element) => {
-      const trimmed = element.trim();
-      if (trimmed) {
-        return trimmed;
-      }
-      return null;
-    });
-  }
-  if (data.requiredClasses) {
-    data.requiredClasses = data.requiredClasses.map((element) => {
-      const trimmed = element.trim();
-      if (trimmed) {
-        return trimmed;
-      }
-      return null;
-    });
-  }
-
-
-  const token = data.creatorNetId;
-  verify(token, (netIdActual) => {
-    // if they somehow reach this page without being logged in...
-    if (netIdActual === null) {
-      handleVerifyError(null, res);
-      return;
+    if (data.areas) {
+      data.areas = data.areas.map((element) => {
+        const trimmed = element.trim();
+        if (trimmed) {
+          return trimmed;
+        }
+        return null;
+      });
     }
-    const opportunity = new opportunityModel({
-      creatorNetId: netIdActual,
-      labPage: data.labPage,
-      title: data.title,
-      projectDescription: data.projectDescription,
-      undergradTasks: data.undergradTasks,
-      qualifications: data.qualifications,
-      compensation: data.compensation,
-      supervisor: data.supervisor,
-      // spots: data.spots,
-      startSeason: data.startSeason,
-      startYear: data.startYear,
-      applications: data.applications, // missing
-      yearsAllowed: data.yearsAllowed,
-      majorsAllowed: data.majorsAllowed, // missing
-      questions: data.questions,
-      requiredClasses: data.requiredClasses,
-      minGPA: data.minGPA,
-      minHours: data.minHours,
-      maxHours,
-      additionalInformation: data.additionalInformation,
-      opens: data.opens,
-      closes: data.closes,
-      areas: data.areas,
-      ghostPost: false,
-      ghostEmail: '',
-      datePosted: (new Date()).toISOString(),
-    });
-    opportunity.save((err, response) => {
-      if (err) {
-        debug(err);
-        res.status(500).send({ errors: err.errors });
+    if (data.requiredClasses) {
+      data.requiredClasses = data.requiredClasses.map((element) => {
+        const trimmed = element.trim();
+        if (trimmed) {
+          return trimmed;
+        }
+        return null;
+      });
+    }
+
+    const token = data.creatorNetId;
+    // notice how we "thunk" (to use 3110 language) getUniqueTitle so we can get the promise it returns and await it to get its value
+    const newTitle = await getUniqueTitle(data.title, data.supervisor);
+    debug('NEW TITLE!!!');
+    debug(newTitle);
+    verify(token, (netIdActual) => {
+      // if they somehow reach this page without being logged in...
+      if (netIdActual === null) {
+        handleVerifyError(null, res);
         return;
       }
-      const oppId = response.id;
-      labModel.findOne(
-        { labAdmins: netIdActual },
-        (error, lab) => {
-          const opps = lab.opportunities;
-          opps.push(mongoose.Types.ObjectId(oppId));
-          lab.opportunities = opps;
-          lab.markModified('opportunities');
-          lab.save(() => {
-          });
-        },
-      );
-      // const opportunityMajor = req.body.majorsAllowed;
-      undergradModel.find({},
-        (err2, studentsWhoMatch) => {
-          Object.keys(studentsWhoMatch).forEach((undergrad1) => {
-            const { firstName } = studentsWhoMatch[undergrad1];
-            const msg = {
-              to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
-              from: {
-                name: 'Research Connect',
-                email: 'hello@research-connect.com',
-              },
-              replyTo: 'acb352@cornell.edu',
-              asm: {
-                groupId: sgOppsGroup,
-              },
-              subject: 'New Research Opportunity Available!',
-              html: `Hi ${firstName},<br />
+      const opportunity = new opportunityModel({
+        creatorNetId: netIdActual,
+        labPage: data.labPage,
+        title: newTitle,
+        projectDescription: data.projectDescription,
+        undergradTasks: data.undergradTasks,
+        qualifications: data.qualifications,
+        compensation: data.compensation,
+        supervisor: data.supervisor,
+        // spots: data.spots,
+        startSeason: data.startSeason,
+        startYear: data.startYear,
+        applications: data.applications, // missing
+        yearsAllowed: data.yearsAllowed,
+        majorsAllowed: data.majorsAllowed, // missing
+        questions: data.questions,
+        requiredClasses: data.requiredClasses,
+        minGPA: data.minGPA,
+        minHours: data.minHours,
+        maxHours,
+        additionalInformation: data.additionalInformation,
+        opens: data.opens,
+        closes: data.closes,
+        areas: data.areas,
+        ghostPost: false,
+        ghostEmail: '',
+        datePosted: (new Date()).toISOString(),
+      });
+      opportunity.save((err, response) => {
+        if (err) {
+          debug(err);
+          res.status(500).send({ errors: err.errors });
+          return;
+        }
+        const oppId = response.id;
+        labModel.findOne(
+          { labAdmins: netIdActual },
+          (error, lab) => {
+            const opps = lab.opportunities;
+            opps.push(mongoose.Types.ObjectId(oppId));
+            lab.opportunities = opps;
+            lab.markModified('opportunities');
+            lab.save(() => {
+            });
+          },
+        );
+        // const opportunityMajor = req.body.majorsAllowed;
+        undergradModel.find({},
+          (err2, studentsWhoMatch) => {
+            Object.keys(studentsWhoMatch).forEach((undergrad1) => {
+              const { firstName } = studentsWhoMatch[undergrad1];
+              const msg = {
+                to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
+                from: {
+                  name: 'Research Connect',
+                  email: 'hello@research-connect.com',
+                },
+                replyTo: 'acb352@cornell.edu',
+                asm: {
+                  groupId: sgOppsGroup,
+                },
+                subject: 'New Research Opportunity Available!',
+                html: `Hi ${firstName},<br />
                        A new opportunity called ${opportunity.title} was just posted in an area you expressed interest in. 
                        You can view it <a href="https://www.research-connect.com/opportunity/${oppId}">here!</a> 
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
-            };
-            sgMail.send(msg);
+              };
+              sgMail.send(msg);
+            });
+            debug('finished emailling students');
           });
-          debug('finished emailling students');
-        });
+      });
+      debug('done with function');
+      res.send('Success!');
+      // });
+    }).catch((error) => {
+      debug('verify error');
+      debug(error);
+      handleVerifyError(error, res);
     });
-    debug('done with function');
-    res.send('Success!');
-    // });
-  }).catch((error) => {
-    handleVerifyError(error, res);
-  });
-  return null;
+    return null;
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.put('/:id', (req, res) => {

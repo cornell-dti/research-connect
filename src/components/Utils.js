@@ -26,45 +26,6 @@ export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-/**
- * Takes care of the response and checking for errors specifically due to outdated tokens.
- * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
- * Otherwise will return false and do nothing so you can handle the other errors.
- * @param error the Error object (special type of object, look it up, took me a while to find that out...) you get from
- * the promise callback for axios
- * @return {boolean} returns false if there was no token-related error.
- */
-export function handleTokenError(error) {
-  if (error.response) {
-    console.log(error.response.data);
-    if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-      alert('You either visited this page without being signed in or were inactive too long. '
-                + "Sign up on the home page and you'll be able to see all the research opportunities available!");
-      window.location.href = '/';
-      logoutGoogle();
-      return true;
-    }
-  }
-}
-
-/**
- * Gets query parameter from url. example url: google.com?id=bear
- * @param name is name of query parameter, in example it's id
- * @param url
- * @return string the value of that url param, in our example it'd be bear
- */
-export function getParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
-  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
-
-
-  const results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-
 function refreshStorage() {
   sessionStorage.clear();
   window.location.href = '/';
@@ -114,4 +75,49 @@ export function logoutGoogle() {
       }, 2000);
     }
   }, 500);
+}
+
+
+/**
+ * Takes care of the response and checking for errors specifically due to outdated tokens.
+ * If there is a session error, it'll sign them out, redirect them to the index page, and return true.
+ * Otherwise will return false and do nothing so you can handle the other errors.
+ * @param error the Error object (special type of object, look it up, took me a while to find that out...) you get from
+ * the promise callback for axios
+ * @return {boolean} returns false if there was no token-related error.
+ */
+export function handleTokenError(error) {
+  if (error.response) {
+    console.log(error.response.data);
+    if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
+      if (window.location.pathname === '/'){
+        logoutGoogle();
+        return true;
+      }
+      alert('You either visited this page without being signed in or were inactive too long. '
+                + "Sign up on the home page and you'll be able to see all the research opportunities available!");
+      window.location.href = '/';
+      logoutGoogle();
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Gets query parameter from url. example url: google.com?id=bear
+ * @param name is name of query parameter, in example it's id
+ * @param url
+ * @return string the value of that url param, in our example it'd be bear
+ */
+export function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
+
+
+  const results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }

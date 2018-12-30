@@ -86,7 +86,8 @@ class OpportunityPage extends Component {
 		// get our form data out of state
 		const { opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId } = this.state;
 		// if (coverLetter) {
-		let allQsAnswered = Object.values(questionAnswers).reduce((allQs, currentQ) => allQs && (currentQ != ''));
+		// let allQsAnswered = Object.values(questionAnswers).reduce((allQs, currentQ) => allQs && (currentQ != ''));
+		let allQsAnswered = Object.values(questionAnswers).every((questionVal) => !(!questionVal));
 		if (allQsAnswered === true) {
 			this.setState({ submitted: true });
 			console.log("submitting form");
