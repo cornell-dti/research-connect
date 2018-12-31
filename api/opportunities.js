@@ -550,7 +550,7 @@ app.post('/', async (req, res, next) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              // sgMail.send(msg);
+              sgMail.send(msg);
             });
             debug('finished emailling students');
           });
