@@ -8,6 +8,7 @@
     "async": "^2.6.0",
     "aws-sdk": "^2.224.1",
     "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
@@ -37,6 +38,11 @@
   },
   "devDependencies": {
     "concurrently": "^3.6.1",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "nodemon": "^1.18.7"
   },
   "engines": {
@@ -48,6 +54,8 @@
     "heroku-postbuild": "cd src && npm install && npm run build",
     "start": "node server.js",
     "start:dev": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && nodemon server.js\"",
-    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\""
+    "start:dev-verbose": "concurrently \"cd src && npm start\" \"set DEBUG=* && nodemon server.js\"",
+    "start:debug": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && node %NODE_DEBUG_OPTION% server.js\"",
+    "start:debug-backend": "set DEBUG=server:app && node %NODE_DEBUG_OPTION% server.js"
   }
 }

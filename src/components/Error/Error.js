@@ -6,7 +6,7 @@ class Error extends Component {
       <div>
         404: Page not found.
       </div>
-    )
+    );
   }
 }
 
