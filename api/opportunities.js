@@ -7,7 +7,6 @@ const {
 } = require('../common.js');
 const common = require('../common.js');
 
-
 // finds lab where lab admin = {adminNetId}, undefined if the id can't be fine in any lab
 function findLabWithAdmin(labs, adminNetId) {
   return labs.filter(lab => lab.labAdmins.includes(adminNetId))[0];
@@ -32,7 +31,9 @@ app.get('/check/:opportunityId', (req, res) => {
       return;
     }
     // check if at least one application has the net id of the student we're looking for
-    res.send(toSearch.some(applicationObj => applicationObj.undergradNetId === idToCheck));
+    res.send(toSearch.some(
+      applicationObj => applicationObj.undergradNetId === idToCheck,
+    ));
   });
 });
 
@@ -57,7 +58,7 @@ function roleToInt(role) {
 }
 
 /**
-function getLabAdmin(oppId) {
+ function getLabAdmin(oppId) {
   console.log(`The id we are working with is: ${oppId}`);
   labModel.find({ opportunities: mongoose.Types.ObjectId(oppId) }, (err, lab) => {
     if (lab) {
@@ -92,7 +93,7 @@ function getLabAdmin(oppId) {
     }
   });
 }
-*/
+ */
 
 // previously POST /getOpportunitiesListing
 app.get('/', (req, res) => {
@@ -142,29 +143,39 @@ app.get('/', (req, res) => {
               },
             };
           }
-          opportunityModel.find(timeRange).sort(sortOrderObj).exec((err2, opportunities) => {
-            for (let i = 0; i < opportunities.length; i++) {
-              opportunities[i].prereqsMatch = true;
-            }
-            // make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
-            if (urlLabId && urlLabId !== 'null') {
-              debug('2');
-              labModel.findById(urlLabId, (err3, lab) => {
-                debug(lab);
-                let oppIdsToOnlyInclude = lab.opportunities;
-                // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
-                oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(opp => opp.toString());
-                // remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
-                opportunities = opportunities.filter(opp => oppIdsToOnlyInclude.includes(opp._id.toString()));
+          opportunityModel.find(timeRange)
+            .sort(sortOrderObj)
+            .exec((err2, opportunities) => {
+              for (let i = 0; i < opportunities.length; i++) {
+                opportunities[i].prereqsMatch = true;
+              }
+              // make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
+              if (urlLabId && urlLabId !== 'null') {
+                debug('2');
+                labModel.findById(urlLabId, (err3, lab) => {
+                  debug(lab);
+                  let oppIdsToOnlyInclude = lab.opportunities;
+                  // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
+                  oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(
+                    opp => opp.toString(),
+                  );
+                  // remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
+                  opportunities = opportunities.filter(
+                    opp => oppIdsToOnlyInclude.includes(
+                      opp._id.toString(),
+                    ),
+                  );
+                  return res.send(opportunities);
+                });
+              } else {
                 return res.send(opportunities);
-              });
-            } else {
-              return res.send(opportunities);
-            }
-            return null;
-          });
+              }
+              return null;
+            });
         } else {
-          undergrad1.courses = undergrad1.courses.map(course => replaceAll(course, ' ', ''));
+          undergrad1.courses = undergrad1.courses.map(
+            course => replaceAll(course, ' ', ''),
+          );
           debug(undergrad1);
           debug('test');
           // only get the ones that are currenlty open
@@ -187,28 +198,41 @@ app.get('/', (req, res) => {
               labs = labs2;
               for (let i = 0; i < opportunities.length; i++) {
                 let prereqsMatch = false;
-                opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(course => replaceAll(course, ' ', ''));
+                opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(
+                  course => replaceAll(course, ' ', ''),
+                );
                 // checks for gpa, major, and gradYear
                 if (opportunities[i].minGPA <= undergrad1.gpa
-                                    && opportunities[i].requiredClasses.every((val) => {
-                                      // Check for synonymous courses, or courses where you can skip the prereqs
+                    && opportunities[i].requiredClasses.every((val) => {
+                      // Check for synonymous courses, or courses where you can skip the prereqs
 
-                                      if (!undergrad1.courses.includes(val)) {
-                                        const courseSubs = coursePrereqs[val];
-                                        if (courseSubs !== undefined) {
-                                          return undergrad1.courses.some(course => courseSubs.includes(course));
-                                        }
-                                        return false;
-                                      }
-                                      return true; // if it's contained in the undergrad1 courses straight off the bat
-                                    })
-                                    && opportunities[i].yearsAllowed.includes(common.gradYearToString(undergrad1.gradYear))) {
+                      if (!undergrad1.courses.includes(val)) {
+                        const courseSubs = coursePrereqs[val];
+                        if (courseSubs !== undefined) {
+                          return undergrad1.courses.some(
+                            course => courseSubs.includes(course),
+                          );
+                        }
+                        return false;
+                      }
+                      return true; // if it's contained in the undergrad1 courses straight off the bat
+                    })
+                    && opportunities[i].yearsAllowed.includes(
+                      common.gradYearToString(undergrad1.gradYear),
+                    )) {
                   prereqsMatch = true;
                 }
                 debug('h');
-                let thisLab = findLabWithAdmin(labs, opportunities[i].creatorNetId);
+                let thisLab = findLabWithAdmin(labs,
+                  opportunities[i].creatorNetId);
                 // prevent "undefined" values if there's some error
-                if (thisLab === undefined) thisLab = { name: '', labPage: '', labDescription: '' };
+                if (thisLab === undefined) {
+                  thisLab = {
+                    name: '',
+                    labPage: '',
+                    labDescription: '',
+                  };
+                }
                 opportunities[i].prereqsMatch = prereqsMatch;
                 opportunities[i].labName = thisLab.name;
                 opportunities[i].labPage = thisLab.labPage;
@@ -216,7 +240,7 @@ app.get('/', (req, res) => {
                 debug(opportunities[i]);
                 debug(Object.getOwnPropertyNames(opportunities[i]));
                 /**
-                if (opportunities[i].contactName === 'dummy value') {
+                 if (opportunities[i].contactName === 'dummy value') {
                   console.log('In here');
                   // var contact = getLabAdmin(opportunities[i]._id,opportunities[i]);
 
@@ -265,7 +289,7 @@ app.get('/', (req, res) => {
                 }
                 debug(`Here is the contactName: ${opportunities[i].contactName}`);
                 debug(`Here is the additional info: ${opportunities[i].additionalInformation}`);
-                */
+                 */
               }
               res.send(opportunities);
             });
@@ -310,34 +334,41 @@ function getRandomInt(min, max) {
 
 function getUniqueTitle(title, supervisor) {
   return new Promise(((resolve, reject) => {
-    opportunityModel.find({ title }, 'title', (err, otherTitles) => {
-      if (err) {
-        debug('error in get unique title');
-        debug(err);
-        // if there's an error, just append a random integer
-        resolve(`${title} (${getRandomInt(1, 15)})`);
-      }
-      if (otherTitles.length === 0) {
-        resolve(title);
-      }
-      let newTitle;
-      if (!supervisor) {
-        newTitle = `${title}`;
-      } else {
-        newTitle = `${title} (${supervisor})`;
-      }
-      // find all opps that have the title that case insensitive starts with: title + supervisor
-      opportunityModel.find({ title: { $regex: '^Intern', $options: 'i' } }, 'title', (err2, otherTitles2) => {
-        if (err2) {
-          debug(err2);
+    const regexTitle = `^${title}$`; // https://stackoverflow.com/a/36916270
+    // see if there is any opportunity with this title, case insentitive
+    opportunityModel.find({ title: { $regex: regexTitle, $options: 'i' } }, 'title',
+      (err, otherTitles) => {
+        if (err) {
+          debug('error in get unique title');
+          debug(err);
+          // if there's an error, just append a random integer
+          resolve(`${title} (${getRandomInt(1, 15)})`);
         }
-        if (otherTitles2.length === 0) {
-          resolve(newTitle);
+        if (otherTitles.length === 0) {
+          resolve(title);
         }
-        const nextNum = otherTitles2.length + 1;
-        resolve(`${newTitle} ${nextNum}`);
+        let newTitle;
+        if (!supervisor) {
+          newTitle = `${title}`;
+        } else {
+          newTitle = `${title} (${supervisor})`;
+        }
+        // find all opps that have the title that case insensitive starts with: title + supervisor
+        // if there's an opp called "intern (john smith) 2", then this will match the intern (john smith) and we'll add the 3 after it
+        opportunityModel.find(
+          { title: { $regex: `^${newTitle}`, $options: 'i' } }, 'title',
+          (err2, otherTitles2) => {
+            if (err2) {
+              debug(err2);
+            }
+            if (otherTitles2.length === 0) {
+              resolve(newTitle);
+            }
+            const nextNum = otherTitles2.length + 1;
+            resolve(`${newTitle} ${nextNum}`);
+          },
+        );
       });
-    });
   }));
 }
 
@@ -419,7 +450,7 @@ app.post('/', async (req, res, next) => {
       data.compensation = ['none'];
     }
     debug('3');
-    data.questions.coverLetter = "Cover Letter: Describe why you're interested in this lab/position in particular, "
+    data.questions.coverLetter = 'Cover Letter: Describe why you\'re interested in this lab/position in particular, '
         + 'as well as how any qualifications you have will help you excel in this lab. Please be concise.';
     if (data.areas) {
       data.areas = data.areas.map((element) => {
@@ -519,7 +550,7 @@ app.post('/', async (req, res, next) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              sgMail.send(msg);
+              // sgMail.send(msg);
             });
             debug('finished emailling students');
           });
@@ -550,15 +581,19 @@ app.put('/:id', (req, res) => {
 
       const newTitle = req.body.title;
       const titleChanged = newTitle && newTitle !== opportunity.title;
-      const hasApplications = opportunity.applications && opportunity.applications.length > 0;
+      const hasApplications = opportunity.applications
+          && opportunity.applications.length > 0;
       opportunity.title = newTitle || opportunity.title;
-      opportunity.projectDescription = req.body.projectDescription || opportunity.projectDescription;
-      opportunity.qualifications = req.body.qualifications || opportunity.qualifications;
+      opportunity.projectDescription = req.body.projectDescription
+          || opportunity.projectDescription;
+      opportunity.qualifications = req.body.qualifications
+          || opportunity.qualifications;
       opportunity.supervisor = req.body.supervisor || opportunity.supervisor;
       // opportunity.spots = req.body.spots || opportunity.spots;
       opportunity.startSeason = req.body.startSeason || opportunity.startSeason;
       opportunity.startYear = req.body.startYear || opportunity.startYear;
-      opportunity.applications = req.body.applications || opportunity.applications;
+      opportunity.applications = req.body.applications
+          || opportunity.applications;
       // TODO update skills field of undergrad in opportunity whenever the undergrad updates them
       // each application has a title and skills field (among others), so update those when the opportunity is updated.
       if (titleChanged && hasApplications) {
@@ -567,14 +602,18 @@ app.put('/:id', (req, res) => {
         });
       }
 
-      opportunity.yearsAllowed = req.body.yearsAllowed || opportunity.yearsAllowed;
-      opportunity.majorsAllowed = req.body.majorsAllowed || opportunity.majorsAllowed;
+      opportunity.yearsAllowed = req.body.yearsAllowed
+          || opportunity.yearsAllowed;
+      opportunity.majorsAllowed = req.body.majorsAllowed
+          || opportunity.majorsAllowed;
       opportunity.questions = req.body.questions || opportunity.questions;
-      opportunity.requiredClasses = req.body.requiredClasses || opportunity.requiredClasses;
+      opportunity.requiredClasses = req.body.requiredClasses
+          || opportunity.requiredClasses;
       opportunity.minGPA = req.body.minGPA || opportunity.minGPA;
       opportunity.minHours = req.body.minHours || opportunity.minHours;
       opportunity.maxHours = req.body.maxHours || opportunity.maxHours;
-      opportunity.additionalInformation = req.body.additionalInformation || opportunity.additionalInformation;
+      opportunity.additionalInformation = req.body.additionalInformation
+          || opportunity.additionalInformation;
       opportunity.opens = req.body.opens || opportunity.opens;
       opportunity.closes = req.body.closes || opportunity.closes;
       opportunity.areas = req.body.areas || opportunity.areas;
@@ -582,7 +621,6 @@ app.put('/:id', (req, res) => {
       opportunity.markModified('messages');
       opportunity.markModified('applications');
       opportunity.markModified('questions');
-
 
       // Save the updated document back to the database
       opportunity.save((err2, todo) => {
@@ -596,18 +634,19 @@ app.put('/:id', (req, res) => {
 });
 app.get('/search', (req, res) => {
   debug(req.query.search);
-  opportunityModel.find({ $text: { $search: req.query.search } }, '_id', (err, search) => {
-    if (err) {
-      debug(err);
-      res.send(err);
-    } else {
-      if (search === null) {
-        res.send('Search not found :(');
+  opportunityModel.find({ $text: { $search: req.query.search } }, '_id',
+    (err, search) => {
+      if (err) {
+        debug(err);
+        res.send(err);
+      } else {
+        if (search === null) {
+          res.send('Search not found :(');
+        }
+        debug(search);
+        res.send(search);
       }
-      debug(search);
-      res.send(search);
-    }
-  });
+    });
 });
 app.delete('/:id', (req, res) => {
   const { id } = req.params;
@@ -658,15 +697,24 @@ function processOpportunity(tokenNetId, oppId, res) {
         {
           $and: [
             { netId: { $in: labAdmins } },
-            { role: { $in: ['pi', 'postdoc', 'grad', 'staffscientist', 'labtech'] } },
+            {
+              role: {
+                $in: [
+                  'pi',
+                  'postdoc',
+                  'grad',
+                  'staffscientist',
+                  'labtech'],
+              },
+            },
           ],
         },
 
         /*
-           in this section, we attach the info of the student who requested this. This is used to fill in the
-           qualifications section (I think) on the front-end. This should probably only happen if there is
-           some query parameter, but we never got around to doing that. TODO
-           */
+             in this section, we attach the info of the student who requested this. This is used to fill in the
+             qualifications section (I think) on the front-end. This should probably only happen if there is
+             some query parameter, but we never got around to doing that. TODO
+             */
         (err3, labAdmin) => {
           if (!labAdmin) {
             opportunity.pi = 'No lab members found';
@@ -726,6 +774,5 @@ app.get('/:id', (req, res) => {
   });
   return null;
 });
-
 
 module.exports = app;

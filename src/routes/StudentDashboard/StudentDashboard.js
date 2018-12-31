@@ -76,9 +76,7 @@ class StudentDashboard extends Component {
           <div className="row">
             <div className="column column-50">
               <div className="dashboard-header">
-Welcome back
-                {this.state.name}
-!
+Welcome back {this.state.name}!
               </div>
 
               <DashboardAction

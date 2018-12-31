@@ -37,6 +37,13 @@ app.get('/sandbox', (req, res) => {
   return res.send();
 });
 
+app.get('/sandbox2', (req, res, next) => {
+  opportunityModel.find({ title: { $regex: '^Intern', $options: 'i' } }, 'title', (err2, otherTitles2) => {
+    debug(otherTitles2);
+    return res.send(otherTitles2);
+  });
+});
+
 app.post('/sendManual', (req, res) => {
   return res.end(); // safety lock
   // eslint-disable-next-line no-unreachable

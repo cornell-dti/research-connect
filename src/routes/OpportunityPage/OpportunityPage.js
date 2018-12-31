@@ -54,7 +54,7 @@ class OpportunityPage extends Component {
   sendToHome(error) {
     if (!this.state.detectedLoggedOut) {
       Utils.handleTokenError(error);
-      window.location.href = '/test.com';
+      window.location.href = '/';
       console.log('done');
       this.setState({detectedLoggedOut: true});
     }
@@ -120,10 +120,13 @@ class OpportunityPage extends Component {
   }
 
   hasApplied(netId, opportunityId) {
-    return axios.get(`/api/opportunities/check/${opportunityId}`).
+    return axios.get(`/api/opportunities/check/${opportunityId}?netId=${netId}`).
         then((response) => {
           // returns true or false
-          return response;
+          if (!response || !response.data){
+            return false;
+          }
+          return response.data;
         }).
         catch(() => {
           return false;
