@@ -37,6 +37,7 @@ app.get('/check/:opportunityId', (req, res) => {
   });
 });
 
+/**
 function roleToInt(role) {
   if (role === 'pi') {
     return 6;
@@ -56,7 +57,7 @@ function roleToInt(role) {
 
   return 1;
 }
-
+*/
 /**
  function getLabAdmin(oppId) {
   console.log(`The id we are working with is: ${oppId}`);
@@ -333,7 +334,7 @@ function getRandomInt(min, max) {
 }
 
 function getUniqueTitle(title, supervisor) {
-  return new Promise(((resolve, reject) => {
+  return new Promise(((resolve) => {
     const regexTitle = `^${title}$`; // https://stackoverflow.com/a/36916270
     // see if there is any opportunity with this title, case insentitive
     opportunityModel.find({ title: { $regex: regexTitle, $options: 'i' } }, 'title',
@@ -567,6 +568,7 @@ app.post('/', async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+  return null;
 });
 
 app.put('/:id', (req, res) => {
