@@ -21,10 +21,10 @@ class OpportunityList extends Component {
       let willShow = true;
       const filteredOptions = this.props.filteredOptions;
       /**
-				 * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
-				 so that value must either be true or false) and if this row has freshman in its array of years allowed, then
-				 we return true and should show this opportunity
-				 */
+         * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
+         so that value must either be true or false) and if this row has freshman in its array of years allowed, then
+         we return true and should show this opportunity
+         */
       const froshSelected = filteredOptions.yearSelect.Freshman;
       const sophSelected = filteredOptions.yearSelect.Sophomore;
       const juniorSelected = filteredOptions.yearSelect.Junior;
@@ -48,20 +48,20 @@ class OpportunityList extends Component {
       }
 
       if (!((froshSelected && yearsAllowed.indexOf('freshman') != -1)
-					|| (sophSelected && yearsAllowed.indexOf('sophomore') != -1)
-					|| (juniorSelected && yearsAllowed.indexOf('junior') != -1)
-					|| (seniorSelected && yearsAllowed.indexOf('senior') != -1)
-					|| (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected))) {
+          || (sophSelected && yearsAllowed.indexOf('sophomore') != -1)
+          || (juniorSelected && yearsAllowed.indexOf('junior') != -1)
+          || (seniorSelected && yearsAllowed.indexOf('senior') != -1)
+          || (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected))) {
         willShow = false;
       }
 
       /**
-					* Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-					* and also checks to see if this opportunity is in the cs area.
-					* */
+          * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
+          * and also checks to see if this opportunity is in the cs area.
+          * */
       if (!((csSelected && opp.areas.indexOf('Computer Science') != -1)
-						|| (bioSelected && opp.areas.indexOf('Biology') != -1)
-						|| (!csSelected && !bioSelected))) {
+            || (bioSelected && opp.areas.indexOf('Biology') != -1)
+            || (!csSelected && !bioSelected))) {
         willShow = false;
       }
 
@@ -74,8 +74,8 @@ class OpportunityList extends Component {
       }
 
       if (!((moneySelected && compensations.indexOf('pay') != -1)
-					|| (creditSelected && compensations.indexOf('credit') != -1)
-					|| (!moneySelected && !creditSelected))) {
+          || (creditSelected && compensations.indexOf('credit') != -1)
+          || (!moneySelected && !creditSelected))) {
         willShow = false;
       }
 

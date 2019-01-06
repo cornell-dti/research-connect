@@ -44,7 +44,7 @@ class Opportunity extends Component {
 
           </h6>
         );
-		  }
+      }
       return (
         <h6>
           {`Tasks: ${str2}`}
@@ -105,7 +105,7 @@ class Opportunity extends Component {
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         if (!response || response.data == 'none'
-				 || !response.data || response.data == 'undergrad') {
+         || !response.data || response.data == 'undergrad') {
           return false;
         }
         return true;
@@ -126,6 +126,7 @@ class Opportunity extends Component {
             {' '}
             <span>
 Deadline
+              {' '}
               { Utils.convertDate(this.props.closes) }
             </span>
             {this.checkPrereqs()}
