@@ -1,0 +1,699 @@
+/*-------------
+ 	General
+-------------*/
+
+.landingPage section .get-started{
+  background-color: #b31b1b;
+  border-color: #b31b1b;
+}
+.landingPage *{
+
+	box-sizing: border-box;
+  font: 'Roboto';
+}
+.landingPage section .get-started:hover{
+  opacity: 0.9;
+  border-color: #b31b1b;
+  background-color: #b31b1b;
+}
+
+.landingPage ul, .landingPage nav {
+    list-style: none;
+}
+
+.landingPage a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+
+}
+
+.landingPage a:hover {
+    
+    border-bottom: 3px solid white;
+    box-shadow: #414a4f;
+}
+
+.landingPage a.btn {
+    color: #fff;
+    border-radius: 4px;
+    text-transform: uppercase;
+    background-color: #2196F3;
+    font-weight: 800;
+    text-align: center;
+}
+
+.landingPage hr {
+    width: 150px;
+    height: 2px;
+    background-color: #f6f6f6;
+    border: 0;
+    margin-bottom: 40px;
+}
+
+
+.landingPage section{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10px 10%;
+}
+
+.background-image {
+
+    background-image: url("../../images/gatesHallStock.png");
+	background-size: 100% 100%;
+
+}
+
+@media (max-width: 1000px) {
+
+    section {
+        padding: 100px 50px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    section {
+        padding: 80px 30px;
+    }
+
+}
+
+.landingPage section h3.title {
+    color: #414a4f;
+    text-transform: none;
+    font: bold 32px 'Roboto', sans-serif;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.landingPage section p {
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 35px;
+    padding: 0 20px;
+    line-height: 2;
+}
+
+.landingPage ul.grid {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.signup {
+  margin-right: 8px;
+}
+
+.sign-out {
+  cursor: pointer;
+}
+
+
+
+/*-------------
+ 	Header
+-------------*/
+
+.landingPage .logo{
+      height: 59px;	
+      width: 59px;	
+     
+  margin-top: 25px;
+}
+.landingPage header{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: black;
+  height: 80px;
+  background-color: transparent;
+  
+	padding: 30px 5%;
+
+}
+
+.landingPage header h2 {
+    font-family: 'Roboto', sans-serif;
+   
+}
+
+.landingPage header nav {
+    display: flex;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+
+
+.landingPage header nav li {
+    margin: 0 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+
+}
+
+.landingPage header nav li:first-child {
+    margin-left: 0;
+}
+
+
+
+
+.landingPage header .button:hover{
+  opacity: 0.9;
+  border-bottom: 3px solid white;
+
+}
+
+.landingPage .login {
+    background-color: transparent;
+    text-transform: none;
+    margin-bottom: 0;
+    color: white;
+        font-weight: 350;
+	margin-left: 10px;
+    border-color: transparent;
+    text-decoration: none;
+	cursor: pointer;
+	display: inline-block;
+    font-size: 20px;
+    font-family: "Helvetica Neue";
+    height: 33px;	width: 156px;
+        line-height: 24px;
+        	text-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    text-align: center;	
+    text-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    
+}
+
+.signup{
+    background-color: white;
+    color: #b31b1b;
+    border-color: transparent;
+
+}
+.signup2{
+    background-color: #b31b1b;
+    color: white;
+    border-color: transparent;
+
+}
+
+.signup:hover {
+    opacity: 0.9;
+    background-color: rgb(166, 57, 45);
+    border-color: transparent;
+
+}
+
+
+
+.login:hover {
+    border-bottom: 3px solid white;
+    
+}
+
+@media (max-width: 1000px) {
+    .landingPage header { 
+        padding: 20px 50px;
+    }
+}
+
+@media (max-width: 700px) {
+    .landingPage header {
+        flex-direction: column;
+    }
+
+    .landingPage header h2 {
+        margin-bottom: 0px;
+    }
+}
+
+/*----------------
+ 	Hero Section
+----------------*/
+
+.hero {
+    position: relative;
+    justify-content: center;
+    min-height: 100vh;
+    color: #fff;
+    text-align: center;
+}
+
+.hero .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-color: #525a63;
+    z-index: -1;
+}
+
+.hero .arrow {
+    width: 100px;
+    height: 100px;
+    color: black;
+}
+
+.hero .white-button:hover{
+  opacity: 0.8;
+  background-color: white;
+  border-color: white;
+  color: rgb(166,57,45);
+}
+
+.hero .lab-button{
+  padding-left: 48px;
+  padding-right: 48px;
+}
+.hero h3{
+  color: white;
+}
+.hero .white-button{
+  background-color: white;
+  
+  font-size: 13px;	font-weight: 500;	letter-spacing: 0.9px;	line-height: 16px;	text-align: center;
+  color: rgb(166,57,45);
+  border-color: white;
+  margin: auto 10px;
+}
+.hero h1{
+    padding-top: 80px;
+
+	margin-bottom: 70px;
+    color: #f6f6f6;
+    font-family: Roboto;	
+    font-size: 64px;	
+    font-weight: 500;	
+    letter-spacing: -0.5px;	
+    line-height: 75px;	
+    text-align: center;	
+    text-shadow: 2px 2px 4px #000000;
+
+}
+
+.hero h3 {
+    font: normal 28px 'Roboto', sans-serif;
+    margin-bottom: 40px;
+    color: #FFFFFF;		
+    font-size: 32px;	
+    font-weight: 300;	
+    letter-spacing: -0.5px;	
+    line-height: 38px;	
+    text-align: center;	
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.hero a.btn {
+    padding: 20px 46px;
+}
+
+@media (max-width: 800px) {
+
+    .hero {
+        min-height: 600px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .hero h3 {
+        font-size: 24px;
+    }
+
+    .hero a.btn {
+        padding: 15px 40px;
+    }
+
+}
+
+col {
+    height : 5 px;
+}
+/*--------------------
+ 	Middle Strip
+---------------------*/
+
+.middleImage {
+    height : 100px;
+    padding: 20px;
+    margin-top: 5%
+    margin-left 10%
+
+}
+.container{
+    width : 100%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+}
+.container .middleContainer{
+    margin-top: 5%;
+    padding: 0;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    width : 100%;
+
+
+}
+.row{
+    align-items: center;
+}
+
+.collab {
+   
+	
+	color: #8F8F8F;
+	font-family: "Helvetica Neue";
+	font-size: 32px;
+    letter-spacing: -0.01px;
+    font-weight: 350;
+	
+}
+/*--------------------
+ 	Our Work Section
+---------------------*/
+
+.landingPage .our-work {
+    background-size: cover;
+}
+
+
+.our-work .photo-flex{
+  height: 400px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+.our-work .step p{
+  padding: 0px;
+  font-size: 22px;
+  font-weight: 100;
+  color: black;
+  line-height: 27px;
+}
+.our-work .get-started{
+  margin-top: 50px;
+  margin-bottom: 0px;
+
+}
+.for-profs{
+  background-color: white;
+}
+.for-students{
+  background-color: rgb(246,246,246);
+}
+.our-work .step{
+  height: 100%;
+  margin-top: 30px;
+  text-align: center;
+  flex-basis: 33%;
+  padding: 50px 30px;
+}
+
+.our-work .step-photo {
+  border-radius: 50%;
+}
+
+.our-work .step .padding {
+  padding: 15px;
+}
+
+.our-work .button {
+    background-color: rgb(179, 27, 27);
+    border-color: rgb(179, 27, 27);
+    color: white;
+    height: 50px;
+    width: 210px;
+}
+
+.our-work .photo-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+section.our-work {
+    padding: 100px;
+    flex-direction: row;
+}
+.our-work .students-title h2{
+  color: #040404;	
+  font-family: Roboto;	
+  font-size: 48px;	
+  font-weight: 500;	
+  letter-spacing: -0.5px;	
+  line-height: 57px;
+}
+
+section.our-work .students-title p{
+    
+    text-align: left;
+   	
+    color: #040404;	
+    font-family: Roboto;	
+    font-size: 24px;	
+    font-weight: 300;	
+    letter-spacing: -0.5px;	
+    line-height: 28px;
+}
+ 
+    
+
+section.our-work {
+    padding: 100px;
+    flex-direction: row;
+}
+
+
+.our-work .students-title{
+  text-align: left;
+  padding: 20px;
+
+}
+
+@media (max-width: 1000px) {
+
+}
+
+/*--------------------
+ 	Reviews Section
+--------------------*/
+
+.reviews {
+    min-height: 100vh;
+    background-color: white;
+}
+section.why-us{
+    padding: 100px;
+}
+section.why-us p{
+    
+    text-align: left;
+   	
+    color: #040404;	
+    font-family: Roboto;	
+    font-size: 24px;	
+    font-weight: 300;	
+    letter-spacing: -0.5px;	
+    line-height: 28px;
+}
+section.why-us{
+  flex-direction: row;
+}
+section.why-us img{
+  width: 400px;
+}
+section.why-us .students-title{
+  width: 60%;
+  padding: 20px;
+
+}
+section.why-us .students-title h2{
+    height: 123px;	
+    width: 551px;	
+    color: #040404;	
+    font-family: Roboto;	
+    font-size: 48px;	
+    font-weight: 500;	
+    letter-spacing: -0.5px;	
+    line-height: 57px;
+}
+section.list .row {
+    align-content: center;
+}
+.reviews .author {
+    font-size: 18px;
+    margin-bottom: 50px;
+}
+
+.reviews .author:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1000px) {
+
+    .reviews .quote {
+        font-size: 20px;
+    }
+
+    .reviews .author {
+        font-size: 16px;
+    }
+
+}
+/*---------------------
+ 	Prof Section
+---------------------*/
+
+section.for-profs {
+    padding: 100px;
+    flex-direction: column;
+}
+
+section.for-profs h2{
+  color: #040404;	
+  font-family: Roboto;	
+  font-size: 48px;	
+  font-weight: 500;	
+  letter-spacing: -0.5px;	
+  line-height: 57px;
+  text-align: center
+}
+
+section.for-profs  p{
+     text-align: center;
+   	
+    color: #040404;	
+    font-family: Roboto;	
+    font-size: 24px;	
+    font-weight: 300;	
+    letter-spacing: -0.5px;	
+    line-height: 28px;
+}
+
+
+.contact {
+    background-color: #f7f7f7;
+}
+
+.contact form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    max-width: 800px;
+    width: 80%;
+}
+
+.contact form input {
+    padding: 15px;
+    flex: 1;
+    margin-right: 30px;
+    font-size: 18px;
+    color: #555;
+}
+
+.contact form .btn {
+    padding: 18px 42px;
+}
+
+@media (max-width: 800px) {
+
+    .contact form input {
+        flex-basis: 100%;
+        margin: 0 0 20px 0;
+    }
+
+}
+
+/*-------------
+ 	Footer
+-------------*/
+
+
+.landingPage footer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	color: #fff;
+	background-color: #414a4f;
+	padding: 20px 0;
+  height: 225px;
+
+}
+
+.landingPage footer ul {
+    display: flex;
+    margin-bottom: 25px;
+    font-size: 32px;
+}
+
+.landingPage footer ul li {
+    margin: 0 8px;
+}
+
+.landingPage footer ul li:first-child {
+    margin-left: 0;
+}
+
+.landingPage footer ul li:last-child {
+    margin-right: 0;
+}
+
+
+.landingPage footer p{
+	text-transform: uppercase;
+	font-size: 16px;
+	color: white;
+	margin-bottom: 0px;
+  letter-spacing: 3px;
+}
+
+.landingPage footer p a{
+	color: #fff;
+  letter-spacing: 1px;
+
+}
+
+.landingPage {
+  .CDTIlogo{
+    width: 25%;
+    margin-bottom: 25px;
+  }
+  .CDTIlogo:hover{
+    opacity: 0.7
+  }
+}
+
+@media (max-width: 700px) {
+
+    footer {
+        padding: 80px 15px;
+    }
+
+}
+
+/* -- Demo ads -- */
+
+@media (max-width: 1200px) {
+    #bsaHolder {
+        display: none;
+    }
+}

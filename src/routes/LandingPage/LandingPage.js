@@ -141,7 +141,8 @@ class LandingPage extends Component {
           <nav>
             <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
             <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
-            <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
+
+            <li><a href="/profLanding">For Labs</a></li>
             {sessionStorage.getItem('token_id') === null ? (
               <div>
                 <GoogleLogin
@@ -154,15 +155,15 @@ class LandingPage extends Component {
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                   buttonText="Student Log In"
-                                    // hostedDomain="cornell.edu"
+                  // hostedDomain="cornell.edu"
                   onSuccess={this.responseGoogleStudent.bind(this)}
                   onFailure={this.loginFailure.bind(this)}
                   className="login button"
                 />
               </div>
             ) : (
-              <li />
-            )}
+                <li />
+              )}
           </nav>
         </header>
 
@@ -193,16 +194,16 @@ class LandingPage extends Component {
           <div className="students-title">
             <h2>Why use Research Connect?</h2>
             <h3>
-                            The abundance of undergraduate research opportunities is one of the great things about
-                            Cornell, yet unfortunately the process of finding these opportunities is still very
-                            unstructured. One must knock on doors, send countless emails to professors, and make do with
-                            obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap
-                            by providing a structured platform where students can find opportunities, and research labs
-                            can find the students they are looking for. View opportunities that are currently
-                            available
+              The abundance of undergraduate research opportunities is one of the great things about
+              Cornell, yet unfortunately the process of finding these opportunities is still very
+              unstructured. One must knock on doors, send countless emails to professors, and make do with
+              obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap
+              by providing a structured platform where students can find opportunities, and research labs
+              can find the students they are looking for. View opportunities that are currently
+              available
               {' '}
               <a style={{ color: 'blue', textDecoration: 'underline' }} href="/opportunities">here</a>
-.
+              .
             </h3>
           </div>
           <div>
@@ -214,12 +215,12 @@ class LandingPage extends Component {
           <div className="students-title">
             <h2>Made for students by students.</h2>
             <h3 id="student-sign-up">
-Get a research position at a Cornell lab of your choice. The days of cold emailing and
-                            knocking
-                            on professors
+              Get a research position at a Cornell lab of your choice. The days of cold emailing and
+                                          knocking
+                                          on professors
               {"'"}
               {' '}
-doors are over.
+              doors are over.
             </h3>
           </div>
           <div className="photo-flex">
@@ -243,7 +244,7 @@ doors are over.
             <GoogleLogin
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="Student Signup"
-                            // hostedDomain="cornell.edu"
+              // hostedDomain="cornell.edu"
               onSuccess={this.responseGoogleStudent.bind(this)}
               onFailure={this.loginFailure.bind(this)}
               className="signup button"
@@ -256,9 +257,9 @@ doors are over.
           <div className="students-title">
             <h2>Find passionate and qualified students for your lab.</h2>
             <h3>
-Getting reliable help in your research lab has never been easier.
-                            Let students come to you without the hassle of contacting individuals and sifting through
-                            apps.
+              Getting reliable help in your research lab has never been easier.
+                                          Let students come to you without the hassle of contacting individuals and sifting through
+                                          apps.
             </h3>
           </div>
           <div className="photo-flex">

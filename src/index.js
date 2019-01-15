@@ -18,12 +18,14 @@ import FacultySearch from './routes/FacultySearch/FacultySearch';
 import FacultyPage from './routes/FacultyPage/FacultyPage';
 import Doc from './routes/Doc/Doc';
 import LandingPage from './routes/LandingPage/LandingPage';
+import ProfessorLanding from './routes/ProfessorLanding/ProfessorLanding';
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route exact path="/opportunities" component={Opportunities} />
       <Route path="/opportunity/:id" component={OpportunityPage} />
+      <Route exact path="/profLanding" component={ProfessorLanding} />
       <Route path="/faculty/:id" component={FacultyPage} />
       <Route path="/application/:id" component={ApplicationPage} />
       <Route exact path="/newopp" component={CreateOpportunityForm} />
