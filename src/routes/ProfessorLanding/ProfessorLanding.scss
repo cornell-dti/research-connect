@@ -2,39 +2,39 @@
  	General
 -------------*/
 
-.landingPage section .get-started{
+.proflandingPage section .get-started{
   background-color: #b31b1b;
   border-color: #b31b1b;
 }
-.landingPage *{
+.proflandingPage *{
 
 	box-sizing: border-box;
   font: 'Roboto';
 }
-.landingPage section .get-started:hover{
+.proflandingPage section .get-started:hover{
   opacity: 0.9;
   border-color: #b31b1b;
   background-color: #b31b1b;
 }
 
-.landingPage ul, .landingPage nav {
+.proflandingPage ul, .landingPage nav {
     list-style: none;
 }
 
-.landingPage a {
+.proflandingPage a {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
 
 }
 
-.landingPage a:hover {
+.proflandingPage a:hover {
     
     border-bottom: 3px solid white;
     box-shadow: #414a4f;
 }
 
-.landingPage a.btn {
+.proflandingPage a.btn {
     color: #fff;
     border-radius: 4px;
     text-transform: uppercase;
@@ -43,7 +43,7 @@
     text-align: center;
 }
 
-.landingPage hr {
+.proflandingPage hr {
     width: 150px;
     height: 2px;
     background-color: #f6f6f6;
@@ -52,14 +52,14 @@
 }
 
 
-.landingPage section{
+.proflandingPage section{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	padding: 10px 10%;
 }
 
-.background-image {
+.proflandingPage  .background-image {
 
     background-image: url("../../images/gatesHallStock.png");
 	background-size: 100% 100%;
@@ -82,7 +82,7 @@
 
 }
 
-.landingPage section h3.title {
+.proflandingPage section h3.title {
     color: #414a4f;
     text-transform: none;
     font: bold 32px 'Roboto', sans-serif;
@@ -90,7 +90,7 @@
     text-align: center;
 }
 
-.landingPage section p {
+.proflandingPage section p {
     max-width: 800px;
     text-align: center;
     margin-bottom: 35px;
@@ -98,7 +98,7 @@
     line-height: 2;
 }
 
-.landingPage ul.grid {
+.proflandingPage ul.grid {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -119,13 +119,13 @@
  	Header
 -------------*/
 
-.landingPage .logo{
+.proflandingPage .logo{
       height: 59px;	
       width: 59px;	
      
   margin-top: 25px;
 }
-.landingPage header{
+.proflandingPage header{
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -142,12 +142,12 @@
 
 }
 
-.landingPage header h2 {
+.proflandingPage header h2 {
     font-family: 'Roboto', sans-serif;
    
 }
 
-.landingPage header nav {
+.proflandingPage header nav {
     display: flex;
     color: white;
     text-shadow: 2px 2px 4px #000000;
@@ -155,7 +155,7 @@
 
 
 
-.landingPage header nav li {
+.proflandingPage header nav li {
     margin: 0 15px;
     display: flex;
     flex-direction: row;
@@ -164,20 +164,20 @@
 
 }
 
-.landingPage header nav li:first-child {
+.proflandingPage header nav li:first-child {
     margin-left: 0;
 }
 
 
 
 
-.landingPage header .button:hover{
+.proflandingPage header .button:hover{
   opacity: 0.9;
   border-bottom: 3px solid white;
 
 }
 
-.landingPage .login {
+.profandingPage .login {
     background-color: transparent;
     text-transform: none;
     margin-bottom: 0;
@@ -226,17 +226,17 @@
 }
 
 @media (max-width: 1000px) {
-    .landingPage header { 
+    .proflandingPage header { 
         padding: 20px 50px;
     }
 }
 
 @media (max-width: 700px) {
-    .landingPage header {
+    .proflandingPage header {
         flex-direction: column;
     }
 
-    .landingPage header h2 {
+    .proflandingPage header h2 {
         margin-bottom: 0px;
     }
 }
@@ -357,6 +357,14 @@ col {
     margin-left 10%
 
 }
+.middleImage-curb {
+    height : 100px;
+    width : 100px;
+    padding: 20px;
+    margin-top: 5%
+    margin-left 10%
+
+}
 .container{
     width : 100%;
     margin-top: 5%;
@@ -374,14 +382,16 @@ col {
 }
 .row{
     align-items: center;
+    padding: 0;
 }
 
-.collab {
+
+.collab p{
    
 	
 	color: #8F8F8F;
 	font-family: "Helvetica Neue";
-	font-size: 32px;
+	font-size: 20px;
     letter-spacing: -0.01px;
     font-weight: 350;
 	
@@ -390,35 +400,35 @@ col {
  	Our Work Section
 ---------------------*/
 
-.landingPage .our-work {
+.proflandingPage .our-work {
     background-size: cover;
 }
 
 
-.our-work .photo-flex{
+.proflandingPage .our-work .photo-flex{
   height: 400px;
   width: 100%;
   margin-bottom: 40px;
 }
-.our-work .step p{
+.proflandingPage .our-work .step p{
   padding: 0px;
   font-size: 22px;
   font-weight: 100;
   color: black;
   line-height: 27px;
 }
-.our-work .get-started{
+.proflandingPage .our-work .get-started{
   margin-top: 50px;
   margin-bottom: 0px;
 
 }
-.for-profs{
+.proflandingPage .for-profs{
   background-color: white;
 }
-.for-students{
-  background-color: rgb(246,246,246);
+.proflandingPage .for-students{
+  background-color: white;
 }
-.our-work .step{
+.proflandingPage .our-work .step{
   height: 100%;
   margin-top: 30px;
   text-align: center;
@@ -426,15 +436,15 @@ col {
   padding: 50px 30px;
 }
 
-.our-work .step-photo {
+.proflandingPage .our-work .step-photo {
   border-radius: 50%;
 }
 
-.our-work .step .padding {
+.proflandingPage .our-work .step .padding {
   padding: 15px;
 }
 
-.our-work .button {
+.proflandingPage .our-work .button {
     background-color: rgb(179, 27, 27);
     border-color: rgb(179, 27, 27);
     color: white;
@@ -442,16 +452,16 @@ col {
     width: 210px;
 }
 
-.our-work .photo-flex {
+.proflandingPage .our-work .photo-flex {
     display: flex;
     flex-direction: row;
 }
 
-section.our-work {
+.proflandingPage section.our-work {
     padding: 100px;
     flex-direction: row;
 }
-.our-work .students-title h2{
+.proflandingPage .our-work .students-title h2{
   color: #040404;	
   font-family: Roboto;	
   font-size: 48px;	
@@ -460,7 +470,8 @@ section.our-work {
   line-height: 57px;
 }
 
-section.our-work .students-title p{
+
+.proflandingPage section.our-work .students-title p{
     
     text-align: left;
    	
@@ -474,13 +485,13 @@ section.our-work .students-title p{
  
     
 
-section.our-work {
-    padding: 100px;
+.proflandingPage section.our-work {
+    padding: 0px;
     flex-direction: row;
 }
 
 
-.our-work .students-title{
+.proflandingPage .our-work .students-title{
   text-align: left;
   padding: 20px;
 
@@ -498,13 +509,16 @@ section.our-work {
     min-height: 100vh;
     background-color: white;
 }
-section.why-us{
-    padding: 100px;
+.proflandingPage section.why-us{
+    padding-top: 80px;
+    padding-right: 0px;
+    background-color: white;
+
 }
-section.why-us p{
+.proflandingPage section.why-us p{
     
     text-align: left;
-   	
+   	padding-left: 50px;
     color: #040404;	
     font-family: Roboto;	
     font-size: 24px;	
@@ -512,18 +526,24 @@ section.why-us p{
     letter-spacing: -0.5px;	
     line-height: 28px;
 }
-section.why-us{
+.proflandingPage section.why-us{
   flex-direction: row;
 }
-section.why-us img{
-  width: 400px;
+.proflandingPage section.why-us img{
+  width: 100%;
 }
-section.why-us .students-title{
+.proflandingPage section.why-us .students-title{
   width: 60%;
-  padding: 20px;
+  padding: 0px;
 
 }
-section.why-us .students-title h2{
+
+.proflandingPage section.why-us .students-title .list-image{
+  width : 100px;
+  height : 70px;
+
+}
+.proflandingPage section.why-us .students-title h2{
     height: 123px;	
     width: 551px;	
     color: #040404;	
@@ -533,15 +553,15 @@ section.why-us .students-title h2{
     letter-spacing: -0.5px;	
     line-height: 57px;
 }
-section.list .row {
+.proflandingPage section.list .row {
     align-content: center;
 }
-.reviews .author {
+.proflandingPage .reviews .author {
     font-size: 18px;
     margin-bottom: 50px;
 }
 
-.reviews .author:last-child {
+.proflandingPage .reviews .author:last-child {
     margin-bottom: 0;
 }
 
@@ -560,12 +580,12 @@ section.list .row {
  	Prof Section
 ---------------------*/
 
-section.for-profs {
+.proflandingPage section.for-profs {
     padding: 100px;
     flex-direction: column;
 }
 
-section.for-profs h2{
+.proflandingPage section.for-profs h2{
   color: #040404;	
   font-family: Roboto;	
   font-size: 48px;	
@@ -575,8 +595,8 @@ section.for-profs h2{
   text-align: center
 }
 
-section.for-profs  p{
-     text-align: center;
+.proflandingPage section.for-profs  p{
+    text-align: center;
    	
     color: #040404;	
     font-family: Roboto;	
@@ -627,7 +647,7 @@ section.for-profs  p{
 -------------*/
 
 
-.landingPage footer{
+.proflandingPage footer{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -639,26 +659,26 @@ section.for-profs  p{
 
 }
 
-.landingPage footer ul {
+.proflandingPage footer ul {
     display: flex;
     margin-bottom: 25px;
     font-size: 32px;
 }
 
-.landingPage footer ul li {
+.proflandingPage footer ul li {
     margin: 0 8px;
 }
 
-.landingPage footer ul li:first-child {
+.proflandingPage footer ul li:first-child {
     margin-left: 0;
 }
 
-.landingPage footer ul li:last-child {
+.proflandingPage footer ul li:last-child {
     margin-right: 0;
 }
 
 
-.landingPage footer p{
+.proflandingPage footer p{
 	text-transform: uppercase;
 	font-size: 16px;
 	color: white;
@@ -666,13 +686,13 @@ section.for-profs  p{
   letter-spacing: 3px;
 }
 
-.landingPage footer p a{
+.proflandingPage footer p a{
 	color: #fff;
   letter-spacing: 1px;
 
 }
 
-.landingPage {
+.proflandingPage {
   .CDTIlogo{
     width: 25%;
     margin-bottom: 25px;

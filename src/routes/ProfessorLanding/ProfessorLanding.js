@@ -6,13 +6,12 @@ import { GoogleLogin } from 'react-google-login';
 import { Link } from 'react-router-dom';
 import logo from '../../images/vectorlogo.png';
 import incollab from '../../images/incollab.png';
+import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
 import curb from '../../images/logo2.png';
-import CDTIlogogray from '../../images/logo3.png';
+import CDTI from '../../images/logo3.png';
 import lightbulb from '../../images/lightbulb.png';
-
 import pen from '../../images/pen.png';
-
 import triangler from '../../images/triangle1.png';
 import trianglel from '../../images/triangle2.png';
 import triangle from '../../images/triangle3.png';
@@ -39,7 +38,7 @@ function clearUnregistered() {
     window.location.reload();
 }
 
-class LandingPage extends Component {
+class ProfessorLanding extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -143,18 +142,17 @@ class LandingPage extends Component {
 
     render() {
         return (
-            <div className="landingPage">
+            <div className="proflandingPage">
                 <header>
                     <h2>
-                        <a onClick={this.scrollTo.bind(this, '#home')}>
+                        <a href="/">
                             <img className="logo" src={logoWithText} />
                         </a>
                     </h2>
 
                     <nav>
-
-                        <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
-                        <li><a onClick={this.scrollTo.bind(this, '#forprofs')}>For Labs</a></li>
+                        <li><a href="/">For Students</a></li>
+                        <li><a href="/profLanding">For Labs</a></li>
 
 
                         {sessionStorage.getItem('token_id') === null ? (
@@ -196,60 +194,63 @@ class LandingPage extends Component {
                         <Row>
                             <Col ><p className="collab" >In Collabortation with ...     </p></Col>
                             <Col><img className="middleImage" src={cis} /></Col>
-                            <Col ><img className="middleImage" src={curb} /></Col>
-                            <Col><img className="middleImage" src={CDTIlogo} /></Col>
+                            <Col ><img className="middleImage-curb" src={curb} /></Col>
+                            <Col><img className="middleImage" src={CDTI} /></Col>
                         </Row>
                     </Container>
                 </section>
 
-                <section id="about" className="why-us reviews">
+                <section id="about" className="why-us">
                     <div className="students-title">
                         <h2>Let qualified students come to you. </h2>
-                        <section className="list">
+                        <section >
                             <Row>
                                 <Col><img className="list-image" src={pen} /></Col>
                                 <Col ><p>Customize listings to reach out to hundreds of qualified students.</p></Col>
                             </Row>
                             <Row>
-                                <Col><img className="list-Image" src={img2} /></Col>
+                                <Col><img className="list-image" src={img2} /></Col>
                                 <Col ><p>Easily review applications and sort by what you’re looking for.</p></Col>
                             </Row>
                             <Row>
-                                <Col><img className="list-Image" src={lightbulb} /></Col>
+                                <Col><img className="list-image" src={lightbulb} /></Col>
                                 <Col ><p>Connect and recruit applicants straight from our platform. </p></Col>
                             </Row>
 
                         </section>
                     </div>
                     <div>
-                        <img className="why-logo" src={logo} alt="research connect logo" />
+                        <img className="triangle" src={triangler} alt="research connect logo" />
                     </div>
                 </section>
 
 
                 <section id="forstudents" className="our-work for-students">
                     <div>
-                        <img className="why-logo" src={logo} alt="research connect logo" />
+                        <img className="triangle" src={trianglel} alt="research connect logo" />
                     </div>
 
                     <div className="students-title">
-                        <h2>Made for students by students.</h2>
+
                         <section >
+                            <Row>
+                                <h2>Made for students by students.</h2>
+                            </Row>
                             <Row>
                                 <Col ><p>We know how frustrating it can be to get involved with a lab at Cornell. That’s why we created Research Connect.</p></Col>
                             </Row>
                             <Row>
                                 <section className="list">
                                     <Row>
-                                        <Col><img className="list-image" src={img2} /></Col>
+                                        <Col><img className="list-image" src={check} /></Col>
                                         <Col ><p>Customize listings to reach out to hundreds of qualified students.</p></Col>
                                     </Row>
                                     <Row>
-                                        <Col><img className="list-Image" src={img2} /></Col>
+                                        <Col><img className="list-Image" src={check} /></Col>
                                         <Col ><p>Easily review applications and sort by what you’re looking for.</p></Col>
                                     </Row>
                                     <Row>
-                                        <Col><img className="list-Image" src={img2} /></Col>
+                                        <Col><img className="list-Image" src={check} /></Col>
                                         <Col ><p>Connect and recruit applicants straight from our platform. </p></Col>
                                     </Row>
 
@@ -267,7 +268,7 @@ class LandingPage extends Component {
                     <div className="students-title">
                         <h2>Recruiting passionate and dedicated research assistants has never been easier.</h2>
                         <br />
-                        <p>Join today to start your research journey and get connected.</p>
+                        <p> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Join today to start your research journey and get connected.</p>
                     </div>
 
                     <div className="signup-wrap">
@@ -309,5 +310,5 @@ class LandingPage extends Component {
     }
 }
 
-export default LandingPage;
+export default ProfessorLanding;
 
