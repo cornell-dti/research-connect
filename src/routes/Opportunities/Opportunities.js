@@ -40,15 +40,16 @@ class Opportunities extends Component {
       return;
     }
 
+    // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         /* if (!response || response.data === "none" || !response.data) {
-					alert("You must be signed in to view this.");
-					window.location.href = '/';
-				}
-				else{
-					this.setState({role: response.data});
-				} */
+          alert("You must be signed in to view this.");
+          window.location.href = '/';
+        }
+        else{
+          this.setState({role: response.data});
+        } */
         this.setState({ role: response.data });
       })
       .catch((error) => {
@@ -121,6 +122,8 @@ class Opportunities extends Component {
   }
 
   render() {
+    /** BEGIN code for detecting role and changing navbar */
+    // TODO make temp navbar into a component
     return (
       <div className="opportunities-wrapper">
         {this.state.role && this.state.role === 'undergrad' && <Navbar current="opportunities" />}
@@ -130,8 +133,9 @@ class Opportunities extends Component {
           <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
 Home
         </div>
-        )}
-
+        )
+          /** END code for detecting role and changing navbar */
+        }
         <div className="row search-div-container">
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
@@ -149,15 +153,15 @@ Home
           />
           <div className="delete-div">
             {
-						this.state.searchBar != '' ? (
-  <DeleteIcon
-    onClick={this.clearSearch.bind(this)}
-    className="clear-icon"
-    style={{ height: '100%' }}
-    size={36}
-  />
-						) : ''
-						}
+            this.state.searchBar != '' ? (
+              <DeleteIcon
+                onClick={this.clearSearch.bind(this)}
+                className="clear-icon"
+                style={{ height: '100%' }}
+                size={36}
+              />
+            ) : ''
+            }
           </div>
         </div>
 
@@ -165,7 +169,7 @@ Home
           <div className="column column-20">
             <div className="filter-box">
               <div className="filter-child">
-								Filter by...
+                Filter by...
 
               </div>
 

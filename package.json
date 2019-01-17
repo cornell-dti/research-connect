@@ -27,6 +27,7 @@
     "morgan": "^1.9.1",
     "nodemailer": "^4.6.4",
     "prop-types": "^15.6.1",
+    "react-emotion": "^10.0.0",
     "request": "^2.85.0",
     "sendgrid-web": "0.0.5",
     "serve-favicon": "~2.4.2",

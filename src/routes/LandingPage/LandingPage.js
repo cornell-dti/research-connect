@@ -146,13 +146,13 @@ class LandingPage extends Component {
             <li><a href="/profLanding">For Labs</a></li>
             {sessionStorage.getItem('token_id') === null ? (
               <div>
-                <GoogleLogin
-                  clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Lab Log In"
-                  onSuccess={this.responseGoogle.bind(this)}
-                  onFailure={this.loginFailure.bind(this)}
-                  className="login button"
-                />
+                {/*<GoogleLogin*/}
+                  {/*clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"*/}
+                  {/*buttonText="Lab Log In"*/}
+                  {/*onSuccess={this.responseGoogle.bind(this)}*/}
+                  {/*onFailure={this.loginFailure.bind(this)}*/}
+                  {/*className="login button"*/}
+                {/*/>*/}
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                   buttonText="Student Log In"

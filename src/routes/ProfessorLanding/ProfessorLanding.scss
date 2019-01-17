@@ -185,11 +185,11 @@
 
 
 
-.proflandingPage header .button:hover{
-  opacity: 0.9;
-  border-bottom: 3px solid white;
-
-}
+//.proflandingPage header .button:hover{
+//  opacity: 0.9;
+//  border-bottom: 3px solid white;
+//
+//}
 
 .proflandingPage .login {
     background-color: transparent;
@@ -210,6 +210,29 @@
     text-align: center;	
     text-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
     
+}
+
+.white-button:hover{
+  opacity: 0.9;
+  background-color: rgb(166, 57, 45);
+  border-color: transparent;
+  color: #fff;
+}
+
+#whiteButton:hover{
+  opacity: 0.9;
+  background-color: rgb(166, 57, 45);
+  border-color: transparent;
+  color: #fff;
+}
+
+.white-button{
+  background-color: white;
+  color: rgb(166,57,45);
+  border-color: white;
+  margin: auto 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .signup{
@@ -284,13 +307,6 @@
     color: black;
 }
 
-.hero .white-button:hover{
-  opacity: 0.8;
-  background-color: white;
-  border-color: white;
-  color: rgb(166,57,45);
-}
-
 .hero .lab-button{
   padding-left: 48px;
   padding-right: 48px;
@@ -298,14 +314,7 @@
 .hero h3{
   color: white;
 }
-.hero .white-button{
-  background-color: white;
-  
-  font-size: 13px;	font-weight: 500;	letter-spacing: 0.9px;	line-height: 16px;	text-align: center;
-  color: rgb(166,57,45);
-  border-color: white;
-  margin: auto 10px;
-}
+
 .hero h1{
     padding-top: 80px;
 
