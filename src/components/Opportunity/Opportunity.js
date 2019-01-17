@@ -33,9 +33,10 @@ class Opportunity extends Component {
   }
 
   convertDescription(str1, str2) {
+    const maxChars = 100;
     if (str1.length === 0) {
-      if (str2.length > 250) {
-        str2 = `${str2.slice(0, 250)}... `;
+      if (str2.length > maxChars) {
+        str2 = `${str2.slice(0, maxChars)}... `;
         return (
           <h6>
             {str2}
@@ -46,14 +47,14 @@ class Opportunity extends Component {
         );
       }
       return (
-        <h6>
+        <h6 className="smallTasks">
           {`Tasks: ${str2}`}
           {' '}
         </h6>
       );
     }
-    if (str1.length > 250) {
-      str1 = `${str1.slice(0, 250)}... `;
+    if (str1.length > maxChars) {
+      str1 = `${str1.slice(0, maxChars)}... `;
       return (
         <div className="description-div">
           {str1}
@@ -118,21 +119,20 @@ class Opportunity extends Component {
         <div className="row opp-box-row">
           <div className="column column-75">
             <div className="title">{ this.props.title }</div>
-            <div className="lab-name">{this.props.labName}</div>
+            {/*<div className="lab-name">{this.props.labName}</div>*/}
           </div>
 
           <div className="column column-25">
-            <Calendar className="cal" />
-            {' '}
-            <span>
-Deadline
-              {' '}
-              { Utils.convertDate(this.props.closes) }
-            </span>
+            {/*<Calendar className="cal" />*/}
+            {/*{' '}*/}
+            {/*<span>*/}
+{/*Deadline*/}
+              {/*{' '}*/}
+              {/*{ Utils.convertDate(this.props.closes) }*/}
+            {/*</span>*/}
             {this.checkPrereqs()}
           </div>
         </div>
-
         { this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
       </div>
     );
