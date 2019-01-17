@@ -4,6 +4,7 @@ import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
 import { Link } from 'react-router-dom';
 import logo from '../../images/vectorlogo.png';
+import logoRed from '../../images/red-logo.png';
 import stockPhoto from '../../images/writing-picture.jpg';
 import filler from '../../images/download.png';
 import img1 from '../../images/img1.png';
@@ -140,7 +141,7 @@ class LandingPage extends Component {
 
           <nav>
             <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
-            <li><a onClick={this.scrollTo.bind(this, '#forstudents')}>For Students</a></li>
+            <li><a className="landingPage hover">For Students</a></li>
 
             <li><a href="/profLanding">For Labs</a></li>
             {sessionStorage.getItem('token_id') === null ? (
@@ -162,8 +163,8 @@ class LandingPage extends Component {
                 />
               </div>
             ) : (
-                <li />
-              )}
+              <li />
+            )}
           </nav>
         </header>
 
@@ -207,7 +208,7 @@ class LandingPage extends Component {
             </h3>
           </div>
           <div>
-            <img className="why-logo" src={logo} alt="research connect logo" />
+            <img className="why-logo" src={logoRed} alt="research connect logo" />
           </div>
         </section>
 
@@ -246,46 +247,6 @@ class LandingPage extends Component {
               buttonText="Student Signup"
               // hostedDomain="cornell.edu"
               onSuccess={this.responseGoogleStudent.bind(this)}
-              onFailure={this.loginFailure.bind(this)}
-              className="signup button"
-            />
-          </div>
-        </section>
-
-
-        <section id="forprofs" className="our-work for-profs">
-          <div className="students-title">
-            <h2>Find passionate and qualified students for your lab.</h2>
-            <h3>
-              Getting reliable help in your research lab has never been easier.
-                                          Let students come to you without the hassle of contacting individuals and sifting through
-                                          apps.
-            </h3>
-          </div>
-          <div className="photo-flex">
-            <div className="step">
-              <img className="step-photo" src={prof1} />
-              <br />
-              <p>Customize listings to reach hundreds of interested students. </p>
-              <br />
-            </div>
-            <div className="step">
-              <img className="step-photo" src={prof2} />
-              <br />
-              <p>Easily sort through applications and get in touch with qualified students. </p>
-            </div>
-            <div className="step">
-              <img className="step-photo" src={prof3} />
-              <br />
-              <p>Get the reliable research assistance you need in your lab! </p>
-              <br />
-            </div>
-          </div>
-          <div className="signup-wrap">
-            <GoogleLogin
-              clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-              buttonText="Lab Signup"
-              onSuccess={this.responseGoogle.bind(this)}
               onFailure={this.loginFailure.bind(this)}
               className="signup button"
             />

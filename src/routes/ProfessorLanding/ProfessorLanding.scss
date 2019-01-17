@@ -28,7 +28,7 @@
 
 }
 
-.proflandingPage a:hover {
+.proflandingPage a:hover, .proflandingPage.hover {
     
     border-bottom: 3px solid white;
     box-shadow: #414a4f;
@@ -121,6 +121,12 @@
   max-width: none;
 }
 
+.log-in-button {
+  background-color: #b31b1b;
+  color: white;
+  margin-left: 10px;
+  border-color: #b31b1b;
+}
 
 
 /*-------------

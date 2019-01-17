@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import './ProfessorLanding.scss';
+import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
 import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
@@ -32,9 +33,8 @@ class ProfessorLanding extends Component {
           if (response.data === 'undergrad') {
             endUrl = '/studentDashboard';
             window.location.href = endUrl;
-          }
-          // 'none' means they're not an undergrad or professor
-          else if (response.data === 'none' || response.data === null) {
+          } else if (response.data === 'none' || response.data === null) {
+            // 'none' means they're not an undergrad or professor
             logoutGoogle();
           } else {
             endUrl = '/professorDashboard';
@@ -47,22 +47,12 @@ class ProfessorLanding extends Component {
     }
   }
 
-  scrollTo(id) {
-    console.log('scrolling');
-    const scrollToElement = require('scroll-to-element');
-    scrollToElement(id, {
-      offset: 0,
-      ease: 'linear',
-      duration: 600,
-    });
-  }
-
   loginFailure(a) {
     console.log(a);
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
   }
 
-  responseGoogleStudent(response) {
+  responseGoogleStudent = (response) => {
     console.log('response google student ran');
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
@@ -79,9 +69,9 @@ class ProfessorLanding extends Component {
         window.location.href = '/studentRegister';
       }
     });
-  }
+  };
 
-  responseGoogle(response) {
+  responseGoogle = (response) => {
     console.log('lab researcher signup');
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
@@ -111,8 +101,18 @@ class ProfessorLanding extends Component {
       console.log(error);
       Utils.handleTokenError(error);
     });
-  }
+  };
 
+
+  scrollTo(id) {
+    console.log('scrolling');
+    const scrollToElement = require('scroll-to-element');
+    scrollToElement(id, {
+      offset: 0,
+      ease: 'linear',
+      duration: 600,
+    });
+  }
 
   logoutClear() {
     logoutGoogle();
@@ -124,13 +124,13 @@ class ProfessorLanding extends Component {
         <header>
           <h2>
             <a href="/">
-              <img className="logo" src={logoWithText} />
+              <img alt="Research Connect" className="logo" src={logoWithText} />
             </a>
           </h2>
 
           <nav>
             <li><a href="/">For Students</a></li>
-            <li><a href="/profLanding">For Labs</a></li>
+            <li><a className="proflandingPage hover" href="/profLanding">For Labs</a></li>
 
 
             {sessionStorage.getItem('token_id') === null ? (
@@ -138,10 +138,10 @@ class ProfessorLanding extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Log In"
-                  onSuccess={this.responseGoogleStudent.bind(this)}
+                  buttonText="Lab Log In"
+                  onSuccess={this.responseGoogle}
                   onFailure={this.loginFailure.bind(this)}
-                  className="login"
+                  className="signup"
                 />
 
               </div>
@@ -247,7 +247,7 @@ class ProfessorLanding extends Component {
             <h2>Recruiting passionate and dedicated research assistants has never been easier.</h2>
             <br />
             <div className="center-text">
-              <p id="no-max-width">Join today to start your research journey and get connected.</p>
+              <p id="no-max-width">Join today to start your research journey and post an opportunity .</p>
             </div>
           </div>
 
@@ -255,7 +255,7 @@ class ProfessorLanding extends Component {
             <GoogleLogin
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="GET STARTED"
-              onSuccess={this.responseGoogle.bind(this)}
+              onSuccess={this.responseGoogle}
               onFailure={this.loginFailure.bind(this)}
               className="signup2 button"
             />
@@ -276,12 +276,12 @@ class ProfessorLanding extends Component {
             </li>
           </ul>
           <p>Created by</p>
-          <a href="http://cornelldti.org/" target="_blank">
+          <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
             <img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo" />
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
-            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
+            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">Report a bug</a></p>
             <p><a href="mailto:acb352@cornell.edu">Contact</a></p>
           </div>
         </footer>
