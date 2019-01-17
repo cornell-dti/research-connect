@@ -114,6 +114,10 @@ class ProfessorLanding extends Component {
     });
   }
 
+  postOpp() {
+    window.location.href = '/newopp';
+  }
+
   logoutClear() {
     logoutGoogle();
   }
@@ -156,14 +160,27 @@ class ProfessorLanding extends Component {
           <h1>Research Connect for Labs</h1>
           <h3>Easily find and recruit assistants for labs</h3>
 
-          <div>
-            <GoogleLogin
-              clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-              buttonText="GET STARTED"
-              onSuccess={this.responseGoogle.bind(this)}
-              onFailure={this.loginFailure.bind(this)}
-              className="signup"
-            />
+          <div className="row">
+            <div className="column">{' '}</div>
+            <div className="button-div column">
+              <input
+                className="white-button"
+                id="whiteButton"
+                type="button"
+                onClick={this.postOpp.bind(this)}
+                value="POST AN OPPORTUNITY"
+              />
+            </div>
+            <div className="column">
+              <GoogleLogin
+                clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                buttonText="CREATE AN ACCOUNT"
+                onSuccess={this.responseGoogle.bind(this)}
+                onFailure={this.loginFailure.bind(this)}
+                className="signup"
+              />
+            </div>
+            <div className="column">{' '}</div>
           </div>
         </section>
 
@@ -172,7 +189,7 @@ class ProfessorLanding extends Component {
             <Row>
               <Col><p className="collab">In Collabortation with ...     </p></Col>
               <Col><img className="middleImage" src={cis} /></Col>
-              <Col><img className="middleImage-curb" src={curb} /></Col>
+              {/*<Col><img className="middleImage-curb" src={curb} /></Col>*/}
               <Col><img className="middleImage" src={CDTI} /></Col>
             </Row>
           </Container>

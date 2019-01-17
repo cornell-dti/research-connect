@@ -90,7 +90,7 @@ export function handleTokenError(error) {
   if (error.response) {
     console.log(error.response.data);
     if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
-      if (window.location.pathname === '/'){
+      if (window.location.pathname === '/') {
         logoutGoogle();
         return true;
       }
