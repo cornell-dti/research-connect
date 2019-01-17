@@ -109,8 +109,16 @@
   margin-right: 8px;
 }
 
+.center-text {
+  text-align: center;
+}
+
 .sign-out {
   cursor: pointer;
+}
+
+#no-max-width {
+  max-width: none;
 }
 
 
