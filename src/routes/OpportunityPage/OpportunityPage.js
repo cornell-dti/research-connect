@@ -9,12 +9,6 @@ import ProfessorNavbar
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
 
-// Utils.gradYearToString(2020) == "Sophomore"
-
-function ClockTest(props){
-  return <p>Hi</p>;
-}
-
 class OpportunityPage extends Component {
   constructor(props) {
     super(props);
@@ -508,11 +502,10 @@ No Preference
   }
 
   parseCompensation(compensation) {
-    let compString = 'Unknown';
+    let compString = 'Not specified';
     if (this.state.opportunity && this.state.opportunity.compensation) {
       const pay = this.state.opportunity.compensation.indexOf('pay') !== -1;
       const credit = this.state.opportunity.compensation.indexOf('credit') !== -1;
-
       if (pay && credit) compString = 'Credit or Pay';
       else if (pay) compString = 'Pay only';
       else if (credit) compString = 'Credit only';
@@ -599,7 +592,6 @@ Back To Opportunities
 
                 </div>
               </div>
-              <ClockTest/>
               <div className="row">
                 <div className="opp-details-card">
                   <div className="opp-details-section">
