@@ -49,6 +49,7 @@ class CreateOppForm extends React.Component {
       seasonIsValid: false,
       // compensationIsValid: false,
       yearIsValid: false,
+      supervisorIsValid: false,
       triedSubmitting: false,
       isButtonDisabled: false,
       buttonValue: 'Submit New Position',
@@ -227,8 +228,6 @@ class CreateOppForm extends React.Component {
     if (this.undetermined.checked) {
       compensationArray.push('undetermined');
     }
-    const atLeastOneOptionSelected = compensationArray.length !== 0;
-    // this.setState({compensationIsValid: atLeastOneOptionSelected});
     this.setState({ compensation: compensationArray });
   }
 
@@ -268,6 +267,11 @@ class CreateOppForm extends React.Component {
     } else if (event.target.name === 'pi') {
       this.setState({ pi: event.target.value });
     } else if (event.target.name === 'supervisor') {
+      if (event.target.value.length > 0) {
+        this.setState({ supervisorIsValid: true });
+      } else {
+        this.setState({ supervisorIsValid: false });
+      }
       this.setState({ supervisor: event.target.value });
     } else if (event.target.name === 'descript') {
       this.setState({ projectDescription: event.target.value });
@@ -460,13 +464,34 @@ class CreateOppForm extends React.Component {
                   <InfoIcon data-tip data-for="info-email" className="info-icon" size={20} />
                   <ReactTooltip place="right" id="info-email" aria-haspopup="true" role="example">
                     <div className="info-text">
-                      <span>We will email you whenever a student submits a cover letter for your lab.</span>
+                      <span>We will email whenever a student submits a cover letter for your lab.</span>
                     </div>
                   </ReactTooltip>
 
 
                 </div>
 
+                <div className={!this.state.supervisorIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}>
+                  <span className="required-star">*</span>
+
+                  <input
+                    className="column column-90"
+                    placeholder="Name"
+                    name="supervisor"
+                    type="text"
+                    value={this.state.supervisor}
+                    onChange={this.handleChange}
+                  />
+                  <InfoIcon data-tip data-for="info-super" className="info-icon" size={20} />
+                  <ReactTooltip place="right" id="info-super" aria-haspopup="true" role="example">
+                    <p className="info-text">
+                      {' '}
+                      Your name or the name of other person who would be their
+                      direct supervisor.
+                    </p>
+
+                  </ReactTooltip>
+                </div>
 
                 <div
                   className={!this.state.titleIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
@@ -540,10 +565,10 @@ class CreateOppForm extends React.Component {
                     onChange={this.handleChange}
                   >
                     <option value="Select">Select Start Semester</option>
+                    <option value="Fall">Fall Semester</option>
                     <option value="Spring">Spring Semester</option>
                     <option value="Summer">Summer Semester</option>
                     {/* <option value="Winter" >Winter</option> */}
-                    <option value="Fall">Fall Semester</option>
                   </select>
 
                   <select
@@ -553,8 +578,8 @@ class CreateOppForm extends React.Component {
                     onChange={this.handleChange}
                   >
                     <option value="Select">Select Start Year</option>
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
+                    <option value={(new Date().getFullYear())}>{new Date().getFullYear()}</option>
+                    <option value={((new Date().getFullYear() + 1))}>{new Date().getFullYear() + 1}</option>
                   </select>
                   <InfoIcon data-tip data-for="info-start" className=" info-icon" size={20} />
                   <ReactTooltip place="right" id="info-start" aria-haspopup="true" role="example">
@@ -566,27 +591,7 @@ Indicates the semester the student will start working in
                   </ReactTooltip>
                 </div>
 
-
                 <div className={this.state.showDetails ? '' : 'hidden'}>
-                  <div className="row input-row optional">
-                    <input
-                      className="column column-90"
-                      placeholder="Position Supervisor"
-                      name="supervisor"
-                      type="text"
-                      value={this.state.supervisor}
-                      onChange={this.handleChange}
-                    />
-                    <InfoIcon data-tip data-for="info-super" className="info-icon" size={20} />
-                    <ReactTooltip place="right" id="info-super" aria-haspopup="true" role="example">
-                      <p className="info-text">
-                        {' '}
-Your name or the name of other person who would be their
-                                        direct supervisor.
-                      </p>
-
-                    </ReactTooltip>
-                  </div>
                   <div className="row input-row optional">
                     <textarea
                       className="column column-90"

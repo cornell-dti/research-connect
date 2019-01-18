@@ -165,7 +165,7 @@ Home
           </div>
         </div>
 
-        <div className="opp-container row">
+        <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
               <div className="filter-child">

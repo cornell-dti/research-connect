@@ -373,22 +373,25 @@ function getUniqueTitle(title, supervisor) {
   }));
 }
 
-// previously POST /createOpportunity
 app.post('/', async (req, res, next) => {
   // TODO test what next() does, create middleware from https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016 ?
   try {
     // req is json containing the stuff that was sent if there was anything
     const data = req.body;
     debug(data);
+    // TODO don't make startSeason and startYear required, say "leave blank for ASAP", update that in the back-end
+    // REQUIRED FIELDS:
     if (!data
-        || !data.creatorNetId
+        || !data.email
         || !data.title
         || !data.undergradTasks
         || !data.startSeason
-        || !data.compensation
-        || !data.startYear) {
+        || !data.startYear
+        || !data.supervisor
+    ) {
       return res.status(400).send();
     }
+    debug(`email: ${data.email}`);
     debug(`netid: ${data.creatorNetId}`);
     debug(`labpage: ${data.labPage}`);
     debug(`title: ${data.title}`);
@@ -431,9 +434,7 @@ app.post('/', async (req, res, next) => {
     if (data.yearsAllowed && data.yearsAllowed.length === 0) {
       data.yearsAllowed = ['freshman', 'sophomore', 'junior', 'senior'];
     }
-    debug('1');
-    // decryptGoogleToken(data.creatorNetId, function (tokenBody) {
-    //     let netId = email.replace("@cornell.edu", "");
+    // BEGIN CLEAN UP QUESTIONS FIELD
     if (data.questions) {
       Object.keys(data.questions).forEach((key) => {
         // if they added a question but then clicked the x then there would be q1 : null/undefined
@@ -444,13 +445,12 @@ app.post('/', async (req, res, next) => {
     } else {
       data.questions = {};
     }
-    debug('2');
+    // END CLEAN UP QUESTIONS FIELD
     // if the compensation array is empty, then that means they don't have any compensation
     if (data.compensation === undefined || data.compensation.length === 0) {
       debug('2.5');
       data.compensation = ['none'];
     }
-    debug('3');
     data.questions.coverLetter = 'Cover Letter: Describe why you\'re interested in this lab/position in particular, '
         + 'as well as how any qualifications you have will help you excel in this lab. Please be concise.';
     if (data.areas) {
@@ -475,13 +475,16 @@ app.post('/', async (req, res, next) => {
     const token = data.creatorNetId;
     // notice how we "thunk" (to use 3110 language) getUniqueTitle so we can get the promise it returns and await it to get its value
     const newTitle = await getUniqueTitle(data.title, data.supervisor);
-    debug('NEW TITLE!!!');
-    debug(newTitle);
     verify(token, (netIdActual) => {
-      // if they somehow reach this page without being logged in...
+      let ghostPost = false;
+      let ghostEmail = '';
+      let ghostName = '';
+      // if they made a "quick post" without an account
       if (netIdActual === null) {
-        handleVerifyError(null, res);
-        return;
+        netIdActual = 'acb352';
+        ghostPost = true;
+        ghostEmail = data.email;
+        ghostName = data.name;
       }
       const opportunity = new opportunityModel({
         creatorNetId: netIdActual,
@@ -507,8 +510,9 @@ app.post('/', async (req, res, next) => {
         opens: data.opens,
         closes: data.closes,
         areas: data.areas,
-        ghostPost: false,
-        ghostEmail: '',
+        ghostPost,
+        ghostEmail,
+        ghostName,
         datePosted: (new Date()).toISOString(),
       });
       opportunity.save((err, response) => {
@@ -551,7 +555,8 @@ app.post('/', async (req, res, next) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              sgMail.send(msg);
+              // TODO uncomment!
+              // sgMail.send(msg);
             });
             debug('finished emailling students');
           });
