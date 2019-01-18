@@ -7,7 +7,8 @@ module.exports = {
     'no-param-reassign': ['off'],
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'new-cap': ['warn'],
-    'react/jsx-filename-extension': ['off']
+    'react/jsx-filename-extension': ['off'],
+    'react/destructuring-assignment': ['off']
   },
   'env': {
       "browser": true,

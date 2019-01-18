@@ -416,7 +416,6 @@ app.post('/', async (req, res, next) => {
     debug(`areas: ${data.areas}`);
     let maxHours;
     data.minHours = parseInt(data.minHours, 10);
-    debug(data.minHours);
     data.minHours = Number(data.minHours);
     if (Number.isNaN(data.minHours)) {
       data.minHours = 0;
@@ -424,13 +423,15 @@ app.post('/', async (req, res, next) => {
     if (data.maxHours) {
       // eslint-disable-next-line prefer-destructuring
       maxHours = data.maxHours;
-    } else {
-      maxHours = data.minHours + 10;
+    }
+    else {
+      maxHours = 0;
     }
     if (maxHours < data.minHours) {
       data.minHours = 0;
       maxHours = 10;
     }
+
     if (data.yearsAllowed && data.yearsAllowed.length === 0) {
       data.yearsAllowed = ['freshman', 'sophomore', 'junior', 'senior'];
     }
@@ -481,6 +482,11 @@ app.post('/', async (req, res, next) => {
       let ghostName = '';
       // if they made a "quick post" without an account
       if (netIdActual === null) {
+        /** If there's no net id, then make it a "ghost post":
+         * https://cornelldti.slab.com/posts/ghost-posts-publishing-opportunities-gathered-externally-100ca828
+         * For this we need a lab admin who this post will fall under...
+         * here we just use the account for acb352, but it can be anybody
+         */
         netIdActual = 'acb352';
         ghostPost = true;
         ghostEmail = data.email;
@@ -555,8 +561,7 @@ app.post('/', async (req, res, next) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              // TODO uncomment!
-              // sgMail.send(msg);
+              sgMail.send(msg);
             });
             debug('finished emailling students');
           });

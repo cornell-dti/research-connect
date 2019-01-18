@@ -236,10 +236,10 @@ const opportunitySchema = new Schema({
     type: Number, min: 0, max: 5.0, default: 0,
   }, // 0 if no minimum gpa required
   minHours: {
-    type: Number, min: 0, max: 500, default: 6,
+    type: Number, min: 0, max: 500, default: 0,
   }, // can be null, indicating no minimum
   maxHours: {
-    type: Number, min: 0, max: 500, default: 9,
+    type: Number, min: 0, max: 500, default: 0,
   }, // can be null, indicating no max
   opens: { type: Date, default: new Date() }, // if no date is sent use new Date()
   closes: { type: Date, default: null }, // null if rolling

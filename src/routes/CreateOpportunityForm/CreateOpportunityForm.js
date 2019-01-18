@@ -336,7 +336,7 @@ class CreateOppForm extends React.Component {
       e.preventDefault();
       // get our form data out of state
       const {
-        netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result,
+        email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result,
       } = this.state;
 
       // makes sure all the fields that are required are valid
@@ -348,6 +348,7 @@ class CreateOppForm extends React.Component {
         return;
       }
       axios.post('/api/opportunities', {
+        email,
         netId,
         creatorNetId,
         labPage,
@@ -383,7 +384,11 @@ class CreateOppForm extends React.Component {
             return new Promise(resolve => setTimeout(resolve, time));
           }
           sleep(1200).then(() => {
-            document.location.href = '/professorView';
+            if (this.state.creatorNetId) {
+              document.location.href = '/professorView';
+            } else {
+              document.location.href = '/profLanding';
+            }
           });
         }).catch((error) => {
           if (error.response) {
