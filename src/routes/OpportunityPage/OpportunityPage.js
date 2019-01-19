@@ -726,21 +726,17 @@ Please
                   <div id="Application" className="row opp-application-box">
                     <div className="column">
                       <div className="header">
-Please
+                        {'Please '}
                         <a
                           href="/#student-sign-up"
                         >
 create an account
                         </a>
-                        {' '}
-to
-                        apply,
-                        <b>or</b>
-                        {' '}
-add your email
+                        {' to apply or add your email '}
                         <a
                           href="http://bit.ly/2Pv2LY4"
                           target="_blank"
+                          rel="noopener noreferrer"
                         >
 here
                         </a>
