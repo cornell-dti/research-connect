@@ -28,6 +28,7 @@ function clearUnregistered() {
 }
 
 class LandingPage extends Component {
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -66,6 +67,10 @@ class LandingPage extends Component {
       ease: 'linear',
       duration: 600,
     });
+  }
+
+  goToLabPage() {
+    document.location.href = '/profLanding';
   }
 
   loginFailure(a) {
@@ -123,7 +128,6 @@ class LandingPage extends Component {
       Utils.handleTokenError(error);
     });
   }
-
 
   logoutClear() {
     logoutGoogle();
@@ -185,7 +189,7 @@ class LandingPage extends Component {
               className="white-button lab-button"
               type="submit"
               value="For Labs"
-              onClick={this.scrollTo.bind(this, '#forprofs')}
+              onClick={this.goToLabPage.bind(this)}
             />
             {/* </Link> */}
           </div>
