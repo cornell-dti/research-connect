@@ -557,7 +557,7 @@ app.post('/', async (req, res, next) => {
                 subject: 'New Research Opportunity Available!',
                 html: `Hi ${firstName},<br />
                        A new opportunity called ${opportunity.title} was just posted in an area you expressed interest in. 
-                       You can view it <a href="https://www.research-connect.com/opportunity/${oppId}">here!</a> 
+                       You can view it <a href="https://www.research-connect.com/opportunity/${oppId}?ref=email">here!</a> 
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };

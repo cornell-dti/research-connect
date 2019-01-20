@@ -711,7 +711,7 @@ Student Compensation (leave blank if just
 
                     <input
                       className="max-hours"
-                      placeholder="Max Hours/Week"
+                      placeholder="Max Hours/Week, if applicable"
                       type="text"
                       name="max"
                       value={this.state.maxHours}
@@ -879,7 +879,7 @@ Estimate the minimum hours you would expect the student to
                       onChange={this.handleOpenDateChange.bind(this)}
                     />
 
-                    <label className="label-inline ">Close Application Window: </label>
+                    <label className="label-inline ">Close Application Window (if applicable): </label>
                     <DatePicker
                       className="datePicker"
                       selected={this.state.closes}
