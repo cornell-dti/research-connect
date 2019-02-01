@@ -256,13 +256,14 @@ class EditProfile extends Component {
     }
 
     onDropResume = acceptedFiles => {
+        console.log("We are dropping resume");
         acceptedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = (event) => {
                 let fileAsBinaryString = reader.result;
                 let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({resume: file})
+                this.setState({ resume: [encodedData] })
                 this.setState({resumeValid: true})
             };
             reader.onabort = () => console.log('file reading was aborted');
@@ -270,8 +271,7 @@ class EditProfile extends Component {
 
             reader.readAsBinaryString(file);
         });
-
-
+        console.log("We have finished dropping resume");
     }
 
     onDropTranscript = acceptedFiles => {
@@ -281,7 +281,7 @@ class EditProfile extends Component {
                 let fileAsBinaryString = reader.result;
                 let encodedData = window.btoa(fileAsBinaryString);
                 // do whatever you want with the file content
-                this.setState({transcript: file})
+                this.setState({ transcript: [encodedData] })
             };
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
@@ -321,26 +321,58 @@ class EditProfile extends Component {
             transcript,
             resumeValid
         } = this.state;
-        axios.put('/api/undergrads/' + this.state.netId, {year, major, gpa, relevantCourses, relevantSkills})
-            .then((result) => {
-                console.log("undergrad updated, result:");
-                console.log(result);
-                //access the results here....
-            });
+        let token_id = sessionStorage.getItem('token_id');
+        console.log("constant is working");
+        axios.put('/api/undergrads/' + this.state.netId, { year, major, gpa, relevantCourses, relevantSkills })
+        .then((result) => {
+            console.log("undergrad updated, result:");
+            console.log(result);
+            //access the results here....
+            //Change netId to token_id I think
+        });
 
-        axios.post('/api/docs', {netId, resume})
-            .then((result) => {
-                console.log("Resume updated, result:");
-                console.log(result);
-                //access the results here....
-            });
+ 
 
-        axios.post('/api/docs', {netId, transcript})
+    if (this.state.resume != null && this.state.resume.length !== 0){
+        axios.post('/api/docs', {token_id, resume})
             .then((result) => {
-                console.log("Resume updated, result:");
+                console.log("Resume updated, result: ");
                 console.log(result);
-                //access the results here....
-            });
+            }).catch(function (error) {
+                console.log("Error in posting resume");
+                console.log(error);
+        });
+    }
+    if (this.state.transcript != null && this.state.transcript.length !== 0){
+        axios.post('/api/docs', {token_id, transcript})
+            .then((result) => {
+                console.log("Transcript updated, result: ");
+                console.log(result);
+            }).catch(function (error) {
+                console.log("Error in posting transcript");
+                console.log(error);
+        });
+    }
+        // axios.put('/api/undergrads/' + this.state.netId, {year, major, gpa, relevantCourses, relevantSkills})
+        //     .then((result) => {
+        //         console.log("undergrad updated, result:");
+        //         console.log(result);
+        //         //access the results here....
+        //     });
+
+        // axios.post('/api/docs', {netId, resume})
+        //     .then((result) => {
+        //         console.log("Resume updated, result:");
+        //         console.log(result);
+        //         //access the results here....
+        //     });
+
+        // axios.post('/api/docs', {netId, transcript})
+        //     .then((result) => {
+        //         console.log("Resume updated, result:");
+        //         console.log(result);
+        //         //access the results here....
+        //     });
 
     };
 
