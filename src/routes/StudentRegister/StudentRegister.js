@@ -8,10 +8,8 @@ import Dropzone from 'react-dropzone';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils.js'
 
-
 let majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"];
 let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
-
 
 class StudentRegister extends React.Component {
     constructor(props) {
@@ -34,11 +32,12 @@ class StudentRegister extends React.Component {
             majorValid: false,
             GPAValid: false,
             resumeValid: false,
-            triedSubmitting: false, 
-            isButtonDisabled: false, 
+            triedSubmitting: false,
+            isButtonDisabled: false,
             buttonValue: "Submit"
-
         };
+        this.onChange.bind(this);
+        this.onSubmit.bind(this);
     };
 
     optionify(inputArray, inputName) {
@@ -48,21 +47,28 @@ class StudentRegister extends React.Component {
                 {inputArray[i]}
             </option>);
         }
+
         let placehold = "Select";
         let validName;
+
         if (inputName === "gradYear") {
             placehold = "Select Graduation Year";
-            validName = this.state.gradYearValid
-        } else if (inputName === "major") {
+            validName = this.state.gradYearValid;
+        }
+        else if (inputName === "major") {
             placehold = "Select Major";
-            validName = this.state.majorValid
-
+            validName = this.state.majorValid;
         }
 
-        return (<select className={!validName && this.state.triedSubmitting ? "error left-input" : "left-input"}
-                        name={inputName} value={inputName} onChange={this.onChange}>
+        return (
+          <select
+            className={!validName && this.state.triedSubmitting ? "error left-input" : "left-input"}
+            name={inputName} value={inputName} onChange={this.onChange}>
+
             <option id={inputName} key="empty" value="">{placehold}</option>
-            {newArray} </select>);
+            {newArray}
+          </select>
+        );
     }
 
     onDropResume = acceptedFiles => {
@@ -80,8 +86,6 @@ class StudentRegister extends React.Component {
 
             reader.readAsBinaryString(file);
         });
-
-
     }
 
     onDropTranscript = acceptedFiles => {
@@ -98,7 +102,6 @@ class StudentRegister extends React.Component {
 
             reader.readAsBinaryString(file);
         });
-
     };
 
     onChange = (e) => {
@@ -110,19 +113,18 @@ class StudentRegister extends React.Component {
             let validationName = name + "Valid";
             this.setState({[name]: e.target.value});
             if (name === "gradYear" || name === "major") {
-                document.getElementById(name).innerHTML = [e.target.value];
-
+              document.getElementById(name).innerHTML = [e.target.value];
             }
             if (e.target.value != "") {
-                this.setState({[validationName]: true});
-            } else {
-                this.setState({[validationName]: false});
+              this.setState({[validationName]: true});
+            }
+            else {
+              this.setState({[validationName]: false});
             }
         }
         else {
-            this.setState({[e.target.name]: (e.target.value).replace(/ /g, '').split(",")});
+          this.setState({[e.target.name]: (e.target.value).replace(/ /g, '').split(",")});
         }
-
         console.log("COURSES " + this.state.courses);
     };
 
@@ -150,15 +152,23 @@ class StudentRegister extends React.Component {
         e.preventDefault();
         // get our form data out of state
         const {
-            firstName, lastName, gradYear, major, GPA, netId, email, courses, resume, transcript,
+            firstName,
+            lastName,
+            gradYear,
+            major,
+            GPA,
+            netId,
+            email,
+            courses,
+            resume,
+            transcript,
             firstNameValid,
             lastNameValid,
             gradYearValid,
             majorValid,
             GPAValid,
             resumeValid,
-            triedSubmitting
-        } = this.state;
+            triedSubmitting } = this.state;
         this.setState({token_id: sessionStorage.getItem("token_id")});
         let token_id = sessionStorage.getItem("token_id");
 
@@ -245,6 +255,26 @@ class StudentRegister extends React.Component {
                 }
             });
         }
+        else{
+          if(!firstNameValid){
+            alert("First name is required.");
+          }
+          else if(!lastNameValid){
+            alert("Last name is required.");
+          }
+          else if(!gradYearValid){
+            alert("Graduation year is required.");
+          }
+          else if(!majorValid){
+            alert("Major is required.");
+          }
+          else if(!GPAValid){
+            alert("GPA is required.");
+          }
+          else if(!resumeValid){
+            alert("Resume is required.");
+          }
+        }
     };
 
 
@@ -259,7 +289,6 @@ class StudentRegister extends React.Component {
         // }
         return (
             <div>
-                {/*<Navbar/>*/}
                 <div className="student-reg-form">
                     <h3>Student Registration</h3>
                     <form id="studentForm" onSubmit={this.onSubmit}>
@@ -267,7 +296,6 @@ class StudentRegister extends React.Component {
                             className={!this.state.firstNameValid && this.state.triedSubmitting ? "error left-input" : "left-input"}
                             placeholder="First Name" type="text" name="firstName" value={firstName} id="firstName"
                             onChange={this.onChange}/>
-
                         <input
                             className={!this.state.lastNameValid && this.state.triedSubmitting ? "error left-input" : "left-input"}
                             type="text" placeholder="Last Name" name="lastName" value={lastName} id="lastName"
@@ -307,7 +335,6 @@ class StudentRegister extends React.Component {
                         <br/>
 
                         <div className="dropzone">
-
                             <Dropzone className="edit-drop" style={{
                                 position: 'relative',
                                 background: '#ededed',
@@ -326,8 +353,11 @@ class StudentRegister extends React.Component {
 
                         <br/>
                         <div className="centered">
-                            <input type="submit" className="button" 
-                            value= {this.state.buttonValue} disabled = {this.state.isButtonDisabled}/>
+                        <input
+                          type="submit"
+                          className="button"
+                          value= {this.state.buttonValue}
+                          disabled = {this.state.isButtonDisabled}/>
                         </div>
                     </form>
 

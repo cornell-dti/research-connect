@@ -4,24 +4,19 @@ import './YearSelect.scss';
 class YearSelect extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      yearSelect: this.props.yearSelect,
-    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   // when the year is changed, update the state so we can send it to the parent through the updateYear function
   handleChange(e) {
-    this.setState({
-      yearSelect: {
-        Freshman: this.freshman.checked,
-        Sophomore: this.sophomore.checked,
-        Junior: this.junior.checked,
-        Senior: this.senior.checked,
-      },
-    }, function () {
-      // call updateYear to update the parent's state with the current state of these checkboxes
-      this.props.updateYear(this.state.yearSelect);
-    });
+    let year = e.target.name;
+    console.log(year);
+    if(e.target.checked){
+      this.props.addYear(year);
+    }
+    else{
+      this.props.removeYear(year);
+    }
   }
 
   render() {
@@ -31,10 +26,9 @@ class YearSelect extends React.Component {
           ref={(node) => {
             this.freshman = node;
           }}
-          onChange={this.handleChange.bind(this)}
+          onChange={this.handleChange}
           type="checkbox"
-          name="Freshman"
-          value="Freshman"
+          name="freshman"
         />
 Freshman
 
@@ -43,10 +37,9 @@ Freshman
           ref={(node) => {
             this.sophomore = node;
           }}
-          onChange={this.handleChange.bind(this)}
+          onChange={this.handleChange}
           type="checkbox"
-          name="Sophomore"
-          value="Sophomore"
+          name="sophomore"
         />
 Sophomore
 
@@ -55,10 +48,9 @@ Sophomore
           ref={(node) => {
             this.junior = node;
           }}
-          onChange={this.handleChange.bind(this)}
+          onChange={this.handleChange}
           type="checkbox"
-          name="Junior"
-          value="Junior"
+          name="junior"
         />
 Junior
 
@@ -67,10 +59,9 @@ Junior
           ref={(node) => {
             this.senior = node;
           }}
-          onChange={this.handleChange.bind(this)}
+          onChange={this.handleChange}
           type="checkbox"
-          name="Senior"
-          value="Senior"
+          name="senior"
         />
 Senior
 

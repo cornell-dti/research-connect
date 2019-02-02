@@ -21,11 +21,11 @@ class Opportunities extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: {},
+      yearSelect: [],
       gpaSelect: {},
       majorSelect: {},
       startDate: {},
-      compensationSelect: {},
+      compensationSelect: [],
       searchBar: '',
       matchingSearches: [],
       searching: false,
@@ -57,8 +57,35 @@ class Opportunities extends Component {
       });
   }
 
-  handleUpdateYear(yearObj) {
-    this.setState({ yearSelect: yearObj });
+  addYear(year){
+    console.log("adding year");
+    console.log(year);
+    this.setState(prevState => ({yearSelect: [...prevState.yearSelect, year]}));
+  }
+
+  removeYear(year){
+    console.log("removing year");
+    console.log(year);
+    this.setState(prevState => ({ yearSelect: prevState.yearSelect.filter(y => y !== year) }));
+  }
+
+/*
+  updateComp(comp){
+    console.log("updating compensation selection");
+    console.log(comp);
+    this.setState(prevState => ())
+  }
+*/
+  addComp(comp){
+    console.log("adding comp");
+    console.log(comp);
+    this.setState(prevState => ({compensationSelect: [...prevState.compensationSelect, comp]}));
+  }
+
+  removeComp(comp){
+    console.log("removing comp");
+    console.log(comp);
+    this.setState(state => ({compensationSelect: state.compensationSelect.filter(c => c !== comp)}));
   }
 
   handleUpdateGPA(gpaObj) {
@@ -177,7 +204,10 @@ Home
 
               <div className="filter-child">
                 <label htmlFor="yearField">School Year</label>
-                <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
+                <YearSelect
+                  removeYear={this.removeYear.bind(this)}
+                  addYear={this.addYear.bind(this)}
+                  />
               </div>
 
               <hr />
@@ -198,7 +228,9 @@ Home
 
               <div className="filter-child">
                 <label htmlFor="compensationField">Compensation</label>
-                <CompensationSelect updateCompensation={this.handleUpdateCompensation.bind(this)} />
+                <CompensationSelect
+                  removeComp={this.removeComp.bind(this)}
+                  addComp={this.addComp.bind(this)}/>
               </div>
 
             </div>
