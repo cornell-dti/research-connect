@@ -15,6 +15,7 @@ import * as Utils from "../../components/Utils";
 class EditProfile extends Component {
     constructor(props) {
         super(props);
+        console.log(1);
         this.state = {
             firstName: '',
             lastName: '',
@@ -42,42 +43,54 @@ class EditProfile extends Component {
             transcript: null,
             resumeValid: false
         };
-
+        // this.loadInfoFromServer();
         this.loadInfoFromServer = this.loadInfoFromServer.bind(this);
         this.displayCourses = this.displayCourses.bind(this);
         this.displaySkills = this.displaySkills.bind(this);
-        console.log(this.state.relevantCourses);
     }
 
     loadInfoFromServer() {
         console.log("Begin loadInfoFromServer")
         axios.get('/api/undergrads/' + (sessionStorage.getItem('token_id')))
-            .then(res => {
-                let info = res.data[0];
-                console.log("info");
-                console.log(info);
-                let skills = info.skills === undefined ? [] : info.skills;
-                this.setState({firstName: info.firstName});
-                this.setState({lastName: info.lastName});
-                this.setState({year: utils.gradYearToString(info.gradYear)});
-                this.setState({major: info.major})
-                this.setState({gpa: info.gpa});
-                this.setState({relevantCourses: info.courses});
-                this.setState({relevantSkills: skills});
-                this.setState({netId: info.netId});
-                this.setState({resumeId: info.resumeId});
-                this.setState({transcriptId: info.transcriptId});
-                console.log(this.state.firstName);
-                console.log(info);
-                if (this.state.firstName == '') {
-                    console.log("Looks like we didn't load it");
-                } else {
-                    console.log("We did load it :D");
-                }
-            }).catch(function (error) {
+        .then(res => {
+            let info = res.data[0];
+            const skills = info.skills === undefined ? [] : info.skills;
+            const year = Utils.gradYearToString(info.gradYear);
+            this.setState({
+                relevantCourses: info.courses,
+                firstName: info.firstName,
+                lastName: info.lastName,
+                year: info.lastName,
+                major: info.major,
+                gpa: info.gpa,
+                relevantSkills: skills,
+                netId: info.netId,
+                resumeId: info.resumeId,
+                transcriptId: info.transcriptId
+            });
+            console.log("after");
+            //     this.setState({relevantCourses: info.courses});
+            //     this.setState({firstName: info.firstName});
+            //     this.setState({year: utils.gradYearToString(info.gradYear)});
+            //     this.setState({major: info.major});
+            //     this.setState({gpa: info.gpa});
+            //     this.setState({relevantSkills: skills});
+            //     this.setState({netId: info.netId});
+            //     this.setState({resumeId: info.resumeId});
+            //     this.setState({transcriptId: info.transcriptId});
+            // this.setState({lastName: info.lastName});
+            console.log(this.state.firstName);
+            console.log(info);
+            if (this.state.firstName == '') {
+                console.log("Looks like we didn't load it");
+            } else {
+                console.log("We did load it :D");
+            }
+        }).catch(function (error) {
             Utils.handleTokenError(error);
         });
-        ;
+
+
     }
 
     componentDidMount() {
