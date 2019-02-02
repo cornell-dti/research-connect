@@ -9,13 +9,14 @@ class YearSelect extends React.Component {
 
   // when the year is changed, update the state so we can send it to the parent through the updateYear function
   handleChange(e) {
-    let year = e.target.name;
+    let filter = e.target.name;
+    let year = e.target.value;
     console.log(year);
     if(e.target.checked){
-      this.props.addYear(year);
+      this.props.addYear(filter, year);
     }
     else{
-      this.props.removeYear(year);
+      this.props.removeYear(filter, year);
     }
   }
 
@@ -28,7 +29,8 @@ class YearSelect extends React.Component {
           }}
           onChange={this.handleChange}
           type="checkbox"
-          name="freshman"
+          name="yearSelect"
+          value="freshman"
         />
 Freshman
 
@@ -39,7 +41,8 @@ Freshman
           }}
           onChange={this.handleChange}
           type="checkbox"
-          name="sophomore"
+          name="yearSelect"
+          value="sophomore"
         />
 Sophomore
 
@@ -50,7 +53,8 @@ Sophomore
           }}
           onChange={this.handleChange}
           type="checkbox"
-          name="junior"
+          name="yearSelect"
+          value="junior"
         />
 Junior
 
@@ -61,7 +65,8 @@ Junior
           }}
           onChange={this.handleChange}
           type="checkbox"
-          name="senior"
+          name="yearSelect"
+          value="senior"
         />
 Senior
 

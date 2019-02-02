@@ -57,18 +57,21 @@ class Opportunities extends Component {
       });
   }
 
-  addYear(year){
+  addFilter(filterType, option){
+    this.setState(prevState => ({[filter]: [...prevState[filter], year]}));
+  }
+
+  addYear(filter, year){
     console.log("adding year");
     console.log(year);
-    this.setState(prevState => ({yearSelect: [...prevState.yearSelect, year]}));
+    this.setState(prevState => ({[filter]: [...prevState[filter], year]}));
   }
 
-  removeYear(year){
+  removeYear(filter, year){
     console.log("removing year");
     console.log(year);
-    this.setState(prevState => ({ yearSelect: prevState.yearSelect.filter(y => y !== year) }));
+    this.setState(prevState => ({[filter]: prevState[filter].filter(y => y !== year) }));
   }
-
 /*
   updateComp(comp){
     console.log("updating compensation selection");
