@@ -40,6 +40,7 @@ export function handleTokenError(error) {
         if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
             alert("You were either inactive for too long or visited this page without being signed in. " +
                 "You'll be signed out and taken to the home page. Sign up/in and then come back to this page to view its contents.");
+            console.log(1);
             logoutGoogle();
             return true;
         }
@@ -64,29 +65,46 @@ export function getParameterByName(name, url) {
 
 //helper function for logoutGoogle
 function tryLoggingOut(){
+    console.log("trying to log out");
     const auth2 = window.gapi.auth2.getAuthInstance();
+    console.log("got instance");
     if (auth2 != null) {
+        console.log("auth 2 not null");
         auth2.signOut().then(
             auth2.disconnect().then(function (e) {
+                console.log("disconnecting");
                 sessionStorage.clear();
                 window.location.href = "/";
             }, function (e) {
+                console.log("disconnect didn't work, error below");
+                console.log(e);
                 //auth2.disconnect didn't work...
                 sessionStorage.clear();
                 window.location.href = "/"
             })
-        )
+        ).catch((e) => {
+            console.log("error with auth2.signout below");
+            console.log(e);
+        })
+    }
+    else {
+        console.log("auth not null");
+        console.log(auth2);
     }
 }
 
 export function logoutGoogle() {
     if (window.gapi) {
+        console.log("logging out window gapi");
         tryLoggingOut();
     }
     else {
+        console.log("about to set timeout");
         //if window.gapi hasn't loaded yet, wait 2 seconds and try again
         setTimeout(function () {
+            console.log("in set timeout");
             if (window.gapi) {
+                console.log("window gapi loaded, logging out");
                 tryLoggingOut();
             } else {
                 //if it's still not there for some reason, just do the "works half the time" solution
