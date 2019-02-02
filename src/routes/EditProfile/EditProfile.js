@@ -60,7 +60,7 @@ class EditProfile extends Component {
                 this.setState({firstName: info.firstName});
                 this.setState({lastName: info.lastName});
                 this.setState({year: utils.gradYearToString(info.gradYear)});
-                this.setState({major: info.major})
+                this.setState({major: info.major});
                 this.setState({gpa: info.gpa});
                 this.setState({relevantCourses: info.courses});
                 this.setState({relevantSkills: skills});
@@ -86,6 +86,7 @@ class EditProfile extends Component {
     }
 
     handleChange(event) {
+        
         if (event.target.id === "year") {
             this.setState({year: event.target.value});
         }
@@ -328,7 +329,7 @@ class EditProfile extends Component {
             console.log("undergrad updated, result:");
             console.log(result);
             //access the results here....
-            //Change netId to token_id I think
+            //Change netId to token_id
         });
 
  
