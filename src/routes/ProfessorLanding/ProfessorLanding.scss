@@ -107,6 +107,7 @@
 
 .signup {
   margin-right: 8px;
+  margin-bottom : 0px;
 }
 
 .center-text {
@@ -114,7 +115,7 @@
 }
 
 .sign-out {
-  cursor: pointer;
+  cursor: pointer; 
 }
 
 #no-max-width {
@@ -219,6 +220,8 @@
   color: #fff;
 }
 
+
+
 #whiteButton:hover{
   opacity: 0.9;
   background-color: rgb(166, 57, 45);
@@ -226,7 +229,7 @@
   color: #fff;
 }
 
-.white-button{
+.proflandingPage .white-button{
   background-color: white;
   color: rgb(166,57,45);
   border-color: white;
@@ -305,6 +308,12 @@
     width: 100px;
     height: 100px;
     color: black;
+}
+
+.hero .buttonHero {
+   
+    align-items: center;
+    padding: 0px 150px;
 }
 
 .hero .lab-button{

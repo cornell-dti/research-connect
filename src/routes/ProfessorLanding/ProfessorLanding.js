@@ -150,8 +150,8 @@ class ProfessorLanding extends Component {
 
               </div>
             ) : (
-              <li />
-            )}
+                <li />
+              )}
           </nav>
         </header>
 
@@ -159,29 +159,30 @@ class ProfessorLanding extends Component {
           <div className="background-image" />
           <h1>Research Connect for Labs</h1>
           <h3>Easily find and recruit assistants for labs</h3>
+          <Container>
+            <Row className = "buttonHero">
+              <Col>
+                <input
+                  className="white-button"
+                  id="whiteButton"
+                  type="button"
+                  onClick={this.postOpp.bind(this)}
+                  value="POST AN OPPORTUNITY"
+                />
+              </Col>
+              <Col>
+                <GoogleLogin
+                  clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
+                  buttonText="CREATE AN ACCOUNT"
+                  onSuccess={this.responseGoogle.bind(this)}
+                  onFailure={this.loginFailure.bind(this)}
+                  className="signup"
+                />
+              </Col>
+            </Row>
 
-          <div className="row">
-            <div className="column">{' '}</div>
-            <div className="button-div column">
-              <input
-                className="white-button"
-                id="whiteButton"
-                type="button"
-                onClick={this.postOpp.bind(this)}
-                value="POST AN OPPORTUNITY"
-              />
-            </div>
-            <div className="column">
-              <GoogleLogin
-                clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                buttonText="CREATE AN ACCOUNT"
-                onSuccess={this.responseGoogle.bind(this)}
-                onFailure={this.loginFailure.bind(this)}
-                className="signup"
-              />
-            </div>
-            <div className="column">{' '}</div>
-          </div>
+          </Container>
+
         </section>
 
         <section className="incollab">

@@ -11,8 +11,8 @@ import curb from '../../images/logo2.png';
 import CDTI from '../../images/logo3.png';
 import lightbulb from '../../images/lightbulb.png';
 import pen from '../../images/pen.png';
-import triangler from '../../images/rightView.png';
-import trianglel from '../../images/leftView.png';
+import triangler from '../../images/triangle1.png';
+import trianglel from '../../images/triangle2.png';
 
 import blueIcon from '../../images/blueIcon.png';
 import greenIcon from '../../images/greenIcon.png';
@@ -259,12 +259,12 @@ class Landing extends Component {
         <section className="middleContainer2">
           <Container >
             <Row>
-              <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>
+              <p>Are you a professor, student, or other faculty member looking for research assistants? <a  href="/profLanding">Visit Research Connect for Labs </a></p>
             </Row>
             <Row>
               <Col>
                 <Row><img className="middleImage" src={blueIcon} /></Row>
-                <Row> <p>DATA SCIENCE</p> </Row>
+                <Row> <p>DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
                 <Row></Row><img className="middleImage" src={greenIcon} /><Row></Row>
@@ -276,7 +276,7 @@ class Landing extends Component {
               </Col>
               <Col>
                 <Row><img className="middleImage" src={yellowIcon} /></Row>
-                <Row> <p>MACHINE LEARNING</p> </Row>
+                <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={purpleIcon} /></Row>
