@@ -259,12 +259,15 @@ class Landing extends Component {
         <section className="middleContainer2">
           <Container >
             <Row>
-              <p>Are you a professor, student, or other faculty member looking for research assistants? <a  href="/profLanding">Visit Research Connect for Labs </a></p>
+              <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>
             </Row>
             <Row>
-              <Col>
+              <p className="big ">Explore Popular Areas of Interest</p>
+            </Row>
+            <Row>
+              <Col className="text-center">
                 <Row><img className="middleImage" src={blueIcon} /></Row>
-                <Row> <p>DATA <br /> SCIENCE</p> </Row>
+                <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
                 <Row></Row><img className="middleImage" src={greenIcon} /><Row></Row>

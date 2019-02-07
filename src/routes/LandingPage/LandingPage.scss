@@ -383,6 +383,10 @@ col {
     text-align: center; 
 
 }
+ section.middleContainer2{
+     align-items: center;
+     justify-content: center;
+ }
 
  section.middleContainer2 p{
         color: #000000;	
@@ -402,11 +406,12 @@ col {
             padding: 20px;
             max-width : 180px;
     margin-top: 5%;
-    margin-left :10%;
+        margin-left: 0%;
     text-align: center; 
 
     }
     section.middleContainer2 p{
+        align-self: center;
         color: #000000;	
         font-family: "Helvetica Neue";	
         font-size: 16px;	
@@ -417,8 +422,27 @@ col {
         text-shadow: 6px 6px 4px 0 rgba(0,0,0,0.5);
     }
      section.middleContainer2 .row{
-            max-width : 100% ;
+            text-align : center;
+            justify-content: center;
 
+    }
+    section.middleContainer2 .Col.center-col{
+            align-items: center;
+
+    }
+    section.middleContainer2 p.big{
+        color: #040404;
+        font-family: Roboto;	
+        font-size: 48px;	
+        font-weight: 500;	
+        letter-spacing: -0.5px;	
+        line-height: 57px;	
+        text-align: center;
+        max-width: none;
+    }
+
+    #no-max-width {
+        max-width: none;
     }
 
 
