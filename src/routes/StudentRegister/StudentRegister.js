@@ -8,7 +8,7 @@ import Dropzone from 'react-dropzone';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils.js'
 
-let majorList = ["Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German", "German Area Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture (transfer students only)", "History of Art", "Hotel Administration School of Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major—Arts and Sciences", "Independent Major—Engineering", "Industrial and Labor Relations School of Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechanical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Science", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Science of Earth Systems", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology", "Undecided"];
+let majorList = Utils.getMajorList();
 let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
 
 class StudentRegister extends React.Component {
@@ -189,6 +189,8 @@ class StudentRegister extends React.Component {
                     console.log(result);
                     this.setState({isButtonDisabled: true});
                     this.setState({buttonValue: "Submitted!"});
+
+
                     //access the results here....
                     if (this.state.transcript != null && this.state.transcript.length !== 0) {
                         axios.post('/api/docs', {token_id, transcript})
@@ -214,7 +216,9 @@ class StudentRegister extends React.Component {
                             }
                         });
                     }
+
                     if (this.state.resume != null && this.state.resume.length !== 0) {
+                        console.log("resume is not null!");
                         axios.post('/api/docs', {token_id, resume})
                             .then((result) => {
                                 if (oneRan || !this.state.transcript) {
@@ -244,16 +248,16 @@ class StudentRegister extends React.Component {
                     console.log("error in creating undergrad");
                     console.log(error);
                     //if it's not a session error...
-                if (!Utils.handleTokenError(error)){
-                    if (error.response.status === 400){
-                        alert(error.response.data);
+                    if (!Utils.handleTokenError(error)){
+                        if (error.response.status === 400){
+                            alert(error.response.data);
+                        }
+                        else {
+                            console.log(error);
+                            alert("Something went wrong on our side. Please refresh the page and try again");
+                        }
                     }
-                    else {
-                        console.log(error);
-                        alert("Something went wrong on our side. Please refresh the page and try again");
-                    }
-                }
-            });
+                  });
         }
         else{
           if(!firstNameValid){

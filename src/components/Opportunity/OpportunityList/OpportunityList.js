@@ -14,7 +14,6 @@ class OpportunityList extends Component {
 
   union(arr1, arr2){
     let arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
-    console.log(arr3.length);
     return arr3;
   }
 
@@ -43,10 +42,8 @@ class OpportunityList extends Component {
 
         const yearsSelected = filteredOptions.yearSelect;
         const yearsAllowed = opp.yearsAllowed;
-        console.log("yearsallowed");
-        console.log(yearsAllowed);
+        console.log(yearsSelected);
         willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
-        console.log(willShow);
 
         let minGPA = filteredOptions.gpaSelect;
         if (minGPA != '' && minGPA < opp.minGPA){
@@ -59,16 +56,12 @@ class OpportunityList extends Component {
               willShow = false;
         }
 
-/*
-        const csAreasSelected = filteredOptions.csAreaSelect;
-        const csAreas = (Object.keys(csAreasSelected)).filter(cs => csAreasSelected.cs);
+        const csAreasSelected = filteredOptions.csAreasSelect;
         const csAreasAllowed = opp.areas;
-        willShow = willShow && this.checkboxFilter(csAreas, csAreasAllowed);
-*/
+        willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
+
         const compensationsSelected = filteredOptions.compensationSelect;
-        console.log(compensationsSelected);
         const compensationsAllowed = opp.compensation;
-        console.log(compensationsAllowed);
         willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
 
       if (willShow) {
