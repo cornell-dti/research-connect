@@ -145,6 +145,11 @@ export function getCSAreas(){
   return csAreas;
 }
 
+export function getCompensation(){
+  const compensations = {"money": "Money", "credit" : "Credit"};
+  return compensations;
+}
+
 export function getYears(){
   const years = { "freshman":"Freshman",
                   "sophomore":"Sophmore",

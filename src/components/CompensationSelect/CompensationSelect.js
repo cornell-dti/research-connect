@@ -10,12 +10,7 @@ class CompensationSelect extends React.Component {
   handleChange(e) {
     let comp = e.target.name;
     console.log(comp);
-    if(e.target.checked){
-      this.props.addComp(comp);
-    }
-    else{
-      this.props.removeComp(comp);
-    }
+    this.props.updateFilterOption("compensationSelect", comp);
   }
 
   render() {

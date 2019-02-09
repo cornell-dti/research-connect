@@ -9,11 +9,10 @@ import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
-import YearSelect from '../../components/YearSelect/YearSelect';
 import MajorSelect from '../../components/MajorSelect/MajorSelect';
 import GPASelect from '../../components/GPASelect/GPASelect';
+import Filter from '../../components/Filter/Filter';
 import StartDate from '../../components/StartDate/StartDate';
-import CompensationSelect from '../../components/CompensationSelect/CompensationSelect';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
@@ -57,38 +56,24 @@ class Opportunities extends Component {
       });
   }
 
-  addFilter(filterType, option){
-    this.setState(prevState => ({[filter]: [...prevState[filter], year]}));
+  /*
+  //These two functions are combined into the below function.
+  addFilterOption(filterType, option){
+    this.setState(prevState => ({[filterType]: [...prevState[filterType], option]}));
   }
 
-  addYear(filter, year){
-    console.log("adding year");
-    console.log(year);
-    this.setState(prevState => ({[filter]: [...prevState[filter], year]}));
+  removeFilterOption(filterType, option){
+    this.setState(prevState => ({[filterType]: prevState[filterType].filter(originalO => originalO !== option)}));
   }
+  */
 
-  removeYear(filter, year){
-    console.log("removing year");
-    console.log(year);
-    this.setState(prevState => ({[filter]: prevState[filter].filter(y => y !== year) }));
-  }
-/*
-  updateComp(comp){
-    console.log("updating compensation selection");
-    console.log(comp);
-    this.setState(prevState => ())
-  }
-*/
-  addComp(comp){
-    console.log("adding comp");
-    console.log(comp);
-    this.setState(prevState => ({compensationSelect: [...prevState.compensationSelect, comp]}));
-  }
-
-  removeComp(comp){
-    console.log("removing comp");
-    console.log(comp);
-    this.setState(state => ({compensationSelect: state.compensationSelect.filter(c => c !== comp)}));
+  updateFilterOption(filterType, option){
+    this.setState((state) => {
+    	if (state[filterType].includes(option))
+    		return {[filterType]: state[filterType].filter(original => original !== option)};
+      else
+        return {[filterType]: [...state[filterType], option]};
+    });
   }
 
   handleUpdateGPA(gpaObj) {
@@ -103,15 +88,11 @@ class Opportunities extends Component {
     this.setState({ startDate: dateObj });
   }
 
-  handleUpdateCompensation(compensationObj) {
-    this.setState({ compensationSelect: compensationObj });
-  }
-
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (e.target.value == '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
+      this.setState({ matchingSearches: [],
+                      clickedEnter: false });
     }
   }
 
@@ -205,13 +186,26 @@ Home
 
               <hr />
 
+              <Filter
+                filterType="yearSelect"
+                label="School Year"
+                updateFilterOption={this.updateFilterOption.bind(this)}
+                choices= {Utils.getYears()}
+                type = "checkbox"
+              />
+
+
+              {/*
               <div className="filter-child">
                 <label htmlFor="yearField">School Year</label>
                 <YearSelect
-                  removeYear={this.removeYear.bind(this)}
-                  addYear={this.addYear.bind(this)}
+                  filterType="yearSelect"
+                  updateFilterOption={this.updateFilterOption.bind(this)}
+                  choices={Utils.getYears}
+                  generateOptions={this.createCheckbox.bind(this)}
                   />
               </div>
+              */}
 
               <hr />
 
@@ -229,12 +223,13 @@ Home
 
               <hr />
 
-              <div className="filter-child">
-                <label htmlFor="compensationField">Compensation</label>
-                <CompensationSelect
-                  removeComp={this.removeComp.bind(this)}
-                  addComp={this.addComp.bind(this)}/>
-              </div>
+              <Filter
+                filterType="compensationSelect"
+                label="Compensation"
+                updateFilterOption={this.updateFilterOption.bind(this)}
+                choices= {Utils.getCompensation()}
+                type = "checkbox"
+              />
 
             </div>
           </div>

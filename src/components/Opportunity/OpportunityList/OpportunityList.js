@@ -43,10 +43,8 @@ class OpportunityList extends Component {
 
         const yearsSelected = filteredOptions.yearSelect;
         const yearsAllowed = opp.yearsAllowed;
-        console.log("yearsallowed");
-        console.log(yearsAllowed);
+        console.log(yearsSelected);
         willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
-        console.log(willShow);
 
         let minGPA = filteredOptions.gpaSelect;
         if (minGPA != '' && minGPA < opp.minGPA){
@@ -66,9 +64,7 @@ class OpportunityList extends Component {
         willShow = willShow && this.checkboxFilter(csAreas, csAreasAllowed);
 */
         const compensationsSelected = filteredOptions.compensationSelect;
-        console.log(compensationsSelected);
         const compensationsAllowed = opp.compensation;
-        console.log(compensationsAllowed);
         willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
 
       if (willShow) {
