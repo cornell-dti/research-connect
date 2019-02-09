@@ -37,17 +37,11 @@ class ApplicationList extends Component {
     if (filter.opportunity.toLowerCase() !== 'all'
         && filter.opportunity !== application.opportunity) return false;
 
-    const froshSelected = filter.yearSelect.Freshman;
-    const sophSelected = filter.yearSelect.Sophomore;
-    const juniorSelected = filter.yearSelect.Junior;
-    const seniorSelected = filter.yearSelect.Senior;
+    const yearsSelected = filter.yearSelect;
     const gradYear = application.gradYear;
 
-    if ((froshSelected && Utils.gradYearToString(gradYear) === 'Freshman')
-      || (sophSelected && Utils.gradYearToString(gradYear) === 'Sophomore')
-      || (juniorSelected && Utils.gradYearToString(gradYear) === 'Junior')
-      || (seniorSelected && Utils.gradYearToString(gradYear) === 'Senior')
-      || (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected)) {
+    if(yearsSelected.includes(Utils.gradYearToGrade(gradYear)) ||
+       yearsSelected.length === 0){
       const csSelected = filter.majorSelect.cs;
       const bioSelected = filter.majorSelect.biology;
       const major = application.major;

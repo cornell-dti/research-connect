@@ -30,6 +30,7 @@ class Opportunities extends Component {
       searching: false,
       clickedEnter: false,
       role: '',
+      csAreasSelect:[]
     };
   }
 
@@ -142,11 +143,11 @@ class Opportunities extends Component {
         {!this.state.role && (
         <div className="go-home" onClick={() => this.goHome()}>
           <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
-Home
+        Home
         </div>
-        )
-          /** END code for detecting role and changing navbar */
-        }
+        ) /** END code for detecting role and changing navbar */}
+
+
         <div className="row search-div-container">
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
@@ -179,10 +180,8 @@ Home
         <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
-              <div className="filter-child">
-                Filter by...
 
-              </div>
+              <Filter label="Filter by..." />
 
               <hr />
 
@@ -193,7 +192,6 @@ Home
                 choices= {Utils.getYears()}
                 type = "checkbox"
               />
-
 
               {/*
               <div className="filter-child">
@@ -227,8 +225,18 @@ Home
                 filterType="compensationSelect"
                 label="Compensation"
                 updateFilterOption={this.updateFilterOption.bind(this)}
-                choices= {Utils.getCompensation()}
+                choices={Utils.getCompensation()}
                 type = "checkbox"
+              />
+
+              <hr />
+
+              <Filter
+                filterType="csAreasSelect"
+                label="CS Areas"
+                updateFilterOption={this.updateFilterOption.bind(this)}
+                choices={Utils.getCSAreas()}
+                type="checkbox"
               />
 
             </div>

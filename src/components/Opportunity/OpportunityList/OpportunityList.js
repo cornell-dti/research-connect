@@ -57,12 +57,11 @@ class OpportunityList extends Component {
               willShow = false;
         }
 
-/*
-        const csAreasSelected = filteredOptions.csAreaSelect;
-        const csAreas = (Object.keys(csAreasSelected)).filter(cs => csAreasSelected.cs);
+
+        const csAreasSelected = filteredOptions.csAreasSelect;
         const csAreasAllowed = opp.areas;
-        willShow = willShow && this.checkboxFilter(csAreas, csAreasAllowed);
-*/
+        willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
+
         const compensationsSelected = filteredOptions.compensationSelect;
         const compensationsAllowed = opp.compensation;
         willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);

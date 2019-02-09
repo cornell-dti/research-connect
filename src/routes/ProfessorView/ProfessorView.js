@@ -6,7 +6,7 @@ import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
-import YearSelect from '../../components/YearSelect/YearSelect';
+import Filter from '../../components/Filter/Filter';
 import Footer from '../../components/Footer/Footer';
 import MajorSelect from '../../components/MajorSelect/MajorSelect';
 import GPASelect from '../../components/GPASelect/GPASelect';
@@ -20,7 +20,7 @@ class ProfessorView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: {},
+      yearSelect: [],
       gpaSelect: {},
       majorSelect: {},
       startDate: {},
@@ -32,8 +32,15 @@ class ProfessorView extends Component {
     };
   }
 
-  handleUpdateYear(yearObj) {
-    this.setState({ yearSelect: yearObj });
+  updateFilterOption(filterType, option){
+    this.setState((state) => {
+      if (state[filterType].includes(option)){
+        console.log("REMOVING");
+        return {[filterType]: state[filterType].filter(original => original !== option)};
+      }
+      else
+        return {[filterType]: [...state[filterType], option]};
+    });
   }
 
   handleUpdateGPA(gpaObj) {
@@ -107,18 +114,14 @@ class ProfessorView extends Component {
 
     return (
       <div>
-
         <Navbar current="professorView" />
 
         <div className="professor-view-container">
           <div className="row professor-view-container-row">
             <div className="column column-20">
               <div className="filter-box">
-                <div className="filter-child">
-                  Filter by...
 
-                </div>
-
+                <Filter label="Filter by..." />
                 <hr />
 
                 <div className="filter-child">
@@ -128,10 +131,13 @@ class ProfessorView extends Component {
 
                 <hr />
 
-                <div className="filter-child">
-                  <label htmlFor="yearField">School Year</label>
-                  <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-                </div>
+                <Filter
+                  filterType="yearSelect"
+                  label="School Year"
+                  updateFilterOption={this.updateFilterOption.bind(this)}
+                  choices= {Utils.getYears()}
+                  type = "checkbox"
+                />
 
                 <hr />
 

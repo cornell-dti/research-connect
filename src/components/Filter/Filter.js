@@ -34,6 +34,7 @@ class Filter extends React.Component {
     );
   }
 
+/* currently broken
   createSelect(){
     const choices = this.props.choices.map((value, display) =>
       <option key={value} value={value}>
@@ -46,6 +47,7 @@ class Filter extends React.Component {
       </select>
     );
   }
+*/
 
   render(){
     let filter;
@@ -54,7 +56,6 @@ class Filter extends React.Component {
       filter = this.createSelect();
     }
     else if(this.props.type === "checkbox"){
-      console.log("got up to here");
       filter = this.createCheckbox();
     }
 

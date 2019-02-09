@@ -2,13 +2,22 @@ function dateIsBetween(date, lowerBound, upperBound) {
   return (lowerBound <= date && date <= upperBound);
 }
 
+export function gradYearToGrade(gradYear) {
+  const presentDate = new Date();
+  if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'freshman';
+  if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'sophomore';
+  if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return 'junior';
+  if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return 'senior';
+  return '';
+}
+
 export function gradYearToString(gradYear) {
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'Freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'Sophomore';
   if (dateIsBetween(presentDate, new Date(gradYear - 2, 4, 24), new Date(gradYear - 1, 4, 23))) return 'Junior';
   if (dateIsBetween(presentDate, new Date(gradYear - 1, 4, 24), new Date(gradYear, 4, 23))) return 'Senior';
-  return 'Freshman';
+  return '';
 }
 
 export function convertDate(dateString) {
