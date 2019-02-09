@@ -88,7 +88,6 @@ class StudentDashboard extends Component{
                 iconColor="#A5CCFE"
                 text="View opportunities"
                 href='/opportunities' />
-
                 <DashboardAction
                 icon={ user }
                 iconColor="#FEABCD"
