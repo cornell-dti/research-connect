@@ -369,7 +369,7 @@ class EditProfile extends Component {
             console.log(result);
             setTimeout(function(){
                 let baseUrl = window.location.protocol + "//" + window.location.host;
-                window.location.replace(baseUrl + "/studentDashboard");
+                window.location.replace(baseUrl + "/editprofile");
             }, 1500);
            
             //access the results here....
