@@ -166,3 +166,7 @@ export function getYears(){
                   "senior":"Senior"};
   return years;
 }
+
+export function getGPA(){
+
+}

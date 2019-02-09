@@ -200,36 +200,25 @@ class CreateOppForm extends React.Component {
     );
   }
 
-  setYears() {
-    const yearArray = [];
-    if (this.freshman.checked) {
-      yearArray.push('freshman');
-    }
-    if (this.sophomore.checked) {
-      yearArray.push('sophomore');
-    }
-    if (this.junior.checked) {
-      yearArray.push('junior');
-    }
-    if (this.senior.checked) {
-      yearArray.push('senior');
-    }
-    this.setState({ yearsAllowed: yearArray });
+  updateFilterOption(filterType, option){
+    this.setState((state) => {
+    	if (state[filterType].includes(option))
+    		return {[filterType]: state[filterType].filter(original => original !== option)};
+      else
+        return {[filterType]: [...state[filterType], option]};
+    });
   }
 
-  setCompensation() {
-    const compensationArray = [];
-    if (this.pay.checked) {
-      compensationArray.push('pay');
-    }
-    if (this.credit.checked) {
-      compensationArray.push('credit');
-    }
-    if (this.undetermined.checked) {
-      compensationArray.push('undetermined');
-    }
-    this.setState({ compensation: compensationArray });
+  handleUpdateYear(e){
+    let option = e.target.value;
+    this.updateFilterOption("yearsAllowed", option);
   }
+
+  handleUpdateCompensation(e){
+    let option = e.target.value;
+    this.updateFilterOption("compensation", option);
+  }
+
 
   toggleDetails() {
     if (this.state.showDetails) {
@@ -587,13 +576,13 @@ class CreateOppForm extends React.Component {
                     <option value={((new Date().getFullYear() + 1))}>{new Date().getFullYear() + 1}</option>
                   </select>
                   <InfoIcon data-tip data-for="info-start" className=" info-icon" size={20} />
+
                   <ReactTooltip place="right" id="info-start" aria-haspopup="true" role="example">
                     <p className="info-text">
-Indicates the semester the student will start working in
-                                        the lab.
+                      Indicates the semester the student will start working in the lab.
                     </p>
-
                   </ReactTooltip>
+
                 </div>
 
                 <div className={this.state.showDetails ? '' : 'hidden'}>
@@ -614,14 +603,11 @@ Indicates the semester the student will start working in
                       size={20}
                     />
                     <ReactTooltip place="right" id="info-descript" aria-haspopup="true" role="example">
-                      <p className="info-text">Example:</p>
                       <p className="info-text">
-Apprentice will conduct a genetic screen to discover
-                                        novel genes required for tissue morphogenesis and will be trained in
-                                        general wet-lab work and microdissection.
-                        {' '}
+                      Example: Apprentice will conduct a genetic screen to discover
+                      novel genes required for tissue morphogenesis and will be trained in
+                      general wet-lab work and microdissection.
                       </p>
-
                     </ReactTooltip>
                   </div>
 
@@ -652,48 +638,30 @@ Apprentice will conduct a genetic screen to discover
                           <li>Above B+ in Intro Chem</li>
                         </ul>
                       </div>
-
                     </ReactTooltip>
                   </div>
 
                   <div className="years-allowed compensation">
-                    {/* className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}> */}
-                    {/* <span className="required-star">*</span> */}
-
                     <label className="label-inline">
-Student Compensation (leave blank if just
-                                    experience):
-                      {' '}
+                    Student Compensation (leave blank if just experience):
                     </label>
                     <br />
                     <input
-                      ref={(node) => {
-                        this.pay = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
+                      onChange={this.handleUpdateCompensation.bind(this)}
                       type="checkbox"
-                      name="pay"
                       value="pay"
                     />
-                    <label className="label-inline">Pay </label>
+                    Money
                     <input
-                      ref={(node) => {
-                        this.credit = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
+                      onChange={this.handleUpdateCompensation.bind(this)}
                       type="checkbox"
-                      name="credit"
                       value="credit"
                     />
-                    <label className="label-inline">Course Credit </label>
+                    Credit
                     <input
-                      ref={(node) => {
-                        this.undetermined = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
+                      onChange={this.handleUpdateCompensation.bind(this)}
                       type="checkbox"
-                      name="undetermined"
-                      value="undetermined"
+                      value="none"
                     />
                     <label className="label-inline">Not sure yet</label>
                   </div>
@@ -724,12 +692,10 @@ Student Compensation (leave blank if just
                       size={20}
                     />
                     <ReactTooltip place="right" id="info-hours" aria-haspopup="true" role="example">
-
                       <p className="info-text">
-Estimate the minimum hours you would expect the student to
-                                        work each week and the maximum hours you would ever require.
+                      Estimate the minimum hours you would expect the student to
+                      work each week and the maximum hours you would ever require.
                       </p>
-
                     </ReactTooltip>
                   </div>
 
@@ -775,48 +741,34 @@ Estimate the minimum hours you would expect the student to
 
 
                   <div className="years-allowed optional">
-                    <label className="label-inline">Years Desired: </label>
+                    Years Desired:
                     <input
-                      ref={(node) => {
-                        this.freshman = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
+                      onChange={this.handleUpdateYear.bind(this)}
                       type="checkbox"
-                      name="Freshman"
-                      value="Freshman"
+                      value="freshman"
                     />
-                    <label className="label-inline">Freshmen </label>
+                    Freshman
                     <input
-                      ref={(node) => {
-                        this.sophomore = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
+                      onChange={this.handleUpdateYear.bind(this)}
                       type="checkbox"
-                      name="Sophomore"
-                      value="Sophomore"
+                      value="sophomore"
                     />
-                    <label className="label-inline">Sophomores </label>
+                    Sophomore
                     <input
-                      ref={(node) => {
-                        this.junior = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
+                      onChange={this.handleUpdateYear.bind(this)}
                       type="checkbox"
-                      name="Junior"
-                      value="Junior"
+                      value="junior"
                     />
-                    <label className="label-inline">Juniors</label>
+                    Junior
                     <input
-                      ref={(node) => {
-                        this.senior = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
+                      onChange={this.handleUpdateYear.bind(this)}
                       type="checkbox"
-                      name="Senior"
-                      value="Senior"
+                      value="senior"
                     />
-                    <label className="label-inline">Seniors </label>
+                    Senior
                   </div>
+
+
                   <div className="row input-row optional">
                     <textarea
                       className="column column-90"
@@ -861,12 +813,11 @@ Estimate the minimum hours you would expect the student to
                       className="column column-5 info-icon"
                       size={20}
                     />
+
                     <ReactTooltip place="right" id="info-additional" aria-haspopup="true" role="example">
-                      <div className="info-text">
-                        <span>Include any other relevant information to your opportunity not already described in the form.</span>
-
-                      </div>
-
+                      <p className="info-text">
+                        Include any other relevant information to your opportunity not already described in the form.
+                      </p>
                     </ReactTooltip>
                   </div>
 
@@ -893,20 +844,17 @@ Estimate the minimum hours you would expect the student to
                     <InfoIcon data-tip data-for="info-questions" className="info-icon-title" size={20} />
                     <ReactTooltip place="top" id="info-questions" aria-haspopup="true" role="example">
                       <p className="info-text-large">
-                                        We recommend asking "Why are you interested in this lab and/or position?" to
-                                        gauge interest.
-                                        You will nonetheless be able to view each student
-                        {"'"}
-s cover letter, year, GPA,
-                                        résumé,
-                                        and major, in addition to their responses to these questions once they
-                                        apply.
+                        We recommend asking "Why are you interested in this lab and/or position?" to
+                        gauge interest.You will nonetheless be able to view each students' cover
+                        letter, year, GPA, résumé, and major, in addition to their responses to these
+                        questions once they apply.
                       </p>
                     </ReactTooltip>
+
                     <p>
-Here you can add any position-specific questions or
-                                    requests for additional information, which students will be required to answer in
-                                    order to apply.
+                    Here you can add any position-specific questions or
+                    requests for additional information, which students will be required to answer in
+                    order to apply.
                     </p>
 
                     {this.displayQuestions()}

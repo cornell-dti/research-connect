@@ -14,7 +14,6 @@ class OpportunityList extends Component {
 
   union(arr1, arr2){
     let arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
-    console.log(arr3.length);
     return arr3;
   }
 
@@ -56,7 +55,6 @@ class OpportunityList extends Component {
         if (season && (season != opp.startSeason || year != opp.startYear)){
               willShow = false;
         }
-
 
         const csAreasSelected = filteredOptions.csAreasSelect;
         const csAreasAllowed = opp.areas;
