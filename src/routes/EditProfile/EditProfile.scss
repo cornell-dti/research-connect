@@ -213,4 +213,13 @@
 .sub-section {
   font-weight: bold; 
 }
+.edit-submit {
+  background-color: #b31b1b;
+  border: .1rem solid #b31b1b; 
+
+}
+.edit-submit:hover{
+  background-color: #800707; 
+  border: .1rem solid #800707; 
+}
 }

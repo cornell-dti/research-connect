@@ -534,7 +534,7 @@ class EditProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "10px"}}
+                    <button className="column column-50 edit-submit" style={{marginLeft: "45%", marginTop: "10px"}}
                             onClick={this.onClick}>Submit
                     </button>
                 </div>
