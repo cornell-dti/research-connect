@@ -8,7 +8,7 @@ import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
 import Filter from '../../components/Filter/Filter';
 import Footer from '../../components/Footer/Footer';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
 import GPASelect from '../../components/GPASelect/GPASelect';
 import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';

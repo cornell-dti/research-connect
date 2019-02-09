@@ -9,7 +9,7 @@ import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
 import GPASelect from '../../components/GPASelect/GPASelect';
 import Filter from '../../components/Filter/Filter';
 import StartDate from '../../components/StartDate/StartDate';
