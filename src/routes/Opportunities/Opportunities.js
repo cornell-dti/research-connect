@@ -10,7 +10,7 @@ import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
+// import GPASelect from '../../components/GPASelect/GPASelect';
 import Filter from '../../components/Filter/Filter';
 import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
@@ -68,14 +68,18 @@ class Opportunities extends Component {
   }
   */
 
-  updateFilterOption(filterType, option){
+  updateMultipleChoiceFilter(filterName, option){
     this.setState((state) => {
-    	if (state[filterType].includes(option))
-    		return {[filterType]: state[filterType].filter(original => original !== option)};
+    	if (state[filterName].includes(option))
+    		return {[filterName]: state[filterName].filter(original => original !== option)};
       else
-        return {[filterType]: [...state[filterType], option]};
+        return {[filterName]: [...state[filterName], option]};
     });
   }
+
+    updateSingleChoiceFilter(filterType, option){
+      this.setState({[filterType]:option});
+    }
 
   handleUpdateGPA(gpaObj) {
     this.setState({ gpaSelect: gpaObj });
@@ -188,7 +192,7 @@ class Opportunities extends Component {
               <Filter
                 filterType="yearSelect"
                 label="School Year"
-                updateFilterOption={this.updateFilterOption.bind(this)}
+                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
                 choices= {Utils.getYears()}
                 type = "checkbox"
               />
@@ -207,10 +211,22 @@ class Opportunities extends Component {
 
               <hr />
 
-              <div className="filter-child">
-                <label htmlFor="gpaField">GPA Requirement</label>
-                <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-              </div>
+{/*
+  <div className="filter-child">
+    <label htmlFor="gpaField">GPA Requirement</label>
+    <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
+  </div>
+
+  */}
+
+
+              <Filter
+                filterType="gpaSelect"
+                label="GPA Select"
+                updateFilterOption={this.updateSingleChoiceFilter.bind(this)}
+                choices={Utils.getGPA()}
+                type = "select"
+              />
 
               <hr />
 
@@ -224,7 +240,7 @@ class Opportunities extends Component {
               <Filter
                 filterType="compensationSelect"
                 label="Compensation"
-                updateFilterOption={this.updateFilterOption.bind(this)}
+                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
                 choices={Utils.getCompensation()}
                 type = "checkbox"
               />
@@ -234,7 +250,7 @@ class Opportunities extends Component {
               <Filter
                 filterType="csAreasSelect"
                 label="CS Areas"
-                updateFilterOption={this.updateFilterOption.bind(this)}
+                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
                 choices={Utils.getCSAreas()}
                 type="checkbox"
               />

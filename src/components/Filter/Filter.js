@@ -20,9 +20,10 @@ class Filter extends React.Component {
         <React.Fragment>
         <input onChange={this.handleChange.bind(this)}
                type="checkbox"
-               value={value} />
+               value={value}
+               key={index}/>
         {choices[value]}
-        <br />
+        <br /> 
         </React.Fragment>
       );
     });
@@ -34,20 +35,22 @@ class Filter extends React.Component {
     );
   }
 
-/* currently broken
   createSelect(){
-    const choices = this.props.choices.map((value, display) =>
-      <option key={value} value={value}>
-        {display}
-      </option>
-    );
+    let choices = this.props.choices;
+    const options = Object.keys(choices).map((value, index) => {
+      return (
+        <option key={index} value={value}>
+          {choices[value]}
+        </option>
+      );
+    });
     return (
-      <select className="select-wrapper" onChange={this.handleChange} >
-        {choices}
+      <select className="select-wrapper" onChange={this.handleChange.bind(this)} >
+        {options}
       </select>
     );
   }
-*/
+
 
   render(){
     let filter;

@@ -9,10 +9,9 @@ import ApplicationList from '../../components/ApplicationList/ApplicationList';
 import Filter from '../../components/Filter/Filter';
 import Footer from '../../components/Footer/Footer';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
+//import GPASelect from '../../components/GPASelect/GPASelect';
 import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
-import SkillSelect from '../../components/SkillSelect/SkillSelect';
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import * as Utils from '../../components/Utils';
 
@@ -41,6 +40,10 @@ class ProfessorView extends Component {
       else
         return {[filterType]: [...state[filterType], option]};
     });
+  }
+
+  updateSingleChoiceFilter(filterType, option){
+    this.setState({[filterType]:option});
   }
 
   handleUpdateGPA(gpaObj) {
@@ -141,11 +144,20 @@ class ProfessorView extends Component {
 
                 <hr />
 
+                <Filter
+                  filterType="gpaSelect"
+                  label="GPA Requirement"
+                  updateFilterOption={this.updateSingleChoiceFilter.bind(this)}
+                  choices= {Utils.getGPA()}
+                  type = "select"
+                />
+
+{/*
                 <div className="filter-child">
                   <label htmlFor="gpaField">GPA Requirement</label>
                   <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
                 </div>
-
+*/}
                 <hr />
 
                 <div className="filter-child">
@@ -154,11 +166,12 @@ class ProfessorView extends Component {
                 </div>
 
                 <hr />
-
-                <div className="filter-child">
-                  <label htmlFor="skillField">Required Skills</label>
-                  <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
-                </div>
+{/*
+  <div className="filter-child">
+    <label htmlFor="skillField">Required Skills</label>
+    <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
+  </div>
+  */}
               </div>
             </div>
             <div className="column">

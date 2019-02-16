@@ -40,12 +40,8 @@ class OpportunityList extends Component {
           willShow = matches;
         }
 
-        const yearsSelected = filteredOptions.yearSelect;
-        const yearsAllowed = opp.yearsAllowed;
-        console.log(yearsSelected);
-        willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
-
         let minGPA = filteredOptions.gpaSelect;
+        console.log(minGPA);
         if (minGPA != '' && minGPA < opp.minGPA){
               willShow = false;
         }
@@ -56,6 +52,11 @@ class OpportunityList extends Component {
               willShow = false;
         }
 
+        //multiple/checkbox choices
+        const yearsSelected = filteredOptions.yearSelect;
+        const yearsAllowed = opp.yearsAllowed;
+        willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
+
         const csAreasSelected = filteredOptions.csAreasSelect;
         const csAreasAllowed = opp.areas;
         willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
@@ -63,6 +64,7 @@ class OpportunityList extends Component {
         const compensationsSelected = filteredOptions.compensationSelect;
         const compensationsAllowed = opp.compensation;
         willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
+        //end multiple/checkbox choices
 
       if (willShow) {
         return (
