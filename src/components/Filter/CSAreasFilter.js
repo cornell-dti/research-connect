@@ -19,6 +19,6 @@ class CSAreasFilter extends Component {
 
 CSAreasFilter.propTypes = {
   update: PropTypes.func, //lifts the state up
-}
+};
 
 export default CSAreasFilter;

@@ -19,6 +19,6 @@ class CompensationFilter extends Component {
 
 CompensationFilter.propTypes = {
   update: PropTypes.func, //lifts the state up
-}
+};
 
 export default CompensationFilter;

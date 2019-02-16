@@ -19,6 +19,6 @@ class SchoolYearFilter extends Component {
 
 SchoolYearFilter.propTypes = {
   update: PropTypes.func, //lifts the state up
-}
+};
 
 export default SchoolYearFilter;

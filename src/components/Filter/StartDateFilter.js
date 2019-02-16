@@ -19,6 +19,6 @@ class StartDateFilter extends Component {
 
 StartDateFilter.propTypes = {
   update: PropTypes.func, //lifts the state up
-}
+};
 
 export default StartDateFilter;

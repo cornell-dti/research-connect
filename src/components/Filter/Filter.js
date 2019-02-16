@@ -77,6 +77,6 @@ Filter.propTypes = {
   label: PropTypes.string, //example above, this would be "School Year"
   updateFilterOption: PropTypes.func, //lifts the state up
   choices: PropTypes.object, //key is stored in the database, value is label displayed
-}
+};
 
 export default Filter;

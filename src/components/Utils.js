@@ -137,83 +137,83 @@ export function getMajorList(){
 }
 
 export function getCSAreas(){
-  const csAreas = {	"cloudComputing": "Cloud Computing and/or Distributed systems",
-                		"operatingSystems": "Operating systems",
-                		"networks": "Computer networks",
-                		"algorithms": "Algorithms",
-                		"humanComputerInteraction": "Human-Computer Interaction",
-                		"programmingLanguages": "Programming Languages",
-                		"naturalLanguageProcessing": "Natural Language Processing",
-                		"machineLearning": "Machine Learning and/or Artificial Intelligence",
-                		"robotics": "Robotics",
-                		"graphics": "Graphics",
-                		"security": "Security",
-                		"optimization": "Optimization",
-                		"computationalBiology": "Computational Biology",
-                		"other": "Other" };
+  const csAreas = {	'cloudComputing': 'Cloud Computing and/or Distributed systems',
+                		'operatingSystems': 'Operating systems',
+                		'networks': 'Computer networks',
+                		'algorithms': 'Algorithms',
+                		'humanComputerInteraction': 'Human-Computer Interaction',
+                		'programmingLanguages': 'Programming Languages',
+                		'naturalLanguageProcessing': 'Natural Language Processing',
+                		'machineLearning': 'Machine Learning and/or Artificial Intelligence',
+                		'robotics': 'Robotics',
+                		'graphics': 'Graphics',
+                		'security': 'Security',
+                		'optimization': 'Optimization',
+                		'computationalBiology': 'Computational Biology',
+                		'other': 'Other' };
   return csAreas;
 }
 
 export function getCompensation(){
-  const compensations = {"money": "Money", "credit" : "Credit"};
+  const compensations = {'money': 'Money', 'credit' : 'Credit'};
   return compensations;
 }
 
 export function getYears(){
-  const years = { "freshman":"Freshman",
-                  "sophomore":"Sophmore",
-                  "junior":"Junior",
-                  "senior":"Senior"};
+  const years = { 'freshman':'Freshman',
+                  'sophomore':'Sophmore',
+                  'junior':'Junior',
+                  'senior':'Senior'};
   return years;
 }
 
 export function getGPA(){
-  const gpas = { "2.5":"2.5",
-                 "2.6":"2.6",
-                 "2.7":"2.7",
-                 "2.8":"2.8",
-                 "2.9":"2.9",
-                 "3.0":"3.0",
-                 "3.1":"3.1",
-                 "3.2":"3.2",
-                 "3.3":"3.3",
-                 "3.4":"3.4",
-                 "3.5":"3.5",
-                 "3.6":"3.6",
-                 "3.7":"3.7",
-                 "3.8":"3.8",
-                 "3.9":"3.9",
-                 "4.0":"4.0",
-                 "4.1":"4.1",
-                 "4.2":"4.2",
-                 "4.3":"4.3" };
+  const gpas = { '2.5':'2.5',
+                 '2.6':'2.6',
+                 '2.7':'2.7',
+                 '2.8':'2.8',
+                 '2.9':'2.9',
+                 '3.0':'3.0',
+                 '3.1':'3.1',
+                 '3.2':'3.2',
+                 '3.3':'3.3',
+                 '3.4':'3.4',
+                 '3.5':'3.5',
+                 '3.6':'3.6',
+                 '3.7':'3.7',
+                 '3.8':'3.8',
+                 '3.9':'3.9',
+                 '4.0':'4.0',
+                 '4.1':'4.1',
+                 '4.2':'4.2',
+                 '4.3':'4.3' };
   return gpas;
 }
 
 export function getStartYears(){
-  const starting = { "":"Select",
-                     "f18":"Fall 2018",
-                     "sp19":"Spring 2019",
-                     "su19":"Summer 2019",
-                     "f19":"Fall 2019",
-                     "sp20":"Spring 2020"
+  const starting = { '':'Select',
+                     'f18':'Fall 2018',
+                     'sp19':'Spring 2019',
+                     'su19':'Summer 2019',
+                     'f19':'Fall 2019',
+                     'sp20':'Spring 2020'
                    };
   return starting;
 }
 
 export function updateSingleChoiceFilter(filterName, option){
-    console.log("Setting " + filterName + " to " + option);
+    console.log('Setting ' + filterName + ' to ' + option);
     this.setState({[filterName]:option});
 }
 
 export function updateMultipleChoiceFilter(filterName, option){
     this.setState((state) => {
     	if (state[filterName].includes(option)){
-        console.log("Removing " + option + " from " + filterName);
+        console.log('Removing ' + option + ' from ' + filterName);
     		return {[filterName]: state[filterName].filter(original => original !== option)};
       }
       else{
-        console.log("Adding " + option + " to " + filterName);
+        console.log('Adding ' + option + ' to ' + filterName);
         return {[filterName]: [...state[filterName], option]};
       }
     });
