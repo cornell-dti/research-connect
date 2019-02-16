@@ -12,6 +12,10 @@ import OpportunityBox from '../../components/Opportunity/OpportunityBox/Opportun
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
 import Filter from '../../components/Filter/Filter';
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+import CompensationFilter from '../../components/Filter/CompensationFilter';
+import CSAreasFilter from '../../components/Filter/CSAreasFilter';
 import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
@@ -68,6 +72,7 @@ class Opportunities extends Component {
   }
   */
 
+/*
   updateMultipleChoiceFilter(filterName, option){
     this.setState((state) => {
     	if (state[filterName].includes(option))
@@ -80,10 +85,7 @@ class Opportunities extends Component {
     updateSingleChoiceFilter(filterType, option){
       this.setState({[filterType]:option});
     }
-
-  handleUpdateGPA(gpaObj) {
-    this.setState({ gpaSelect: gpaObj });
-  }
+*/
 
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
@@ -189,15 +191,20 @@ class Opportunities extends Component {
 
               <hr />
 
+              <SchoolYearFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
+
+          {/*
               <Filter
                 filterType="yearSelect"
                 label="School Year"
-                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
+                updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
                 choices= {Utils.getYears()}
                 type = "checkbox"
               />
 
-              {/*
+
               <div className="filter-child">
                 <label htmlFor="yearField">School Year</label>
                 <YearSelect
@@ -219,13 +226,8 @@ class Opportunities extends Component {
 
   */}
 
-
-              <Filter
-                filterType="gpaSelect"
-                label="GPA Select"
-                updateFilterOption={this.updateSingleChoiceFilter.bind(this)}
-                choices={Utils.getGPA()}
-                type = "select"
+              <GPAFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
               />
 
               <hr />
@@ -236,24 +238,34 @@ class Opportunities extends Component {
               </div>
 
               <hr />
-
+{/*
               <Filter
                 filterType="compensationSelect"
                 label="Compensation"
-                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
+                updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
                 choices={Utils.getCompensation()}
                 type = "checkbox"
+              />
+*/}
+              <CompensationFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
 
               <hr />
 
-              <Filter
-                filterType="csAreasSelect"
-                label="CS Areas"
-                updateFilterOption={this.updateMultipleChoiceFilter.bind(this)}
-                choices={Utils.getCSAreas()}
-                type="checkbox"
+              <CSAreasFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
+
+              {/*              <Filter
+                              filterType="csAreasSelect"
+                              label="CS Areas"
+                              updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
+                              choices={Utils.getCSAreas()}
+                              type="checkbox"
+                            />
+                            */}
+
 
             </div>
           </div>

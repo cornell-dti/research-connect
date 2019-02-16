@@ -42,14 +42,11 @@ class ProfessorView extends Component {
     });
   }
 
+/*
   updateSingleChoiceFilter(filterType, option){
     this.setState({[filterType]:option});
   }
-
-  handleUpdateGPA(gpaObj) {
-    this.setState({ gpaSelect: gpaObj });
-  }
-
+*/
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
   }
@@ -137,7 +134,7 @@ class ProfessorView extends Component {
                 <Filter
                   filterType="yearSelect"
                   label="School Year"
-                  updateFilterOption={this.updateFilterOption.bind(this)}
+                  updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
                   choices= {Utils.getYears()}
                   type = "checkbox"
                 />
@@ -147,7 +144,7 @@ class ProfessorView extends Component {
                 <Filter
                   filterType="gpaSelect"
                   label="GPA Requirement"
-                  updateFilterOption={this.updateSingleChoiceFilter.bind(this)}
+                  updateFilterOption={Utils.updateSingleChoiceFilter.bind(this)}
                   choices= {Utils.getGPA()}
                   type = "select"
                 />

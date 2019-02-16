@@ -189,3 +189,16 @@ export function getGPA(){
                  "4.3":"4.3" };
   return gpas;
 }
+
+export function updateSingleChoiceFilter(filterType, option){
+    this.setState({[filterType]:option});
+}
+
+export function updateMultipleChoiceFilter(filterName, option){
+    this.setState((state) => {
+    	if (state[filterName].includes(option))
+    		return {[filterName]: state[filterName].filter(original => original !== option)};
+      else
+        return {[filterName]: [...state[filterName], option]};
+    });
+}
