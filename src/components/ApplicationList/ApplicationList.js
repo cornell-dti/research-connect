@@ -42,20 +42,12 @@ class ApplicationList extends Component {
 
     if(yearsSelected.includes(Utils.gradYearToGrade(gradYear)) ||
        yearsSelected.length === 0){
-      const csSelected = filter.majorSelect.cs;
-      const bioSelected = filter.majorSelect.biology;
-      const major = application.major;
-
-      if ((csSelected && major === 'CS')
-        || (bioSelected && major === 'Biology')
-        || (!csSelected && !bioSelected)) {
         const minGPA = filter.gpaSelect;
 
         if (minGPA <= application.gpa) {
           return this.coursesSatisfied(application.courses, filter.courses)
                  && this.skillsSatisfied(application.skills, filter.skills);
         }
-      }
     }
 
     return false;
