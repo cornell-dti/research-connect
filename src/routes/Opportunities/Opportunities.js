@@ -30,7 +30,7 @@ class Opportunities extends Component {
     super(props);
     this.state = {
       yearSelect: [],
-      gpaSelect: "2.5",
+      gpaSelect: '2.5',
       majorSelect: {},
       startDate: '',
       compensationSelect: [],
@@ -122,18 +122,18 @@ class Opportunities extends Component {
     /** BEGIN code for detecting role and changing navbar */
     // TODO make temp navbar into a component
     return (
-      <div className="opportunities-wrapper">
-        {this.state.role && this.state.role === 'undergrad' && <Navbar current="opportunities" />}
-        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current="opportunities" />}
+      <div className='opportunities-wrapper'>
+        {this.state.role && this.state.role === 'undergrad' && <Navbar current='opportunities'/>}
+        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current='opportunities' />}
         {!this.state.role && (
-        <div className="go-home" onClick={() => this.goHome()}>
-          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
+        <div className='go-home' onClick={() => this.goHome()}>
+          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className='black-arrow' />
         Home
         </div>
         ) /** END code for detecting role and changing navbar */}
 
 
-        <div className="row search-div-container">
+        <div className='row search-div-container'>
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
           </div>

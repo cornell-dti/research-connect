@@ -13,7 +13,7 @@ class OpportunityList extends Component {
   }
 
   union(arr1, arr2){
-    let arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
+    let arr3 = arr1.filter((i) => arr2.indexOf(i) > -1);
     return arr3;
   }
 
@@ -30,7 +30,7 @@ class OpportunityList extends Component {
         const filteredOptions = this.props.filteredOptions;
 
         let matchingSearches = filteredOptions.matchingSearches;
-        if (filteredOptions.searchBar !== "" && filteredOptions.clickedEnter){
+        if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter){
           let matches = false;
           for (let i = 0; i<matchingSearches.length; i++){
             if(matchingSearches[i] === opp._id){
@@ -41,10 +41,7 @@ class OpportunityList extends Component {
         }
 
         let minGPA = filteredOptions.gpaSelect;
-        console.log(minGPA);
-        if (minGPA != '' && minGPA < opp.minGPA){
-              willShow = false;
-        }
+        willShow = willShow && minGPA < opp.minGPA;
 
         let season = filteredOptions.startDate.season;
         let year = filteredOptions.startDate.year;

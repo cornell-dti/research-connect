@@ -19,7 +19,7 @@ class Filter extends React.Component {
       return (
         <React.Fragment>
         <input onChange={this.handleChange.bind(this)}
-               type="checkbox"
+               type='checkbox'
                value={value}
                key={index}/>
         {choices[value]}
@@ -29,7 +29,7 @@ class Filter extends React.Component {
     });
 
     return (
-      <div className="checkbox-wrapper">
+      <div className='checkbox-wrapper'>
         { options }
       </div>
     );
@@ -45,7 +45,7 @@ class Filter extends React.Component {
       );
     });
     return (
-      <select className="select-wrapper" onChange={this.handleChange.bind(this)} >
+      <select className='select-wrapper' onChange={this.handleChange.bind(this)} >
         {options}
       </select>
     );
@@ -55,15 +55,15 @@ class Filter extends React.Component {
   render(){
     let filter;
 
-    if(this.props.type === "select"){
+    if(this.props.type === 'select'){
       filter = this.createSelect();
     }
-    else if(this.props.type === "checkbox"){
+    else if(this.props.type === 'checkbox'){
       filter = this.createCheckbox();
     }
 
     return (
-      <div className="filter-child">
+      <div className='filter-child'>
         <label>{this.props.label}</label>
         {filter}
       </div>
@@ -74,7 +74,7 @@ class Filter extends React.Component {
 
 Filter.propTypes = {
   filterType: PropTypes.string, //ex. for year filtering, filterType is yearSelect
-  label: PropTypes.string, //example above, this would be "School Year"
+  label: PropTypes.string, //example above, this would be 'School Year'
   updateFilterOption: PropTypes.func, //lifts the state up
   choices: PropTypes.object, //key is stored in the database, value is label displayed
 };
