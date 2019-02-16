@@ -23,7 +23,7 @@ class Filter extends React.Component {
                value={value}
                key={index}/>
         {choices[value]}
-        <br /> 
+        <br />
         </React.Fragment>
       );
     });
@@ -79,4 +79,4 @@ Filter.propTypes = {
   choices: PropTypes.object, //key is stored in the database, value is label displayed
 }
 
-export default Filter
+export default Filter;

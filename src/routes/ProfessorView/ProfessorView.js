@@ -6,13 +6,19 @@ import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
-import Filter from '../../components/Filter/Filter';
-import Footer from '../../components/Footer/Footer';
-// import MajorSelect from '../../components/MajorSelect/MajorSelect';
-//import GPASelect from '../../components/GPASelect/GPASelect';
+
+//necessary for all filters
+import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+
 import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
+//import GPASelect from '../../components/GPASelect/GPASelect';
+
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
+import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 
 class ProfessorView extends Component {
@@ -20,7 +26,7 @@ class ProfessorView extends Component {
     super(props);
     this.state = {
       yearSelect: [],
-      gpaSelect: {},
+      gpaSelect: "2.5",
       majorSelect: {},
       startDate: {},
       courses: [],
@@ -30,7 +36,7 @@ class ProfessorView extends Component {
       loading: true,
     };
   }
-
+/*
   updateFilterOption(filterType, option){
     this.setState((state) => {
       if (state[filterType].includes(option)){
@@ -42,7 +48,7 @@ class ProfessorView extends Component {
     });
   }
 
-/*
+
   updateSingleChoiceFilter(filterType, option){
     this.setState({[filterType]:option});
   }
@@ -131,30 +137,16 @@ class ProfessorView extends Component {
 
                 <hr />
 
-                <Filter
-                  filterType="yearSelect"
-                  label="School Year"
-                  updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
-                  choices= {Utils.getYears()}
-                  type = "checkbox"
+                <SchoolYearFilter
+                  update={Utils.updateMultipleChoiceFilter.bind(this)}
                 />
 
                 <hr />
 
-                <Filter
-                  filterType="gpaSelect"
-                  label="GPA Requirement"
-                  updateFilterOption={Utils.updateSingleChoiceFilter.bind(this)}
-                  choices= {Utils.getGPA()}
-                  type = "select"
+                <GPAFilter
+                  update={Utils.updateSingleChoiceFilter.bind(this)}
                 />
 
-{/*
-                <div className="filter-child">
-                  <label htmlFor="gpaField">GPA Requirement</label>
-                  <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-                </div>
-*/}
                 <hr />
 
                 <div className="filter-child">
@@ -163,7 +155,10 @@ class ProfessorView extends Component {
                 </div>
 
                 <hr />
+
+
 {/*
+  //TODO: ADD SKILL SELECT FILTER BACK?
   <div className="filter-child">
     <label htmlFor="skillField">Required Skills</label>
     <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
@@ -171,6 +166,7 @@ class ProfessorView extends Component {
   */}
               </div>
             </div>
+
             <div className="column">
               <div className="application-list-container">
                 <div className="application-list-header">Applications For Your Lab</div>

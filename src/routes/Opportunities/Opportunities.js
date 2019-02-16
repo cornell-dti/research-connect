@@ -11,11 +11,15 @@ import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
-import Filter from '../../components/Filter/Filter';
+
+//necessary for all filters
+import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
 import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
 import CompensationFilter from '../../components/Filter/CompensationFilter';
 import CSAreasFilter from '../../components/Filter/CSAreasFilter';
+
+
 import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
@@ -25,7 +29,7 @@ class Opportunities extends Component {
     super(props);
     this.state = {
       yearSelect: [],
-      gpaSelect: {},
+      gpaSelect: "2.5",
       majorSelect: {},
       startDate: {},
       compensationSelect: [],
@@ -60,32 +64,6 @@ class Opportunities extends Component {
         Utils.handleTokenError(error);
       });
   }
-
-  /*
-  //These two functions are combined into the below function.
-  addFilterOption(filterType, option){
-    this.setState(prevState => ({[filterType]: [...prevState[filterType], option]}));
-  }
-
-  removeFilterOption(filterType, option){
-    this.setState(prevState => ({[filterType]: prevState[filterType].filter(originalO => originalO !== option)}));
-  }
-  */
-
-/*
-  updateMultipleChoiceFilter(filterName, option){
-    this.setState((state) => {
-    	if (state[filterName].includes(option))
-    		return {[filterName]: state[filterName].filter(original => original !== option)};
-      else
-        return {[filterName]: [...state[filterName], option]};
-    });
-  }
-
-    updateSingleChoiceFilter(filterType, option){
-      this.setState({[filterType]:option});
-    }
-*/
 
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
@@ -195,36 +173,7 @@ class Opportunities extends Component {
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
 
-          {/*
-              <Filter
-                filterType="yearSelect"
-                label="School Year"
-                updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
-                choices= {Utils.getYears()}
-                type = "checkbox"
-              />
-
-
-              <div className="filter-child">
-                <label htmlFor="yearField">School Year</label>
-                <YearSelect
-                  filterType="yearSelect"
-                  updateFilterOption={this.updateFilterOption.bind(this)}
-                  choices={Utils.getYears}
-                  generateOptions={this.createCheckbox.bind(this)}
-                  />
-              </div>
-              */}
-
               <hr />
-
-{/*
-  <div className="filter-child">
-    <label htmlFor="gpaField">GPA Requirement</label>
-    <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-  </div>
-
-  */}
 
               <GPAFilter
                 update={Utils.updateSingleChoiceFilter.bind(this)}
@@ -238,15 +187,7 @@ class Opportunities extends Component {
               </div>
 
               <hr />
-{/*
-              <Filter
-                filterType="compensationSelect"
-                label="Compensation"
-                updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
-                choices={Utils.getCompensation()}
-                type = "checkbox"
-              />
-*/}
+
               <CompensationFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
@@ -256,16 +197,6 @@ class Opportunities extends Component {
               <CSAreasFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
-
-              {/*              <Filter
-                              filterType="csAreasSelect"
-                              label="CS Areas"
-                              updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
-                              choices={Utils.getCSAreas()}
-                              type="checkbox"
-                            />
-                            */}
-
 
             </div>
           </div>
