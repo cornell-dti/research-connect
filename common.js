@@ -32,8 +32,7 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sgMail = sgMail;
-module.exports.sgOppsGroup = process.env.SENDGRID_OPPS_GROUP;
-debug(typeof process.env.SENDGRID_OPPS_GROUP);
+module.exports.sgOppsGroup = parseInt(process.env.SENDGRID_OPPS_GROUP, 10);
 module.exports.sgAnnouncementsGroup = parseInt(process.env.SENDGRID_ANNOUNCEMENTS_GROUP, 10);
 module.exports.sgStatusGroup = parseInt(process.env.SENDGRID_STATUS_GROUP, 10);
 

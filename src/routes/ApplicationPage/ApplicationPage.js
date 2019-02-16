@@ -7,7 +7,7 @@ import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 import ExternalLink from 'react-icons/lib/fa/external-link';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 
 

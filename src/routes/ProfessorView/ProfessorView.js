@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorView.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
