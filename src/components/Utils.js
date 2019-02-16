@@ -201,15 +201,20 @@ export function getStartYears(){
   return starting;
 }
 
-export function updateSingleChoiceFilter(filterType, option){
-    this.setState({[filterType]:option});
+export function updateSingleChoiceFilter(filterName, option){
+    console.log("Setting " + filterName + " to " + option);
+    this.setState({[filterName]:option});
 }
 
 export function updateMultipleChoiceFilter(filterName, option){
     this.setState((state) => {
-    	if (state[filterName].includes(option))
+    	if (state[filterName].includes(option)){
+        console.log("Removing " + option + " from " + filterName);
     		return {[filterName]: state[filterName].filter(original => original !== option)};
-      else
+      }
+      else{
+        console.log("Adding " + option + " to " + filterName);
         return {[filterName]: [...state[filterName], option]};
+      }
     });
 }

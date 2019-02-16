@@ -12,7 +12,7 @@ import Filter from '../../components/Filter/Filter'; //this one is just the labe
 import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
 
-import StartDate from '../../components/StartDate/StartDate';
+//import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 //import GPASelect from '../../components/GPASelect/GPASelect';
@@ -27,8 +27,8 @@ class ProfessorView extends Component {
     this.state = {
       yearSelect: [],
       gpaSelect: "2.5",
-      majorSelect: {},
-      startDate: {},
+      //majorSelect: {},
+      //startDate: {},
       courses: [],
       skills: [],
       opportunity: 'All',
@@ -36,29 +36,9 @@ class ProfessorView extends Component {
       loading: true,
     };
   }
-/*
-  updateFilterOption(filterType, option){
-    this.setState((state) => {
-      if (state[filterType].includes(option)){
-        console.log("REMOVING");
-        return {[filterType]: state[filterType].filter(original => original !== option)};
-      }
-      else
-        return {[filterType]: [...state[filterType], option]};
-    });
-  }
 
-
-  updateSingleChoiceFilter(filterType, option){
-    this.setState({[filterType]:option});
-  }
-*/
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
-  }
-
-  handleUpdateDate(majorObj) {
-    this.setState({ startDate: majorObj });
   }
 
   handleUpdateCourses(courseList) {
@@ -93,8 +73,7 @@ class ProfessorView extends Component {
   }
 
   componentDidMount() {
-    // temporary
-    this.state.loading = false;
+    this.state.loading = false;    // temporary
   }
 
   render() {
@@ -132,7 +111,10 @@ class ProfessorView extends Component {
 
                 <div className="filter-child">
                   <label htmlFor="opportunityField">Opportunity</label>
-                  <OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
+                  <OpportunitySelect
+                    opportunities={this.state.opportunities}
+                    updateOpportunity={this.handleUpdateOpportunity.bind(this)}
+                  />
                 </div>
 
                 <hr />
@@ -155,7 +137,6 @@ class ProfessorView extends Component {
                 </div>
 
                 <hr />
-
 
 {/*
   //TODO: ADD SKILL SELECT FILTER BACK?
