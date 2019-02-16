@@ -50,10 +50,8 @@ class ApplicationList extends Component {
         || (bioSelected && major === 'Biology')
         || (!csSelected && !bioSelected)) {
         const minGPA = filter.gpaSelect;
-        console.log("min gpa");
-        console.log(minGPA);
 
-        if (!minGPA || minGPA === "" || minGPA <= application.gpa) {
+        if (minGPA <= application.gpa) {
           return this.coursesSatisfied(application.courses, filter.courses)
                  && this.skillsSatisfied(application.skills, filter.skills);
         }
