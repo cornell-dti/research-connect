@@ -18,6 +18,7 @@ import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
 import CompensationFilter from '../../components/Filter/CompensationFilter';
 import CSAreasFilter from '../../components/Filter/CSAreasFilter';
+import StartDateFilter from '../../components/Filter/StartDateFilter';
 
 
 import StartDate from '../../components/StartDate/StartDate';
@@ -31,7 +32,7 @@ class Opportunities extends Component {
       yearSelect: [],
       gpaSelect: "2.5",
       majorSelect: {},
-      startDate: {},
+      startDate: '',
       compensationSelect: [],
       searchBar: '',
       matchingSearches: [],
@@ -181,11 +182,15 @@ class Opportunities extends Component {
 
               <hr />
 
+              <StartDateFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
+              />
+{/*
               <div className="filter-child">
                 <label htmlFor="startDateField">Start Date</label>
                 <StartDate updateDate={this.handleUpdateDate.bind(this)} />
               </div>
-
+*/}
               <hr />
 
               <CompensationFilter

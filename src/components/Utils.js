@@ -190,6 +190,17 @@ export function getGPA(){
   return gpas;
 }
 
+export function getStartYears(){
+  const starting = { "":"Select",
+                     "f18":"Fall 2018",
+                     "sp19":"Spring 2019",
+                     "su19":"Summer 2019",
+                     "f19":"Fall 2019",
+                     "sp20":"Spring 2020"
+                   };
+  return starting;
+}
+
 export function updateSingleChoiceFilter(filterType, option){
     this.setState({[filterType]:option});
 }
