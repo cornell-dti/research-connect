@@ -259,13 +259,13 @@ class EditProfile extends Component {
     viewResume = (e) => {
         console.log("We are now viewing the resume");
         e.preventDefault();
-        window.location.href = '/api/docs/' + this.state.resumeId;
+        window.location.href = '/doc/' + this.state.resumeId;
     }
 
     viewTranscript = (e) => {
         console.log("We are now viewing the transcript");
         e.preventDefault();
-        window.location.href = '/api/docs/' + this.state.transcriptId;
+        window.location.href = '/doc/' + this.state.transcriptId;
     }
 
     onDropResume = acceptedFiles => {
