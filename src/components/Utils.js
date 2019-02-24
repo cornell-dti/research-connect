@@ -1,6 +1,22 @@
 function dateIsBetween(date, lowerBound, upperBound) {
     return (lowerBound <= date && date <= upperBound);
 }
+export function gradStringtoYear(gradString) {
+    let presentYear = new Date().getFullYear(); 
+    let presentMonth = new Date().getMonth(); 
+    if (gradString === "Freshman"){
+        return (presentMonth < 5) ? presentYear - 3 : presentYear - 4; 
+    }
+    if (gradString === "Sophomore") {
+        return (presentMonth < 5) ? presentYear - 3 : presentYear - 4; 
+    }
+    if (gradString === "Junior") {
+        return (presentMonth < 5) ? presentYear - 3 : presentYear - 4; 
+    }
+    if (gradString === "Senior") {
+        return (presentMonth < 5) ? presentYear - 3 : presentYear - 4; 
+    }
+}
 
 export function gradYearToString(gradYear) {
     let presentDate = new Date();

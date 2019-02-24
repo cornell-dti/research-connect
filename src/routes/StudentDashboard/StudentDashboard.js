@@ -8,9 +8,11 @@ import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import * as Utils from "../../components/Utils";
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
+import User from 'react-icons/lib/fa/user';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
 import Edit from 'react-icons/lib/fa/edit';
+
 
 class StudentDashboard extends Component{
   constructor(props) {
@@ -66,6 +68,7 @@ class StudentDashboard extends Component{
 
     const newspaper = <Newspaper />;
     const edit = <Edit />;
+    const user = <User />;
 
     return (
       <div>
@@ -85,6 +88,11 @@ class StudentDashboard extends Component{
                 iconColor="#A5CCFE"
                 text="View opportunities"
                 href='/opportunities' />
+                <DashboardAction
+                icon={ user }
+                iconColor="#FEABCD"
+                text="Edit your profile"
+                href='/editprofile' />
             </div>
           </div>
         </div>

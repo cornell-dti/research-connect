@@ -55,12 +55,13 @@ class EditProfile extends Component {
         .then(res => {
             let info = res.data[0];
             const skills = info.skills === undefined ? [] : info.skills;
-            const year = Utils.gradYearToString(info.gradYear);
+            console.log(info.gradYear);
+            const year = info.gradYear;
             this.setState({
                 relevantCourses: info.courses,
                 firstName: info.firstName,
                 lastName: info.lastName,
-                year: info.lastName,
+                year: year,
                 major: info.major,
                 gpa: info.gpa,
                 relevantSkills: skills,
@@ -81,7 +82,7 @@ class EditProfile extends Component {
             // this.setState({lastName: info.lastName});
             console.log(this.state.firstName);
             console.log(info);
-            if (this.state.firstName == '') {
+            if (this.state.firstName === '') {
                 console.log("Looks like we didn't load it");
             } else {
                 console.log("We did load it :D");
@@ -99,6 +100,7 @@ class EditProfile extends Component {
     }
 
     handleChange(event) {
+
         if (event.target.id === "year") {
             this.setState({year: event.target.value});
         }
@@ -116,9 +118,13 @@ class EditProfile extends Component {
         }
         //else if (event.target.id === "")
     }
-
+    handleEditUpperBox(event){
+        this.setState({editYear: !this.state.editYear});
+           this.setState({editMajor: !this.state.editMajor});
+    }
     handleEditYear(event) {
-        let validateYear = ["Freshman", "Sophomore", "Junior", "Senior"]
+        let presentYear = new Date().getFullYear(); 
+        let validateYear = [presentYear -4 , presentYear - 3, presentYear - 2, presentYear -1, presentYear]
         if (validateYear.indexOf(this.state.year) === -1) {
             this.setState({invalidYear: true});
         } else {
@@ -129,7 +135,7 @@ class EditProfile extends Component {
     }
 
     handleEditMajor(event) {
-        if (this.state.major == "") {
+        if (this.state.major === "") {
             this.setState({invalidMajor: true});
         } else {
             this.setState({invalidMajor: false});
@@ -259,13 +265,13 @@ class EditProfile extends Component {
     viewResume = (e) => {
         console.log("We are now viewing the resume");
         e.preventDefault();
-        window.location.href = '/api/docs/' + this.state.resumeId;
+        window.location.href = '/doc/' + this.state.resumeId;
     }
 
     viewTranscript = (e) => {
         console.log("We are now viewing the transcript");
         e.preventDefault();
-        window.location.href = '/api/docs/' + this.state.transcriptId;
+        window.location.href = '/doc/' + this.state.transcriptId;
     }
 
     onDropResume = acceptedFiles => {
@@ -336,36 +342,39 @@ class EditProfile extends Component {
         } = this.state;
         let token_id = sessionStorage.getItem('token_id');
         console.log("constant is working");
+
+        if (this.state.resume != null && this.state.resume.length !== 0){
+            axios.post('/api/docs', {token_id, resume})
+                .then((result) => {
+                    console.log("Resume updated, result: ");
+                    console.log(result);
+                }).catch(function (error) {
+                    console.log("Error in posting resume");
+                    console.log(error);
+            });
+        }
+        if (this.state.transcript != null && this.state.transcript.length !== 0){
+            axios.post('/api/docs', {token_id, transcript})
+                .then((result) => {
+                    console.log("Transcript updated, result: ");
+                    console.log(result);
+                }).catch(function (error) {
+                    console.log("Error in posting transcript");
+                    console.log(error);
+            });
+        }
         axios.put('/api/undergrads/' + this.state.netId, { year, major, gpa, relevantCourses, relevantSkills })
         .then((result) => {
             console.log("undergrad updated, result:");
             console.log(result);
+            setTimeout(function(){
+                let baseUrl = window.location.protocol + "//" + window.location.host;
+                window.location.replace(baseUrl + "/editprofile");
+            }, 1500);
+           
             //access the results here....
-            //Change netId to token_id I think
         });
 
- 
-
-    if (this.state.resume != null && this.state.resume.length !== 0){
-        axios.post('/api/docs', {token_id, resume})
-            .then((result) => {
-                console.log("Resume updated, result: ");
-                console.log(result);
-            }).catch(function (error) {
-                console.log("Error in posting resume");
-                console.log(error);
-        });
-    }
-    if (this.state.transcript != null && this.state.transcript.length !== 0){
-        axios.post('/api/docs', {token_id, transcript})
-            .then((result) => {
-                console.log("Transcript updated, result: ");
-                console.log(result);
-            }).catch(function (error) {
-                console.log("Error in posting transcript");
-                console.log(error);
-        });
-    }
         // axios.put('/api/undergrads/' + this.state.netId, {year, major, gpa, relevantCourses, relevantSkills})
         //     .then((result) => {
         //         console.log("undergrad updated, result:");
@@ -400,8 +409,8 @@ class EditProfile extends Component {
                         <div className=" row title-box-prof">
                         <div className = "column left-column">
                         <div className = "header"> 
-                            <h4>{this.state.firstName + " " + this.state.lastName}</h4> </div>
-                            <h6>{this.state.netId + "@cornell.edu"}</h6>
+                            <h4 class = "edit-bold">{this.state.firstName + " " + this.state.lastName}</h4> </div>
+                            <h6 class = "edit-bold">{this.state.netId + "@cornell.edu"}</h6>
                             {this.state.editYear ?
                                 <div className="input-div">
                                     <input className="year edit-input" type="text" name="year" id="year"
@@ -525,7 +534,7 @@ class EditProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <button className="column column-50" style={{marginLeft: "45%", marginTop: "10px"}}
+                    <button className="column column-50 edit-submit" style={{marginLeft: "45%", marginTop: "10px"}}
                             onClick={this.onClick}>Submit
                     </button>
                 </div>
