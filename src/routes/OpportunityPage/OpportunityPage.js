@@ -550,7 +550,7 @@ No Preference
 
         <div className={`opportunities-page-wrapper ${
           isLab ? 'opportunity-lab' : ''}`}
-        >
+				>
           <div className={`wallpaper ${
             isNotLoggedIn ? 'wallpaper-no-sign-in' : ''}`}
           />

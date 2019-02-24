@@ -17,46 +17,48 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 
 
 class CreateOppForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      creatorNetId: sessionStorage.getItem('token_id'),
-      labPage: '',
-      areas: [],
-      email: '',
-      title: '',
-      projectDescription: '',
-      undergradTasks: '',
-      qualifications: '',
-      compensation: [],
-      startSeason: '',
-      startYear: '',
-      yearsAllowed: [],
-      questions: {},
-      requiredClasses: [],
-      minGPA: '',
-      minHours: '',
-      maxHours: '',
-      opens: moment(),
-      closes: moment().add(365, 'days'),
-      labName: '',
-      supervisor: '',
-      additionalInformation: '',
-      numQuestions: 0,
-      titleIsValid: false,
-      emailIsValid: false,
-      tasksAreValid: false,
-      seasonIsValid: false,
-      // compensationIsValid: false,
-      yearIsValid: false,
-      supervisorIsValid: false,
-      triedSubmitting: false,
-      isButtonDisabled: false,
-      buttonValue: 'Submit New Position',
-      loading: false,
-      detailsButtonValue: 'Show Advanced Options',
-      showDetails: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            creatorNetId: sessionStorage.getItem('token_id'),
+            labPage: '',
+            areas: [],
+            email: '',
+            title: '',
+            projectDescription: '',
+            undergradTasks: '',
+            qualifications: '',
+            compensation: [],
+            startSeason: '',
+            startYear: '',
+            yearsAllowed: [],
+            questions: {},
+            requiredClasses: [],
+            minGPA: '',
+            minHours: '',
+            maxHours: '',
+            opens: moment(),
+            closes: moment().add(365, 'days'),
+            labName: '',
+            supervisor: '',
+            additionalInformation: '',
+            numQuestions: 0,
+            titleIsValid: false,
+            emailIsValid: false,
+            tasksAreValid: false,
+            seasonIsValid: false,
+            // compensationIsValid: false,
+            yearIsValid: false,
+            supervisorIsValid: false,
+            triedSubmitting: false,
+            isButtonDisabled: false,
+            buttonValue: 'Submit New Position',
+            loading: false,
+          selectedOptions: null,
+          areaData: [],
+          detailsButtonValue: 'Show Advanced Options',
+          showDetails: false,
+        };
 
     this.handleChange = this.handleChange.bind(this);
     this.addQuestion = this.addQuestion.bind(this);
@@ -109,10 +111,29 @@ class CreateOppForm extends React.Component {
         }
     };
      */
+    //Returns an array of CS areas
+    displayAreas() {
+        let arrayOfAreas = [];
+        for (let i = 0; i < this.state.areaData.length; i++) {
+            arrayOfAreas.push({label:this.state.areaData[i].name, value: this.state.areaData[i]._id});
+       return arrayOfAreas;
+          }
+    }
 
-  // display the questions interface to add/delete questions
-  displayQuestions() {
-    const questionBoxes = [];
+  loadAreasFromServer() {
+//Need code for getting areas
+        axios.get('/api/labs')
+            .then(res => {
+                this.setState({areaData: res.data});
+                console.log(res.data);
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
+    }
+    //display the questions interface to add/delete questions
+    displayQuestions() {
+
+        const questionBoxes = [];
     for (let i = 0; i < this.state.numQuestions; i++) {
       const stateLabel = `q${(i).toString()}`;
       questionBoxes.push(
@@ -212,9 +233,8 @@ class CreateOppForm extends React.Component {
   handleUpdateYear(e){
     let option = e.target.value;
     this.updateFilterOption("yearsAllowed", option);
-  }
-
-  handleUpdateCompensation(e){
+    }
+    handleUpdateCompensation(e){
     let option = e.target.value;
     this.updateFilterOption("compensation", option);
   }
@@ -230,76 +250,82 @@ class CreateOppForm extends React.Component {
     this.setState({ showDetails: oppositeValue });
   }
 
-  // Set values of form items in state and change their validation state if they're invalid
-  handleChange(event) {
-    if (event.target.name === 'labName') {
-      this.setState({ labName: event.target.value });
-    } else if (event.target.name === 'netID') {
-      this.setState({ creatorNetId: event.target.value });
-    } else if (event.target.name === 'title') {
-      if (event.target.value.length > 0) {
-        this.setState({ titleIsValid: true });
-      } else {
-        this.setState({ titleIsValid: false });
-      }
-      this.setState({ title: event.target.value });
-    } else if (event.target.name === 'email') {
-      if (event.target.value.length > 0) {
-        this.setState({ emailIsValid: true });
-      } else {
-        this.setState({ emailIsValid: false });
-      }
-      this.setState({ email: event.target.value });
-    } else if (event.target.name === 'areas') {
-      const areaArray = event.target.value.split(',');
-      this.setState({ areas: areaArray });
-    } else if (event.target.name === 'pi') {
-      this.setState({ pi: event.target.value });
-    } else if (event.target.name === 'supervisor') {
-      if (event.target.value.length > 0) {
-        this.setState({ supervisorIsValid: true });
-      } else {
-        this.setState({ supervisorIsValid: false });
-      }
-      this.setState({ supervisor: event.target.value });
-    } else if (event.target.name === 'descript') {
-      this.setState({ projectDescription: event.target.value });
-    } else if (event.target.name === 'tasks') {
-      if (event.target.value.length > 0) {
-        this.setState({ tasksAreValid: true });
-      } else {
-        this.setState({ tasksAreValid: false });
-      }
-      this.setState({ undergradTasks: event.target.value });
-    } else if (event.target.name === 'qual') {
-      this.setState({ qualifications: event.target.value });
-    } else if (event.target.name === 'classes') {
-      const classArray = event.target.value.split(',');
-      this.setState({ requiredClasses: classArray });
-    } else if (event.target.name === 'startSeason') {
-      if (event.target.value !== 'Select') {
-        this.setState({ seasonIsValid: true });
-      } else {
-        this.setState({ seasonIsValid: false });
-      }
-      this.setState({ startSeason: event.target.value });
-    } else if (event.target.name === 'startYear') {
-      if (event.target.value !== 'Select') {
-        this.setState({ yearIsValid: true });
-      } else {
-        this.setState({ yearIsValid: false });
-      }
-      this.setState({ startYear: event.target.value });
-    } else if (event.target.name === 'gpa') {
-      this.setState({ minGPA: event.target.value });
-    } else if (event.target.name === 'min') {
-      this.setState({ minHours: event.target.value });
-    } else if (event.target.name === 'max') {
-      this.setState({ maxHours: event.target.value });
-    } else if (event.target.name === 'additional') {
-      this.setState({ additionalInformation: event.target.value });
+    // Set values of form items in state and change their validation state if they're invalid
+    handleChange(event) {
+
+        if (event.target.name === "labName") {
+            this.setState({labName: event.target.value});
+        } else if (event.target.name === "netID") {
+            this.setState({creatorNetId: event.target.value});
+        } else if (event.target.name === "title") {
+            if (event.target.value.length > 0) {
+                this.setState({titleIsValid: true});
+            } else {
+                this.setState({titleIsValid: false});
+            }
+            this.setState({title: event.target.value});
+        // } else if (event.target.name === "areas") {
+        //     let areaArray = event.target.value.split(",");
+        //     this.setState({areas: areaArray});
+        } else if (event.target.name === 'email') {
+          if (event.target.value.length > 0) {
+            this.setState({emailIsValid: true});
+          } else {
+            this.setState({emailIsValid: false});
+          }
+          this.setState({email: event.target.value});
+        } else if (event.target.name === "pi") {
+            this.setState({pi: event.target.value});
+        } else if (event.target.name === "supervisor") {
+            if (event.target.value.length > 0) {
+              this.setState({ supervisorIsValid: true });
+            } else {
+              this.setState({ supervisorIsValid: false });
+            }
+          this.setState({ supervisor: event.target.value });        } else if (event.target.name === "descript") {
+            this.setState({projectDescription: event.target.value});
+        } else if (event.target.name === "tasks") {
+            if (event.target.value.length > 0) {
+                this.setState({tasksAreValid: true});
+            } else {
+                this.setState({tasksAreValid: false});
+            }
+            this.setState({undergradTasks: event.target.value});
+        } else if (event.target.name === "qual") {
+            this.setState({qualifications: event.target.value});
+        } else if (event.target.name === "classes") {
+            let classArray = event.target.value.split(",");
+            this.setState({requiredClasses: classArray});
+        } else if (event.target.name === "startSeason") {
+            if (event.target.value !== "Select") {
+                this.setState({seasonIsValid: true});
+            } else {
+                this.setState({seasonIsValid: false});
+            }
+            this.setState({startSeason: event.target.value});
+        } else if (event.target.name === "startYear") {
+            if (event.target.value !== "Select") {
+                this.setState({yearIsValid: true});
+            } else {
+                this.setState({yearIsValid: false});
+            }
+            this.setState({startYear: event.target.value});
+        } else if (event.target.name === "gpa") {
+            this.setState({minGPA: event.target.value});
+        } else if (event.target.name === "min") {
+            this.setState({minHours: event.target.value});
+        } else if (event.target.name === "max") {
+            this.setState({maxHours: event.target.value});
+        }
+        else if (event.target.name === "additional"){
+            this.setState({additionalInformation: event.target.value})
+        }
+        else if (event.target.name === "areas"){//THIS IS SET IN THE RETURN{
+          // const areaArray = event.target.value.split(',');
+          // this.setState({ areas: areaArray });
+          this.setState ({areas: event.target.value})
+        }
     }
-  }
 
   handleQuestionState(i) {
     const stateLabel = `q${i.toString()}`;

@@ -4,6 +4,7 @@ import './StudentDashboard.scss';
 import axios from 'axios';
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
+import User from 'react-icons/lib/fa/user';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
 import Edit from 'react-icons/lib/fa/edit';
@@ -11,6 +12,7 @@ import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+
 
 class StudentDashboard extends Component {
   constructor(props) {
@@ -67,6 +69,7 @@ class StudentDashboard extends Component {
 
     const newspaper = <Newspaper />;
     const edit = <Edit />;
+    const user = <User />;
 
     return (
       <div>
@@ -83,13 +86,17 @@ Welcome back {this.state.name}!
                 icon={edit}
                 iconColor="#A5CCFE"
                 text="View opportunities"
-                href="/opportunities"
-              />
+                href='/opportunities' />
+                <DashboardAction
+                icon={ user }
+                iconColor="#FEABCD"
+                text="Edit your profile"
+                href='/editprofile' />
               <DashboardAction
                 icon={newspaper}
                 iconColor="#91D781"
                 text="Contact Us"
-                href="mailto:acb352@cornell.edu"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform"
               />
               {/* <DashboardAction */}
               {/* icon={ edit } */}

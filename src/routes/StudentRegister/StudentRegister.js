@@ -308,8 +308,8 @@ class StudentRegister extends React.Component {
                                 width: '50%',
                                 margin: '0 0 0 25%',
                                 border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
-                            }} onDrop={this.onDropResume.bind(this)}>
-                                <p>Click/drag to drop resume (required)</p>
+                            }} onDrop={this.onDropResume.bind(this)} accept={"application/pdf"}>
+                                <p>Click/drag to drop a PDF resume (required)</p>
 
                             </Dropzone>
                             <div className="uploaded-message">
