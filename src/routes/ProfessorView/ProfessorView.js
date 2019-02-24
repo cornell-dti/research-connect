@@ -1,171 +1,166 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorView.scss';
 import axios from 'axios';
-import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
-import ApplicationList from '../../components/ApplicationList/ApplicationList';
-import YearSelect from '../../components/YearSelect/YearSelect';
-import Footer from '../../components/Footer/Footer';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
-import StartDate from '../../components/StartDate/StartDate';
-import CourseSelect from '../../components/CourseSelect/CourseSelect';
-import SkillSelect from '../../components/SkillSelect/SkillSelect';
-import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
-import * as Utils from "../../components/Utils";
 import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
+import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import ApplicationList from '../../components/ApplicationList/ApplicationList';
+
+//necessary for all filters
+import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+
+//import StartDate from '../../components/StartDate/StartDate';
+import CourseSelect from '../../components/CourseSelect/CourseSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
+//import GPASelect from '../../components/GPASelect/GPASelect';
+
+import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
+import Footer from '../../components/Footer/Footer';
+import * as Utils from '../../components/Utils';
 
 class ProfessorView extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			yearSelect: {},
-			gpaSelect: {},
-			majorSelect: {},
-			startDate: {},
-			courses: [],
-			skills: [],
-			opportunity: 'All',
-			opportunities: [],
-			loading: true
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      yearSelect: [],
+      gpaSelect: "2.5",
+      //majorSelect: {},
+      //startDate: {},
+      courses: [],
+      skills: [],
+      opportunity: 'All',
+      opportunities: [],
+      loading: true,
+    };
+  }
 
-	handleUpdateYear(yearObj) {
-		this.setState({yearSelect: yearObj});
-	}
+  handleUpdateMajor(majorObj) {
+    this.setState({ majorSelect: majorObj });
+  }
 
-	handleUpdateGPA(gpaObj) {
-		this.setState({gpaSelect: gpaObj});
-	}
+  handleUpdateCourses(courseList) {
+    this.setState({ courses: courseList });
+  }
 
-	handleUpdateMajor(majorObj) {
-		this.setState({majorSelect: majorObj});
-	}
+  handleUpdateSkills(skillList) {
+    this.setState({ skills: skillList });
+  }
 
-	handleUpdateDate(majorObj) {
-		this.setState({startDate: majorObj});
-	}
+  handleUpdateOpportunity(opp) {
+    this.setState({ opportunity: opp });
+  }
 
-	handleUpdateCourses(courseList) {
-		this.setState({courses: courseList});
-	}
+  componentWillMount() {
+    axios.all([
+      axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
+      axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
+    ])
+      .then(axios.spread((role, apps) => {
+        if (role.data !== 'grad'
+          && role.data !== 'labtech'
+          && role.data !== 'postdoc'
+          && role.data !== 'staffscientist'
+          && role.data !== 'pi') {
+          window.location.href = '/';
+        }
+        const opps = Object.keys(apps.data);
+        opps.unshift('All');
+        this.setState({ opportunities: opps });
+      }));
+  }
 
-	handleUpdateSkills(skillList) {
-		this.setState({skills: skillList});
-	}
+  componentDidMount() {
+    this.state.loading = false;    // temporary
+  }
 
-	handleUpdateOpportunity(opp) {
-		this.setState({opportunity: opp});
-	}
+  render() {
+    const override = css`
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `;
+    let { loading } = this.state;
+    if (loading) {
+      return (
+        <div className="sweet-loading">
+          <ClipLoader
+            className={override}
+            sizeUnit="px"
+            size={150}
+            color="#ff0000"
+            loading={loading}
+          />
+        </div>
+      );
+    }
 
-	componentWillMount() {
-		axios.all([
-			axios.get('/api/role/' +  sessionStorage.getItem('token_id')),
-			axios.get('/api/applications?id=' + sessionStorage.getItem('token_id'))
-		])
-		.then(axios.spread((role, apps) => {
-			if (role.data !== 'grad' &&
-					role.data !== 'labtech' &&
-					role.data !== 'postdoc' &&
-					role.data !== 'staffscientist' &&
-					role.data !== 'pi') {
-				window.location.href = "/";
-			}
-			let opps = Object.keys(apps.data);
-			opps.unshift('All');
-			this.setState({opportunities: opps});
-		}));
-	}
+    return (
+      <div>
+        <Navbar current="professorView" />
 
-	componentDidMount() {
-		// temporary
-		this.state.loading = false;
-	}
+        <div className="professor-view-container">
+          <div className="row professor-view-container-row">
+            <div className="column column-20">
+              <div className="filter-box">
 
-	render() {
-		const override = css`
-			display: block;
-			margin: 0 auto;
-			border-color: red;
-		`;
+                <Filter label="Filter by..." />
+                <hr />
 
-		if (this.state.loading) {
-			return (
-				<div className='sweet-loading'>
-					<ClipLoader
-						className={override}
-						sizeUnit={"px"}
-						size={150}
-						color={'#ff0000'}
-						loading={this.state.loading} />
-				</div> 
-			);
-		}
+                <div className="filter-child">
+                  <label htmlFor="opportunityField">Opportunity</label>
+                  <OpportunitySelect
+                    opportunities={this.state.opportunities}
+                    updateOpportunity={this.handleUpdateOpportunity.bind(this)}
+                  />
+                </div>
 
-		return (
-			<div>
+                <hr />
 
-				<Navbar current="professorView"/>
+                <SchoolYearFilter
+                  update={Utils.updateMultipleChoiceFilter.bind(this)}
+                />
 
-				<div className='professor-view-container'>
-					<div className='row professor-view-container-row'>
-						<div className="column column-20">
-							<div className="filter-box">
-								<div className="filter-child">
-									Filter by...
-								</div>
+                <hr />
 
-								<hr />
+                <GPAFilter
+                  update={Utils.updateSingleChoiceFilter.bind(this)}
+                />
 
-								<div className="filter-child">
-									<label htmlFor="opportunityField">Opportunity</label>
-									<OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
-								</div>
+                <hr />
 
-								<hr />
+                <div className="filter-child">
+                  <label htmlFor="courseField">Required Courses</label>
+                  <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+                </div>
 
-								<div className="filter-child">
-									<label htmlFor="yearField">School Year</label>
-									<YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-								</div>
+                <hr />
 
-								<hr />
+{/*
+  //TODO: ADD SKILL SELECT FILTER BACK?
+  <div className="filter-child">
+    <label htmlFor="skillField">Required Skills</label>
+    <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
+  </div>
+  */}
+              </div>
+            </div>
 
-								<div className="filter-child">
-									<label htmlFor="gpaField">GPA Requirement</label>
-									<GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-								</div>
+            <div className="column">
+              <div className="application-list-container">
+                <div className="application-list-header">Applications For Your Lab</div>
+                <ApplicationList filter={this.state} />
+              </div>
+            </div>
+          </div>
+        </div>
 
-								<hr />
-
-								<div className="filter-child">
-									<label htmlFor="courseField">Required Courses</label>
-									<CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
-								</div>
-
-								<hr />
-
-								<div className="filter-child">
-									<label htmlFor="skillField">Required Skills</label>
-									<SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
-								</div>
-							</div>
-						</div>
-						<div className='column'>
-							<div className='application-list-container'>
-								<div className='application-list-header'>Applications For Your Lab</div>
-								<ApplicationList filter={ this.state } />
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<Footer/>
-			</div>
-		);
-	}
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default ProfessorView;

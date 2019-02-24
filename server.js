@@ -1,9 +1,10 @@
-//import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
+/* eslint-disable no-unused-vars */
+// import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
 
-//server.js
-'use strict';
+// server.js
 
-//import dependencies
+
+// import dependencies
 // require('dotenv').config();
 const async = require('async');
 const express = require('express');
@@ -15,10 +16,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
-const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client("938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com");
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client('938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com');
 const fileUpload = require('express-fileupload');
-const request = require("request");
+const request = require('request');
 
 // let corsKey = null;
 // if (fs.existsSync('./CorsKey.json')) {
@@ -26,33 +28,33 @@ const request = require("request");
 //     corsKey = corsKey.key;
 // }
 
-//create instances
+// create instances
 const app = express();
 const router = express.Router();
 
-//set our port to either a predetermined port number if you have set
-//it up, or 3001
+// set our port to either a predetermined port number if you have set
+// it up, or 3001
 const port = process.env.PORT || 3001;
 
 // uncomment after placing your favicon in /public
 // let favicon = require('serve-favicon');
 // app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
 // app.use(bodyParser.json());
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
+// TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
 app.use(cors());
 app.use(fileUpload());
 
-//To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+// To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
 });
 
 const index = require('./api/index');
@@ -64,7 +66,7 @@ const facultyRoute = require('./api/faculty');
 const applicationRoute = require('./api/applications');
 const labRoute = require('./api/labs');
 const docsRoute = require('./api/docs');
-
+const classesRoute = require('./api/classes');
 
 app.use('/api/', index);
 app.use('/api/labAdmins', labAdminsRoute);
@@ -75,24 +77,25 @@ app.use('/api/faculty', facultyRoute);
 app.use('/api/labs', labRoute);
 app.use('/api/messages', messagesRoute);
 app.use('/api/docs', docsRoute);
+app.use('/api/classes', classesRoute);
 
 // router.get('/', function (req, res) {
 //     res.json({message: 'API Initialized!'});
 // });
 
 app.use('/api', router);
-app.use(express.static("./src/docs"));
-app.use("/*", express.static("./src/docs"));
+app.use(express.static('./src/docs'));
+app.use('/*', express.static('./src/docs'));
 
 
-/**Begin ENDPOINTS */
+/** Begin ENDPOINTS */
 
-/**End ENDPOINTS */
+/** End ENDPOINTS */
 
 
-/*******************************/
-//END NON-DEFAULT CODE
-/*******************************/
+/** **************************** */
+// END NON-DEFAULT CODE
+/** **************************** */
 
 
 // catch 404 and fgorward to error handler
@@ -104,7 +107,7 @@ app.use("/*", express.static("./src/docs"));
 
 module.exports = app;
 
-//starts the server and listens for requests
-app.listen(port, function () {
-    console.log(`Api running on port ${port}`);
+// starts the server and listens for requests
+app.listen(port, () => {
+  console.log(`Api running on port:: ${port}`);
 });

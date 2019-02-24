@@ -123,7 +123,7 @@ class EditProfile extends Component {
            this.setState({editMajor: !this.state.editMajor});
     }
     handleEditYear(event) {
-        let presentYear = new Date().getFullYear(); 
+        let presentYear = new Date().getFullYear();
         let validateYear = [presentYear -4 , presentYear - 3, presentYear - 2, presentYear -1, presentYear]
         if (validateYear.indexOf(this.state.year) === -1) {
             this.setState({invalidYear: true});
@@ -326,7 +326,7 @@ class EditProfile extends Component {
             editGPA,
             editCourses,
             editSkills,
-            editResume, 
+            editResume,
             editTranscript,
             invalidYear,
             invalidMajor,
@@ -371,7 +371,7 @@ class EditProfile extends Component {
                 let baseUrl = window.location.protocol + "//" + window.location.host;
                 window.location.replace(baseUrl + "/editprofile");
             }, 1500);
-           
+
             //access the results here....
         });
 
@@ -408,7 +408,7 @@ class EditProfile extends Component {
                     <div className = "column edit-details-col">
                         <div className=" row title-box-prof">
                         <div className = "column left-column">
-                        <div className = "header"> 
+                        <div className = "header">
                             <h4 class = "edit-bold">{this.state.firstName + " " + this.state.lastName}</h4> </div>
                             <h6 class = "edit-bold">{this.state.netId + "@cornell.edu"}</h6>
                             {this.state.editYear ?
@@ -437,7 +437,7 @@ class EditProfile extends Component {
                                                                onClick={this.handleEditMajor.bind(this)}/></h5>
 
                             }
-                            
+
                             </div>
                             </div>
                         </div>
@@ -464,13 +464,13 @@ class EditProfile extends Component {
                                                                     padding: '10px',
                                                                     width: '50%',
                                                                     margin: '0 0 0 25%',
-                                                                    border: !this.state.resumeValid 
+                                                                    border: !this.state.resumeValid
                                                                     && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black'
                                                                 }} onDrop={this.onDropResume.bind(this)}>
                                                                     <p>Click/drag to update resume</p>
                                                                 </Dropzone>
                                                                 <div className="uploaded-message">
-                                                                    {this.state.resume != null ? 
+                                                                    {this.state.resume != null ?
                                                                     <p>Uploaded: {this.state.resume.name}</p> : ""}
                                                                 </div>
                                         </div>
@@ -488,7 +488,7 @@ class EditProfile extends Component {
                                   <div className = "handleTranscript">
                                         <h5><Check size={23} className="check-icon"
                                                                    onClick={this.handleEditTranscript.bind(this)}/></h5>
-                                  
+
                                   <Dropzone className="edit-drop" style={{
                                     position: 'relative',
                                     background: '#ededed',
@@ -515,18 +515,18 @@ class EditProfile extends Component {
                             <div className="row relevant-row">
 
                                 <div className="column column-49">
-                                   
+
                                         <h5 className = "sub-section" >Coursework</h5>
-                                   
+
                                     {this.displayCourses()}
                                 </div>
 
                                 <div className="vl"></div>
 
                                 <div className="column column-49">
-                                    
+
                                         <h5  className = "sub-section">Skills </h5>
-                                      
+
                                     {this.displaySkills()}
 
                                 </div>

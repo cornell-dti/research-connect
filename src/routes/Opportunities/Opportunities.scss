@@ -36,6 +36,12 @@
 
   .opportunities-list-wrapper {
     margin-left: 20px;
+
+    .node-list-div {
+      p {
+        margin-bottom: 5px;
+      }
+    }
   }
 
   .search-div-container {
@@ -59,4 +65,14 @@
       }
     }
   }
+
+  .go-home {
+    cursor: pointer;
+    margin: 10px 10px 10px -10px;
+    padding: 10px;
+  }
+}
+
+#top-align {
+  align-items: flex-start;
 }
