@@ -199,9 +199,9 @@ class Opportunities extends Component {
 
               <hr />
 
-              <CSAreasFilter
-                update={Utils.updateMultipleChoiceFilter.bind(this)}
-              />
+              {/*<CSAreasFilter*/}
+                {/*update={Utils.updateMultipleChoiceFilter.bind(this)}*/}
+              {/*/>*/}
 
             </div>
           </div>
