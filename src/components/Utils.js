@@ -94,8 +94,8 @@ export function handleTokenError(error) {
         logoutGoogle();
         return true;
       }
-      alert('You either visited this page without being signed in or were inactive too long. '
-                + "Sign up on the home page and you'll be able to see all the research opportunities available!");
+      alert(`You either visited this page without being signed in or were inactive too long.
+        Sign up on the home page and you'll be able to see all the research opportunities available!`);
       window.location.href = '/';
       logoutGoogle();
       return true;
@@ -105,13 +105,12 @@ export function handleTokenError(error) {
 }
 
 export function handleNonTokenError(error) {
-    if (error.response.status === 400){
-        alert(error.response.data);
-    }
-    else {
-        console.log(error);
-        alert("Something went wrong on our side. Please refresh the page and try again");
-    }
+  if (error.response.status === 400) {
+    alert(error.response.data);
+  } else {
+    console.log(error);
+    alert('Something went wrong on our side. Please refresh the page and try again');
+  }
 }
 
 /**
