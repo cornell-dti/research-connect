@@ -87,7 +87,10 @@ app.post('/', (req, res) => {
       data.courses = data.courses.map((element) => {
         const trimmed = element.trim();
         if (trimmed) {
-          return trimmed;
+          const courseNumberRegex = /[0-9]{4}/; // look for first set of four consecutive digits. eg: 1110 in CS 1110
+          const matchResult = trimmed.match(courseNumberRegex);
+          const courseNumber = trimmed.slice(0, matchResult.index + 4);
+          return courseNumber;
         }
         return null;
       });
