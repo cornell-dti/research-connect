@@ -6,24 +6,29 @@ import { css } from 'react-emotion';
 import { ClipLoader } from 'react-spinners';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
-import YearSelect from '../../components/YearSelect/YearSelect';
-import Footer from '../../components/Footer/Footer';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
-import StartDate from '../../components/StartDate/StartDate';
+
+//necessary for all filters
+import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+
+//import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
-import SkillSelect from '../../components/SkillSelect/SkillSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
+//import GPASelect from '../../components/GPASelect/GPASelect';
+
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
+import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 
 class ProfessorView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: {},
-      gpaSelect: {},
-      majorSelect: {},
-      startDate: {},
+      yearSelect: [],
+      gpaSelect: "2.5",
+      //majorSelect: {},
+      //startDate: {},
       courses: [],
       skills: [],
       opportunity: 'All',
@@ -32,20 +37,8 @@ class ProfessorView extends Component {
     };
   }
 
-  handleUpdateYear(yearObj) {
-    this.setState({ yearSelect: yearObj });
-  }
-
-  handleUpdateGPA(gpaObj) {
-    this.setState({ gpaSelect: gpaObj });
-  }
-
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
-  }
-
-  handleUpdateDate(majorObj) {
-    this.setState({ startDate: majorObj });
   }
 
   handleUpdateCourses(courseList) {
@@ -80,8 +73,7 @@ class ProfessorView extends Component {
   }
 
   componentDidMount() {
-    // temporary
-    this.state.loading = false;
+    this.state.loading = false;    // temporary
   }
 
   render() {
@@ -107,38 +99,35 @@ class ProfessorView extends Component {
 
     return (
       <div>
-
         <Navbar current="professorView" />
 
         <div className="professor-view-container">
           <div className="row professor-view-container-row">
             <div className="column column-20">
               <div className="filter-box">
-                <div className="filter-child">
-                  Filter by...
 
-                </div>
-
+                <Filter label="Filter by..." />
                 <hr />
 
                 <div className="filter-child">
                   <label htmlFor="opportunityField">Opportunity</label>
-                  <OpportunitySelect opportunities={this.state.opportunities} updateOpportunity={this.handleUpdateOpportunity.bind(this)} />
+                  <OpportunitySelect
+                    opportunities={this.state.opportunities}
+                    updateOpportunity={this.handleUpdateOpportunity.bind(this)}
+                  />
                 </div>
 
                 <hr />
 
-                <div className="filter-child">
-                  <label htmlFor="yearField">School Year</label>
-                  <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-                </div>
+                <SchoolYearFilter
+                  update={Utils.updateMultipleChoiceFilter.bind(this)}
+                />
 
                 <hr />
 
-                <div className="filter-child">
-                  <label htmlFor="gpaField">GPA Requirement</label>
-                  <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-                </div>
+                <GPAFilter
+                  update={Utils.updateSingleChoiceFilter.bind(this)}
+                />
 
                 <hr />
 
@@ -149,12 +138,16 @@ class ProfessorView extends Component {
 
                 <hr />
 
-                <div className="filter-child">
-                  <label htmlFor="skillField">Required Skills</label>
-                  <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
-                </div>
+{/*
+  //TODO: ADD SKILL SELECT FILTER BACK?
+  <div className="filter-child">
+    <label htmlFor="skillField">Required Skills</label>
+    <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
+  </div>
+  */}
               </div>
             </div>
+
             <div className="column">
               <div className="application-list-container">
                 <div className="application-list-header">Applications For Your Lab</div>
