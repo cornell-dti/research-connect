@@ -12,72 +12,56 @@ class OpportunityList extends Component {
     return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
   }
 
+  union(arr1, arr2){
+    let arr3 = arr1.filter((i) => arr2.indexOf(i) > -1);
+    return arr3;
+  }
+
+  checkboxFilter(filterSelected, filterAllowed){
+    return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
+  }
+
   render() {
     if (!this.props.data) {
       return (<div />);
     }
     const oppNodes = this.props.data.map((opp) => {
-      /* The variable 'willshow' will be set to false if any filter excludes this opportunity */
-      let willShow = true;
-      const filteredOptions = this.props.filteredOptions;
-      /**
-         * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
-         so that value must either be true or false) and if this row has freshman in its array of years allowed, then
-         we return true and should show this opportunity
-         */
-      const froshSelected = filteredOptions.yearSelect.Freshman;
-      const sophSelected = filteredOptions.yearSelect.Sophomore;
-      const juniorSelected = filteredOptions.yearSelect.Junior;
-      const seniorSelected = filteredOptions.yearSelect.Senior;
-      const matchingSearches = filteredOptions.matchingSearches;
-      const yearsAllowed = opp.yearsAllowed;
-      const csSelected = filteredOptions.majorSelect.cs;
-      const bioSelected = filteredOptions.majorSelect.biology;
-      const minGPA = filteredOptions.gpaSelect.val;
-      const season = filteredOptions.startDate.season;
-      const year = filteredOptions.startDate.year;
-      const moneySelected = filteredOptions.compensationSelect.Money;
-      const creditSelected = filteredOptions.compensationSelect.Credit;
-      const compensations = opp.compensation;
+        let willShow = true; //set to false if any filter excludes this opportunity
+        const filteredOptions = this.props.filteredOptions;
 
-      if (filteredOptions.searchBar != '' && filteredOptions.clickedEnter) {
-        const matches = matchingSearches.some(search => search == opp._id);
-        if (!matches) {
-          willShow = false;
+        let matchingSearches = filteredOptions.matchingSearches;
+        if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter){
+          let matches = false;
+          for (let i = 0; i<matchingSearches.length; i++){
+            if(matchingSearches[i] === opp._id){
+              matches = true;
+            }
+          }
+          willShow = matches;
         }
-      }
 
-      if (!((froshSelected && yearsAllowed.indexOf('freshman') != -1)
-          || (sophSelected && yearsAllowed.indexOf('sophomore') != -1)
-          || (juniorSelected && yearsAllowed.indexOf('junior') != -1)
-          || (seniorSelected && yearsAllowed.indexOf('senior') != -1)
-          || (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected))) {
-        willShow = false;
-      }
+        let minGPA = filteredOptions.gpaSelect;
+        willShow = willShow && minGPA < opp.minGPA;
 
-      /**
-          * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-          * and also checks to see if this opportunity is in the cs area.
-          * */
-      if (!((csSelected && opp.areas.indexOf('Computer Science') != -1)
-            || (bioSelected && opp.areas.indexOf('Biology') != -1)
-            || (!csSelected && !bioSelected))) {
-        willShow = false;
-      }
+        let season = filteredOptions.startDate.season;
+        let year = filteredOptions.startDate.year;
+        if (season && (season != opp.startSeason || year != opp.startYear)){
+              willShow = false;
+        }
 
-      if ((minGPA != null) && (minGPA < opp.minGPA)) {
-        willShow = false;
-      }
+        //multiple/checkbox choices
+        const yearsSelected = filteredOptions.yearSelect;
+        const yearsAllowed = opp.yearsAllowed;
+        willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
 
-      if ((season != null) && ((season != opp.startSeason) || (year != opp.startYear))) {
-        willShow = false;
-      }
+        const csAreasSelected = filteredOptions.csAreasSelect;
+        const csAreasAllowed = opp.areas;
+        willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
 
-      if (!((moneySelected && compensations.indexOf('pay') != -1)
-          || (creditSelected && compensations.indexOf('credit') != -1)
-          || (!moneySelected && !creditSelected))) {
-        willShow = false;
-      }
+        const compensationsSelected = filteredOptions.compensationSelect;
+        const compensationsAllowed = opp.compensation;
+        willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
+        //end multiple/checkbox choices
 
       if (willShow) {
         return (

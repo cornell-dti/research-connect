@@ -16,7 +16,7 @@ class ApplicationBox extends Component {
   }
 
   render() {
-    console.log(this.props.data.status === '');
+    //console.log(this.props.data.status === '');
     return (
       <div className="prof-application-box" onClick={this.clickRow.bind(this)} style={{ display: this.props.show ? '' : 'none' }}>
         <div className="row">

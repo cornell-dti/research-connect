@@ -59,6 +59,9 @@ function dateIsBetween(date, lowerBound, upperBound) {
 module.exports.dateIsBetween = dateIsBetween;
 
 function gradYearToString(gradYear) {
+  if (!gradYear) {
+    return 'freshman';
+  }
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'sophomore';

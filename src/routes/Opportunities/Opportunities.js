@@ -9,11 +9,19 @@ import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
-import YearSelect from '../../components/YearSelect/YearSelect';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
-import StartDate from '../../components/StartDate/StartDate';
-import CompensationSelect from '../../components/CompensationSelect/CompensationSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
+// import GPASelect from '../../components/GPASelect/GPASelect';
+
+//necessary for all filters
+import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+import CompensationFilter from '../../components/Filter/CompensationFilter';
+import CSAreasFilter from '../../components/Filter/CSAreasFilter';
+import StartDateFilter from '../../components/Filter/StartDateFilter';
+
+
+//import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
@@ -21,16 +29,17 @@ class Opportunities extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: {},
-      gpaSelect: {},
+      yearSelect: [],
+      gpaSelect: '2.5',
       majorSelect: {},
-      startDate: {},
-      compensationSelect: {},
+      startDate: '',
+      compensationSelect: [],
       searchBar: '',
       matchingSearches: [],
       searching: false,
       clickedEnter: false,
       role: '',
+      csAreasSelect:[]
     };
   }
 
@@ -57,14 +66,6 @@ class Opportunities extends Component {
       });
   }
 
-  handleUpdateYear(yearObj) {
-    this.setState({ yearSelect: yearObj });
-  }
-
-  handleUpdateGPA(gpaObj) {
-    this.setState({ gpaSelect: gpaObj });
-  }
-
   handleUpdateMajor(majorObj) {
     this.setState({ majorSelect: majorObj });
   }
@@ -73,15 +74,11 @@ class Opportunities extends Component {
     this.setState({ startDate: dateObj });
   }
 
-  handleUpdateCompensation(compensationObj) {
-    this.setState({ compensationSelect: compensationObj });
-  }
-
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (e.target.value == '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
+      this.setState({ matchingSearches: [],
+                      clickedEnter: false });
     }
   }
 
@@ -125,18 +122,18 @@ class Opportunities extends Component {
     /** BEGIN code for detecting role and changing navbar */
     // TODO make temp navbar into a component
     return (
-      <div className="opportunities-wrapper">
-        {this.state.role && this.state.role === 'undergrad' && <Navbar current="opportunities" />}
-        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current="opportunities" />}
+      <div className='opportunities-wrapper'>
+        {this.state.role && this.state.role === 'undergrad' && <Navbar current='opportunities'/>}
+        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current='opportunities' />}
         {!this.state.role && (
-        <div className="go-home" onClick={() => this.goHome()}>
-          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
-Home
+        <div className='go-home' onClick={() => this.goHome()}>
+          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className='black-arrow' />
+        Home
         </div>
-        )
-          /** END code for detecting role and changing navbar */
-        }
-        <div className="row search-div-container">
+        ) /** END code for detecting role and changing navbar */}
+
+
+        <div className='row search-div-container'>
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
           </div>
@@ -168,38 +165,43 @@ Home
         <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
-              <div className="filter-child">
-                Filter by...
 
-              </div>
+              <Filter label="Filter by..." />
 
               <hr />
 
-              <div className="filter-child">
-                <label htmlFor="yearField">School Year</label>
-                <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-              </div>
+              <SchoolYearFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
 
               <hr />
 
-              <div className="filter-child">
-                <label htmlFor="gpaField">GPA Requirement</label>
-                <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-              </div>
+              <GPAFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
+              />
 
               <hr />
 
+              <StartDateFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
+              />
+{/*
               <div className="filter-child">
                 <label htmlFor="startDateField">Start Date</label>
                 <StartDate updateDate={this.handleUpdateDate.bind(this)} />
               </div>
+*/}
+              <hr />
+
+              <CompensationFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
 
               <hr />
 
-              <div className="filter-child">
-                <label htmlFor="compensationField">Compensation</label>
-                <CompensationSelect updateCompensation={this.handleUpdateCompensation.bind(this)} />
-              </div>
+              {/*<CSAreasFilter*/}
+                {/*update={Utils.updateMultipleChoiceFilter.bind(this)}*/}
+              {/*/>*/}
 
             </div>
           </div>
