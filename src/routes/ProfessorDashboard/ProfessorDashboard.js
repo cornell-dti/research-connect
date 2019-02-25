@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorDashboard.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';

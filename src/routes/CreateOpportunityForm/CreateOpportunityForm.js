@@ -8,7 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as Utils from '../../components/Utils';

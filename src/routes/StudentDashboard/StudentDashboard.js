@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './StudentDashboard.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import User from 'react-icons/lib/fa/user';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
