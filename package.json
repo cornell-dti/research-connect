@@ -97,7 +97,7 @@
     "build": "cd src && webpack -p --progress --config webpack.config.prod.js",
     "start:dev-client": "cd src && webpack --progress --watch",
     "start": "node server.js",
-    "start:dev": "concurrently \"npm start:dev-client\" \"set DEB,UG=server:app && nodemon server.js\"",
+    "start:dev": "concurrently \"npm start:dev-client\" \"set DEBUG=server:app && nodemon server.js\"",
     "start:dev-verbose": "concurrently \"npm start:dev-client\" \"set DEBUG=* && nodemon server.js\"",
     "start:debug": "concurrently \"cd src && npm start\" \"set DEBUG=server:app && node %NODE_DEBUG_OPTION% server.js\"",
     "start:debug-backend": "set DEBUG=server:app && node %NODE_DEBUG_OPTION% server.js"
