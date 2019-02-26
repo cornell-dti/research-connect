@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  facultyModel, debug,
+  facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
 
 /** gets all the faculty in the database.
@@ -124,5 +124,60 @@ app.delete('/:id', (req, res) => {
   });
 });
 
+/**
+ * Sends an email to the professor on behalf of the student at an ideal time
+ * req.body = {
+ *   email: string of html for email,
+ *   profEmail: string of professor's email to send to,
+ *   userToken: string of the user's google token, have to run it through
+ *   the verify function in utils to get the email
+ * }
+ */
+app.post('/email', (req, res) => {
+  const { emailHtml, profEmail, userToken } = req.body;
+  verify(userToken, (netId) => {
+    if (!netId) {
+      return res.status(500).send('No account found.');
+    }
+
+    undergradModel.findOneAndUpdate({ netId }, { $set: { emailHtml } }, {}, (err, undergrad) => {
+      if (err || !undergrad) {
+        // if here, somehow they submitted an email without having an account
+        return res.status(500).send(err);
+      }
+      debug(profEmail);
+      const userEmail = `${netId}@cornell.edu`;
+      const msg = {
+        to: 'abagh0703@gmail.com',
+        from: {
+          name: `${undergrad.firstName} ${undergrad.lastName}`,
+          email: userEmail,
+        },
+        replyTo: userEmail,
+        subject: 'Interest in Your Research',
+        html: emailHtml,
+        trackingSettings: {
+          clickTracking: {
+            enable: true,
+          },
+          openTracking: {
+            enable: true,
+          },
+          subscriptionTracking: {
+            enable: false,
+          },
+        },
+      };
+      sgMail.send(msg).then(() => res.end()).catch((err2) => {
+        if (err2) {
+          debug(err2);
+          return res.status(500).send(err2);
+        }
+      });
+    });
+  }).catch((error) => {
+    handleVerifyError(error, res);
+  });
+});
 
 module.exports = app;

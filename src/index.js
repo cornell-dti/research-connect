@@ -21,25 +21,25 @@ import LandingPage from './routes/LandingPage/LandingPage';
 import ProfessorLanding from './routes/ProfessorLanding/ProfessorLanding';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/opportunities" component={Opportunities} />
-      <Route path="/opportunity/:id" component={OpportunityPage} />
-      <Route exact path="/profLanding" component={ProfessorLanding} />
-      <Route path="/faculty/:id" component={FacultyPage} />
-      <Route path="/application/:id" component={ApplicationPage} />
-      <Route exact path="/newopp" component={CreateOpportunityForm} />
-      <Route path="/editopp" component={EditOpportunityForm} />
-      <Route exact path="/instructorRegister" component={InstructorRegister} />
-      <Route exact path="/StudentRegister" component={StudentRegister} />
-      <Route exact path="/professorDashboard" component={ProfessorDashboard} />
-      <Route exact path="/professorView" component={ProfessorView} />
-      <Route exact path="/studentDashboard" component={StudentDashboard} />
-      <Route path="/doc/:id" component={Doc} />
-      <Route exact path="/editProfile" component={EditProfile} />
-      <Route exact path="/facultySearch" component={FacultySearch} />
-      <Route exact path="/" component={LandingPage} />
-      <Route path="/*" component={Error} />
-    </Switch>
-  </BrowserRouter>, document.getElementById('root'),
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/opportunities" component={Opportunities} />
+        <Route path="/opportunity/:id" component={OpportunityPage} />
+        <Route exact path="/profLanding" component={ProfessorLanding} />
+        <Route path="/faculty/:id" component={FacultyPage} />
+        <Route exact path="/faculty" component={FacultySearch} />
+        <Route path="/application/:id" component={ApplicationPage} />
+        <Route exact path="/newopp" component={CreateOpportunityForm} />
+        <Route path="/editopp" component={EditOpportunityForm} />
+        <Route exact path="/instructorRegister" component={InstructorRegister} />
+        <Route exact path="/StudentRegister" component={StudentRegister} />
+        <Route exact path="/professorDashboard" component={ProfessorDashboard} />
+        <Route exact path="/professorView" component={ProfessorView} />
+        <Route exact path="/studentDashboard" component={StudentDashboard} />
+        <Route path="/doc/:id" component={Doc} />
+        <Route exact path="/editProfile" component={EditProfile} />
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/*" component={Error} />
+      </Switch>
+    </BrowserRouter>, document.getElementById('root'),
 );

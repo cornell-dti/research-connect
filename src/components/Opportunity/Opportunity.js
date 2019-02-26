@@ -119,17 +119,17 @@ class Opportunity extends Component {
         <div className="row opp-box-row">
           <div className="column column-75">
             <div className="title">{ this.props.title }</div>
-            {/*<div className="lab-name">{this.props.labName}</div>*/}
+            {/* <div className="lab-name">{this.props.labName}</div> */}
           </div>
 
           <div className="column column-25">
-            {/*<Calendar className="cal" />*/}
-            {/*{' '}*/}
-            {/*<span>*/}
-{/*Deadline*/}
-              {/*{' '}*/}
-              {/*{ Utils.convertDate(this.props.closes) }*/}
-            {/*</span>*/}
+            {/* <Calendar className="cal" /> */}
+            {/* {' '} */}
+            {/* <span> */}
+            {/* Deadline */}
+            {/* {' '} */}
+            {/* { Utils.convertDate(this.props.closes) } */}
+            {/* </span> */}
             {this.checkPrereqs()}
           </div>
         </div>

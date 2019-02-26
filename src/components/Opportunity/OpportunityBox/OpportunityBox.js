@@ -13,13 +13,6 @@ class OpportunityBox extends Component {
     this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
   }
 
-  countOpps(val) {
-    this.setState({
-      oppCount: val,
-    });
-    console.log(val);
-  }
-
   loadOpportunitiesFromServer() {
     axios.get(`/api/${this.props.url}?netId=${sessionStorage.getItem('token_id')}&netIdPlain=${sessionStorage.getItem('netId')}&labId=${getParameterByName('labId', window.location.href)}&date=DESC`)
       .then((res) => {
@@ -30,6 +23,13 @@ class OpportunityBox extends Component {
   componentDidMount() {
     this.loadOpportunitiesFromServer();
     // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+  }
+
+  countOpps(val) {
+    this.setState({
+      oppCount: val,
+    });
+    console.log(val);
   }
 
   render() {

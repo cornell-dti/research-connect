@@ -6,14 +6,15 @@ import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
 
-//necessary for all filters
-import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+// necessary for all filters
+import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
 import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
 import CompensationFilter from '../../components/Filter/CompensationFilter';
@@ -21,7 +22,7 @@ import CSAreasFilter from '../../components/Filter/CSAreasFilter';
 import StartDateFilter from '../../components/Filter/StartDateFilter';
 
 
-//import StartDate from '../../components/StartDate/StartDate';
+// import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
@@ -39,7 +40,7 @@ class Opportunities extends Component {
       searching: false,
       clickedEnter: false,
       role: '',
-      csAreasSelect:[]
+      csAreasSelect: [],
     };
   }
 
@@ -52,13 +53,13 @@ class Opportunities extends Component {
     // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        /* if (!response || response.data === "none" || !response.data) {
-          alert("You must be signed in to view this.");
-          window.location.href = '/';
-        }
-        else{
-          this.setState({role: response.data});
-        } */
+      /* if (!response || response.data === "none" || !response.data) {
+        alert("You must be signed in to view this.");
+        window.location.href = '/';
+      }
+      else{
+        this.setState({role: response.data});
+      } */
         this.setState({ role: response.data });
       })
       .catch((error) => {
@@ -77,8 +78,10 @@ class Opportunities extends Component {
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (e.target.value == '') {
-      this.setState({ matchingSearches: [],
-                      clickedEnter: false });
+      this.setState({
+        matchingSearches: [],
+        clickedEnter: false,
+      });
     }
   }
 
@@ -122,18 +125,9 @@ class Opportunities extends Component {
     /** BEGIN code for detecting role and changing navbar */
     // TODO make temp navbar into a component
     return (
-      <div className='opportunities-wrapper'>
-        {this.state.role && this.state.role === 'undergrad' && <Navbar current='opportunities'/>}
-        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current='opportunities' />}
-        {!this.state.role && (
-        <div className='go-home' onClick={() => this.goHome()}>
-          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className='black-arrow' />
-        Home
-        </div>
-        ) /** END code for detecting role and changing navbar */}
-
-
-        <div className='row search-div-container'>
+      <div className="opportunities-wrapper">
+        <VariableNavbar role={this.state.role} current="opportunities" />
+        <div className="row search-div-container">
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
           </div>
@@ -150,15 +144,15 @@ class Opportunities extends Component {
           />
           <div className="delete-div">
             {
-            this.state.searchBar != '' ? (
-              <DeleteIcon
-                onClick={this.clearSearch.bind(this)}
-                className="clear-icon"
-                style={{ height: '100%' }}
-                size={36}
-              />
-            ) : ''
-            }
+                this.state.searchBar != '' ? (
+                  <DeleteIcon
+                    onClick={this.clearSearch.bind(this)}
+                    className="clear-icon"
+                    style={{ height: '100%' }}
+                    size={36}
+                  />
+                ) : ''
+              }
           </div>
         </div>
 
@@ -185,7 +179,7 @@ class Opportunities extends Component {
               <StartDateFilter
                 update={Utils.updateSingleChoiceFilter.bind(this)}
               />
-{/*
+              {/*
               <div className="filter-child">
                 <label htmlFor="startDateField">Start Date</label>
                 <StartDate updateDate={this.handleUpdateDate.bind(this)} />
@@ -199,9 +193,9 @@ class Opportunities extends Component {
 
               <hr />
 
-              {/*<CSAreasFilter*/}
-                {/*update={Utils.updateMultipleChoiceFilter.bind(this)}*/}
-              {/*/>*/}
+              {/* <CSAreasFilter */}
+              {/* update={Utils.updateMultipleChoiceFilter.bind(this)} */}
+              {/* /> */}
 
             </div>
           </div>

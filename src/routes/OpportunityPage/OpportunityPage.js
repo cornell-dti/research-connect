@@ -3,10 +3,12 @@ import axios from 'axios';
 import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
-import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
+import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
-import * as Utils from '../../components/Utils.js';
+import * as Utils from '../../components/Utils';
+import VariableNavbar from '../../components/Navbars/VariableNavbar';
+
 
 class OpportunityPage extends Component {
   constructor(props) {
@@ -381,7 +383,8 @@ Freshman
               <CheckBox key="no" className="greenCheck" />
               <span key="n"> No Preference</span>
             </div>
-          </ul>);
+          </ul>
+        );
       }
       return (
         <ul>
@@ -431,7 +434,8 @@ Freshman
 No Preference
               </span>
             </div>
-          </ul>);
+          </ul>
+        );
       }
       return (
         <ul>
@@ -543,14 +547,11 @@ No Preference
     const isNotLoggedIn = !(this.state.role);
     return (
       <div>
-        {this.state.role && this.state.role === 'undergrad'
-          && <StudentNavbar current="opportunities" />}
-        {this.state.role && this.state.role !== 'undergrad'
-          && <ProfessorNavbar current="opportunities" />}
+        <VariableNavbar current="opportunities" role={this.state.role} />
 
         <div className={`opportunities-page-wrapper ${
           isLab ? 'opportunity-lab' : ''}`}
-				>
+        >
           <div className={`wallpaper ${
             isNotLoggedIn ? 'wallpaper-no-sign-in' : ''}`}
           />
