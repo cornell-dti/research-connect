@@ -51,17 +51,20 @@ class ProfessorDashboard extends Component {
 
   render() {
     console.log('rendering');
-    const override = css`
-	    display: block;
-	    margin: 0 auto;
-	    border-color: red;
-		`;
+    // const override = css`
+	  //   display: block;
+	  //   margin: 0 auto;
+	  //   border-color: red;
+		// `;
 
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            className={override}
+            // className={override}
+            style = {{display: "block",
+            margin: 0,
+            borderColor: "red"}}
             sizeUnit="px"
             size={150}
             color="#ff0000"

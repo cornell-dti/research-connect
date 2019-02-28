@@ -77,17 +77,20 @@ class ProfessorView extends Component {
   }
 
   render() {
-    const override = css`
-      display: block;
-      margin: 0 auto;
-      border-color: red;
-    `;
+    // const override = css`
+    //   display: block;
+    //   margin: 0 auto;
+    //   border-color: red;
+    // `;
     let { loading } = this.state;
     if (loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            className={override}
+            style = {{display: "block",
+            margin: 0,
+            borderColor: "red"}}
+            // className={override}
             sizeUnit="px"
             size={150}
             color="#ff0000"
