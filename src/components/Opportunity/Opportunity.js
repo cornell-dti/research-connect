@@ -126,11 +126,13 @@ class Opportunity extends Component {
       <div className="opportunity-card" onClick={this.clickRow.bind(this)}>
         <div className="row opp-box-row">
           <div className="column column-75">
-            <div className="title">{ this.props.title }</div>
-            <Star 
-            update={this.star.bind(this)}
-            starred={this.props.starred}
-            />
+            <div className="title">
+              { this.props.title } 
+              <Star 
+                update={this.star.bind(this)}
+                starred={this.props.starred}
+              />
+            </div>
           </div>
           
           <div className="column column-25">
