@@ -90,7 +90,7 @@ class LandingPage extends Component {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/studentDashboard';
+        window.location.href = '/opportunities';
       } else {
         window.location.href = '/studentRegister';
       }
