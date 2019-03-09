@@ -225,8 +225,8 @@ app.post('/star', (req, res) => {
 });
 
 // UNTESTED
-app.get('/:star', (req, res) => {
-    verify(req.params.tokenId, (decrypted) => {
+app.get('/star', (req, res) => {
+    verify(req.params.token_id, (decrypted) => {
         if (!decrypted) {
             return res.send([]);
         }
@@ -242,7 +242,15 @@ app.get('/:star', (req, res) => {
                 debug('no results found');
             }
 
-            return res.send((undergrads[0].starredFaculty, undergrads[0].starredOpportunities));
+            if(req.params.type === 'opportunity') {
+                return res.send(undergrads[0].starredOpportunities);
+            }
+
+            else if(req.params.type === 'faculty') {
+                return res.send(undergrads[0].starredFaculty);
+            }
+
+
         });
     }).catch((error) => {
         handleVerifyError(error, res);
