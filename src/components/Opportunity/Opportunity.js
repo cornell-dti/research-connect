@@ -127,14 +127,14 @@ class Opportunity extends Component {
         <div className="row opp-box-row">
           <div className="column column-75">
             <div className="title">{ this.props.title }</div>
-          </div>
-          
-          <div className="column column-25">
-            {this.checkPrereqs()}
             <Star 
             update={this.star.bind(this)}
             starred={this.props.starred}
             />
+          </div>
+          
+          <div className="column column-25">
+            {this.checkPrereqs()}
           </div>
         </div>
         { this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }
