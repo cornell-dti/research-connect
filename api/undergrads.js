@@ -182,4 +182,72 @@ app.delete('/:id', (req, res) => {
   });
 });
 
+app.post('/star', (req, res) => {
+    debug(req.body);
+    const data = req.body;
+    verify(data.token_id, (decrypted) => {
+        if (!decrypted) {
+            return res.send([]);
+        }
+        undergradModel.find({netId: decrypted}, (err, undergrad) => {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                console.log(undergrad);
+                debug(undergrad);
+
+                if (data.id) {
+                    if (data.type === 'opportunity') {
+                        undergrad[0].starredOpportunities.push(data.id);
+                    }
+
+                    else if (data.type === 'faculty') {
+                        undergrad[0].starredFaculty.push(data.id);
+                    }
+                }
+
+                else {
+                    debug('no faculty or opportunity id present.');
+                    res.status(500).send("no faculty or opportunity id present");
+                }
+
+                // Save the updated document back to the database
+                undergrad[0].save((err2, todo) => {
+                    if (err2) {
+                        res.status(500).send(err2);
+                    }
+                    debug('success!');
+                    res.status(200).send(todo);
+                });
+            }
+        });
+    });
+});
+
+// UNTESTED
+app.get('/:star', (req, res) => {
+    verify(req.params.tokenId, (decrypted) => {
+        if (!decrypted) {
+            return res.send([]);
+        }
+        undergradModel.find({ netId: decrypted }, (err, undergrads) => {
+            if (err) {
+                debug('Not found');
+                return err;
+            }
+            debug('Found');
+            if (undergrads.length) {
+                debug(undergrads[0]);
+            } else {
+                debug('no results found');
+            }
+
+            return res.send((undergrads[0].starredFaculty, undergrads[0].starredOpportunities));
+        });
+    }).catch((error) => {
+        handleVerifyError(error, res);
+    });
+});
+
+
 module.exports = app;
