@@ -41,13 +41,11 @@ class OpportunityList extends Component {
         }
 
         let minGPA = filteredOptions.gpaSelect;
-        willShow = willShow && minGPA < opp.minGPA;
+        willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
 
-        let season = filteredOptions.startDate.season;
-        let year = filteredOptions.startDate.year;
-        if (season && (season != opp.startSeason || year != opp.startYear)){
-              willShow = false;
-        }
+        let startDate = filteredOptions.startDate;
+        let oppStartDate = opp.startSeason + " " + opp.startYear;
+        willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
 
         //multiple/checkbox choices
         const yearsSelected = filteredOptions.yearSelect;
@@ -100,9 +98,7 @@ class OpportunityList extends Component {
     const nodeCount = this.countNodes(oppNodes);
     const searchCrit = this.props.searching ? (
       <p>
-        {nodeCount}
-        {' '}
-matching your search criteria.
+        {nodeCount} {' '} matching your search criteria.
       </p>
     ) : <span />;
     return (

@@ -191,7 +191,7 @@ export function getGPA(){
 }
 
 export function getStartYears(){
-  return {'':'Select', 'f18':'Fall 2018', 'sp19':'Spring 2019', 'su19':'Summer 2019', 'f19':'Fall 2019', 'sp20':'Spring 2020'};
+  return {'':'Select', 'Fall 2018':'Fall 2018', 'Spring 2019':'Spring 2019', 'Summer 2019':'Summer 2019', 'Fall 2019':'Fall 2019', 'Spring 2020':'Spring 2020'};
 }
 
 export function updateSingleChoiceFilter(filterName, option){
