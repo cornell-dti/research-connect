@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../Opportunity/OpportunityList/OpportunityList.scss';
 import '../Opportunity/Opportunity.scss';
+import './Faculty.scss';
 
 class Faculty extends Component {
   constructor(props) {

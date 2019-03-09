@@ -19,7 +19,7 @@ class FacultyBox extends Component {
   }
 
   loadFacultyFromServer() {
-    axios.get('/api/faculty')
+    axios.get('/api/faculty?department=tech')
       .then((res) => {
         this.setState({ data: res.data });
       });
@@ -32,7 +32,7 @@ class FacultyBox extends Component {
 
   render() {
     return (
-      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.state.data} />
+      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.state.data} numShowing={this.props.numShowing}/>
     );
   }
 }

@@ -8,7 +8,9 @@ import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import ReactPaginate from 'react-paginate';
 import '../Opportunities/Opportunities.scss';
+import './FacultySearch.scss';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 
 class FacultySearch extends Component {
@@ -22,6 +24,7 @@ class FacultySearch extends Component {
       searching: false,
       clickedEnter: false,
       role: '',
+      numShowing: 20,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -79,6 +82,11 @@ class FacultySearch extends Component {
     }
   }
 
+  handlePageClick = data => {
+    const totalShowing = this.state.numShowing + 20;
+    this.setState({numShowing: totalShowing});
+  };
+
   onFocus() {
     this.setState({searching: true});
   }
@@ -99,7 +107,7 @@ class FacultySearch extends Component {
         <div>
           <VariableNavbar role={this.state.role} current={'facultysearch'} />
 
-          <div className="opp-container row">
+          <div className="opp-container row" id="noAlign">
 
             <div className="column column-20">
               <div className="filter-box">
@@ -212,7 +220,16 @@ class FacultySearch extends Component {
                     <FacultyBox
                         filteredOptions={this.state}
                         url="opportunities"
+                        numShowing = {this.state.numShowing}
                     />
+                    <div className="centered">
+                      <input
+                          type="submit"
+                          className="button"
+                          value="Show More"
+                          onClick={this.handlePageClick.bind(this)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -6,11 +6,13 @@ const {
 } = require('../common.js');
 
 /** gets all the faculty in the database.
+ * Query parameter: ?department=tech means only return CS or ECE professors (I would include Info Sci but we don't have info on them yet...)
  * @param limit users can specify to only return x number of results by appending ?limit=x at the end of their query. i.e. GET /api/faculty?limit=10
  * @param skip users can also specify to skip x number of results. Default is 0. i.e. GET /api/faculty?limit=10&skip=20
  * @return array of faculty members
  */
 app.get('/', (req, res) => {
+  let { department } = req.params;
   let { skip } = req.query;
   // if they didn't make skip a number or just didn't specify it, make it 0.
   if (Number.isNaN(Number(skip)) || !skip) {
@@ -18,31 +20,29 @@ app.get('/', (req, res) => {
   } else { // the query things are always strings, and mongoose requires a number
     skip = parseInt(skip, 10);
   }
-  debug(`skip: ${skip}`);
-  const { limit } = req.query;
-  // if they did specify a limit and it is a number (where "1" and 1 are both numbers. We solve this with parseInt below)
-  if (limit && limit !== 'null' && !Number.isNaN(Number(limit))) {
-    facultyModel.find({})
-      .skip(skip)
-      .limit(parseInt(limit, 10))
-      .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
-      .exec((err, faculty) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.send(faculty);
-      });
+  let { limit } = req.query;
+  if (!Number.isNaN(Number(limit))) {
+    limit = parseInt(limit, 10);
   } else {
-    facultyModel.find({})
-      .skip(skip)
-      .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
-      .exec((err, faculty) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.send(faculty);
-      });
+    limit = 0;
   }
+  let departmentFilter = {};
+  if (department === "tech") {
+    departmentFilter = {
+      department: {$in: ["Computer Science", "Electrical and Computer Engineering"]}
+    }
+  }
+  facultyModel.find(departmentFilter)
+    .skip(skip)
+    .limit(parseInt(limit, 10))
+    .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
+    .exec((err, faculty) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      return res.send(faculty);
+    });
+
 });
 
 /** Searches the database for whatever the user has in their query string

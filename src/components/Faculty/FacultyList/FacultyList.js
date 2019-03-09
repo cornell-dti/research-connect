@@ -24,7 +24,10 @@ class FacultyList extends Component {
   }
 
   render() {
-    let profNodes = this.props.data.map(prof => {
+    let profNodes = this.props.data.map((prof, idx) => {
+      if (idx > this.props.numShowing){
+        return;
+      }
       /*The variable 'willshow' will be set to false if any filter excludes this faculty member */
       let willShow = true;
       const filteredOptions = this.props.filteredOptions;
