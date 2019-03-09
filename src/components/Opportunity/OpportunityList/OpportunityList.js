@@ -1,10 +1,53 @@
 import React, { Component } from 'react';
 import Opportunity from '../Opportunity';
 import './OpportunityList.scss';
+import axios from 'axios';
+import * as Utils from '../../Utils';
 
 class OpportunityList extends Component {
   constructor(props) {
     super(props);
+    this.state = {starredOps : ["5c67a5ac9b9e2e4be040fda5"]};
+    Utils.updateMultipleChoiceFilter.bind(this);
+  }
+
+  starAPIrequest(opId){
+    console.log("SENDING API REQUEST TO STAR: " + opId);
+    const token_id = sessionStorage.getItem('token_id');
+    const id = opId;
+    const type = "opportunity";
+
+    this.setState((state) => {
+      console.log("state set");
+      if (state.starredOps.includes(opId)){
+        console.log(this.state.starredOps);
+        return {starredOps: state.starredOps.filter(original => original !== opId)};
+      }
+      else{
+        console.log(this.state.starredOps);
+        return {starredOps: [...state.starredOps, opId]};
+      }
+    });
+
+    axios.post('/api/undergrads/star', { token_id, type, id})
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      //console.log(error);
+    });
+  }
+
+  getStarredOps(){
+    console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
+    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      console.log(response.data);
+      this.setState({starredOps: response.data.starredOpportunities});
+    })
+    .catch((error)=> {
+      console.log(error);
+    });
   }
 
   countNodes(nodes) {
@@ -21,47 +64,52 @@ class OpportunityList extends Component {
     return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
   }
 
+  componentDidMount(){
+    console.log("component mounted");
+    this.getStarredOps();
+  }
+
   render() {
-    if (!this.props.data) {
-      return (<div />);
-    }
+    if (!this.props.data) return null;
+
     const oppNodes = this.props.data.map((opp) => {
-        let willShow = true; //set to false if any filter excludes this opportunity
-        const filteredOptions = this.props.filteredOptions;
+      let willShow = true; //set to false if any filter excludes this opportunity
+      const filteredOptions = this.props.filteredOptions;
 
-        let matchingSearches = filteredOptions.matchingSearches;
-        if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter){
-          let matches = false;
-          for (let i = 0; i<matchingSearches.length; i++){
-            if(matchingSearches[i] === opp._id){
-              matches = true;
-            }
+      let matchingSearches = filteredOptions.matchingSearches;
+      if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter){
+        let matches = false;
+        for (let i = 0; i<matchingSearches.length; i++){
+          if(matchingSearches[i] === opp._id){
+            matches = true;
           }
-          willShow = matches;
         }
+        willShow = matches;
+      }
 
-        let minGPA = filteredOptions.gpaSelect;
-        willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
+      let minGPA = filteredOptions.gpaSelect;
+      willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
 
-        let startDate = filteredOptions.startDate;
-        let oppStartDate = opp.startSeason + " " + opp.startYear;
-        willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
+      let startDate = filteredOptions.startDate;
+      let oppStartDate = opp.startSeason + " " + opp.startYear;
+      willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
 
-        //multiple/checkbox choices
-        const yearsSelected = filteredOptions.yearSelect;
-        const yearsAllowed = opp.yearsAllowed;
-        willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
+      //multiple/checkbox choices
+      const yearsSelected = filteredOptions.yearSelect;
+      const yearsAllowed = opp.yearsAllowed;
+      willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
 
-        const csAreasSelected = filteredOptions.csAreasSelect;
-        const csAreasAllowed = opp.areas;
-        willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
+      const csAreasSelected = filteredOptions.csAreasSelect;
+      const csAreasAllowed = opp.areas;
+      willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
 
-        const compensationsSelected = filteredOptions.compensationSelect;
-        const compensationsAllowed = opp.compensation;
-        willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
-        //end multiple/checkbox choices
+      const compensationsSelected = filteredOptions.compensationSelect;
+      const compensationsAllowed = opp.compensation;
+      willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
+      //end multiple/checkbox choices
 
       if (willShow) {
+        let starred = this.state.starredOps.includes(opp._id);
         return (
           <Opportunity
             filteredOptions={this.props.filteredOptions}
@@ -90,6 +138,8 @@ class OpportunityList extends Component {
             prereqsMatch={opp.prereqsMatch}
             spots={opp.spots}
             opId={opp._id}
+            starred={starred}
+            updateStar={this.starAPIrequest.bind(this)}
           />
         );
       }
@@ -101,6 +151,8 @@ class OpportunityList extends Component {
         {nodeCount} {' '} matching your search criteria.
       </p>
     ) : <span />;
+
+    console.log("rendered again");
     return (
       <div>
         <div className="node-list-div">
@@ -108,7 +160,6 @@ class OpportunityList extends Component {
         </div>
         { oppNodes }
       </div>
-
     );
   }
 }

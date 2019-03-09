@@ -5,9 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './Opportunity.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
-import Calendar from 'react-icons/lib/fa/calendar-check-o';
 import OpportunityJSON from './Opportunity.json';
 import * as Utils from '../Utils.js';
+import Star from '../../components/Star/Star';
 
 class Opportunity extends Component {
   constructor(props) {
@@ -18,14 +18,19 @@ class Opportunity extends Component {
   contains(needle) {
     const findNaN = isNaN(needle);
     let indexOf;
-
     if (!findNaN && typeof Array.prototype.indexOf === 'function') {
       indexOf = Array.prototype.indexOf;
     } else {
       indexOf = needle => this.findIndex(item => findNaN && isNaN(item) || item.toLowerCase() === needle.toLowerCase());
     }
-
     return indexOf.call(this, needle) > -1;
+  }
+
+  star(e){
+    e.stopPropagation();
+    console.log(e);
+    console.log(e.target.checked);
+    this.props.updateStar(this.props.opId);
   }
 
   clickRow(rowObj) {
@@ -71,6 +76,9 @@ class Opportunity extends Component {
   }
 
   checkPrereqs() {
+    if(!sessionStorage.getItem('token_id')){
+      return null;
+    }
     if (this.props.prereqsMatch === true) {
       return (
         <div>
@@ -105,8 +113,8 @@ class Opportunity extends Component {
     const lab = false;
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        if (!response || response.data == 'none'
-         || !response.data || response.data == 'undergrad') {
+        if (!response || response.data == 'none' ||
+            !response.data || response.data == 'undergrad') {
           return false;
         }
         return true;
@@ -120,9 +128,13 @@ class Opportunity extends Component {
           <div className="column column-75">
             <div className="title">{ this.props.title }</div>
           </div>
-
+          
           <div className="column column-25">
             {this.checkPrereqs()}
+            <Star 
+            update={this.star.bind(this)}
+            starred={this.props.starred}
+            />
           </div>
         </div>
         { this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }

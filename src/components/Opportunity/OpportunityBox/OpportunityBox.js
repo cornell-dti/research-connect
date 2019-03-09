@@ -34,7 +34,12 @@ class OpportunityBox extends Component {
 
   render() {
     return (
-      <OpportunityList countOpps={this.countOpps.bind(this)} filteredOptions={this.props.filteredOptions} data={this.state.data} searching={this.props.searching} />
+      <OpportunityList 
+        countOpps={this.countOpps.bind(this)} 
+        filteredOptions={this.props.filteredOptions} 
+        data={this.state.data} 
+        searching={this.props.searching} 
+      />
     );
   }
 }
