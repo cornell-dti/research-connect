@@ -29,7 +29,7 @@ class OpportunityList extends Component {
       }
     });
 
-    axios.post('/api/undergrads/star', { token_id, type, id})
+    axios.post('/api/undergrads/star', {token_id, type, id})
     .then((response) => {
       console.log(response);
     })

@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import './Star.scss';
 import PropTypes from 'prop-types';
+import yellowstar from '../../images/yellowstar.png';
+import greystar from '../../images/greystar.png';
 
 class Star extends Component {
   render(){
     if(sessionStorage.getItem('token_id')) {
-        return (
-            this.props.starred ? 
-            <input type="checkbox" class="star" onClick={this.props.update} checked/> :
-            <input type="checkbox" class="star" onClick={this.props.update} />
-        );
+      let star = this.props.starred ? yellowstar : greystar;
+      return (<img className="logo" src={star} onClick={this.props.update}/>);
     }
     return null;
   }
