@@ -160,7 +160,7 @@ class ProfessorLanding extends Component {
           <h1>Research Connect for Labs</h1>
           <h3>Easily find and recruit assistants for labs</h3>
           <Container>
-            <Row className = "buttonHero">
+            <Row className="buttonHero">
               <Col>
                 <input
                   className="white-button"

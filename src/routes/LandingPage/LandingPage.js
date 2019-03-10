@@ -131,7 +131,6 @@ class Landing extends Component {
   postOpp() {
     window.location.href = '/newopp';
   }
-
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (e.target.value == '') {
@@ -197,22 +196,22 @@ class Landing extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Student Log In"
-                    // hostedDomain="cornell.edu"
-                  onSuccess={this.responseGoogleStudent.bind(this)}
+                  buttonText="Lab Log In"
+                  onSuccess={this.responseGoogle}
                   onFailure={this.loginFailure.bind(this)}
-                  className="login button"
+                  className="signup"
                 />
+
               </div>
             ) : (
-              <li />
-            )}
+                <li />
+              )}
           </nav>
         </header>
 
         <section id="home" className="hero">
           <div className="background-image" />
-          <h1>Research Connect for Labs</h1>
+          <h1>Research Connect</h1>
           <h3>Find your next research opportunity.</h3>
 
           <div className="row search-div-container">
@@ -250,7 +249,7 @@ class Landing extends Component {
             <Row>
               <Col><p className="collab">In Collabortation with ...     </p></Col>
               <Col><img className="middleImage" src={cis} /></Col>
-              {/* <Col><img className="middleImage-curb" src={curb} /></Col> */}
+              {/*<Col><img className="middleImage-curb" src={curb} /></Col>*/}
               <Col><img className="middleImage" src={CDTI} /></Col>
             </Row>
           </Container>
@@ -258,12 +257,9 @@ class Landing extends Component {
         </section>
 
         <section className="middleContainer2">
-          <Container>
+          <Container >
             <Row>
-              <p>
-Are you a professor, student, or other faculty member looking for research assistants?
-                <a href="/profLanding">Visit Research Connect for Labs </a>
-              </p>
+              <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>
             </Row>
             <Row>
               <p className="big ">Explore Popular Areas of Interest</p>
@@ -271,50 +267,23 @@ Are you a professor, student, or other faculty member looking for research assis
             <Row>
               <Col className="text-center">
                 <Row><img className="middleImage" src={blueIcon} /></Row>
-                <Row className="text-center">
-                  {' '}
-                  <p id="no-max-width">
-DATA
-                    <br />
-                    {' '}
-SCIENCE
-                  </p>
-                  {' '}
-                </Row>
+                <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
-                <Row />
-                <img className="middleImage" src={greenIcon} />
-                <Row />
-                <Row>
-                  {' '}
-                  <p>COMPUTATIONAL BIOLOGY</p>
-                  {' '}
-                </Row>
+                <Row><img className="middleImage" src={greenIcon} /> </Row>
+                <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={redIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>MACHINE LEARNING</p>
-                  {' '}
-                </Row>
+                <Row> <p>MACHINE LEARNING</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={yellowIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>NATURAL LANGUAGE PROCESSING</p>
-                  {' '}
-                </Row>
+                <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={purpleIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>COMPUTER VISION</p>
-                  {' '}
-                </Row>
+                <Row> <p>COMPUTER VISION</p> </Row>
               </Col>
 
             </Row>
@@ -326,15 +295,15 @@ SCIENCE
             <h2>Discover your passion.</h2>
             <section>
               <Row>
-                <Col><img className="list-image" src={pen} /></Col>
+                <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
                 <Col><p>Search for opportunities by sorting by your interests and qualifications.</p></Col>
               </Row>
               <Row>
-                <Col><img className="list-image" src={img2} /></Col>
+                <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
                 <Col><p>Get connected to leading researchers and investigators in fields that interest you.</p></Col>
               </Row>
               <Row>
-                <Col><img className="list-image" src={lightbulb} /></Col>
+                <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
                 <Col><p>Apply for lab positions directly from our platform.</p></Col>
               </Row>
 
