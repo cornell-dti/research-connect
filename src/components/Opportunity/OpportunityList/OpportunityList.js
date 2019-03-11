@@ -7,7 +7,7 @@ import * as Utils from '../../Utils';
 class OpportunityList extends Component {
   constructor(props) {
     super(props);
-    this.state = {starredOps : ["5c67a5ac9b9e2e4be040fda5"]};
+    this.state = {starredOps : []};
     Utils.updateMultipleChoiceFilter.bind(this);
   }
 
@@ -17,24 +17,24 @@ class OpportunityList extends Component {
     const id = opId;
     const type = "opportunity";
 
-    this.setState((state) => {
-      console.log("state set");
-      if (state.starredOps.includes(opId)){
-        console.log(this.state.starredOps);
-        return {starredOps: state.starredOps.filter(original => original !== opId)};
-      }
-      else{
-        console.log(this.state.starredOps);
-        return {starredOps: [...state.starredOps, opId]};
-      }
-    });
-
     axios.post('/api/undergrads/star', {token_id, type, id})
     .then((response) => {
+      this.setState((state) => {
+        console.log("state set");
+        if (state.starredOps.includes(opId)){
+          console.log(this.state.starredOps);
+          return {starredOps: state.starredOps.filter(original => original !== opId)};
+        }
+        else{
+          console.log(this.state.starredOps);
+          return {starredOps: [...state.starredOps, opId]};
+        }
+      });
       console.log(response);
     })
     .catch((error) => {
       //console.log(error);
+      this.getStarredOps();
     });
   }
 
@@ -42,6 +42,7 @@ class OpportunityList extends Component {
     console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
+      console.log("reponse");
       console.log(response.data);
       this.setState({starredOps: response.data.starredOpportunities});
     })
