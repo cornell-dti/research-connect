@@ -20,6 +20,11 @@ import Doc from './routes/Doc/Doc';
 import LandingPage from './routes/LandingPage/LandingPage';
 import ProfessorLanding from './routes/ProfessorLanding/ProfessorLanding';
 
+
+function initializeReactGA() {
+  ReactGA.initialize('UA-69262899-9');
+  ReactGA.pageview('/profLanding');
+}
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
