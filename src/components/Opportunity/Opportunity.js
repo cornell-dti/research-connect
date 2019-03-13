@@ -44,7 +44,7 @@ class Opportunity extends Component {
         str2 = `${str2.slice(0, maxChars)}... `;
         return (
           <h6>
-            {str2}
+            {str2} 
             <span className="viewDetails">View Details</span>
             {' '}
 
@@ -53,7 +53,7 @@ class Opportunity extends Component {
       }
       return (
         <h6 className="smallTasks">
-          {`Tasks: ${str2}`}
+          {`${str2}`}
           {' '}
         </h6>
       );
@@ -69,7 +69,7 @@ class Opportunity extends Component {
     }
     return (
       <div className="description-div">
-        {`Description: ${str1}`}
+        {`${str1}`}
         {' '}
       </div>
     );
@@ -82,17 +82,17 @@ class Opportunity extends Component {
     if (this.props.prereqsMatch === true) {
       return (
         <div>
-          <CheckBox className="greenCheck" />
+          <CheckBox className="greenCheck" size = {27} />
           {' '}
-          <span>All Prereqs Met</span>
+          <span class = "checkText">All Prereqs Met</span>
         </div>
       );
     }
     return (
       <div>
-        <CrossCircle className="redX" />
+        <CrossCircle className="cal" size = {27} />
         {' '}
-        <span>Prereqs Missing</span>
+        <span class = "checkText">Prereqs Missing</span>
       </div>
     );
   }
