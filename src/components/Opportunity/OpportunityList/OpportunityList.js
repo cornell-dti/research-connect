@@ -17,7 +17,7 @@ class OpportunityList extends Component {
     .then((response) => {
       console.log("reponse");
       console.log(response.data);
-      this.setState({starredOps: response.data.starredOpportunities});
+      this.setState({starredOps: []});
     })
     .catch((error)=> {
       console.log(error);
