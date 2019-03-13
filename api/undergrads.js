@@ -212,7 +212,9 @@ app.delete('/:id', (req, res) => {
 });
 
 app.post('/star', (req, res) => {
+  debug("?/?????????????????????")
   debug(req.body);
+  const data = req.body;
   verify(data.token_id, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
@@ -221,7 +223,6 @@ app.post('/star', (req, res) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        console.log(undergrad);
         debug(undergrad);
 
         if (data.id) {

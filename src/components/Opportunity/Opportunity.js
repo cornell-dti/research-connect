@@ -28,8 +28,6 @@ class Opportunity extends Component {
 
   star(e){
     e.stopPropagation();
-    console.log(e);
-    console.log(e.target.checked);
     this.props.updateStar(this.props.opId);
   }
 
