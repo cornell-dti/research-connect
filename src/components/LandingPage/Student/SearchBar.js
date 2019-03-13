@@ -43,17 +43,7 @@ class SearchBar extends React.Component {
   handleKeyPress(e) {
     if (e.key === 'Enter') {
       this.setState({ clickedEnter: true });
-      axios.get(`${'/api/opportunities/search' + '?search='}${this.state.searchBar}`)
-      .then((response) => {
-        const matching = [];
-        for (let i = 0; i < response.data.length; i++) {
-          matching.push(response.data[i]._id);
-        }
-        this.setState({ matchingSearches: matching });
-      })
-      .catch((error) => {
-        Utils.handleTokenError(error);
-      });
+      window.location.href = `/opportunities?search=${this.state.searchBar}`;
     }
   }
 

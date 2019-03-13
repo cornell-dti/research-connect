@@ -45,7 +45,21 @@ class Opportunities extends Component {
     };
   }
 
+  handleSearchTerms(){
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm){
+      console.log("in search term");
+      this.setState({searchBar: searchTerm});
+      document.getElementById("searchOpps").value = searchTerm;
+    }
+  }
+
   componentDidMount() {
+    this.handleSearchTerms();
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
       return;
@@ -66,6 +80,17 @@ class Opportunities extends Component {
       .catch((error) => {
         Utils.handleTokenError(error);
       });
+
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm){
+      console.log("in search term");
+      this.setState({searchBar: searchTerm});
+      document.getElementById("searchOpps").value = searchTerm;
+    }
   }
 
   handleUpdateMajor(majorObj) {
@@ -148,6 +173,7 @@ class Opportunities extends Component {
             value={this.state.searchBar}
             type="text"
             name="search"
+            id="searchOpps"
             placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"
           />
           <div className="delete-div">
