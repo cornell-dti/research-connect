@@ -15,10 +15,7 @@ class OpportunityList extends Component {
     console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
-      console.log("reponse");
-      console.log(response.data);
       let data = response.data;
-      console.log(data);
       this.setState({starredOps: data});
     })
     .catch((error)=> {
@@ -37,55 +34,9 @@ class OpportunityList extends Component {
     })
     .catch((error) => {
       console.log(error);
-      this.getStarredOps();
     });
   }
 
-  /*
-  updateStars(opId){
-    axios.post('/api/undergrads/stars', {
-      token_id: sessionStorage.getItem('token_id'),
-      type: "opportunity",
-      ids: this.setState((state) => {
-        console.log("state set");
-        if (state.starredOps.includes(opId)){
-          console.log(this.state.starredOps);
-          return {starredOps: state.starredOps.filter(original => original !== opId)};
-        }
-        else{
-          console.log(this.state.starredOps);
-          return {starredOps: [...state.starredOps, opId]};
-        }
-      })
-    })
-    .then((response) => {
-      this.getStarredOps();
-    })
-    .catch((error) => {
-      console.log(error);
-      this.getStarredOps();
-    });
-  }
-*/
-  /*
-
-  starAPIrequest(opId){
-    console.log("SENDING API REQUEST TO STAR: " + opId);
-    const token_id = sessionStorage.getItem('token_id');
-    const id = opId;
-    const type = "opportunity";
-
-    axios.post('/api/undergrads/star', {token_id, type, id})
-    .then((response) => {
-      
-      console.log(response);
-    })
-    .catch((error) => {
-      //console.log(error);
-      this.getStarredOps();
-    });
-  }
-*/
   countNodes(nodes) {
     const tempCount = nodes.filter(node => !(!node)).length;
     return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
