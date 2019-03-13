@@ -34,6 +34,39 @@ app.get('/la/:netId', (req, res) => {
   });
 });
 
+// UNTESTED
+app.get('/star', (req, res) => {
+  res.send("Hello world!");
+  verify(req.params.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    undergradModel.find({ netId: decrypted }, (err, undergrads) => {
+      debug("netid");
+      debug(netId);
+      if (err) {
+        debug('Not found');
+        return err;
+      }
+      debug('Found');
+      if (undergrads.length) {
+        debug(undergrads[0]);
+      } 
+      else {
+        debug('no results found');
+      }
+      if(req.params.type === 'opportunity') {
+        return res.send(undergrads[0].starredOpportunities);
+      }
+      else if(req.params.type === 'faculty') {
+        return res.send(undergrads[0].starredFaculty);
+      }
+    });
+  }).catch((error) => {
+      handleVerifyError(error, res);
+  });
+});
+
 app.get('/:tokenId', (req, res) => {
   verify(req.params.tokenId, (decrypted) => {
     if (!decrypted) {
@@ -209,12 +242,14 @@ app.post('/star', (req, res) => {
                 else {
                     debug('no faculty or opportunity id present.');
                     res.status(500).send("no faculty or opportunity id present");
+                    return;
                 }
 
                 // Save the updated document back to the database
                 undergrad[0].save((err2, todo) => {
                     if (err2) {
                         res.status(500).send(err2);
+                        return;
                     }
                     debug('success!');
                     res.status(200).send(todo);
@@ -223,39 +258,5 @@ app.post('/star', (req, res) => {
         });
     });
 });
-
-// UNTESTED
-app.get('/star', (req, res) => {
-    verify(req.params.token_id, (decrypted) => {
-        if (!decrypted) {
-            return res.send([]);
-        }
-        undergradModel.find({ netId: decrypted }, (err, undergrads) => {
-            if (err) {
-                debug('Not found');
-                return err;
-            }
-            debug('Found');
-            if (undergrads.length) {
-                debug(undergrads[0]);
-            } else {
-                debug('no results found');
-            }
-
-            if(req.params.type === 'opportunity') {
-                return res.send(undergrads[0].starredOpportunities);
-            }
-
-            else if(req.params.type === 'faculty') {
-                return res.send(undergrads[0].starredFaculty);
-            }
-
-
-        });
-    }).catch((error) => {
-        handleVerifyError(error, res);
-    });
-});
-
 
 module.exports = app;

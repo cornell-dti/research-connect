@@ -11,6 +11,36 @@ class OpportunityList extends Component {
     Utils.updateMultipleChoiceFilter.bind(this);
   }
 
+  getStarredOps(){
+    console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
+    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      console.log("reponse");
+      console.log(response.data);
+      this.setState({starredOps: response.data.starredOpportunities});
+    })
+    .catch((error)=> {
+      console.log(error);
+    });
+  }
+
+  updateStar(opId){
+    axios.post('/api/undergrads/star', {
+      token_id: sessionStorage.getItem('token_id'),
+      type: "opportunity",
+      id: this.opId
+    })
+    .then((response) => {
+      this.getStarredOps();
+    })
+    .catch((error) => {
+      console.log(error);
+      this.getStarredOps();
+    });
+  }
+
+  /*
+
   starAPIrequest(opId){
     console.log("SENDING API REQUEST TO STAR: " + opId);
     const token_id = sessionStorage.getItem('token_id');
@@ -37,20 +67,7 @@ class OpportunityList extends Component {
       this.getStarredOps();
     });
   }
-
-  getStarredOps(){
-    console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
-    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
-    .then((response) => {
-      console.log("reponse");
-      console.log(response.data);
-      this.setState({starredOps: response.data.starredOpportunities});
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-  }
-
+*/
   countNodes(nodes) {
     const tempCount = nodes.filter(node => !(!node)).length;
     return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
@@ -140,7 +157,7 @@ class OpportunityList extends Component {
             spots={opp.spots}
             opId={opp._id}
             starred={starred}
-            updateStar={this.starAPIrequest.bind(this)}
+            updateStar={this.updateStar.bind(this)}
           />
         );
       }
