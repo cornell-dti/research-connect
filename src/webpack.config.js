@@ -1,11 +1,16 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 
-const plugins = [
-  new ExtractTextPlugin({
-    filename: 'css/styles.css',
-  }),
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+ const plugins =  [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
   new OptimizeCssAssetsPlugin({
     cssProcessorOptions: { discardComments: { removeAll: true } },
   }),
@@ -37,10 +42,15 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader'],
-        }),
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../public/'
+            }
+          },
+          "css-loader"
+        ]
       },
       {
         test: /\.(woff|woff2|eot|ttf)$/,

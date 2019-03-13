@@ -32,8 +32,7 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sgMail = sgMail;
-module.exports.sgOppsGroup = process.env.SENDGRID_OPPS_GROUP;
-debug(typeof process.env.SENDGRID_OPPS_GROUP);
+module.exports.sgOppsGroup = parseInt(process.env.SENDGRID_OPPS_GROUP, 10);
 module.exports.sgAnnouncementsGroup = parseInt(process.env.SENDGRID_ANNOUNCEMENTS_GROUP, 10);
 module.exports.sgStatusGroup = parseInt(process.env.SENDGRID_STATUS_GROUP, 10);
 
@@ -60,6 +59,9 @@ function dateIsBetween(date, lowerBound, upperBound) {
 module.exports.dateIsBetween = dateIsBetween;
 
 function gradYearToString(gradYear) {
+  if (!gradYear) {
+    return 'freshman';
+  }
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'sophomore';

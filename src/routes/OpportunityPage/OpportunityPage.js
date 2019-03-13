@@ -3,9 +3,8 @@ import axios from 'axios';
 import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
-import ProfessorNavbar
-  from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
 
@@ -545,13 +544,13 @@ No Preference
     return (
       <div>
         {this.state.role && this.state.role === 'undergrad'
-          && <Navbar current="opportunities" />}
+          && <StudentNavbar current="opportunities" />}
         {this.state.role && this.state.role !== 'undergrad'
           && <ProfessorNavbar current="opportunities" />}
 
         <div className={`opportunities-page-wrapper ${
           isLab ? 'opportunity-lab' : ''}`}
-        >
+				>
           <div className={`wallpaper ${
             isNotLoggedIn ? 'wallpaper-no-sign-in' : ''}`}
           />
