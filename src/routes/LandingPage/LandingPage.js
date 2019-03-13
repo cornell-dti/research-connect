@@ -220,15 +220,15 @@ class Landing extends Component {
             <section>
               <Row className="picRow">
                 <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
-                <Col><p className="picP">Search for opportunities by sorting by your interests and qualifications.</p></Col>
+                <Col><p className="picP">Search for opportunities and stop guessing who is accepting.</p></Col>
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
-                <Col><p className="picP">Get connected to leading researchers and investigators in fields that interest you.</p></Col>
+                <Col><p className="picP">Get help writing and automatically scheduling emails to professors.</p></Col>
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
-                <Col><p className="picP">Apply for lab positions directly from our platform.</p></Col>
+                <Col><p className="picP">View our complete guide on finding research.</p></Col>
               </Row>
 
             </section>
