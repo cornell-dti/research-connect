@@ -34,16 +34,14 @@ app.get('/la/:netId', (req, res) => {
   });
 });
 
-// UNTESTED
 app.get('/star', (req, res) => {
-  res.send("Hello world!");
-  verify(req.params.token_id, (decrypted) => {
+  verify(req.query.token_id, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
     }
+    debug(decrypted);
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
       debug("netid");
-      debug(netId);
       if (err) {
         debug('Not found');
         return err;
@@ -55,10 +53,10 @@ app.get('/star', (req, res) => {
       else {
         debug('no results found');
       }
-      if(req.params.type === 'opportunity') {
+      if(req.query.type === 'opportunity') {
         return res.send(undergrads[0].starredOpportunities);
       }
-      else if(req.params.type === 'faculty') {
+      else if(req.query.type === 'faculty') {
         return res.send(undergrads[0].starredFaculty);
       }
     });
@@ -68,7 +66,7 @@ app.get('/star', (req, res) => {
 });
 
 app.get('/:tokenId', (req, res) => {
-  verify(req.params.tokenId, (decrypted) => {
+  verify(req.query.tokenId, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
     }

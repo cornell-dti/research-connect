@@ -17,7 +17,9 @@ class OpportunityList extends Component {
     .then((response) => {
       console.log("reponse");
       console.log(response.data);
-      this.setState({starredOps: []});
+      let data = response.data;
+      console.log(data);
+      this.setState({starredOps: data});
     })
     .catch((error)=> {
       console.log(error);
@@ -25,11 +27,11 @@ class OpportunityList extends Component {
   }
 
   updateStar(opId){
-    axios.post('/api/undergrads/star', {
-      token_id: sessionStorage.getItem('token_id'),
-      type: "opportunity",
-      id: this.opId
-    })
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "opportunity";
+    let id = opId;
+
+    axios.post('/api/undergrads/star', { token_id, type, id})
     .then((response) => {
       this.getStarredOps();
     })
@@ -40,16 +42,11 @@ class OpportunityList extends Component {
   }
 
   /*
-
-  starAPIrequest(opId){
-    console.log("SENDING API REQUEST TO STAR: " + opId);
-    const token_id = sessionStorage.getItem('token_id');
-    const id = opId;
-    const type = "opportunity";
-
-    axios.post('/api/undergrads/star', {token_id, type, id})
-    .then((response) => {
-      this.setState((state) => {
+  updateStars(opId){
+    axios.post('/api/undergrads/stars', {
+      token_id: sessionStorage.getItem('token_id'),
+      type: "opportunity",
+      ids: this.setState((state) => {
         console.log("state set");
         if (state.starredOps.includes(opId)){
           console.log(this.state.starredOps);
@@ -59,7 +56,28 @@ class OpportunityList extends Component {
           console.log(this.state.starredOps);
           return {starredOps: [...state.starredOps, opId]};
         }
-      });
+      })
+    })
+    .then((response) => {
+      this.getStarredOps();
+    })
+    .catch((error) => {
+      console.log(error);
+      this.getStarredOps();
+    });
+  }
+*/
+  /*
+
+  starAPIrequest(opId){
+    console.log("SENDING API REQUEST TO STAR: " + opId);
+    const token_id = sessionStorage.getItem('token_id');
+    const id = opId;
+    const type = "opportunity";
+
+    axios.post('/api/undergrads/star', {token_id, type, id})
+    .then((response) => {
+      
       console.log(response);
     })
     .catch((error) => {
@@ -171,6 +189,7 @@ class OpportunityList extends Component {
     ) : <span />;
 
     console.log("rendered again");
+    console.log(this.state.starredOps);
     return (
       <div>
         <div className="node-list-div">
