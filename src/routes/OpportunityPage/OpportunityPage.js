@@ -4,9 +4,10 @@ import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
 import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
-import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar.js';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
+import Star from '../../components/Star/Star'
 
 class OpportunityPage extends Component {
   constructor(props) {
@@ -22,12 +23,33 @@ class OpportunityPage extends Component {
       netId: 'unknown',
       role: '',
       detectedLoggedOut: false,
+      starred: false
     };
 
     this.parseClasses = this.parseClasses.bind(this);
     this.parseMajors = this.parseMajors.bind(this);
     this.parseYears = this.parseYears.bind(this);
     this.parseGPA = this.parseGPA.bind(this);
+  }
+
+  isStarred(){
+    this.setState({starred:false});
+  }
+
+  star(){
+    console.log("this is working");
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "opportunity";
+    let id = this.getId();
+
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      this.isStarred();
+      this.setState({starred:true});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   getId() {
@@ -185,6 +207,7 @@ class OpportunityPage extends Component {
     }).catch((error) => {
       this.sendToHome(error);
     });
+    
   }
 
   printQuestions() {
@@ -558,7 +581,13 @@ No Preference
             <div className="column opp-details-column">
               <div className="row opp-title-card">
                 <div className="column left-column">
-                  <div className="header">{this.state.opportunity.title}</div>
+                  <div className="header">
+                  {this.state.opportunity.title}
+                  <Star 
+                    update={this.star.bind(this)}
+                    starred={this.state.starred}
+                  />
+                  </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
                 <div className="column right-column">
