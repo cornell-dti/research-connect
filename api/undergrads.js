@@ -39,7 +39,6 @@ app.get('/star', (req, res) => {
     if (!decrypted) {
       return res.send([]);
     }
-    debug(decrypted);
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
       debug("netid");
       if (err) {
@@ -134,7 +133,6 @@ app.post('/', (req, res) => {
       return res.status(400).send('Missing either first name, last name, or graduation year');
     }
     const undergrad = new undergradModel({
-
       firstName: data.firstName,
       lastName: data.lastName,
       gradYear: data.gradYear, // number
@@ -214,47 +212,46 @@ app.delete('/:id', (req, res) => {
 });
 
 app.post('/star', (req, res) => {
-    debug(req.body);
-    const data = req.body;
-    verify(data.token_id, (decrypted) => {
-        if (!decrypted) {
-            return res.send([]);
+  debug(req.body);
+  verify(data.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    undergradModel.find({ netId: decrypted }, (err, undergrad) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        console.log(undergrad);
+        debug(undergrad);
+
+        if (data.id) {
+          if (data.type === 'opportunity') {
+            undergrad[0].starredOpportunities.push(data.id);
+          }
+
+          else if (data.type === 'faculty') {
+            undergrad[0].starredFaculty.push(data.id);
+          }
         }
-        undergradModel.find({netId: decrypted}, (err, undergrad) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                console.log(undergrad);
-                debug(undergrad);
 
-                if (data.id) {
-                    if (data.type === 'opportunity') {
-                        undergrad[0].starredOpportunities.push(data.id);
-                    }
+        else {
+          debug('no faculty or opportunity id present.');
+          res.status(500).send("no faculty or opportunity id present");
+          return;
+        }
 
-                    else if (data.type === 'faculty') {
-                        undergrad[0].starredFaculty.push(data.id);
-                    }
-                }
-
-                else {
-                    debug('no faculty or opportunity id present.');
-                    res.status(500).send("no faculty or opportunity id present");
-                    return;
-                }
-
-                // Save the updated document back to the database
-                undergrad[0].save((err2, todo) => {
-                    if (err2) {
-                        res.status(500).send(err2);
-                        return;
-                    }
-                    debug('success!');
-                    res.status(200).send(todo);
-                });
-            }
+        // Save the updated document back to the database
+        undergrad[0].save((err2, todo) => {
+          if (err2) {
+            res.status(500).send(err2);
+            return;
+          }
+          debug('success!');
+          res.status(200).send(todo);
         });
+      }
     });
+  });
 });
 
 module.exports = app;
