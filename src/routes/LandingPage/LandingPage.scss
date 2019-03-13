@@ -220,6 +220,11 @@
   border-color: transparent;
   color: #fff;
 }
+
+.search-bar {
+  margin-bottom: 0;
+}
+
 #list-image1{
     width : 50px;
     max-width: 50px ;
@@ -245,8 +250,6 @@
     max-width: 50px ;
     height: 50px;
     max-height: 50px;
-
-
 }
 
 .white-button{
@@ -390,7 +393,7 @@
 }
 
 col {
-    height : 5 px;
+    height : 5px;
 }
 /*--------------------
  	Middle Strip
@@ -401,9 +404,19 @@ col {
     padding: 20px;
     margin-top: 5%;
     margin-left :10%;
-    text-align: center; 
-
+    text-align: center;
+    min-width: 180px;
+    min-height: 180px;
 }
+
+.picP {
+  margin-bottom: 0 !important;
+}
+
+.picRow {
+  margin-bottom: 35px !important;
+}
+
  section.middleContainer2{
      align-items: center;
      justify-content: center;
@@ -495,14 +508,15 @@ col {
 }
 
 
-.collab p{
+#collab{
    
 	
 	color: #8F8F8F;
 	font-family: "Helvetica Neue";
 	font-size: 20px;
     letter-spacing: -0.01px;
-    font-weight: 350;
+    font-weight: 300;
+    margin-bottom: 0;
 	
 }
 /*--------------------
@@ -649,7 +663,7 @@ col {
 
 
 
-.landingPage section.why-us .students-title .list-image{
+.list-image{
   max-width : 70px;
   max-height : 60px;
   min-width : 70px;
@@ -849,6 +863,14 @@ col {
     margin: 10px 10px 10px -10px;
     padding: 10px;
   }
+
+.collabImage {
+  padding: 20px;
+  margin-top: 5%;
+  margin-left :10%;
+  text-align: center;
+}
+
 
 
 /* -- Demo ads -- */

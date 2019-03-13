@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import './LandingPage.scss';
 import axios from 'axios';
-import DeleteIcon from 'react-icons/lib/ti/delete';
-import SearchIcon from 'react-icons/lib/io/search';
 import { GoogleLogin } from 'react-google-login';
 import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
@@ -25,6 +23,7 @@ import img2 from '../../images/img2.png';
 import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
+import SearchBar from '../../components/LandingPage/Student/SearchBar';
 
 class Landing extends Component {
   constructor(props) {
@@ -72,7 +71,7 @@ class Landing extends Component {
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
       alert('Please sign in with a cornell email (netid@cornell.edu)');
-      logoutGoogle();
+      return logoutGoogle();
     }
     axios.get(`/api/hasRegistered/${response.profileObj.email.replace('@cornell.edu', '')}`).then((hasRegistered) => {
       console.log('has registered');
@@ -131,46 +130,6 @@ class Landing extends Component {
   postOpp() {
     window.location.href = '/newopp';
   }
-  handleUpdateSearch(e) {
-    this.setState({ searchBar: e.target.value });
-    if (e.target.value == '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
-    }
-  }
-
-  handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.setState({ clickedEnter: true });
-      axios.get(`${'/api/opportunities/search' + '?search='}${this.state.searchBar}`)
-        .then((response) => {
-          const matching = [];
-          for (let i = 0; i < response.data.length; i++) {
-            matching.push(response.data[i]._id);
-          }
-          this.setState({ matchingSearches: matching });
-        })
-        .catch((error) => {
-          Utils.handleTokenError(error);
-        });
-    }
-  }
-
-  onFocus() {
-    this.setState({ searching: true });
-  }
-
-  onBlur() {
-    this.setState({ searching: false });
-  }
-
-  clearSearch() {
-    this.setState({ searching: false });
-    this.setState({ searchBar: '' });
-    this.setState({ matchingSearches: [] });
-    this.setState({ clickedEnter: false });
-  }
-
 
   logoutClear() {
     logoutGoogle();
@@ -196,8 +155,8 @@ class Landing extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Lab Log In"
-                  onSuccess={this.responseGoogle}
+                  buttonText="Student Log In/Sign Up"
+                  onSuccess={this.responseGoogleStudent}
                   onFailure={this.loginFailure.bind(this)}
                   className="signup"
                 />
@@ -213,54 +172,15 @@ class Landing extends Component {
           <div className="background-image" />
           <h1>Research Connect</h1>
           <h3>Find your next research opportunity.</h3>
-
-          <div className="row search-div-container">
-            <div className="search-icon-div">
-              <SearchIcon style={{ height: '100%' }} size={36} />
-            </div>
-            <input
-              onFocus={this.onFocus.bind(this)}
-              onBlur={this.onBlur.bind(this)}
-              className="search-bar"
-              onKeyPress={this.handleKeyPress.bind(this)}
-              onChange={this.handleUpdateSearch.bind(this)}
-              value={this.state.searchBar}
-              type="text"
-              name="search"
-              placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"
-            />
-            <div className="delete-div">
-              {
-                this.state.searchBar != '' ? (
-                  <DeleteIcon
-                    onClick={this.clearSearch.bind(this)}
-                    className="clear-icon"
-                    style={{ height: '100%' }}
-                    size={36}
-                  />
-                ) : ''
-              }
-            </div>
-          </div>
-        </section>
-
-        <section className="incollab">
-          <Container className="middleContainer">
-            <Row>
-              <Col><p className="collab">In Collabortation with ...     </p></Col>
-              <Col><img className="middleImage" src={cis} /></Col>
-              {/*<Col><img className="middleImage-curb" src={curb} /></Col>*/}
-              <Col><img className="middleImage" src={CDTI} /></Col>
-            </Row>
-          </Container>
+          <SearchBar />
 
         </section>
 
         <section className="middleContainer2">
           <Container >
-            <Row>
-              <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>
-            </Row>
+            {/*<Row>*/}
+              {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
+            {/*</Row>*/}
             <Row>
               <p className="big ">Explore Popular Areas of Interest</p>
             </Row>
@@ -294,17 +214,17 @@ class Landing extends Component {
           <div className="students-title">
             <h2>Discover your passion.</h2>
             <section>
-              <Row>
+              <Row className="picRow">
                 <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
-                <Col><p>Search for opportunities by sorting by your interests and qualifications.</p></Col>
+                <Col><p className="picP">Search for opportunities by sorting by your interests and qualifications.</p></Col>
               </Row>
-              <Row>
+              <Row className="picRow">
                 <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
-                <Col><p>Get connected to leading researchers and investigators in fields that interest you.</p></Col>
+                <Col><p className="picP">Get connected to leading researchers and investigators in fields that interest you.</p></Col>
               </Row>
-              <Row>
+              <Row className="picRow">
                 <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
-                <Col><p>Apply for lab positions directly from our platform.</p></Col>
+                <Col><p className="picP">Apply for lab positions directly from our platform.</p></Col>
               </Row>
 
             </section>
@@ -331,16 +251,16 @@ class Landing extends Component {
               </Row>
               <Row>
                 <section className="list">
+                  <Row className="picRow">
+                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><p className="picP">Know Who's Accepting Undergrads. </p></Col>
+                  </Row>
                   <Row>
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p>No more cold emails. </p></Col>
+                    <Col><p>Cold Email Writing Tool.</p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-Image" src={check} /></Col>
-                    <Col><p>Less waiting.</p></Col>
-                  </Row>
-                  <Row>
-                    <Col><img className="list-Image" src={check} /></Col>
+                    <Col><img className="list-image" src={check} /></Col>
                     <Col><p>More research. </p></Col>
                   </Row>
 
@@ -367,13 +287,23 @@ class Landing extends Component {
             <GoogleLogin
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="GET STARTED"
-              onSuccess={this.responseGoogle}
+              onSuccess={this.responseGoogleStudent}
               onFailure={this.loginFailure.bind(this)}
               className="signup2 button"
             />
           </div>
         </section>
 
+        {/*<section className="incollab">*/}
+          {/*<Container className="middleContainer">*/}
+            {/*<Row>*/}
+              {/*<Col><p id="collab">In Collabortation With     </p></Col>*/}
+              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
+              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
+              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
+            {/*</Row>*/}
+          {/*</Container>*/}
+        {/*</section>*/}
 
         <footer className="footer-all">
           <ul>
