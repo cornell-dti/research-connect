@@ -16,6 +16,8 @@ import img2 from '../../images/img2.png';
 import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class ProfessorLanding extends Component {
   constructor(props) {

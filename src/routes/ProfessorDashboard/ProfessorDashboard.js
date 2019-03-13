@@ -11,6 +11,10 @@ import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+
 
 class ProfessorDashboard extends Component {
   constructor(props) {

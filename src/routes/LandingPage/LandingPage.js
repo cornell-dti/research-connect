@@ -24,6 +24,10 @@ import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
 import SearchBar from '../../components/LandingPage/Student/SearchBar';
+import * as ReactGA from 'react-ga';
+import ReactDOM from 'react-dom';
+ReactGA.initialize('UA-69262899-9');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class Landing extends Component {
   constructor(props) {

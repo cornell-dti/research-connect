@@ -7,6 +7,8 @@ import '../App/App.scss';
 import './InstructorRegister.scss';
 import AutoSuggest from '../../components/AutoSuggest/AutoSuggest';
 import * as Utils from "../../components/Utils";
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class InstructorRegister extends React.Component {

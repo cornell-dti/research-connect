@@ -14,6 +14,8 @@ import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as Utils from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class CreateOppForm extends React.Component {

@@ -7,6 +7,10 @@ import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar.
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+
 
 class OpportunityPage extends Component {
   constructor(props) {

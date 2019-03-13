@@ -11,6 +11,9 @@ import axios from 'axios';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as Utils from '../../components/Utils';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 class EditProfile extends Component {
   constructor(props) {

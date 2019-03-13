@@ -8,6 +8,8 @@ import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import '../Opportunities/Opportunities.scss';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class FacultySearch extends Component {
