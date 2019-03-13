@@ -65,7 +65,7 @@ app.get('/star', (req, res) => {
 });
 
 app.get('/:tokenId', (req, res) => {
-  verify(req.query.tokenId, (decrypted) => {
+  verify(req.params.tokenId, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
     }
@@ -212,7 +212,6 @@ app.delete('/:id', (req, res) => {
 });
 
 app.post('/star', (req, res) => {
-  debug("?/?????????????????????")
   debug(req.body);
   const data = req.body;
   verify(data.token_id, (decrypted) => {
