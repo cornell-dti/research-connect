@@ -143,6 +143,32 @@ export function getMajorList() {
   return majorList;
 }
 
+export function getResearchInterestsList() {
+  const researchInterests = [ 'Programming Languages - CS',
+    'Computer Architecture',
+    'Computer Systems',
+    'Security',
+    'Systems and Networking - CS',
+    'Complex Systems, Network Science and Computation',
+    'All of Programming.',
+    'Statistics and Machine Learning',
+    'Artificial Intelligence',
+    'Scientific Computing',
+    'Algorithms',
+    'Theory of Computation',
+    'Cloud and Distributed Computing',
+    'Market Design',
+    'Data Mining',
+    'Graphics',
+    'Energy Systems',
+    'Biomedical Imaging and Instrumentation',
+    'Bioengineering',
+    'Biomedical Engineering',
+    'Robotics',
+    'Image Analysis' ];
+  return researchInterests;
+}
+
 export function getCSAreas() {
   return {
     cc: 'Cloud Computing and/or Distributed systems', os: 'Operating systems', networks: 'Computer networks', algos: 'Algorithms', hci: 'Human-Computer Interaction', pl: 'Programming Languages', nlp: 'Natural Language Processing', ml: 'Machine Learning and/or Artificial Intelligence', robotics: 'Robotics', graphics: 'Graphics', security: 'Security', optimization: 'Optimization', compBio: 'Computational Biology', other: 'Other',

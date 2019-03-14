@@ -25,9 +25,9 @@ class FacultyList extends Component {
 
   render() {
     let profNodes = this.props.data.map((prof, idx) => {
-      if (idx > this.props.numShowing){
-        return;
-      }
+      // if (idx > this.props.numShowing){
+      //   return;
+      // }
       /*The variable 'willshow' will be set to false if any filter excludes this faculty member */
       let willShow = true;
       const filteredOptions = this.props.filteredOptions;
@@ -35,26 +35,28 @@ class FacultyList extends Component {
       let departmentSelected = filteredOptions.department;
       let areaSelected = filteredOptions.area;
       let matchingSearches = filteredOptions.matchingSearches;
-      /* checks if search bar filter matches a key word somewhere */
-      if (filteredOptions.searchBar != '' && filteredOptions.clickedEnter) {
-        let matches = false;
-        for (let i = 0; i < matchingSearches.length; i++) {
-          if (matchingSearches[i] == prof._id) {
-            matches = true;
-          }
-        }
-        if (!matches) {
-          willShow = false;
-        }
-      }
+      /* checks if search bar filter matches a key word somewhere
+       * EDIT: doesn't the backend have a function for this?
+        * */
+      // if (filteredOptions.searchBar != '' && filteredOptions.clickedEnter) {
+      //   let matches = false;
+      //   for (let i = 0; i < matchingSearches.length; i++) {
+      //     if (matchingSearches[i] == prof._id) {
+      //       matches = true;
+      //     }
+      //   }
+      //   if (!matches) {
+      //     willShow = false;
+      //   }
+      // }
       /* checks if filters have been added and excludes faculty if no match*/
-      if (departmentSelected && prof.department !== departmentSelected) {
-        willShow = false;
-      }
-      if (areaSelected &&
-          (prof.researchInterests.indexOf(areaSelected) === -1)) {
-        willShow = false;
-      }
+      // if (departmentSelected && prof.department !== departmentSelected) {
+      //   willShow = false;
+      // }
+      // if (areaSelected &&
+      //     (prof.researchInterests.indexOf(areaSelected) === -1)) {
+      //   willShow = false;
+      // }
 
       if (willShow) {
 

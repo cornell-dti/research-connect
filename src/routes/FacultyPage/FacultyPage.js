@@ -17,6 +17,14 @@ import { logoutGoogle } from '../../components/Utils';
  */
 const ListItems = (props) => {
   if (!props.items || props.items.length === 0) {
+    let returnVals = [];
+    if (props.pub){
+      // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
+      returnVals.push("Click");
+      returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
+      returnVals.push("to view the abstracts (summary) of their most recent and their most cited papers.");
+      return returnVals;
+    }
     return 'Not listed';
   }
   return props.items.map(item => <p key={item}>{item}</p>);
@@ -219,6 +227,7 @@ Website:
                     </div>
                   </div>
                 </div>
+
               </div>
               <div className="row">
                 <div className="opp-details-card">
@@ -252,7 +261,7 @@ Website:
                   </div>
                   <div className="opp-details-section">
                     <div className="header">Publications</div>
-                    <ListItems items={this.state.profInfo.publications} />
+                    <ListItems items={this.state.profInfo.publications} pub={true}/>
                   </div>
                 </div>
               </div>
@@ -290,6 +299,51 @@ Website:
                       ideal time.`}
                     </div>
                   )}
+                </div>
+              </div>
+            </div>
+            <div className="column">
+              <div className="opp-qualifications">
+                <div className="opp-qual-title">
+                  <div>Finding Research & Email Writing Tips</div>
+                </div>
+
+                <hr />
+
+                <div className="opp-qual-section">
+                  <h6 className="header">How Do I Find Research?</h6>
+                  One way is by writing emails to professors whose work seems interesting (see below for template). If you'd like more details, we have a step-by-step guide here: TODO link to guide page
+                </div>
+
+                <div className="opp-qual-section">
+                  <h6 className="header">What to Write?</h6>
+                  (Note that we save the email you send here so you can use it as a template for the next professor)
+                  <br />1st Paragraph: Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.
+                  <br />2nd Paragraph: Say you're interested in opportunities in their lab, talk about your experience in this area if applicable.
+                  <br />3rd Paragraph: Include a link to your resume (and transcript if you'd like).
+
+                </div>
+
+                <hr />
+
+                <div className="opp-qual-section">
+                  <h6 className="header">Is It Too Early To Reach Out For [Summer/Fall/Spring] Research?</h6>
+                  Nope; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
+
+                </div>
+
+                <hr />
+
+                <div className="opp-qual-section">
+                  <h6 className="header">What Time to Send?</h6>
+                  We'll schedule your email to be sent out in the closest weekday morning - when people are most likely to respond.
+                </div>
+
+                <hr />
+
+                <div className="opp-qual-section">
+                  <h6 className="header">Technical Details</h6>
+                  We use the Sendgrid API so the email comes from you and when professors responds they're responding to you!
                 </div>
               </div>
             </div>

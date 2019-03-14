@@ -19,9 +19,9 @@ class VariableNavbar extends Component {
     return (
         <div>
           {this.props.role && this.props.role === 'undergrad' &&
-          <Navbar current='opportunities'/>}
+          <Navbar current={this.props.current}/>}
           {this.props.role && this.props.role !== 'undergrad' &&
-          <ProfessorNavbar current='opportunities'/>}
+          <ProfessorNavbar current={this.props.current}/>}
           {!this.props.role && (
               <div className='go-home' onClick={() => this.goHome()}>
                 <FaLongArrowLeft style={{

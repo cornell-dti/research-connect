@@ -5,41 +5,69 @@ const {
   facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
 
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
 /** gets all the faculty in the database.
- * Query parameter: ?department=tech means only return CS or ECE professors (I would include Info Sci but we don't have info on them yet...)
+ * @param ?department=tech means only return CS or ECE professors (I would include Info Sci but we don't have info on them yet...)
  * @param limit users can specify to only return x number of results by appending ?limit=x at the end of their query. i.e. GET /api/faculty?limit=10
  * @param skip users can also specify to skip x number of results. Default is 0. i.e. GET /api/faculty?limit=10&skip=20
+ * @param area. shows only faculty in that area. returns all if falsy.
+ * @param search. text to search by
  * @return array of faculty members
  */
 app.get('/', (req, res) => {
-  let { department } = req.params;
-  let { skip } = req.query;
+  let { department, skip, limit, area, search } = req.query;
   // if they didn't make skip a number or just didn't specify it, make it 0.
   if (Number.isNaN(Number(skip)) || !skip) {
     skip = 0;
   } else { // the query things are always strings, and mongoose requires a number
     skip = parseInt(skip, 10);
   }
-  let { limit } = req.query;
   if (!Number.isNaN(Number(limit))) {
     limit = parseInt(limit, 10);
   } else {
     limit = 0;
   }
-  let departmentFilter = {};
+  let facultyFilter = {};
   if (department === "tech") {
-    departmentFilter = {
-      department: {$in: ["Computer Science", "Electrical and Computer Engineering"]}
+    facultyFilter = {
+      department: {$in: ["Computer Science"]}
     }
   }
-  facultyModel.find(departmentFilter)
+  if (area) {
+    facultyFilter["researchInterests"] = {$in: [area]}
+  }
+  if (search) {
+    facultyFilter["$text"] = {$search: search};
+  }
+  facultyModel.find(facultyFilter)
     .skip(skip)
     .limit(parseInt(limit, 10))
     .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
     .exec((err, faculty) => {
+      let allAreas = [];
       if (err) {
         return res.status(500).send(err);
       }
+      /** BEGIN code to print out all unique facutly researchInterests
+      faculty.forEach((fac) =>{
+        if (fac){
+          const interests = fac.researchInterests;
+          if (interests){
+            allAreas.push(...interests);
+          }
+        }
+      });
+      console.log("All areas!");
+      console.log(allAreas.length);
+      allAreas = allAreas.filter( onlyUnique );
+      console.log(allAreas.length);
+      console.log(allAreas);
+       * END CODE TO PRINT OUT ALL UNIQUE researchInterests (for testing)
+       */
       return res.send(faculty);
     });
 

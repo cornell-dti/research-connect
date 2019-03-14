@@ -19,6 +19,7 @@ import FacultyPage from './routes/FacultyPage/FacultyPage';
 import Doc from './routes/Doc/Doc';
 import LandingPage from './routes/LandingPage/LandingPage';
 import ProfessorLanding from './routes/ProfessorLanding/ProfessorLanding';
+import ResearchGuide from './routes/ResearchGuide/ResearchGuide';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route exact path="/professorDashboard" component={ProfessorDashboard} />
         <Route exact path="/professorView" component={ProfessorView} />
         <Route exact path="/studentDashboard" component={StudentDashboard} />
+        <Route exact path="/guide" component={ResearchGuide} />
         <Route path="/doc/:id" component={Doc} />
         <Route exact path="/editProfile" component={EditProfile} />
         <Route exact path="/" component={LandingPage} />

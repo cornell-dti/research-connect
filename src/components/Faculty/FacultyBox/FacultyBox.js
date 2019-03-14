@@ -27,12 +27,12 @@ class FacultyBox extends Component {
 
   componentDidMount() {
     console.log('component did mount');
-    this.loadFacultyFromServer();
+    // this.loadFacultyFromServer();
   }
 
   render() {
     return (
-      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.state.data} numShowing={this.props.numShowing}/>
+      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.props.data} numShowing={this.props.numShowing}/>
     );
   }
 }
