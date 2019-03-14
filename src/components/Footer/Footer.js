@@ -21,10 +21,11 @@ class Navbar extends Component {
             <img className="logo" src={CDTIlogo} alt="CDTI logo" />
           </a>
         </div>
-        <br/>
+
+         <br/>
 
         <div className="footer-child">
-          <a class = "footer-link" href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">
+          <a className="footer-link" href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">
                         Contact Us
           </a>
         </div>
