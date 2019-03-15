@@ -186,22 +186,30 @@ function tryLoggingOut() {
   console.log('got instance');
   if (auth2 != null) {
     console.log('auth 2 not null');
-    auth2.signOut().then(
-      auth2.disconnect().then((e) => {
-        console.log('disconnecting');
-        sessionStorage.clear();
-        window.location.href = '/';
-      }, (e) => {
-        console.log("disconnect didn't work, error below");
+    sessionStorage.clear();
+    try {
+      // sometimes stalls on signOut() or disconnect)(
+      auth2.signOut().then(
+          auth2.disconnect().then((e) => {
+            console.log('disconnecting');
+            sessionStorage.clear();
+            window.location.href = '/';
+          }, (e) => {
+            console.log("disconnect didn't work, error below");
+            console.log(e);
+            // auth2.disconnect didn't work...
+            sessionStorage.clear();
+            window.location.href = '/';
+          }),
+      ).catch((e) => {
+        console.log('error with auth2.signout below');
         console.log(e);
-        // auth2.disconnect didn't work...
-        sessionStorage.clear();
-        window.location.href = '/';
-      }),
-    ).catch((e) => {
-      console.log('error with auth2.signout below');
+      });
+    } catch (e) {
+      console.log("error with auth signout");
       console.log(e);
-    });
+      window.location.href = "/";
+    }
   } else {
     console.log('auth not null');
     console.log(auth2);
@@ -224,10 +232,8 @@ export function getGPA() {
   };
 }
 
-export function getStartYears() {
-  return {
-    '': 'Select', f18: 'Fall 2018', sp19: 'Spring 2019', su19: 'Summer 2019', f19: 'Fall 2019', sp20: 'Spring 2020',
-  };
+export function getStartYears(){
+  return {'':'Select', 'Fall 2018':'Fall 2018', 'Spring 2019':'Spring 2019', 'Summer 2019':'Summer 2019', 'Fall 2019':'Fall 2019', 'Spring 2020':'Spring 2020'};
 }
 
 export function updateSingleChoiceFilter(filterName, option) {

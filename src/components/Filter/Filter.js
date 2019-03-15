@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import * as Utils from '../../components/Utils';
 import PropTypes from 'prop-types';
 
 class Filter extends React.Component {

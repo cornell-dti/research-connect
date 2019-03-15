@@ -5,9 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './Opportunity.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
-import Calendar from 'react-icons/lib/fa/calendar-check-o';
 import OpportunityJSON from './Opportunity.json';
 import * as Utils from '../Utils.js';
+import Star from '../../components/Star/Star';
 
 class Opportunity extends Component {
   constructor(props) {
@@ -18,14 +18,17 @@ class Opportunity extends Component {
   contains(needle) {
     const findNaN = isNaN(needle);
     let indexOf;
-
     if (!findNaN && typeof Array.prototype.indexOf === 'function') {
       indexOf = Array.prototype.indexOf;
     } else {
       indexOf = needle => this.findIndex(item => findNaN && isNaN(item) || item.toLowerCase() === needle.toLowerCase());
     }
-
     return indexOf.call(this, needle) > -1;
+  }
+
+  star(e){
+    e.stopPropagation();
+    this.props.updateStar(this.props.opId);
   }
 
   clickRow(rowObj) {
@@ -48,7 +51,7 @@ class Opportunity extends Component {
       }
       return (
         <h6 className="smallTasks">
-          {`Tasks: ${str2}`}
+          {`${str2}`}
           {' '}
         </h6>
       );
@@ -64,27 +67,30 @@ class Opportunity extends Component {
     }
     return (
       <div className="description-div">
-        {`Description: ${str1}`}
+        {`${str1}`}
         {' '}
       </div>
     );
   }
 
   checkPrereqs() {
+    if(!sessionStorage.getItem('token_id')){
+      return null;
+    }
     if (this.props.prereqsMatch === true) {
       return (
         <div>
-          <CheckBox className="greenCheck" />
+          <CheckBox className="greenCheck" size = {27} />
           {' '}
-          <span>All Prereqs Met</span>
+          <span class = "checkText">All Prereqs Met</span>
         </div>
       );
     }
     return (
       <div>
-        <CrossCircle className="redX" />
+        <CrossCircle className="cal" size = {27} />
         {' '}
-        <span>Prereqs Missing</span>
+        <span class = "checkText">Prereqs Missing</span>
       </div>
     );
   }
@@ -105,8 +111,8 @@ class Opportunity extends Component {
     const lab = false;
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        if (!response || response.data == 'none'
-         || !response.data || response.data == 'undergrad') {
+        if (!response || response.data == 'none' ||
+            !response.data || response.data == 'undergrad') {
           return false;
         }
         return true;
@@ -118,18 +124,15 @@ class Opportunity extends Component {
       <div className="opportunity-card" onClick={this.clickRow.bind(this)}>
         <div className="row opp-box-row">
           <div className="column column-75">
-            <div className="title">{ this.props.title }</div>
-            {/* <div className="lab-name">{this.props.labName}</div> */}
+            <div className="title">
+              { this.props.title }
+              <Star
+                update={this.star.bind(this)}
+                starred={this.props.starred}
+              /></div>
           </div>
 
           <div className="column column-25">
-            {/* <Calendar className="cal" /> */}
-            {/* {' '} */}
-            {/* <span> */}
-            {/* Deadline */}
-            {/* {' '} */}
-            {/* { Utils.convertDate(this.props.closes) } */}
-            {/* </span> */}
             {this.checkPrereqs()}
           </div>
         </div>

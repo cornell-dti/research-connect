@@ -11,6 +11,8 @@ import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ReactPaginate from 'react-paginate';
 import '../Opportunities/Opportunities.scss';
+import * as ReactGA from 'react-ga';
+
 import './FacultySearch.scss';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 
@@ -28,6 +30,9 @@ class FacultySearch extends Component {
       numShowing: 20,
       data: [],
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     this.handleChange = this.handleChange.bind(this);
     this.getFaculty = this.getFaculty.bind(this);
     this.generateAreaOptions = this.generateAreaOptions.bind(this);
@@ -191,7 +196,7 @@ class FacultySearch extends Component {
                 {/*<h4>Filters</h4>*/}
                 <hr id="noHrMargin"/>
                 <div className='filter-child'>
-                  <label>Research Area.</label>
+                  <label>Research Area</label>
                 <select onChange={this.handleChange} name="area" className="select-wrapper">
                   <option value="">All</option>
                   {this.generateAreaOptions()}

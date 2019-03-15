@@ -7,6 +7,9 @@ import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils.js';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 const majorList = Utils.getMajorList();
 const gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
@@ -36,7 +39,8 @@ class StudentRegister extends React.Component {
       isButtonDisabled: false,
       buttonValue: 'Submit',
     };
-    this.onChange.bind(this);
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);this.onChange.bind(this);
     this.onSubmit.bind(this);
   }
 
@@ -65,8 +69,8 @@ class StudentRegister extends React.Component {
         name={inputName}
         value={inputName}
         onChange={this.onChange}
-      >
 
+      >
         <option id={inputName} key="empty" value="">{placehold}</option>
         {newArray}
       </select>
@@ -115,8 +119,8 @@ class StudentRegister extends React.Component {
         const validationName = `${name}Valid`;
         this.setState({ [name]: e.target.value });
         if (name === 'gradYear' || name === 'major') {
-          document.getElementById(name).innerHTML = [e.target.value];
-        }
+          document.getElementById(name).innerHTML = [e.target.value];}
+
         if (e.target.value != '') {
           this.setState({ [validationName]: true });
         } else {
@@ -321,8 +325,7 @@ class StudentRegister extends React.Component {
                     border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
                   }}
                   onDrop={this.onDropResume.bind(this)}
-                  accept="application/pdf"
-                >
+                accept={"application/pdf"}>
                   <p>Click/drag to drop a PDF resume (required)</p>
 
                 </Dropzone>
@@ -340,6 +343,7 @@ Uploaded:
               <br />
 
               <div className="dropzone">
+
                 <Dropzone
                   className="edit-drop"
                   style={{

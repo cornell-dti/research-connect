@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorView.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
@@ -20,6 +20,9 @@ import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 class ProfessorView extends Component {
   constructor(props) {
@@ -35,6 +38,9 @@ class ProfessorView extends Component {
       opportunities: [],
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   handleUpdateMajor(majorObj) {
@@ -77,17 +83,20 @@ class ProfessorView extends Component {
   }
 
   render() {
-    const override = css`
-      display: block;
-      margin: 0 auto;
-      border-color: red;
-    `;
+    // const override = css`
+    //   display: block;
+    //   margin: 0 auto;
+    //   border-color: red;
+    // `;
     let { loading } = this.state;
     if (loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            className={override}
+            style = {{display: "block",
+            margin: 0,
+            borderColor: "red"}}
+            // className={override}
             sizeUnit="px"
             size={150}
             color="#ff0000"

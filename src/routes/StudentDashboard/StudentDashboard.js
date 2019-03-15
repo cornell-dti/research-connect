@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './StudentDashboard.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 // http://react-icons.github.io/react-icons/fa.html
 import User from 'react-icons/lib/fa/user';
@@ -14,6 +14,7 @@ import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import * as ReactGA from 'react-ga';
 
 
 class StudentDashboard extends Component {
@@ -23,6 +24,9 @@ class StudentDashboard extends Component {
       loading: true,
       name: '',
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   componentWillMount() {
@@ -49,17 +53,19 @@ class StudentDashboard extends Component {
   }
 
   render() {
-    const override = css`
-	    display: block;
-	    margin: 0 auto;
-	    border-color: red;
-		`;
+    // const override = css`
+	  //   display: block;
+	  //   margin: 0 auto;
+	  //   border-color: red;
+		// `;
 
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            className={override}
+            style = {{display: "block",
+            margin: 0,
+            borderColor: "red"}}
             sizeUnit="px"
             size={150}
             color="#ff0000"

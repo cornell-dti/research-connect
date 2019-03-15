@@ -10,6 +10,8 @@ import RichTextEditor from '../../components/Faculty/RichTextEditor/RichTextEdit
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import * as Utils from '../../components/Utils';
 import { logoutGoogle } from '../../components/Utils';
+import * as ReactGA from 'react-ga';
+import Footer from '../../components/Footer/Footer';
 
 // Utils.gradYearToString(2020) == "Sophomore"
 
@@ -42,6 +44,9 @@ class FacultyPage extends Component {
       tokenId: ''
     };
     this.TextEditor = React.createRef();
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     this.separateInterests = this.separateInterests.bind(this);
   }
 
@@ -346,6 +351,7 @@ Website:
             </div>
           </div>
         </div>
+        <Footer/>
       </div>
     );
   }

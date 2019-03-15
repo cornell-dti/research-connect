@@ -8,7 +8,8 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
-
+import * as ReactGA from 'react-ga';
+import Star from '../../components/Star/Star'
 
 class OpportunityPage extends Component {
   constructor(props) {
@@ -24,12 +25,34 @@ class OpportunityPage extends Component {
       netId: 'unknown',
       role: '',
       detectedLoggedOut: false,
+      starred: false
     };
-
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.parseClasses = this.parseClasses.bind(this);
     this.parseMajors = this.parseMajors.bind(this);
     this.parseYears = this.parseYears.bind(this);
     this.parseGPA = this.parseGPA.bind(this);
+  }
+
+  isStarred(){
+    this.setState({starred:false});
+  }
+
+  star(){
+    console.log("this is working");
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "opportunity";
+    let id = this.getId();
+
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      this.isStarred();
+      this.setState({starred:true});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   getId() {
@@ -187,6 +210,7 @@ class OpportunityPage extends Component {
     }).catch((error) => {
       this.sendToHome(error);
     });
+
   }
 
   printQuestions() {
@@ -559,7 +583,13 @@ No Preference
             <div className="column opp-details-column">
               <div className="row opp-title-card">
                 <div className="column left-column">
-                  <div className="header">{this.state.opportunity.title}</div>
+                  <div className="header">
+                  {this.state.opportunity.title}
+                  {/*<Star*/}
+                    {/*update={this.star.bind(this)}*/}
+                    {/*starred={this.state.starred}*/}
+                  {/*/>*/}
+                  </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
                 <div className="column right-column">
@@ -688,8 +718,8 @@ Back To Opportunities
                             {`${this.state.opportunity.ghostEmail
                             } `}
                             with your resume and why you're interested in order
-                            to apply. You do not need to take
-                            any action here.
+                            to apply. You can view our email writing tips in the
+                            <a href="/faculty/5b8eb8d72025125a3fb46159/"> faculty section </a>sidebar.
                           </div>
                         )
                         : (

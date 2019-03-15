@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorDashboard.scss';
 import axios from 'axios';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
@@ -11,6 +11,9 @@ import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import * as ReactGA from 'react-ga';
+
+
 
 class ProfessorDashboard extends Component {
   constructor(props) {
@@ -21,6 +24,9 @@ class ProfessorDashboard extends Component {
       labId: '',
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   componentWillMount() {
@@ -51,17 +57,20 @@ class ProfessorDashboard extends Component {
 
   render() {
     console.log('rendering');
-    const override = css`
-	    display: block;
-	    margin: 0 auto;
-	    border-color: red;
-		`;
+    // const override = css`
+	  //   display: block;
+	  //   margin: 0 auto;
+	  //   border-color: red;
+		// `;
 
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            className={override}
+            // className={override}
+            style = {{display: "block",
+            margin: 0,
+            borderColor: "red"}}
             sizeUnit="px"
             size={150}
             color="#ff0000"

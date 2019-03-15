@@ -11,6 +11,8 @@ import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
 import * as Utils from "../../components/Utils";
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class EditOppForm extends React.Component {
@@ -48,7 +50,8 @@ class EditOppForm extends React.Component {
             isButtonDisabled: false, 
             buttonValue: "Update Position"
         };
-
+        ReactGA.initialize('UA-69262899-9');
+        ReactGA.pageview(window.location.pathname + window.location.search);
         this.handleChange = this.handleChange.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
         this.displayQuestions = this.displayQuestions.bind(this);
