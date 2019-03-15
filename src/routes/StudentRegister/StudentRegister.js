@@ -39,6 +39,8 @@ class StudentRegister extends React.Component {
       isButtonDisabled: false,
       buttonValue: 'Submit',
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.onChange.bind(this);
     this.onSubmit.bind(this);
 

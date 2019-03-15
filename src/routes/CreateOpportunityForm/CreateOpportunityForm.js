@@ -15,7 +15,6 @@ import * as Utils from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class CreateOppForm extends React.Component {
@@ -61,6 +60,8 @@ class CreateOppForm extends React.Component {
           detailsButtonValue: 'Show Advanced Options',
           showDetails: false,
         };
+      ReactGA.initialize('UA-69262899-9');
+      ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.handleChange = this.handleChange.bind(this);
     this.addQuestion = this.addQuestion.bind(this);

@@ -12,7 +12,6 @@ import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as Utils from '../../components/Utils';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class EditProfile extends Component {
@@ -46,6 +45,8 @@ class EditProfile extends Component {
       transcript: null,
       resumeValid: false,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     // this.loadInfoFromServer();
     this.loadInfoFromServer = this.loadInfoFromServer.bind(this);
     this.displayCourses = this.displayCourses.bind(this);

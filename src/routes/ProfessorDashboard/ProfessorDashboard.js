@@ -12,7 +12,6 @@ import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 
@@ -25,6 +24,9 @@ class ProfessorDashboard extends Component {
       labId: '',
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   componentWillMount() {

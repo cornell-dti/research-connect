@@ -10,7 +10,6 @@ import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 class ApplicationPage extends Component {
   constructor(props) {
@@ -21,6 +20,8 @@ class ApplicationPage extends Component {
       resumeId: '',
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   componentWillMount() {

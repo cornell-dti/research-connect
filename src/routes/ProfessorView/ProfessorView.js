@@ -38,6 +38,9 @@ class ProfessorView extends Component {
       opportunities: [],
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   handleUpdateMajor(majorObj) {

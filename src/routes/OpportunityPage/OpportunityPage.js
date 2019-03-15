@@ -8,8 +8,6 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
-
 
 
 class OpportunityPage extends Component {
@@ -27,7 +25,8 @@ class OpportunityPage extends Component {
       role: '',
       detectedLoggedOut: false,
     };
-
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.parseClasses = this.parseClasses.bind(this);
     this.parseMajors = this.parseMajors.bind(this);
     this.parseYears = this.parseYears.bind(this);

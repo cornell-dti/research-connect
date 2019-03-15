@@ -6,7 +6,6 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 // Utils.gradYearToString(2020) == "Sophomore"
 
@@ -17,6 +16,8 @@ class FacultyPage extends Component {
     this.state = {
       profInfo: {},
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.separateInterests = this.separateInterests.bind(this);
   }

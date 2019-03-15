@@ -13,7 +13,6 @@ import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 class StudentDashboard extends Component {
@@ -23,6 +22,9 @@ class StudentDashboard extends Component {
       loading: true,
       name: '',
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   componentWillMount() {

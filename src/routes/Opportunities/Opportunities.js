@@ -12,7 +12,6 @@ import OpportunityBox from '../../components/Opportunity/OpportunityBox/Opportun
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
 import * as ReactGA from 'react-ga';
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 //necessary for all filters
 import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
@@ -43,6 +42,8 @@ class Opportunities extends Component {
       role: '',
       csAreasSelect:[]
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   handleSearchTerms(){

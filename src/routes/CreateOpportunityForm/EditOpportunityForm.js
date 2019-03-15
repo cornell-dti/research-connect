@@ -50,7 +50,8 @@ class EditOppForm extends React.Component {
             isButtonDisabled: false, 
             buttonValue: "Update Position"
         };
-
+        ReactGA.initialize('UA-69262899-9');
+        ReactGA.pageview(window.location.pathname + window.location.search);
         this.handleChange = this.handleChange.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
         this.displayQuestions = this.displayQuestions.bind(this);
