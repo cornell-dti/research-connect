@@ -5,6 +5,7 @@ import '../OpportunityPage/OpportunityPage.scss';
 import ReactDOM from 'react-dom';
 import { stateToHTML } from 'draft-js-export-html';
 import { Editor, EditorState } from 'draft-js';
+import { convertFromHTML, ContentState } from 'draft-js'
 import RichTextEditor from '../../components/Faculty/RichTextEditor/RichTextEditor';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import * as Utils from '../../components/Utils';
@@ -22,7 +23,7 @@ const ListItems = (props) => {
       // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
       returnVals.push("Click");
       returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
-      returnVals.push("to view the abstracts (summary) of their most recent and their most cited papers.");
+      returnVals.push("if you're interested in viewing the abstracts (summaries ) of their most recent and their most cited papers.");
       return returnVals;
     }
     return 'Not listed';
@@ -38,6 +39,7 @@ class FacultyPage extends Component {
       profInfo: {},
       buttonValue: 'Send Email',
       isButtonDisabled: false,
+      tokenId: ''
     };
     this.TextEditor = React.createRef();
     this.separateInterests = this.separateInterests.bind(this);
@@ -67,7 +69,8 @@ class FacultyPage extends Component {
           if (!response || response.data === 'none' || !response.data) {
             this.setState({ role: null });
           } else {
-            this.setState({ role: response.data });
+            this.setState({ role: response.data,
+            tokenId: sessionStorage.getItem('token_id')});
           }
         })
         .catch((error) => {
@@ -269,7 +272,7 @@ Website:
                 <div className="opp-details-card" id="emailText">
                   {this.state.role ? (
                     <div>
-                      <RichTextEditor ref={this.TextEditor} />
+                      <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} />
                       <div style={{ textAlign: 'center', marginTop: '10px' }}>
                         <input
                           type="submit"
@@ -312,7 +315,8 @@ Website:
 
                 <div className="opp-qual-section">
                   <h6 className="header">How Do I Find Research?</h6>
-                  One way is by writing emails to professors whose work seems interesting (see below for template). If you'd like more details, we have a step-by-step guide here: TODO link to guide page
+                  One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to professor's
+                  office and ask them about their research and then express your interest in working with them.
                 </div>
 
                 <div className="opp-qual-section">
@@ -330,13 +334,6 @@ Website:
                   <h6 className="header">Is It Too Early To Reach Out For [Summer/Fall/Spring] Research?</h6>
                   Nope; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
 
-                </div>
-
-                <hr />
-
-                <div className="opp-qual-section">
-                  <h6 className="header">What Time to Send?</h6>
-                  We'll schedule your email to be sent out in the closest weekday morning - when people are most likely to respond.
                 </div>
 
                 <hr />

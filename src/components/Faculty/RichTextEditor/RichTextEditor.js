@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-  Editor, EditorState, RichUtils, getDefaultKeyBinding,
+  Editor,
+  EditorState,
+  RichUtils,
+  getDefaultKeyBinding,
+  convertFromHTML,
+  ContentState,
 } from 'draft-js';
 import './RichTextEditor.css';
 import 'draft-js/dist/Draft.css';
+import axios from 'axios';
 
 class RichTextEditor extends React.Component {
   constructor(props) {
@@ -62,6 +68,31 @@ class RichTextEditor extends React.Component {
 
   render() {
     const { editorState } = this.state;
+    if (this.props.tokenId && !this.state.loadedInitialHtml){
+      axios.post('/api/undergrads/email', { tokenId: this.props.tokenId })
+      .then((result) => {
+        if (!result){
+          return;
+        }
+        const resultHtml = result.data;
+        console.log("loaded html!");
+        console.log(resultHtml);
+        const blocksFromHTML = convertFromHTML(resultHtml);
+        const content = ContentState.createFromBlockArray(
+            blocksFromHTML.contentBlocks,
+            blocksFromHTML.entityMap
+        );
+        this.setState({editorState: EditorState.createWithContent(content),
+          loadedInitialHtml: true})
+        // const contentState = textEditorState.editorState.getCurrentContent();
+        // this.setState({emailHtml: result});
+      })
+      .catch(function (error) {
+        this.sendToHome(error);
+        // Utils.handleTokenError(error);
+      });
+
+    }
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';

@@ -153,6 +153,85 @@ app.delete('/:id', (req, res) => {
 });
 
 /**
+ * Returns random int between lowerBound inclusive and upperBound exclusive
+ * @param lowerBound
+ * @param upperBound
+ */
+function getRandomInt (lowerBound, upperBound) {
+  return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound;
+}
+
+/**
+ * Returns date with random optimal time between 8 and 10
+ * @param date; the date to set the hours and minutes for
+ */
+function setOptimalHoursMins(date) {
+  date.setHours(getRandomInt(8,10));
+  date.setMinutes(getRandomInt(0, 60));
+  return date;
+}
+
+/**
+ * Returns the ideal time in unix time to send an email in the morning following these rules
+ * (WD = weekday)
+ * -if sat or sun, send mon using setOptimalHoursMins
+ * if WD
+ *  -if before 8am, send at 8am later that day using setOptimalHoursMins
+ *  -if between 8 and 10, send now
+ *  -if MTWTh and after 10am, send next day using setOptimalHoursMins
+ *  -if Friday after 10am, send monday using setOptimalHoursMins
+ */
+function calculateSendTime(){
+  const now = new Date();
+  const dayOfWeek = now.getDay(); //0 = sunday 6 = saturday
+  let timeToSend = new Date();
+  let increment = 0;
+  const isWeekday = dayOfWeek > 0 && dayOfWeek < 6;
+  const currentHour = now.getHours();
+  const isBefore8am = currentHour < 8;
+  const isAfter10am = currentHour > 10;
+  let sendNow = false;
+  if (!isWeekday) {
+    if (dayOfWeek === 0){
+      increment = 1; // Sunday/0
+    }
+    else {
+      increment = 2; // Saturday/6
+    }
+  }
+  // Weekdays
+  else {
+    if (isBefore8am) {
+      increment = 0;
+    }
+    else if (!isBefore8am && !isAfter10am){
+      increment = 0;
+      sendNow = true;
+    }
+    // Must be past 10am today at this point.
+    // if not friday...
+    else if (dayOfWeek !== 5){
+      increment = 1;
+    }
+    // Must be past 10am and friday so send on Monday
+    else {
+      increment = 3;
+    }
+  }
+
+  timeToSend.setDate(now.getDate() + increment); // set to Monday
+  if (!sendNow) {
+    timeToSend = setOptimalHoursMins(timeToSend);
+  }
+  else {
+    // add some minutes to current time so we can still use sendLater and not
+    // have it be a time in the past if the sendgrid api is slow
+    timeToSend.setMinutes(timeToSend.getMinutes() + 5);
+  }
+  return timeToSend;
+}
+
+/**
  * Sends an email to the professor on behalf of the student at an ideal time
  * req.body = {
  *   email: string of html for email,
@@ -173,10 +252,13 @@ app.post('/email', (req, res) => {
         // if here, somehow they submitted an email without having an account
         return res.status(500).send(err);
       }
-      debug(profEmail);
+      const sendTime = calculateSendTime();
+      // convert to Unix timestamp in seconds b/c that's what sendgrid requires
+      // https://github.com/sendgrid/sendgrid-nodejs/blob/master/packages/mail/USE_CASES.md
+      let sendTimeSeconds = Math.floor(+sendTime /1000);
       const userEmail = `${netId}@cornell.edu`;
       const msg = {
-        to: 'abagh0703@gmail.com',
+        to: 'abagh0703@gmail.com', // change to 'abagh0703@gmail.com' when testing, profEmail when not
         from: {
           name: `${undergrad.firstName} ${undergrad.lastName}`,
           email: userEmail,
@@ -184,6 +266,7 @@ app.post('/email', (req, res) => {
         replyTo: userEmail,
         subject: 'Interest in Your Research',
         html: emailHtml,
+        sendAt: sendTimeSeconds,
         trackingSettings: {
           clickTracking: {
             enable: true,
