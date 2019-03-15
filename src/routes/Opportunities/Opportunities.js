@@ -11,6 +11,7 @@ import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
+import * as ReactGA from 'react-ga';
 
 //necessary for all filters
 import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
@@ -41,9 +42,25 @@ class Opportunities extends Component {
       role: '',
       csAreasSelect:[]
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  handleSearchTerms(){
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm){
+      console.log("in search term");
+      this.setState({searchBar: searchTerm});
+      document.getElementById("searchOpps").value = searchTerm;
+    }
   }
 
   componentDidMount() {
+    this.handleSearchTerms();
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
       return;
@@ -64,6 +81,17 @@ class Opportunities extends Component {
       .catch((error) => {
         Utils.handleTokenError(error);
       });
+
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm){
+      console.log("in search term");
+      this.setState({searchBar: searchTerm});
+      document.getElementById("searchOpps").value = searchTerm;
+    }
   }
 
   handleUpdateMajor(majorObj) {
@@ -146,6 +174,7 @@ class Opportunities extends Component {
             value={this.state.searchBar}
             type="text"
             name="search"
+            id="searchOpps"
             placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"
           />
           <div className="delete-div">

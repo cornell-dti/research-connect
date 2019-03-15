@@ -8,6 +8,7 @@ import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import '../Opportunities/Opportunities.scss';
+import * as ReactGA from 'react-ga';
 
 
 class FacultySearch extends Component {
@@ -22,6 +23,9 @@ class FacultySearch extends Component {
       clickedEnter: false,
       role: '',
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     this.handleChange = this.handleChange.bind(this);
   }
 

@@ -1,37 +1,43 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import './LandingPage.scss';
 import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
-import { Link } from 'react-router-dom';
-import logo from '../../images/vectorlogo.png';
-import logoRed from '../../images/red-logo.png';
-import stockPhoto from '../../images/writing-picture.jpg';
-import filler from '../../images/download.png';
-import img1 from '../../images/img1.png';
+import check from '../../images/check.png';
+import cis from '../../images/logo1.png';
+import curb from '../../images/logo2.png';
+import CDTI from '../../images/logo3.png';
+import lightbulb from '../../images/lightbulb.png';
+import pen from '../../images/pen.png';
+import triangler from '../../images/triangle1.png';
+import trianglel from '../../images/triangle2.png';
+
+import blueIcon from '../../images/blueIcon.png';
+import greenIcon from '../../images/greenIcon.png';
+import redIcon from '../../images/redIcon.png';
+import yellowIcon from '../../images/yellowIcon.png';
+import purpleIcon from '../../images/purpleIcon.png';
+
 import img2 from '../../images/img2.png';
-import img3 from '../../images/img3.png';
-import student1 from '../../images/student-laptop.png';
-import student2 from '../../images/student-magnifier.png';
-import student3 from '../../images/student-lightbulb.png';
-import prof1 from '../../images/prof1.png';
-import prof2 from '../../images/prof2.png';
-import prof3 from '../../images/prof3.png';
-import logoWithText from '../../images/LogoWithText.png';
+
+import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
-import * as Utils from '../../components/Utils.js';
-import { logoutGoogle } from '../../components/Utils';
+import * as Utils from '../../components/Utils';
+import SearchBar from '../../components/LandingPage/Student/SearchBar';
+import * as ReactGA from 'react-ga';
+import ReactDOM from 'react-dom';
+ReactGA.initialize('UA-69262899-9');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
-
-function clearUnregistered() {
-  sessionStorage.clear();
-  window.location.reload();
-}
-
-class LandingPage extends Component {
-
+class Landing extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      searchBar: '',
+      matchingSearches: [],
+      searching: false,
+      clickedEnter: false,
+    };
   }
 
   componentDidMount() {
@@ -44,9 +50,8 @@ class LandingPage extends Component {
           if (response.data === 'undergrad') {
             endUrl = '/studentDashboard';
             window.location.href = endUrl;
-          }
-          // 'none' means they're not an undergrad or professor
-          else if (response.data === 'none' || response.data === null) {
+          } else if (response.data === 'none' || response.data === null) {
+            // 'none' means they're not an undergrad or professor
             logoutGoogle();
           } else {
             endUrl = '/professorDashboard';
@@ -59,32 +64,18 @@ class LandingPage extends Component {
     }
   }
 
-  scrollTo(id) {
-    console.log('scrolling');
-    const scrollToElement = require('scroll-to-element');
-    scrollToElement(id, {
-      offset: 0,
-      ease: 'linear',
-      duration: 600,
-    });
-  }
-
-  goToLabPage() {
-    document.location.href = '/profLanding';
-  }
-
   loginFailure(a) {
     console.log(a);
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
   }
 
-  responseGoogleStudent(response) {
+  responseGoogleStudent = (response) => {
     console.log('response google student ran');
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
       alert('Please sign in with a cornell email (netid@cornell.edu)');
-      logoutGoogle();
+      return logoutGoogle();
     }
     axios.get(`/api/hasRegistered/${response.profileObj.email.replace('@cornell.edu', '')}`).then((hasRegistered) => {
       console.log('has registered');
@@ -95,9 +86,9 @@ class LandingPage extends Component {
         window.location.href = '/studentRegister';
       }
     });
-  }
+  };
 
-  responseGoogle(response) {
+  responseGoogle = (response) => {
     console.log('lab researcher signup');
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
@@ -127,6 +118,21 @@ class LandingPage extends Component {
       console.log(error);
       Utils.handleTokenError(error);
     });
+  };
+
+
+  scrollTo(id) {
+    console.log('scrolling');
+    const scrollToElement = require('scroll-to-element');
+    scrollToElement(id, {
+      offset: 0,
+      ease: 'linear',
+      duration: 600,
+    });
+  }
+
+  postOpp() {
+    window.location.href = '/newopp';
   }
 
   logoutClear() {
@@ -138,125 +144,170 @@ class LandingPage extends Component {
       <div className="landingPage">
         <header>
           <h2>
-            <a onClick={this.scrollTo.bind(this, '#home')}>
-              <img className="logo" src={logoWithText} />
+            <a href="/">
+              <img alt="Research Connect" className="logo" src={logoWithText} />
             </a>
           </h2>
 
           <nav>
-            <li><a onClick={this.scrollTo.bind(this, '#about')}>About</a></li>
-            <li><a className="landingPage hover">For Students</a></li>
-
+            <li><a className="landingPage hover" href="/">For Students</a></li>
             <li><a href="/profLanding">For Labs</a></li>
+
+
             {sessionStorage.getItem('token_id') === null ? (
+
               <div>
-                {/*<GoogleLogin*/}
-                  {/*clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"*/}
-                  {/*buttonText="Lab Log In"*/}
-                  {/*onSuccess={this.responseGoogle.bind(this)}*/}
-                  {/*onFailure={this.loginFailure.bind(this)}*/}
-                  {/*className="login button"*/}
-                {/*/>*/}
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Student Log In"
-                  // hostedDomain="cornell.edu"
-                  onSuccess={this.responseGoogleStudent.bind(this)}
+                  buttonText="Student Log In/Sign Up"
+                  onSuccess={this.responseGoogleStudent}
                   onFailure={this.loginFailure.bind(this)}
-                  className="login button"
+                  className="signup"
                 />
+
               </div>
             ) : (
-              <li />
-            )}
+                <li />
+              )}
           </nav>
         </header>
 
         <section id="home" className="hero">
           <div className="background-image" />
           <h1>Research Connect</h1>
-          <h3>Find and post research opportunities on campus</h3>
-          <hr />
-          <div className="button-div">
-            <input
-              className="white-button"
-              type="submit"
-              onClick={this.scrollTo.bind(this, '#forstudents')}
-              value="For Students"
-            />
-            {/* <Link to="/instructorregister"> */}
-            <input
-              className="white-button lab-button"
-              type="submit"
-              value="For Labs"
-              onClick={this.goToLabPage.bind(this)}
-            />
-            {/* </Link> */}
-          </div>
+          <h3>Find your next research opportunity.</h3>
+          <SearchBar />
+
         </section>
 
-        <section id="about" className="why-us reviews">
+        <section className="middleContainer2">
+          <Container >
+            {/*<Row>*/}
+              {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
+            {/*</Row>*/}
+            <Row>
+              <p className="big ">Explore Popular Areas of Interest</p>
+            </Row>
+            <Row>
+              <Col className="text-center">
+                <Row><img className="middleImage" src={blueIcon} /></Row>
+                <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
+              </Col>
+              <Col>
+                <Row><img className="middleImage" src={greenIcon} /> </Row>
+                <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
+              </Col>
+              <Col>
+                <Row><img className="middleImage" src={redIcon} /></Row>
+                <Row> <p>MACHINE LEARNING</p> </Row>
+              </Col>
+              <Col>
+                <Row><img className="middleImage" src={yellowIcon} /></Row>
+                <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
+              </Col>
+              <Col>
+                <Row><img className="middleImage" src={purpleIcon} /></Row>
+                <Row> <p>COMPUTER VISION</p> </Row>
+              </Col>
+
+            </Row>
+          </Container>
+        </section>
+
+        <section id="about" className="why-us">
           <div className="students-title">
-            <h2>Why use Research Connect?</h2>
-            <h3>
-              The abundance of undergraduate research opportunities is one of the great things about
-              Cornell, yet unfortunately the process of finding these opportunities is still very
-              unstructured. One must knock on doors, send countless emails to professors, and make do with
-              obsolete web pages to seek research opportunities. Research Connect aims to bridge this gap
-              by providing a structured platform where students can find opportunities, and research labs
-              can find the students they are looking for. View opportunities that are currently
-              available
-              {' '}
-              <a style={{ color: 'blue', textDecoration: 'underline' }} href="/opportunities">here</a>
-              .
-            </h3>
+            <h2>Discover your passion.</h2>
+            <section>
+              <Row className="picRow">
+                <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
+                <Col><p className="picP">Search for opportunities and stop guessing who is accepting.</p></Col>
+              </Row>
+              <Row className="picRow">
+                <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
+                <Col><p className="picP">Get help writing and automatically scheduling emails to professors.</p></Col>
+              </Row>
+              <Row className="picRow">
+                <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
+                <Col><p className="picP">View our complete guide on finding research.</p></Col>
+              </Row>
+
+            </section>
           </div>
           <div>
-            <img className="why-logo" src={logoRed} alt="research connect logo" />
+            <img className="triangle" src={triangler} alt="research connect logo" />
           </div>
         </section>
 
+
         <section id="forstudents" className="our-work for-students">
+          <div>
+            <img className="triangle" src={trianglel} alt="research connect logo" />
+          </div>
+
           <div className="students-title">
-            <h2>Made for students by students.</h2>
-            <h3 id="student-sign-up">
-              Get a research position at a Cornell lab of your choice. The days of cold emailing and
-                                          knocking
-                                          on professors
-              {"'"}
-              {' '}
-              doors are over.
-            </h3>
+
+            <section>
+              <Row>
+                <h2>Made for students by students.</h2>
+              </Row>
+              <Row>
+                <Col><p>We know how frustrating it can be to get involved with a lab at Cornell. That’s why we created Research Connect.</p></Col>
+              </Row>
+              <Row>
+                <section className="list">
+                  <Row className="picRow">
+                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><p className="picP">Know Who's Accepting Undergrads. </p></Col>
+                  </Row>
+                  <Row>
+                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><p>Cold Email Writing Tool.</p></Col>
+                  </Row>
+                  <Row>
+                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><p>More research. </p></Col>
+                  </Row>
+
+                </section>
+
+              </Row>
+
+
+            </section>
           </div>
-          <div className="photo-flex">
-            <div className="step">
-              <img className="padding step-photo" src={student1} />
-              <br />
-              <p>Easily fill out a profile with your credentials and interests.</p>
-            </div>
-            <div className="step">
-              <img className="padding step-photo" src={student2} />
-              <br />
-              <p>Find relevant listings that fit your interests and qualifications.</p>
-            </div>
-            <div className="step">
-              <img className="padding step-photo" src={student3} />
-              <br />
-              <p>Apply and get in touch with researchers and labs in your field!</p>
+        </section>
+
+
+        <section id="forprofs" className="our work for-profs">
+          <div className="students-title center-text">
+            <h2>Doing research in leading labs on campus has never been easier.</h2>
+            <br />
+            <div className="center-text">
+              <p id="no-max-width">Join today to start your research journey and get connected. </p>
             </div>
           </div>
+
           <div className="signup-wrap">
             <GoogleLogin
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-              buttonText="Student Signup"
-              // hostedDomain="cornell.edu"
-              onSuccess={this.responseGoogleStudent.bind(this)}
+              buttonText="GET STARTED"
+              onSuccess={this.responseGoogleStudent}
               onFailure={this.loginFailure.bind(this)}
-              className="signup button"
+              className="signup2 button"
             />
           </div>
         </section>
 
+        {/*<section className="incollab">*/}
+          {/*<Container className="middleContainer">*/}
+            {/*<Row>*/}
+              {/*<Col><p id="collab">In Collabortation With     </p></Col>*/}
+              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
+              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
+              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
+            {/*</Row>*/}
+          {/*</Container>*/}
+        {/*</section>*/}
 
         <footer className="footer-all">
           <ul>
@@ -271,12 +322,12 @@ class LandingPage extends Component {
             </li>
           </ul>
           <p>Created by</p>
-          <a href="http://cornelldti.org/" target="_blank">
+          <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
             <img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo" />
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
-            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank">Report a bug</a></p>
+            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">Report a bug</a></p>
             <p><a href="mailto:acb352@cornell.edu">Contact</a></p>
           </div>
         </footer>
@@ -285,4 +336,4 @@ class LandingPage extends Component {
   }
 }
 
-export default LandingPage;
+export default Landing;

@@ -20,6 +20,9 @@ import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 class ProfessorView extends Component {
   constructor(props) {
@@ -35,6 +38,9 @@ class ProfessorView extends Component {
       opportunities: [],
       loading: true,
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   handleUpdateMajor(majorObj) {

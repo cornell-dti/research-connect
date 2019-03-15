@@ -7,6 +7,9 @@ import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils.js';
+import * as ReactGA from 'react-ga';
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 let majorList = Utils.getMajorList();
 let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
@@ -36,6 +39,8 @@ class StudentRegister extends React.Component {
       isButtonDisabled: false,
       buttonValue: 'Submit',
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.onChange.bind(this);
     this.onSubmit.bind(this);
 

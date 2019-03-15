@@ -4,9 +4,11 @@ import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
 import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
-import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar.js';
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils.js';
+import * as ReactGA from 'react-ga';
+
 import Star from '../../components/Star/Star'
 
 class OpportunityPage extends Component {
@@ -25,7 +27,8 @@ class OpportunityPage extends Component {
       detectedLoggedOut: false,
       starred: false
     };
-
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.parseClasses = this.parseClasses.bind(this);
     this.parseMajors = this.parseMajors.bind(this);
     this.parseYears = this.parseYears.bind(this);
@@ -207,7 +210,7 @@ class OpportunityPage extends Component {
     }).catch((error) => {
       this.sendToHome(error);
     });
-    
+
   }
 
   printQuestions() {
@@ -583,10 +586,10 @@ No Preference
                 <div className="column left-column">
                   <div className="header">
                   {this.state.opportunity.title}
-                  <Star 
-                    update={this.star.bind(this)}
-                    starred={this.state.starred}
-                  />
+                  {/*<Star*/}
+                    {/*update={this.star.bind(this)}*/}
+                    {/*starred={this.state.starred}*/}
+                  {/*/>*/}
                   </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>

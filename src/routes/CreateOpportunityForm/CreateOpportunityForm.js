@@ -17,6 +17,8 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 import YearsAllowed from '../../components/Detail/YearsAllowed';
 import CompensationAllowed from '../../components/Detail/CompensationAllowed';
 import CSAreasAllowed from '../../components/Detail/CSAreasAllowed';
+import * as ReactGA from 'react-ga';
+
 
 class CreateOppForm extends React.Component {
     constructor(props) {
@@ -61,6 +63,8 @@ class CreateOppForm extends React.Component {
           detailsButtonValue: 'Show Advanced Options',
           showDetails: false,
         };
+      ReactGA.initialize('UA-69262899-9');
+      ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.handleChange = this.handleChange.bind(this);
     this.addQuestion = this.addQuestion.bind(this);
@@ -200,53 +204,53 @@ class CreateOppForm extends React.Component {
   handleChange(event) {
     if (event.target.name === "labName") {
       this.setState({labName: event.target.value});
-    } 
+    }
     else if (event.target.name === "netID") {
       this.setState({creatorNetId: event.target.value});
     }
     else if (event.target.name === "title") {
       let st = event.target.value.length > 0;
       this.setState({title: event.target.value, titleIsValid: st});
-    } 
+    }
     else if (event.target.name === 'email') {
       let st = event.target.value.length > 0;
       this.setState({email: event.target.value, emailIsValid: st});
-    } 
+    }
     else if (event.target.name === "pi") {
       this.setState({pi: event.target.value});
-    } 
+    }
     else if (event.target.name === "supervisor") {
       let st = event.target.value.length > 0;
       this.setState({ supervisor: event.target.value, supervisorIsValid: st });
-    } 
+    }
     else if (event.target.name === "descript") {
       this.setState({projectDescription: event.target.value});
-    } 
+    }
     else if (event.target.name === "tasks") {
       let st = event.target.value.length > 0;
       this.setState({undergradTasks: event.target.value, tasksAreValid: st});
-    } 
+    }
     else if (event.target.name === "qual") {
       this.setState({qualifications: event.target.value});
-    } 
+    }
     else if (event.target.name === "classes") {
       let classArray = event.target.value.split(",");
       this.setState({requiredClasses: classArray});
-    } 
+    }
     else if (event.target.name === "startSeason") {
       let st = event.target.value !== "Select";
       this.setState({startSeason: event.target.value, seasonIsValid: st});
-    } 
+    }
     else if (event.target.name === "startYear") {
       let st = event.target.value !== "Select";
       this.setState({startYear: event.target.value, yearIsValid: st});
-    } 
+    }
     else if (event.target.name === "gpa") {
       this.setState({minGPA: event.target.value});
-    } 
+    }
     else if (event.target.name === "min") {
       this.setState({minHours: event.target.value});
-    } 
+    }
     else if (event.target.name === "max") {
       this.setState({maxHours: event.target.value});
     }
@@ -592,7 +596,7 @@ class CreateOppForm extends React.Component {
                     </ReactTooltip>
                   </div>
 
-                  <CompensationAllowed 
+                  <CompensationAllowed
                     update={Utils.updateMultipleChoiceFilter.bind(this)}
                   />
 
@@ -667,7 +671,7 @@ class CreateOppForm extends React.Component {
                     </ReactTooltip>
                   </div>
 
-                  <YearsAllowed 
+                  <YearsAllowed
                     update={Utils.updateMultipleChoiceFilter.bind(this)}
                   />
 

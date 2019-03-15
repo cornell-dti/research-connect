@@ -7,6 +7,7 @@ import '../App/App.scss';
 import './InstructorRegister.scss';
 import AutoSuggest from '../../components/AutoSuggest/AutoSuggest';
 import * as Utils from "../../components/Utils";
+import * as ReactGA from 'react-ga';
 
 
 class InstructorRegister extends React.Component {
@@ -38,6 +39,8 @@ class InstructorRegister extends React.Component {
             buttonDisabled: false, 
             buttonValue: "Register"
         };
+        ReactGA.initialize('UA-69262899-9');
+        ReactGA.pageview(window.location.pathname + window.location.search);
 
 
         this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
