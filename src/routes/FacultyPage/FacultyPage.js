@@ -284,8 +284,7 @@ Website:
                         />
                         <br />
                         <p style={{ fontSize: '10px' }}>
-                          {`We'll schedule your email to be sent out when
-                          professors are most likely to respond (in the morning).`}
+                          {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`}
                         </p>
                       </div>
                     </div>
@@ -341,6 +340,7 @@ Website:
                 <div className="opp-qual-section">
                   <h6 className="header">Technical Details</h6>
                   We use the Sendgrid API so the email comes from you and when professors responds they're responding to you!
+                  We'll also schedule the email to go out the soonest weekday morning, when they're least likely to have it slip through their inbox.
                 </div>
               </div>
             </div>

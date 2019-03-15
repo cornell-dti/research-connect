@@ -189,7 +189,7 @@ function calculateSendTime(){
   const isWeekday = dayOfWeek > 0 && dayOfWeek < 6;
   const currentHour = now.getHours();
   const isBefore8am = currentHour < 8;
-  const isAfter10am = currentHour > 10;
+  const isAfter10am = currentHour > 11;
   let sendNow = false;
   if (!isWeekday) {
     if (dayOfWeek === 0){
@@ -257,14 +257,19 @@ app.post('/email', (req, res) => {
       // https://github.com/sendgrid/sendgrid-nodejs/blob/master/packages/mail/USE_CASES.md
       let sendTimeSeconds = Math.floor(+sendTime /1000);
       const userEmail = `${netId}@cornell.edu`;
+      const subjectOptions = ["Interest in Doing Research",
+      "Possibility of Conducting Research",
+      "Learning More About Your CS Research"];
+      const subject = subjectOptions[getRandomInt(0, subjectOptions.length)];
       const msg = {
-        to: 'abagh0703@gmail.com', // change to 'abagh0703@gmail.com' when testing, profEmail when not
+        to: profEmail,  // change to 'abagh0703@gmail.com' when testing, profEmail when not
         from: {
           name: `${undergrad.firstName} ${undergrad.lastName}`,
           email: userEmail,
         },
+        bcc: userEmail,
         replyTo: userEmail,
-        subject: 'Interest in Your Research',
+        subject: subject,
         html: emailHtml,
         sendAt: sendTimeSeconds,
         trackingSettings: {
