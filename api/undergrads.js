@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  verify, undergradModel, labAdministratorModel, debug, handleVerifyError,
+  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup
 } = require('../common.js');
 const common = require('../common.js');
 
@@ -30,6 +30,27 @@ app.get('/la/:netId', (req, res) => {
     });
     return null;
   }).catch((error) => {
+    handleVerifyError(error, res);
+  });
+});
+
+/**
+ * Params in body: tokenId (contains google auth token)
+ */
+app.post('/email', (req, res) => {
+  const { tokenId } = req.body;
+  verify(tokenId, (netId) => {
+    if (!netId) {
+      return res.send('');
+    }
+    undergradModel.findOne({ netId }, (err, undergrad) => {
+      if (err || !undergrad) {
+        debug(err);
+        return res.send('');
+      }
+      return res.send(undergrad.emailHtml);
+    });
+    }).catch((error) => {
     handleVerifyError(error, res);
   });
 });
@@ -175,6 +196,25 @@ app.post('/', (req, res) => {
         debug(err);
       } else { // Handle this error however you see fit
         debug('saved');
+        const msg = {
+          to: `${undergrad.netId}@cornell.edu`,
+          from: {
+            name: 'Research Connect',
+            email: 'hello@research-connect.com',
+          },
+          replyTo: 'acb352@cornell.edu',
+          asm: {
+            groupId: sgStatusGroup,
+          },
+          subject: 'Guide to Finding Research!',
+          html: `Hi ${undergrad.firstName},<br />
+                       Thanks for signing up for Research Connect! To help you 
+                       in your research journey, we've provided a comprehensive 
+                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a> 
+                       <br /><br />Thanks,
+                       <br />The Research Connect Team<br /><br />`,
+        };
+        sgMail.send(msg);
         res.status(200).send('success!');
       }
       // Now the opportunity is saved in the commonApp collection on mlab!

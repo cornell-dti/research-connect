@@ -11,8 +11,8 @@ import * as ReactGA from 'react-ga';
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 
-let majorList = Utils.getMajorList();
-let gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
+const majorList = Utils.getMajorList();
+const gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
 
 class StudentRegister extends React.Component {
   constructor(props) {
@@ -40,31 +40,28 @@ class StudentRegister extends React.Component {
       buttonValue: 'Submit',
     };
     ReactGA.initialize('UA-69262899-9');
-    ReactGA.pageview(window.location.pathname + window.location.search);
-    this.onChange.bind(this);
+    ReactGA.pageview(window.location.pathname + window.location.search);this.onChange.bind(this);
     this.onSubmit.bind(this);
-
   }
 
-    optionify(inputArray, inputName) {
-        let newArray = [];
-        for (let i = 0; i < inputArray.length; i++) {
-            newArray.push(<option key={inputArray[i]} value={inputArray[i]}>
-                {inputArray[i]}
-            </option>);
-        }
+  optionify(inputArray, inputName) {
+    const newArray = [];
+    for (let i = 0; i < inputArray.length; i++) {
+      newArray.push(<option key={inputArray[i]} value={inputArray[i]}>
+        {inputArray[i]}
+      </option>);
+    }
 
-        let placehold = 'Select';
-        let validName;
+    let placehold = 'Select';
+    let validName;
 
-        if (inputName === 'gradYear') {
-            placehold = 'Select Graduation Year';
-            validName = this.state.gradYearValid;
-        }
-        else if (inputName === 'major') {
-            placehold = 'Select Major';
-            validName = this.state.majorValid;
-        }
+    if (inputName === 'gradYear') {
+      placehold = 'Select Graduation Year';
+      validName = this.state.gradYearValid;
+    } else if (inputName === 'major') {
+      placehold = 'Select Major';
+      validName = this.state.majorValid;
+    }
 
     return (
       <select
@@ -72,11 +69,12 @@ class StudentRegister extends React.Component {
         name={inputName}
         value={inputName}
         onChange={this.onChange}
+
       >
         <option id={inputName} key="empty" value="">{placehold}</option>
         {newArray}
       </select>
-        );
+    );
   }
 
     onDropResume = (acceptedFiles) => {
@@ -124,14 +122,13 @@ class StudentRegister extends React.Component {
           document.getElementById(name).innerHTML = [e.target.value];}
 
         if (e.target.value != '') {
-          this.setState({ [validationName]: true });}
-         else {
+          this.setState({ [validationName]: true });
+        } else {
           this.setState({ [validationName]: false });
         }
       } else {
         this.setState({ [e.target.name]: (e.target.value).replace(/ /g, '').split(',') });
       }
-
       console.log(`COURSES ${this.state.courses}`);
     };
 
@@ -163,7 +160,16 @@ class StudentRegister extends React.Component {
       e.preventDefault();
       // get our form data out of state
       const {
-        firstName, lastName, gradYear, major, GPA, netId, email, courses, resume, transcript,
+        firstName,
+        lastName,
+        gradYear,
+        major,
+        GPA,
+        netId,
+        email,
+        courses,
+        resume,
+        transcript,
         firstNameValid,
         lastNameValid,
         gradYearValid,
@@ -175,95 +181,87 @@ class StudentRegister extends React.Component {
       this.setState({ token_id: sessionStorage.getItem('token_id') });
       const token_id = sessionStorage.getItem('token_id');
 
-        // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
-        //     .then(function (response) {
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
-        if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid) {
-            let oneRan = false;
-          const getUrl = window.location;
-          const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
-          axios.post('/api/undergrads', {firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id})
+      // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
+      //     .then(function (response) {
+      //         console.log(response);
+      //     })
+      //     .catch(function (error) {
+      //         console.log(error);
+      //     });
+      if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid) {
+        let oneRan = false;
+        const getUrl = window.location;
+        const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
+        axios.post('/api/undergrads', {
+          firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id,
+        })
+          .then((result) => {
+            console.log('undergrad created, result:');
+            console.log(result);
+            this.setState({ isButtonDisabled: true });
+            this.setState({ buttonValue: 'Submitted!' });
+
+
+            // access the results here....
+            if (this.state.transcript != null && this.state.transcript.length !== 0) {
+              axios.post('/api/docs', { token_id, transcript })
                 .then((result) => {
-                    console.log("undergrad created, result:");
-                    console.log(result);
-                    this.setState({isButtonDisabled: true});
-                    this.setState({buttonValue: "Submitted!"});
-
-
-                    //access the results here....
-                    if (this.state.transcript != null && this.state.transcript.length !== 0) {
-                        axios.post('/api/docs', {token_id, transcript})
-                            .then((result) => {
-                                if (oneRan) {
-                                  window.location.replace(`${baseUrl}/opportunities`);
-                                }
-                                else {
-                                    oneRan = true;
-                                }
-                        }).catch((error) => {
-                                console.log("error in creating transcript");
-                                console.log(error);
-                            //if it's not a session error...
-                            if (!Utils.handleTokenError(error)){
-                                Utils.handleNonTokenError(error);
-                            }
-                        });
-                    }
-
-                    if (this.state.resume != null && this.state.resume.length !== 0) {
-                        console.log("resume is not null!");
-                        axios.post('/api/docs', {token_id, resume})
-                            .then((result) => {
-                                if (oneRan || !this.state.transcript) {
-                                    window.location.replace(baseUrl + "/opportunities");
-                                }
-                                else {
-                                    oneRan = true;
-                                }
-                                console.log("resume result");
-                                console.log(result);
-                            }).catch(function (error) {
-                            console.log("error in posting resume");
-                            console.log(error);
-                            //if it's not a session error...
-                            if (!Utils.handleTokenError(error)){
-                                Utils.handleNonTokenError(error);
-                            }
-                        });
-                    }
-                }).catch(function (error) {
-                    console.log("error in creating undergrad");
-                    console.log(error);
-                    //if it's not a session error...
-                if (!Utils.handleTokenError(error)){
+                  if (oneRan) {
+                    window.location.replace(`${baseUrl}/opportunities`);
+                  } else {
+                    oneRan = true;
+                  }
+                }).catch((error) => {
+                  console.log('error in creating transcript');
+                  console.log(error);
+                  // if it's not a session error...
+                  if (!Utils.handleTokenError(error)) {
                     Utils.handleNonTokenError(error);
-                }
-            });
-        }
-        else{
-          if(!firstNameValid){
-            alert("First name is required.");
-          }
-          else if(!lastNameValid){
-            alert("Last name is required.");
-          }
-          else if(!gradYearValid){
-            alert("Graduation year is required.");
-          }
-          else if(!majorValid){
-            alert("Major is required.");
-          }
-          else if(!GPAValid){
-            alert("GPA is required.");
-          }
-          else if(!resumeValid){
-            alert("Resume is required.");
-          }
-        }
+                  }
+                });
+            }
+
+            if (this.state.resume != null && this.state.resume.length !== 0) {
+              console.log('resume is not null!');
+              axios.post('/api/docs', { token_id, resume })
+                .then((result) => {
+                  if (oneRan || !this.state.transcript) {
+                    window.location.replace(`${baseUrl}/opportunities`);
+                  } else {
+                    oneRan = true;
+                  }
+                  console.log('resume result');
+                  console.log(result);
+                }).catch((error) => {
+                  console.log('error in posting resume');
+                  console.log(error);
+                  // if it's not a session error...
+                  if (!Utils.handleTokenError(error)) {
+                    Utils.handleNonTokenError(error);
+                  }
+                });
+            }
+          }).catch((error) => {
+            console.log('error in creating undergrad');
+            console.log(error);
+            // if it's not a session error...
+            if (!Utils.handleTokenError(error)) {
+              Utils.handleNonTokenError(error);
+            }
+          });
+      } else if (!firstNameValid) {
+        alert('First name is required.');
+      } else if (!lastNameValid) {
+        alert('Last name is required.');
+      } else if (!gradYearValid) {
+        alert('Graduation year is required.');
+      } else if (!majorValid) {
+        alert('Major is required.');
+      } else if (!GPAValid) {
+        alert('GPA is required.');
+      } else if (!resumeValid) {
+        alert('Resume is required.');
+      }
     };
 
 
@@ -280,7 +278,6 @@ class StudentRegister extends React.Component {
       // }
       return (
         <div>
-
           <div className="student-reg-form">
             <h3>Student Registration</h3>
             <form id="studentForm" onSubmit={this.onSubmit}>
@@ -293,7 +290,6 @@ class StudentRegister extends React.Component {
                 id="firstName"
                 onChange={this.onChange}
               />
-
               <input
                 className={!this.state.lastNameValid && this.state.triedSubmitting ? 'error left-input' : 'left-input'}
                 type="text"

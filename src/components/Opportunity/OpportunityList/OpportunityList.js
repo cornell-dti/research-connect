@@ -47,12 +47,12 @@ class OpportunityList extends Component {
     return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
   }
 
-  union(arr1, arr2){
-    let arr3 = arr1.filter((i) => arr2.indexOf(i) > -1);
+  union(arr1, arr2) {
+    const arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
     return arr3;
   }
 
-  checkboxFilter(filterSelected, filterAllowed){
+  checkboxFilter(filterSelected, filterAllowed) {
     return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
   }
 
@@ -65,28 +65,28 @@ class OpportunityList extends Component {
     if (!this.props.data) return null;
 
     const oppNodes = this.props.data.map((opp) => {
-      let willShow = true; //set to false if any filter excludes this opportunity
+      let willShow = true; // set to false if any filter excludes this opportunity
       const filteredOptions = this.props.filteredOptions;
 
-      let matchingSearches = filteredOptions.matchingSearches;
-      if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter){
+      const matchingSearches = filteredOptions.matchingSearches;
+      if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter) {
         let matches = false;
-        for (let i = 0; i<matchingSearches.length; i++){
-          if(matchingSearches[i] === opp._id){
+        for (let i = 0; i < matchingSearches.length; i++) {
+          if (matchingSearches[i] === opp._id) {
             matches = true;
           }
         }
         willShow = matches;
       }
 
-      let minGPA = filteredOptions.gpaSelect;
+      const minGPA = filteredOptions.gpaSelect;
       willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
 
       let startDate = filteredOptions.startDate;
       let oppStartDate = opp.startSeason + " " + opp.startYear;
       willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
 
-      //multiple/checkbox choices
+      // multiple/checkbox choices
       const yearsSelected = filteredOptions.yearSelect;
       const yearsAllowed = opp.yearsAllowed;
       willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
@@ -98,7 +98,7 @@ class OpportunityList extends Component {
       const compensationsSelected = filteredOptions.compensationSelect;
       const compensationsAllowed = opp.compensation;
       willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
-      //end multiple/checkbox choices
+      // end multiple/checkbox choices
 
       if (willShow) {
         let starred = this.state.starredOps.includes(opp._id);
@@ -150,7 +150,7 @@ class OpportunityList extends Component {
       <div>
         <div className="node-list-div">
           { searchCrit }
-         
+
         </div>
         { oppNodes }
       </div>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../Opportunity/OpportunityList/OpportunityList.scss';
+import '../Opportunity/Opportunity.scss';
+import './Faculty.scss';
 
 class Faculty extends Component {
   constructor(props) {
@@ -35,10 +37,10 @@ class Faculty extends Component {
 
   render() {
     return (
-      <div className="application-box" onClick={this.clickRow.bind(this)}>
+      <div className="opportunity-card" onClick={this.clickRow.bind(this)}>
         <div className="row opp-box-row">
           <div className="column column-10">
-            <img src={this.props.photoId} width="75px" />
+            <img alt="professor photo" src={this.props.photoId} width="75px" />
           </div>
           {/* <div className="column column-10"> */}
           {/* </div> */}

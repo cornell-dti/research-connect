@@ -42,7 +42,7 @@ class Opportunity extends Component {
         str2 = `${str2.slice(0, maxChars)}... `;
         return (
           <h6>
-            {str2} 
+            {str2}
             <span className="viewDetails">View Details</span>
             {' '}
 
@@ -125,14 +125,13 @@ class Opportunity extends Component {
         <div className="row opp-box-row">
           <div className="column column-75">
             <div className="title">
-              { this.props.title } 
-              <Star 
+              { this.props.title }
+              <Star
                 update={this.star.bind(this)}
                 starred={this.props.starred}
-              />
-            </div>
+              /></div>
           </div>
-          
+
           <div className="column column-25">
             {this.checkPrereqs()}
           </div>
