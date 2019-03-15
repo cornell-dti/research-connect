@@ -113,8 +113,8 @@ const undergradSchema = new Schema({
   transcriptId: { type: String, required: false },
   skills: { type: [String], required: false },
   subscribed: { type: Boolean, default: true },
-  starredOpportunities: { type: [String], required: false },
-  starredFaculty: { type: [String], required: false },
+  starredOpportunities: { type: [String], required: false, default: [] },
+  starredFaculty: { type: [String], required: false, default: [] },
     // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
   // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });

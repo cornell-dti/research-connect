@@ -47,8 +47,7 @@ app.get('/star', (req, res) => {
       }
       debug('Found');
       if (undergrads.length) {
-        debug(undergrads[0]);
-      } 
+      }
       else {
         debug('no results found');
       }
@@ -61,6 +60,32 @@ app.get('/star', (req, res) => {
     });
   }).catch((error) => {
       handleVerifyError(error, res);
+  });
+});
+
+/**
+ * takes in the token_id, opportunity id (`id`) and the type enum and returns true if the opportunity id is in the array
+ */
+app.get('/isStarred', (req, res) => {
+  const itemId = req.query.id;
+  const type = req.query.type;
+  verify(req.query.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    let searchObj = { netId: decrypted };
+    if (type === "opportunity"){
+      searchObj["starredOpportunities"] = itemId;
+    }
+    else {
+      searchObj["starredFaculty"] = itemId;
+    }
+    undergradModel.findOne(searchObj, (err, undergrad) => {
+      // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
+      return res.send(!!undergrad);
+    });
+  }).catch((error) => {
+    handleVerifyError(error, res);
   });
 });
 
@@ -211,9 +236,29 @@ app.delete('/:id', (req, res) => {
   });
 });
 
+/**
+ * Removes val from arr if it's already in there, otherwise adds it.
+ * @param arr
+ * @param val
+ */
+function addOrRemoveIfExists(arr, val){
+  if (arr.includes(val)){
+    arr.splice(arr.indexOf(val), 1);
+  }
+  else {
+    arr.push(val);
+  }
+}
+
+/**
+ * Adds `id` to array in undergrad of `token_id` to the array for `type`
+ * sends back the updated array of starred items
+ * If `id` is already in the array, then it's removed
+ */
 app.post('/star', (req, res) => {
-  debug(req.body);
   const data = req.body;
+  const itemId = req.body.id;
+  const type = req.body.type;
   verify(data.token_id, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
@@ -222,35 +267,34 @@ app.post('/star', (req, res) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        debug(undergrad);
-
-        if (data.id) {
-          if (data.type === 'opportunity') {
-            undergrad[0].starredOpportunities.push(data.id);
+        let arr = [];
+        if (itemId) {
+          if (type === 'opportunity') {
+            arr = undergrad[0].starredOpportunities;
           }
-
-          else if (data.type === 'faculty') {
-            undergrad[0].starredFaculty.push(data.id);
+          else if (type === 'faculty') {
+            arr = undergrad[0].starredFaculty;
           }
+          addOrRemoveIfExists(arr, itemId);
         }
-
         else {
           debug('no faculty or opportunity id present.');
           res.status(500).send("no faculty or opportunity id present");
           return;
         }
-
-        // Save the updated document back to the database
+          // Save the updated document back to the database
         undergrad[0].save((err2, todo) => {
           if (err2) {
             res.status(500).send(err2);
             return;
           }
           debug('success!');
-          res.status(200).send(todo);
+          res.status(200).send(arr);
         });
       }
     });
+  }).catch((error) => {
+    handleVerifyError(error, res);
   });
 });
 
