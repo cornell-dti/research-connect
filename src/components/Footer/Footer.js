@@ -22,10 +22,11 @@ class Navbar extends Component {
           </a>
         </div>
 
-         <br/>
+        <br/>
 
         <div className="footer-child">
-          <a className="footer-link" href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">
+          <a className="footer-link" href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" 
+          target="_blank" rel="noopener noreferrer">
                         Contact Us
           </a>
         </div>
