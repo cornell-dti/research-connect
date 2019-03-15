@@ -163,7 +163,7 @@ class Opportunities extends Component {
 
         <div className='row search-div-container'>
           <div className="search-icon-div">
-            <SearchIcon style={{ height: '100%' }} size={36} />
+            <SearchIcon style={{ height: '100%'}} size={36} />
           </div>
           <input
             onFocus={this.onFocus.bind(this)}
@@ -190,12 +190,12 @@ class Opportunities extends Component {
             }
           </div>
         </div>
-
+            <br/>
         <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
 
-              <Filter label="Filter by..." />
+              <Filter label="Filter by..." style = {{textAlign: 'center'}}/>
 
               <hr />
 
@@ -214,12 +214,7 @@ class Opportunities extends Component {
               <StartDateFilter
                 update={Utils.updateSingleChoiceFilter.bind(this)}
               />
-{/*
-              <div className="filter-child">
-                <label htmlFor="startDateField">Start Date</label>
-                <StartDate updateDate={this.handleUpdateDate.bind(this)} />
-              </div>
-*/}
+              
               <hr />
 
               <CompensationFilter
@@ -228,9 +223,9 @@ class Opportunities extends Component {
 
               <hr />
 
-              {/*<CSAreasFilter*/}
-                {/*update={Utils.updateMultipleChoiceFilter.bind(this)}*/}
-              {/*/>*/}
+              <CSAreasFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
 
             </div>
           </div>

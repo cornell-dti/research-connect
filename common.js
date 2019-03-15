@@ -113,7 +113,9 @@ const undergradSchema = new Schema({
   transcriptId: { type: String, required: false },
   skills: { type: [String], required: false },
   subscribed: { type: Boolean, default: true },
-  // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
+  starredOpportunities: { type: [String], required: false, default: [] },
+  starredFaculty: { type: [String], required: false, default: [] },
+    // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
   // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });
 const undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); // a mongoose model = a Collection on mlab/mongodb;

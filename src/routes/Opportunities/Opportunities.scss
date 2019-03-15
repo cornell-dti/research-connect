@@ -6,7 +6,7 @@
   .opp-container {
     margin-bottom: 100px;
   }
-
+  
   .filter-box {
     
     background-color: white;
@@ -16,18 +16,17 @@
     margin-bottom: 15px;
     
     .filter-child, label {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 300;
     }
 
     .filter-child {
-      padding: 10px;
+      padding: 5px 10px;
 
       label {
         color: black;
       }
     }
-
     hr {
       height: 3px;
       background-color: #d0d0d0;
@@ -54,11 +53,12 @@
     padding: 0 20px;
 
     input {
-      font-size: 24px;
+      font-size: 20px;
       font-family: Roboto;
       font-weight: 300;
       height: 100%;
       border: 0;
+      padding-top:20px; 
 
       &::placeholder {
         color: #9B9B9B;

@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
+import * as Utils from '../../components/Utils';
 import PropTypes from 'prop-types';
 
-class Filter extends React.Component {
+class Detail extends React.Component {
   constructor(props){
     super(props);
   }
 
   handleChange(e) {
     let option = e.target.value;
-    this.props.updateFilterOption(this.props.filterType, option);
+    this.props.updateDetail(this.props.detailName, option);
   }
 
   //helper method for generating select
@@ -22,7 +23,6 @@ class Filter extends React.Component {
                value={value}
                key={index}/>
         {choices[value]}
-        <br />
         </React.Fragment>
       );
     });
@@ -52,30 +52,30 @@ class Filter extends React.Component {
 
 
   render(){
-    let filter;
+    let detail;
 
     if(this.props.type === 'select'){
-      filter = this.createSelect();
+      detail = this.createSelect();
     }
     else if(this.props.type === 'checkbox'){
-      filter = this.createCheckbox();
+      detail = this.createCheckbox();
     }
 
     return (
-      <div className='filter-child'>
+      <div className='years-allowed'>
         <label>{this.props.label}</label>
-        {filter}
+        {detail}
       </div>
     );
 
   }//end render
 }//end class
 
-Filter.propTypes = {
-  filterType: PropTypes.string, //ex. for year filtering, filterType is yearSelect
+Detail.propTypes = {
+  detailName: PropTypes.string, //ex. for year filtering, filterType is yearSelect
   label: PropTypes.string, //example above, this would be 'School Year'
-  updateFilterOption: PropTypes.func, //lifts the state up
+  updateDetail: PropTypes.func, //lifts the state up
   choices: PropTypes.object, //key is stored in the database, value is label displayed
 };
 
-export default Filter;
+export default Detail;
