@@ -44,7 +44,9 @@ class OpportunityList extends Component {
 
   countNodes(nodes) {
     const tempCount = nodes.filter(node => !(!node)).length;
-    return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
+      return tempCount === 1 ? 'There is 1 result' : tempCount === 0 ? 
+      'There are no results' : `There are ${tempCount} results`;
+    
   }
 
   union(arr1, arr2) {
@@ -142,7 +144,9 @@ class OpportunityList extends Component {
       <p>
         {nodeCount} {' '} matching your search criteria.
       </p>
-    ) : <span />;
+    ) :  <p>
+    {nodeCount} {' '} 
+  </p>;
 
     console.log("rendered again");
     console.log(this.state.starredOps);
