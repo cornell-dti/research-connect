@@ -25,7 +25,7 @@ const ListItems = (props) => {
       // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
       returnVals.push("Click");
       returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
-      returnVals.push("if you're interested in viewing the abstracts (summaries ) of their most recent and their most cited papers.");
+      returnVals.push("if you're interested in viewing the abstracts (summaries) of their most recent and their most cited papers.");
       return returnVals;
     }
     return 'Not listed';

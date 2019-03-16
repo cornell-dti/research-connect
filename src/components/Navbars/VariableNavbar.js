@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ProfessorNavbar from './ProfessorNavbar/ProfessorNavbar';
 import Navbar from './StudentNavbar/StudentNavbar';
+import GuestNavbar from './GuestNavbar';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import PropTypes from 'prop-types';
 import * as Utils from '../../components/Utils';
@@ -22,16 +23,7 @@ class VariableNavbar extends Component {
           <Navbar current={this.props.current}/>}
           {this.props.role && this.props.role !== 'undergrad' &&
           <ProfessorNavbar current={this.props.current}/>}
-          {!this.props.role && (
-              <div className='go-home' onClick={() => this.goHome()}>
-                <FaLongArrowLeft style={{
-                  verticalAlign: 'text-top',
-                  position: 'relative',
-                  top: '2px',
-                }} className='black-arrow'/>
-                Home
-              </div>
-          )}
+          {!this.props.role && <GuestNavbar current={this.props.current} />}
         </div>
     );
   }

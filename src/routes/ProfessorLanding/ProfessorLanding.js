@@ -35,7 +35,7 @@ class ProfessorLanding extends Component {
           console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
-            endUrl = '/studentDashboard';
+            endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
@@ -68,7 +68,7 @@ class ProfessorLanding extends Component {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/studentDashboard';
+        window.location.href = '/opportunities';
       } else {
         window.location.href = '/studentRegister';
       }

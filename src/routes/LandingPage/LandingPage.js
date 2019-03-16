@@ -48,7 +48,7 @@ class Landing extends Component {
           console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
-            endUrl = '/studentDashboard';
+            endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
@@ -175,7 +175,7 @@ class Landing extends Component {
         <section id="home" className="hero">
           <div className="background-image" />
           <h1>Research Connect</h1>
-          <h3>Find your next research opportunity.</h3>
+          <h3>Find your next CS research opportunity.</h3>
           <SearchBar />
 
         </section>
@@ -220,7 +220,7 @@ class Landing extends Component {
             <section>
               <Row className="picRow">
                 <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
-                <Col><p className="picP">Search for opportunities and stop guessing who is accepting.</p></Col>
+                <Col><p className="picP">Search for computer science opportunities and stop guessing who is accepting.</p></Col>
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
@@ -251,7 +251,7 @@ class Landing extends Component {
                 <h2>Made for students by students.</h2>
               </Row>
               <Row>
-                <Col><p>We know how frustrating it can be to get involved with a lab at Cornell. That’s why we created Research Connect.</p></Col>
+                <Col><p>We know how confusing and frustrating it can be to get involved with CS research at Cornell. That’s why we created Research Connect.</p></Col>
               </Row>
               <Row>
                 <section className="list">
@@ -280,7 +280,7 @@ class Landing extends Component {
 
         <section id="forprofs" className="our work for-profs">
           <div className="students-title center-text">
-            <h2>Doing research in leading labs on campus has never been easier.</h2>
+            <h2>Doing research in leading groups on campus has never been easier.</h2>
             <br />
             <div className="center-text">
               <p id="no-max-width">Join today to start your research journey and get connected. </p>

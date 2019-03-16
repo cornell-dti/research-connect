@@ -30,7 +30,7 @@ class StudentNavbar extends Component {
               <a href="/opportunities">Opportunities</a>
             </li>
             <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
-              <a href="/faculty">Faculty</a>
+              <a href="/faculty">Email Faculty</a>
             </li>
             {/* <li className={this.props.current === "editprofile" ? "current-page" : ""}> */}
             {/* <a href='/editprofile'>Profile</a> */}

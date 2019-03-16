@@ -197,7 +197,7 @@ app.post('/', (req, res) => {
       } else { // Handle this error however you see fit
         debug('saved');
         const msg = {
-          to: `${undergrad.netId}@cornell.edu`,
+          to: `${netId}@cornell.edu`,
           from: {
             name: 'Research Connect',
             email: 'hello@research-connect.com',

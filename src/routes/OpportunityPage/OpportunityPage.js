@@ -758,21 +758,11 @@ Please
                       <div className="header">
                         {'Please '}
                         <a
-                          href="/#student-sign-up"
+                          href="/#forprofs"
                         >
 create an account
                         </a>
-                        {' to apply or add your email '}
-                        <a
-                          href="http://bit.ly/2Pv2LY4"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-here
-                        </a>
-                        {' '}
-to get alerted of new
-                        opportunities!
+                        {' to apply.'}
                       </div>
                     </div>
                   </div>

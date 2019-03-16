@@ -533,23 +533,25 @@ app.post('/', async (req, res, next) => {
         labModel.findOne(
           { labAdmins: netIdActual },
           (error, lab) => {
-            const opps = lab.opportunities;
-            opps.push(mongoose.Types.ObjectId(oppId));
-            lab.opportunities = opps;
-            lab.markModified('opportunities');
-            lab.save(() => {
-            });
+            if (lab && lab.opportunities) {
+              const opps = lab.opportunities;
+              opps.push(mongoose.Types.ObjectId(oppId));
+              lab.opportunities = opps;
+              lab.markModified('opportunities');
+              lab.save(() => {
+              });
+            }
           },
         );
         // const opportunityMajor = req.body.majorsAllowed;
         undergradModel.find({},
           (err2, studentsWhoMatch) => {
-            studentsWhoMatch = [studentsWhoMatch[0]]; // TODO remove
+            studentsWhoMatch = [studentsWhoMatch[0]]; // FOR TESTING
             Object.keys(studentsWhoMatch).forEach((undergrad1) => {
               const { firstName } = studentsWhoMatch[undergrad1];
               // to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
               const msg = {
-                to: 'acb352@cornell.edu',
+                to: 'acb352@cornell.edu', // TODO change to above
                 from: {
                   name: 'Research Connect',
                   email: 'hello@research-connect.com',
