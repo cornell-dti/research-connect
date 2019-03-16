@@ -183,7 +183,7 @@ class Landing extends Component {
         <section className="middleContainer2">
           <Container >
             {/*<Row>*/}
-              {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
+            {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
             {/*</Row>*/}
             <Row>
               <p className="big ">Explore Popular Areas of Interest</p>
@@ -257,15 +257,22 @@ class Landing extends Component {
                 <section className="list">
                   <Row className="picRow">
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p className="picP">Know Who's Accepting Undergrads. </p></Col>
+
+                    <Col>
+
+                      <p className="picP">Apply to positions without having to guess if they’re open.</p></Col>
                   </Row>
                   <Row>
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p>Cold Email Writing Tool.</p></Col>
+                    <Col>
+
+                      <p>Search for opportunities by sorting by your interests. </p></Col>
                   </Row>
                   <Row>
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p>More research. </p></Col>
+                    <Col>
+
+                      <p>Connect with leading researchers! in fields that inspire you.</p></Col>
                   </Row>
 
                 </section>
@@ -299,14 +306,14 @@ class Landing extends Component {
         </section>
 
         {/*<section className="incollab">*/}
-          {/*<Container className="middleContainer">*/}
-            {/*<Row>*/}
-              {/*<Col><p id="collab">In Collabortation With     </p></Col>*/}
-              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
-              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
-              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
-            {/*</Row>*/}
-          {/*</Container>*/}
+        {/*<Container className="middleContainer">*/}
+        {/*<Row>*/}
+        {/*<Col><p id="collab">In Collabortation With     </p></Col>*/}
+        {/*<Col><img className="collabImage" src={cis} /></Col>*/}
+        {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
+        {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
+        {/*</Row>*/}
+        {/*</Container>*/}
         {/*</section>*/}
 
         <footer className="footer-all">
