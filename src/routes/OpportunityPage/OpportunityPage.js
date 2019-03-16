@@ -719,7 +719,7 @@ Back To Opportunities
                             } `}
                             with your resume and why you're interested in order
                             to apply. You can view our email writing tips in the
-                            <a href="/faculty/5b8eb8d72025125a3fb46159/"> faculty section </a>sidebar.
+                            <a href="/faculty/5b8eba793136d653ddc3dfb4/"> faculty section </a>sidebar.
                           </div>
                         )
                         : (
