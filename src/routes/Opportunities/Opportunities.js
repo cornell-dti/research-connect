@@ -47,15 +47,15 @@ class Opportunities extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  handleSearchTerms(){
+  handleSearchTerms() {
     //They can search from the home page, make it do something
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get("search");
     console.log("search term!");
     console.log(searchTerm);
-    if (searchTerm){
+    if (searchTerm) {
       console.log("in search term");
-      this.setState({searchBar: searchTerm});
+      this.setState({ searchBar: searchTerm });
       document.getElementById("searchOpps").value = searchTerm;
     }
   }
@@ -70,13 +70,13 @@ class Opportunities extends Component {
     // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-      /* if (!response || response.data === "none" || !response.data) {
-        alert("You must be signed in to view this.");
-        window.location.href = '/';
-      }
-      else{
-        this.setState({role: response.data});
-      } */
+        /* if (!response || response.data === "none" || !response.data) {
+          alert("You must be signed in to view this.");
+          window.location.href = '/';
+        }
+        else{
+          this.setState({role: response.data});
+        } */
         this.setState({ role: response.data });
       })
       .catch((error) => {
@@ -88,9 +88,9 @@ class Opportunities extends Component {
     const searchTerm = urlParams.get("search");
     console.log("search term!");
     console.log(searchTerm);
-    if (searchTerm){
+    if (searchTerm) {
       console.log("in search term");
-      this.setState({searchBar: searchTerm});
+      this.setState({ searchBar: searchTerm });
       document.getElementById("searchOpps").value = searchTerm;
     }
   }
@@ -157,7 +157,7 @@ class Opportunities extends Component {
         <VariableNavbar role={this.state.role} current="opportunities" />
         <div className="row search-div-container">
           <div className="search-icon-div">
-            <SearchIcon style={{ height: '100%'}} size={36} />
+            <SearchIcon style={{ height: '100%' }} size={36} />
           </div>
           <input
             onFocus={this.onFocus.bind(this)}
@@ -173,53 +173,43 @@ class Opportunities extends Component {
           />
           <div className="delete-div">
             {
-                this.state.searchBar != '' ? (
-                  <DeleteIcon
-                    onClick={this.clearSearch.bind(this)}
-                    className="clear-icon"
-                    style={{ height: '100%' }}
-                    size={36}
-                  />
-                ) : ''
-              }
+              this.state.searchBar != '' ? (
+                <DeleteIcon
+                  onClick={this.clearSearch.bind(this)}
+                  className="clear-icon"
+                  style={{ height: '100%' }}
+                  size={36}
+                />
+              ) : ''
+            }
           </div>
         </div>
-            <br/>
+        <br />
         <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
 
-              <Filter label="Filter by..." style = {{textAlign: 'center'}}/>
-
-              <hr />
+              <Filter label="Filter by..." style={{ textAlign: 'center' }} />
 
               <SchoolYearFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
-
               <hr />
-
               <GPAFilter
                 update={Utils.updateSingleChoiceFilter.bind(this)}
               />
-
               <hr />
-
               <StartDateFilter
                 update={Utils.updateSingleChoiceFilter.bind(this)}
               />
-
               <hr />
-
               <CompensationFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
-
               <hr />
-
-               <CSAreasFilter
-               update={Utils.updateMultipleChoiceFilter.bind(this)}
-               />
+              <CSAreasFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
 
             </div>
           </div>
