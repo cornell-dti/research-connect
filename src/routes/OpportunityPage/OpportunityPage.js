@@ -35,10 +35,6 @@ class OpportunityPage extends Component {
     this.parseGPA = this.parseGPA.bind(this);
   }
 
-  isStarred(){
-    this.setState({starred:false});
-  }
-
   star(){
     console.log("this is working");
     let token_id = sessionStorage.getItem('token_id');
@@ -47,8 +43,10 @@ class OpportunityPage extends Component {
 
     axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
-      this.isStarred();
-      this.setState({starred:true});
+      if(response && response.data){
+        let stars = response.data;
+        this.setState({starred: stars.includes(id)});
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -149,6 +147,14 @@ class OpportunityPage extends Component {
 
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
   componentWillMount() {
+    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      let data = response.data;
+      this.setState({ starred: data.includes(this.getId()) });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     axios.get(`/api/opportunities/${this.props.match.params.id}?netId=${
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
@@ -585,10 +591,10 @@ No Preference
                 <div className="column left-column">
                   <div className="header">
                   {this.state.opportunity.title}
-                  {/*<Star*/}
-                    {/*update={this.star.bind(this)}*/}
-                    {/*starred={this.state.starred}*/}
-                  {/*/>*/}
+                  <Star
+                    update={this.star.bind(this)}
+                    starred={this.state.starred}
+                  />
                   </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
