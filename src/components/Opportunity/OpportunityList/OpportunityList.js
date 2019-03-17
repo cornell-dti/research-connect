@@ -27,15 +27,12 @@ class OpportunityList extends Component {
     let token_id = sessionStorage.getItem('token_id');
     let type = "opportunity";
     let id = opId;
-    axios.post('/api/undergrads/star', { token_id, type, id})
+    axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
-      // response.data is an array of the newly updated starred ops
-      let starredVals = [];
       if (response && response.data) {
-        starredVals = response.data;
+        let starredVals = response.data;
+        this.setState({starredOps: starredVals})
       }
-      this.setState({starredOps: starredVals})
-      // this.getStarredOps();
     })
     .catch((error) => {
       console.log(error);
