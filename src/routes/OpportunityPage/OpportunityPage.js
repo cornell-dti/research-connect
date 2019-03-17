@@ -150,7 +150,7 @@ class OpportunityPage extends Component {
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
       let data = response.data;
-      this.setState({ starred: data.includes(this.getId()) });
+      this.setState({ starred: data.includes(this.props.match.params.id) });
     })
     .catch((error) => {
       console.log(error);
