@@ -34,6 +34,7 @@
     "file-loader": "^1.1.11",
     "foreman": "^2.0.0",
     "google-auth-library": "^1.4.0",
+    "https": "^1.0.0",
     "img-loader": "^2.0.1",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
