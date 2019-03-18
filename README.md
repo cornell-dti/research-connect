@@ -44,6 +44,7 @@ Progressive Web App Written On The MERN Stack
  * **Yisu Zheng** - Designer
  * **Laura Sizemore**  - Software Developer
  * **Connie Lei**  - Software Developer
+ * **Dhruv Baijal**  - Software Developer
 #
 **Former Contributors**
  * **Rachel Nash** - Software Developer
