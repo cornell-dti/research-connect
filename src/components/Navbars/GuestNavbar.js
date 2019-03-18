@@ -25,7 +25,7 @@ class GuestNavbar extends Component {
               <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
                 <a href="/faculty">Email Faculty</a>
               </li>
-              <li><a className="sign-out" href="/#forprofs">Sign Up</a></li>
+              <li><a className="sign-out" href="/#forprofs">Sign Up/Log In</a></li>
             </nav>
           </div>
         </div>

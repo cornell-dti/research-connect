@@ -8,6 +8,7 @@ class YearsAllowed extends Component {
     return (
       <Detail
         filterType="yearsAllowed"
+        detailName="yearsAllowed"
         label="Years Desired:"
         updateDetail={this.props.update}
         choices= {Utils.getYears()}

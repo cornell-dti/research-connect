@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup
+  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup, sgAnnouncementsGroup
 } = require('../common.js');
 const common = require('../common.js');
 
@@ -187,15 +187,18 @@ app.post('/', (req, res) => {
       netId,
       courses: data.courses,
     });
+    debug("undergrad: ");
     debug(undergrad);
     undergrad.save((err) => {
+      debug("undergrad saved");
       if (err) {
         res.status(500).send({ errors: err.errors });
         debug(err);
         debug('error in saving ugrad');
         debug(err);
       } else { // Handle this error however you see fit
-        debug('saved');
+        debug('saved, now to:');
+        debug(`${netId}@cornell.edu`);
         const msg = {
           to: `${netId}@cornell.edu`,
           from: {
@@ -204,7 +207,7 @@ app.post('/', (req, res) => {
           },
           replyTo: 'acb352@cornell.edu',
           asm: {
-            groupId: sgStatusGroup,
+            groupId: sgAnnouncementsGroup,
           },
           subject: 'Guide to Finding Research!',
           html: `Hi ${undergrad.firstName},<br />
@@ -214,7 +217,13 @@ app.post('/', (req, res) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
         };
-        sgMail.send(msg);
+        debug("before send");
+        sgMail.send(msg).catch((e) => {
+          console.log('error in sending below');
+          console.log(e);
+          console.log(e.response.body.errors);
+        });
+        debug("after send");
         res.status(200).send('success!');
       }
       // Now the opportunity is saved in the commonApp collection on mlab!

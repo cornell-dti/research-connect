@@ -154,7 +154,6 @@ app.get('/', (req, res) => {
               if (urlLabId && urlLabId !== 'null') {
                 debug('2');
                 labModel.findById(urlLabId, (err3, lab) => {
-                  debug(lab);
                   let oppIdsToOnlyInclude = lab.opportunities;
                   // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
                   oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(
@@ -177,8 +176,6 @@ app.get('/', (req, res) => {
           undergrad1.courses = undergrad1.courses.map(
             course => replaceAll(course, ' ', ''),
           );
-          debug(undergrad1);
-          debug('test');
           // only get the ones that are currenlty open
           opportunityModel.find({
             opens: {
@@ -188,8 +185,6 @@ app.get('/', (req, res) => {
               $gte: new Date(),
             },
           }).sort(sortOrderObj).lean().exec((err2, opportunities) => {
-            debug('length!!!!');
-            debug(opportunities);
             if (!opportunities) {
               return res.send({});
             }
@@ -223,7 +218,6 @@ app.get('/', (req, res) => {
                     )) {
                   prereqsMatch = true;
                 }
-                debug('h');
                 let thisLab = findLabWithAdmin(labs,
                   opportunities[i].creatorNetId);
                 // prevent "undefined" values if there's some error
@@ -238,8 +232,6 @@ app.get('/', (req, res) => {
                 opportunities[i].labName = thisLab.name;
                 opportunities[i].labPage = thisLab.labPage;
                 opportunities[i].labDescription = thisLab.labDescription;
-                debug(opportunities[i]);
-                debug(Object.getOwnPropertyNames(opportunities[i]));
                 /**
                  if (opportunities[i].contactName === 'dummy value') {
                   console.log('In here');
@@ -296,7 +288,7 @@ app.get('/', (req, res) => {
             });
             if (opportunities) {
               for (let i = 0; i < opportunities.length; i++) {
-                debug(opportunities[i].prereqsMatch);
+                // debug(opportunities[i].prereqsMatch);
               }
               if (err) {
                 // handle the error appropriately
@@ -393,6 +385,7 @@ app.post('/', async (req, res, next) => {
     ) {
       return res.status(400).send();
     }
+
     debug(`email: ${data.email}`);
     debug(`netid: ${data.creatorNetId}`);
     debug(`labpage: ${data.labPage}`);
@@ -546,12 +539,14 @@ app.post('/', async (req, res, next) => {
         // const opportunityMajor = req.body.majorsAllowed;
         undergradModel.find({},
           (err2, studentsWhoMatch) => {
-            studentsWhoMatch = [studentsWhoMatch[0]]; // FOR TESTING
+          debug("students who match");
+            // studentsWhoMatch = [studentsWhoMatch[0]]; // just FOR TESTING
             Object.keys(studentsWhoMatch).forEach((undergrad1) => {
               const { firstName } = studentsWhoMatch[undergrad1];
               // to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
+              debug("in email message!");
               const msg = {
-                to: 'acb352@cornell.edu', // TODO change to above
+                to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
                 from: {
                   name: 'Research Connect',
                   email: 'hello@research-connect.com',
@@ -570,11 +565,15 @@ app.post('/', async (req, res, next) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
+              debug("sending email now!");
+              // TODO uncomment
+              /**
               sgMail.send(msg).catch((e) => {
                 console.log('error in sending below');
                 console.log(e);
                 console.log(e.response.body.errors);
               });
+               */
             });
             debug('finished emailling students');
           });

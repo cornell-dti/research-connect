@@ -560,6 +560,7 @@ Uploaded:
                                     }
                 </div>
                 <hr />
+                {this.state.transcriptId ? (
                 <div className="row qual-row trans-resume">
                   <h5 className="sub-section">Transcript:</h5>
                   <input
@@ -613,6 +614,7 @@ Uploaded:
                     )
                                     }
                 </div>
+                ) : ""}
                 <hr />
                 <hr />
                 <div className="row relevant-row">

@@ -9,6 +9,8 @@ class Detail extends React.Component {
 
   handleChange(e) {
     let option = e.target.value;
+    console.log(this.props);
+    console.log(this.props.updateDetail);
     this.props.updateDetail(this.props.detailName, option);
   }
 

@@ -224,7 +224,7 @@ class Landing extends Component {
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
-                <Col><p className="picP">Get help writing and automatically scheduling emails to professors.</p></Col>
+                <Col><p className="picP">Get help writing emails to professors.</p></Col>
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>

@@ -4,7 +4,7 @@ const app = express.Router();
 
 const { OAuth2Client } = require('google-auth-library');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, debug, sgMail, verify, handleVerifyError, sgOppsGroup,
+  undergradModel, labAdministratorModel, opportunityModel, debug, sgMail, verify, handleVerifyError, sgOppsGroup, sgAnnouncementsGroup
 } = require('../common.js');
 
 /**
@@ -13,26 +13,29 @@ const {
 app.get('/sandbox', (req, res) => {
 // eslint-disable-next-line no-unused-vars
   const msg = {
-    to: 'abagh0703@gmail.com',
+    to: `abagh0703@gmail.com`,
     from: {
       name: 'Research Connect',
       email: 'hello@research-connect.com',
     },
-    subject: 'New Research Opportunity Available!',
-    html: `${'Hi,<br />'
-        + 'A new opportunity was just posted in an area you expressed interest in - '}${
-      1}. You can apply to it here: http://research-connect.com/opportunity/${2}<br />`
-        + '<br />'
-        + 'Thanks,<br />'
-        + 'The Research Connect Team<br />',
+    replyTo: 'acb352@cornell.edu',
+    asm: {
+      groupId: sgAnnouncementsGroup,
+    },
+    subject: 'Guide to Finding Research!',
+    html: `Hi aram,<br />
+                       Thanks for signing up for Research Connect! To help you 
+                       in your research journey, we've provided a comprehensive 
+                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a> 
+                       <br /><br />Thanks,
+                       <br />The Research Connect Team<br /><br />`,
   };
-
-  // sgMail.send(msg);
-  undergradModel.findOne({ lastName: null }, (err, data) => {
-    debug('err data');
-    debug(err);
-    debug(data);
+  debug('sent!');
+  sgMail.send(msg).catch(err => {
+    console.log("error in send");
+    console.log(err);
   });
+  debug('really sent!');
 
   return res.send();
 });
@@ -117,10 +120,7 @@ app.get('/hasRegistered/:input', (req, res) => {
   } else {
     netId = input;
   }
-  debug('about ot find one');
   undergradModel.findOne({ netId }, (err, undergrad) => {
-    debug('undergrad');
-    debug(undergrad);
     if (undergrad !== null) {
       return res.send(true);
     }

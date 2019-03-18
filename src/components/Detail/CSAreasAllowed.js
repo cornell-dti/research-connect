@@ -8,8 +8,9 @@ class CSAreasAllowed extends Component {
     return (
       <Detail
         filterType="areas"
+        detailName="areas"
         label="CS Areas"
-        updateFilterOption={this.props.update}
+        updateDetail={this.props.update}
         choices={Utils.getCSAreas()}
         type="checkbox"
       />

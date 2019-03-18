@@ -171,7 +171,20 @@ export function getResearchInterestsList() {
 
 export function getCSAreas() {
   return {
-    cc: 'Cloud Computing and/or Distributed systems', os: 'Operating systems', networks: 'Computer networks', algos: 'Algorithms', hci: 'Human-Computer Interaction', pl: 'Programming Languages', nlp: 'Natural Language Processing', ml: 'Machine Learning and/or Artificial Intelligence', robotics: 'Robotics', graphics: 'Graphics', security: 'Security', optimization: 'Optimization', compBio: 'Computational Biology', other: 'Other',
+    cc: 'Cloud Computing and/or Distributed systems',
+    os: 'Operating systems',
+    networks: 'Computer networks',
+    algos: 'Algorithms',
+    hci: 'Human-Computer Interaction',
+    pl: 'Programming Languages',
+    nlp: 'Natural Language Processing',
+    ml: 'Machine Learning and/or Artificial Intelligence',
+    robotics: 'Robotics',
+    graphics: 'Graphics',
+    security: 'Security',
+    optimization: 'Optimization',
+    compBio: 'Computational Biology',
+    other: 'Other',
   };
 }
 

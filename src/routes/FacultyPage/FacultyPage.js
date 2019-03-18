@@ -121,6 +121,9 @@ class FacultyPage extends Component {
   }
 
   sendEmail() {
+    if (!window.confirm("The email will sent to this professor from your email with the text you entered. Continue?")){
+      return;
+    }
     this.disableButton();
     const textEditorState = this.TextEditor.current.state;
     const contentState = textEditorState.editorState.getCurrentContent();
