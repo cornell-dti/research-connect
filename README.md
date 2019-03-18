@@ -37,15 +37,18 @@ Progressive Web App Written On The MERN Stack
 ## Contributors
 **Current Contributors**
  * **Aram Baghdassarian** - Product Manager
- * **Andrew Xiao** - Software Developer
+
  * **Phillip Kheyfets** - Software Developer
  * **Ayesha Gagguturi** - Software Developer
  * **Emily Chan** - Designer
+ * **Yisu Zheng** - Designer
  * **Laura Sizemore**  - Software Developer
+ * **Connie Lei**  - Software Developer
 #
 **Former Contributors**
  * **Rachel Nash** - Software Developer
  * **Julia Yang** - Software Developer
+ * **Andrew Xiao** - Software Developer
 ##
 
 
