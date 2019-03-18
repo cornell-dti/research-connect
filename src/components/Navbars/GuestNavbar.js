@@ -20,10 +20,13 @@ class GuestNavbar extends Component {
             </div>
             <nav>
               <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-                <a href="/opportunities">Opportunities</a>
+                <a href="/opportunities">View Opportunities</a>
               </li>
               <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
                 <a href="/faculty">Email Faculty</a>
+              </li>
+              <li className={this.props.current === 'guide' ? 'current-page' : ''}>
+                <a href="/guide">How to Find Research</a>
               </li>
               <li><a className="sign-out" href="/#forprofs">Sign Up/Log In</a></li>
             </nav>

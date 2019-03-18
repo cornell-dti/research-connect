@@ -566,14 +566,12 @@ app.post('/', async (req, res, next) => {
                        <br />The Research Connect Team<br /><br />`,
               };
               debug("sending email now!");
-              // TODO uncomment
-              /**
+
               sgMail.send(msg).catch((e) => {
                 console.log('error in sending below');
                 console.log(e);
                 console.log(e.response.body.errors);
               });
-               */
             });
             debug('finished emailling students');
           });
