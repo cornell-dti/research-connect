@@ -166,7 +166,9 @@ function getRandomInt (lowerBound, upperBound) {
  * @param date; the date to set the hours and minutes for
  */
 function setOptimalHoursMins(date) {
-  date.setHours(getRandomInt(8,10));
+  // GMT is ahead of EST by 4 hours.
+  const gmtOffset = 4;
+  date.setHours(getRandomInt(8 + gmtOffset,10 + gmtOffset));
   date.setMinutes(getRandomInt(0, 60));
   return date;
 }
@@ -188,8 +190,14 @@ function calculateSendTime(){
   let increment = 0;
   const isWeekday = dayOfWeek > 0 && dayOfWeek < 6;
   const currentHour = now.getHours();
-  const isBefore8am = currentHour < 8;
-  const isAfter10am = currentHour > 11;
+  let timezoneDiff = 0;
+  // If the host machine isn't in EST...
+  if (now.getTimezoneOffset() !== 240){
+    // timezoneDiff = hours ahead that the host machine is of EST
+    timezoneDiff = Math.floor((240 - now.getTimezoneOffset()/60));
+  }
+  const isBefore8am = currentHour < (8 + timezoneDiff);
+  const isAfter10am = currentHour > (10 + timezoneDiff);
   let sendNow = false;
   if (!isWeekday) {
     if (dayOfWeek === 0){
@@ -230,6 +238,7 @@ function calculateSendTime(){
   }
   return timeToSend;
 }
+
 
 /**
  * Sends an email to the professor on behalf of the student at an ideal time
