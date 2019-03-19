@@ -323,7 +323,7 @@ Website:
                 <div className="opp-qual-section">
                   <h6 className="header">How Do I Find Research?</h6>
                   One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to professor's
-                  office and ask them about their research and then express your interest in working with them.
+                  office and ask them about their research and then express your interest in working with them. See our <a href="/guide"> "How to Find Research" </a> section for more info.
                 </div>
 
                 <div className="opp-qual-section">

@@ -181,7 +181,7 @@ class Landing extends Component {
         </section>
 
         <section className="middleContainer2">
-          <Container >
+          <Container style={{marginLeft: "auto"}}>
             {/*<Row>*/}
             {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
             {/*</Row>*/}

@@ -4,11 +4,17 @@ const app = express.Router();
 const {
   facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
-
+const https = require('https');
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
+
+app.get('/test', (req, res) => {
+  https.get('https://bit.ly/2HHdTR1', (resp) => {
+    return res.send("");
+  });
+});
 
 /** gets all the faculty in the database.
  * @param ?department=tech means only return CS or ECE professors (I would include Info Sci but we don't have info on them yet...)
@@ -251,6 +257,9 @@ function calculateSendTime(){
  */
 app.post('/email', (req, res) => {
   const { emailHtml, profEmail, userToken } = req.body;
+  // poor man's logging, goes to 404 on our site and we can see the bitly count
+  https.get('https://bit.ly/2HHdTR1', (resp) => {
+    });
   verify(userToken, (netId) => {
     if (!netId) {
       return res.status(500).send('No account found.');

@@ -27,14 +27,14 @@ class StudentNavbar extends Component {
               <a href="/studentDashboard">Dashboard</a>
             </li> */}
             <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-              <a href="/opportunities">Opportunities</a>
+              <a href="/opportunities">View Opportunities</a>
             </li>
             <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
               <a href="/faculty">Email Faculty</a>
             </li>
-            {/* <li className={this.props.current === "editprofile" ? "current-page" : ""}> */}
-            {/* <a href='/editprofile'>Profile</a> */}
-            {/* </li> */}
+            <li className={this.props.current === 'guide' ? 'current-page' : ''}>
+              <a href="/guide">How to Find Research</a>
+            </li>
             <li className={this.props.current === 'editprofile' ? 'current-page' : ''}>
               <a href="/editprofile">My Profile</a>
             </li>

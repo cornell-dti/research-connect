@@ -1,4 +1,4 @@
-# Research Connect v0.1 <img src="./src/images/LogoWithText.png" />
+# Research Connect v1.0 <img src="./src/images/LogoWithText.png" />
 #### Contents
   - [About](#about)
   - [Getting Started](#getting-started)
@@ -37,15 +37,19 @@ Progressive Web App Written On The MERN Stack
 ## Contributors
 **Current Contributors**
  * **Aram Baghdassarian** - Product Manager
- * **Andrew Xiao** - Software Developer
+
  * **Phillip Kheyfets** - Software Developer
  * **Ayesha Gagguturi** - Software Developer
  * **Emily Chan** - Designer
+ * **Yisu Zheng** - Designer
  * **Laura Sizemore**  - Software Developer
+ * **Connie Lei**  - Software Developer
+ * **Dhruv Baijal**  - Software Developer
 #
 **Former Contributors**
  * **Rachel Nash** - Software Developer
  * **Julia Yang** - Software Developer
+ * **Andrew Xiao** - Software Developer
 ##
 
 

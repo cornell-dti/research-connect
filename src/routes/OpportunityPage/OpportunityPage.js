@@ -11,6 +11,17 @@ import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import * as ReactGA from 'react-ga';
 import Star from '../../components/Star/Star'
 
+function LinkFaculty(props) {
+  if (props.facultyId){
+    return (<span> You can view info about this faculty and use our email tips & writer
+    <a href={"/faculty/" + props.facultyId}> here. </a></span>)
+  }
+  else {
+    return (<span>You can learn how to write a good email by looking at the template
+      for another faculty at the bottom of <a href="/faculty/5b8eba793136d653ddc3dfb4">this</a> page, as well as our email writing tips on the sidebar.</span>)
+  }
+}
+
 class OpportunityPage extends Component {
   constructor(props) {
     super(props);
@@ -726,8 +737,8 @@ Back To Opportunities
                             {`${this.state.opportunity.ghostEmail
                             } `}
                             with your resume and why you're interested in order
-                            to apply. You can view our email writing tips in the
-                            <a href="/faculty/5b8eba793136d653ddc3dfb4/"> faculty section </a>sidebar.
+                            to apply.
+                           <LinkFaculty facultyId={this.state.opportunity.facultyId} />
                           </div>
                         )
                         : (

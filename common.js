@@ -259,6 +259,7 @@ const opportunitySchema = new Schema({
   additionalInformation: { type: String, default: '', required: false },
   contactName: { type: String, default: 'N/A' },
   datePosted: { type: String, default: (new Date()).toISOString(), required: false },
+  facultyId: {type: String, default: "", required: false}
 });
 opportunitySchema.index({ '$**': 'text' });
 opportunitySchema.pre('validate', function (next) {
