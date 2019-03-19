@@ -88,7 +88,7 @@ class ResearchGuide extends Component {
                     <div className="opp-details-section">
                       <p className="title">I Still Have Questions About Finding Research</p>
                       <p className="header1 step">Ask Us!</p>
-                      <p className="substep">We'd love to answer any questions you have - use the <a href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform" target="_blank">contact form</a> to ask and we'll respond in 24 hours!.</p>
+                      <p className="substep">We'd love to answer any questions you have - use the <a href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform" target="_blank">contact form</a> to ask and we'll respond in 24 hours!</p>
                       <p className="header1 step">Read the Comprehensive Guide</p>
                       <p className="substep">We collaborated with ACSU to produce a
                         <a href="https://medium.com/@researchconnectcu/cornell-cs-research-readme-381206eaabcb" target="_blank"> comprehensive guide </a>
