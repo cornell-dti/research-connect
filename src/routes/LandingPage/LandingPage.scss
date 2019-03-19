@@ -7,7 +7,7 @@
   border-color: #b31b1b;
 }
 .landingPage *{
-    background-color: #f6f6f6;
+
 	box-sizing: border-box;
   font: 'Roboto';
 }
@@ -55,7 +55,6 @@
 
 
 .landingPage section{
-    background-color: #f6f6f6;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -324,7 +323,7 @@
     width: 100%;
     height: 100%;
     background-size: cover;
-    background-color: white;
+    background-color: #525a63;
     z-index: -1;
 }
 
@@ -419,7 +418,6 @@ col {
 }
 
  section.middleContainer2{
-     padding-top: 20px;
      align-items: center;
      justify-content: center;
  }
@@ -510,7 +508,17 @@ col {
 }
 
 
-
+#collab{
+   
+	
+	color: #8F8F8F;
+	font-family: "Helvetica Neue";
+	font-size: 20px;
+    letter-spacing: -0.01px;
+    font-weight: 300;
+    margin-bottom: 0;
+	
+}
 /*--------------------
  	Our Work Section
 ---------------------*/
@@ -625,7 +633,7 @@ col {
     background-color: white;
 }
 .landingPage section.why-us{
-    padding-top: 20px;
+    padding-top: 80px;
     padding-right: 0px;
     background-color: white;
 
@@ -739,13 +747,16 @@ col {
     max-width: 800px;
     width: 80%;
 }
+body{
+    background-color: #FFFFFF
+}
 
 .contact form input {
     padding: 15px;
     flex: 1;
     margin-right: 30px;
     font-size: 18px;
-    color: white;
+    color: #555;
 }
 
 .contact form .btn {
