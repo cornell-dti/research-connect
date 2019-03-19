@@ -159,7 +159,7 @@ class Landing extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Student Log In/Sign Up"
+                  buttonText="Log In/Sign Up"
                   onSuccess={this.responseGoogleStudent}
                   onFailure={this.loginFailure.bind(this)}
                   className="signup"
@@ -304,17 +304,6 @@ class Landing extends Component {
             />
           </div>
         </section>
-
-        {/*<section className="incollab">*/}
-        {/*<Container className="middleContainer">*/}
-        {/*<Row>*/}
-        {/*<Col><p id="collab">In Collabortation With     </p></Col>*/}
-        {/*<Col><img className="collabImage" src={cis} /></Col>*/}
-        {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
-        {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
-        {/*</Row>*/}
-        {/*</Container>*/}
-        {/*</section>*/}
 
         <footer className="footer-all">
           <ul>
