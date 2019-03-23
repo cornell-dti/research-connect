@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import '../Opportunity/OpportunityList/OpportunityList.scss';
 import '../Opportunity/Opportunity.scss';
 import './Faculty.scss';
+import Star from '../Star/Star';
 
 class Faculty extends Component {
   constructor(props) {
     super(props);
+  }
+
+  star(e){
+    e.stopPropagation();
+    this.props.updateStar(this.props.ID);
   }
 
   convertDescription(str) {
@@ -45,7 +51,13 @@ class Faculty extends Component {
           {/* <div className="column column-10"> */}
           {/* </div> */}
           <div className="column column-90">
-            <h4>{ this.props.name }</h4>
+            <h4>
+              { this.props.name }
+              <Star
+                update={this.star.bind(this)}
+                starred={this.props.starred}
+              />
+            </h4>
             <h5>{this.props.department}</h5>
             <h5>{this.props.lab}</h5>
             <div>
