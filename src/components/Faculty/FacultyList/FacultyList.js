@@ -124,9 +124,7 @@ class FacultyList extends Component {
           </div>
           {profNodes}
         </div>
-
     );
-
   }
 }
 
