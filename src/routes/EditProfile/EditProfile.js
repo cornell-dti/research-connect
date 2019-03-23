@@ -55,7 +55,7 @@ class EditProfile extends Component {
 
   loadInfoFromServer() {
     console.log('Begin loadInfoFromServer');
-    axios.get(`/api/undergrads/${sessionStorage.getItem('token_id')}`)
+    axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then((res) => {
         const info = res.data[0];
         const skills = info.skills === undefined ? [] : info.skills;
