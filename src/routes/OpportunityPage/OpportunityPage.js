@@ -39,7 +39,7 @@ class OpportunityPage extends Component {
     console.log("this is working");
     let token_id = sessionStorage.getItem('token_id');
     let type = "opportunity";
-    let id = this.getId();
+    let id = this.props.match.params.id;
 
     axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
