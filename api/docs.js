@@ -58,10 +58,6 @@ app.post('/', (req, res) => {
     }
     let { resume } = req.body;
     const docId = generateId();
-    debug('resume:');
-    debug(resume);
-    debug('req.body below, resume above');
-    debug(req.body);
     // if there's no resume, so add the trasncript
     if (resume === undefined || resume === null) {
       let { transcript } = req.body;
@@ -102,7 +98,7 @@ app.post('/', (req, res) => {
     } else { // resume is defined
       debug('resume uploaded');
       [resume] = resume;
-      debug(resume);
+      // debug(resume);
       /** MLAB STORAGE
              let resumeObj = new docModel();
              resumeObj.doc = resume;
@@ -119,8 +115,6 @@ app.post('/', (req, res) => {
         ContentType: 'text/plain',
         Body: resume,
       };
-      debug('upload params');
-      debug(uploadParams);
       s3.upload(uploadParams, (err, data) => {
         if (err) {
           debug('Error in s3 upload', err);

@@ -1,10 +1,10 @@
 .opportunity-card {
 
-  padding: 4px 30px;
+  padding: 20px 30px;
   margin-bottom: 15px;
   background-color: white;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 18px;
   position: relative;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   color: #4A4A4A;
@@ -19,8 +19,9 @@
     padding: 0 10px;
 
     .title {
-      font-size: 16px;
+      font-size: 22px;
       color: black;
+      padding-bottom:5px; 
     }
   }
 

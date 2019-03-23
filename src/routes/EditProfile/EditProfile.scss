@@ -1,44 +1,77 @@
-.profile-page-wrapper{
-  margin-top: 80px;
-   background-color: #f6f6f6;
+.profile-page-wrapper {
+  margin-top: 40px;
+   width: 100%;
+   margin: auto;
+   font-size: 20px;
+.edit-bold{
+  font-weight:bold; 
 }
-.row .title-box-prof, .row .qual-box{
-  border: solid 1px #979797;
-  background-color: #ffffff;
+.wallpaper {
+  background: url('../../images/wallpaper-bg.png');
+  height: 200px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  top: 90px;
+  z-index: -1;
+}
+.title-box-prof {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  padding: 15px;
+  width: 144%;
+  margin-bottom: 20px; 
+  margin-left: auto; 
+  margin-right: auto;
+
+  .right-column {
+    text-align: right;
+  }
 
 }
-.row .title-box-prof  h6{
-  font-size: 15px;
-  padding-left: 5px;
+.row .qual-box{
+  border: solid 1px #979797;
+  background-color: #ffffff;
+  border-radius: 5px;
+
 }
-.row .title-box-prof h5{
-  padding-left: 5px;
-  padding-top: 4px;
-  padding-bottom: 0px;
+.header {
+  color: black;
+  font-size: 24px;
+  font-weight: bolder;
+  text-align: left; 
 }
-.row .title-box-prof h4{
-  padding-bottom: 0px;
-  font-size: 27px;
-  margin-bottom: 0px;
-  padding-left: 5px;
+
+.left-column {
+  text-align: left; 
 }
-.row .title-box-prof{
-  margin-top: 50px;
+
+.edit-row {
+  margin-top: 20px;
   padding: 20px;
-}
-.row .red-box{
-  background-color: #b31b1b;
+  width: 70%;
+  margin-left: auto; 
+  margin-right: auto;
+
+  .grey-box{
+  background-color: #444242;
   width: 100%;
   margin: 0px;
-  padding: 10px;
-  padding-left: 20px;
+  padding: 5px; 
+  color: white; 
+
+    .h4{
+     color: white; 
+     margin: 0px; 
+     padding: 5px; 
+  }
+}
 }
 .qual-box{
-  margin-top: 16px;
-}
-.red-box h5{
-  color: white;
-  margin-bottom: 0px;
+  width: 100%;
+  margin-bottom: 40px;
 }
 .row .column hr{
   margin: 0px;
@@ -62,20 +95,20 @@
 .pencil-icon{
   margin-left: 15px;
   display: inline;
-  color: black;
+  color: red;
   padding-bottom: 3px;
 }
 .delete-icon{
-  color: black;
+  color: red;
   padding-bottom: 5px;
   display: inline;
-  float: right;
+
 }
 .delete-icon:hover{
   opacity: .5;
 }
 .pencil-icon:hover, .row .check-icon:hover, .add-icon:hover{
-  color: #979797;
+  color: #ff8888;
 }
 
 
@@ -87,8 +120,8 @@
   margin-right: 5px;
 }
 .add-icon{
-  color:black;
-  margin-left: 5px;
+  color:red;
+  margin-left: 2px;
 }
 .row .edit-input{
   width: 65%;
@@ -130,6 +163,10 @@
   font-weight: 500;
   margin-top: 5px;
 }
+
+.edit-details-col{
+  flex: 0 0 69%;
+}
 .trans-resume h5{
   margin-top: 5px;
 }
@@ -154,7 +191,6 @@
 
 }
 .edit-container .editting{
-  background-color:  #f6f6f6;
   padding: 2px 0px 2px 5px;
   border-radius: 5px;
 
@@ -162,16 +198,28 @@
 .edit-container .editting p{
   display: inline;
 }
+
 .display-list .addTag{
   margin-top: 10px;
   height: 29px;
-  width: 87%;
+  width: 60%;
   line-height: 1.5;
   font-weight: 300;
   font-size: 1.6rem;
-  letter-spacing: 1px;
-  color: #606c76;
+  font-style: italic;
+  opacity: 0.7;
+ 
 }
-.display-list .addTag:focus{
-  border-color: gray;
+.sub-section {
+  font-weight: bold; 
+}
+.edit-submit {
+  background-color: #b31b1b;
+  border: .1rem solid #b31b1b; 
+
+}
+.edit-submit:hover{
+  background-color: #800707; 
+  border: .1rem solid #800707; 
+}
 }

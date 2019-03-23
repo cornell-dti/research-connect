@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import './LandingPage.scss';
 import axios from 'axios';
-import DeleteIcon from 'react-icons/lib/ti/delete';
-import SearchIcon from 'react-icons/lib/io/search';
 import { GoogleLogin } from 'react-google-login';
 import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
@@ -25,6 +23,11 @@ import img2 from '../../images/img2.png';
 import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
+import SearchBar from '../../components/LandingPage/Student/SearchBar';
+import * as ReactGA from 'react-ga';
+import ReactDOM from 'react-dom';
+ReactGA.initialize('UA-69262899-9');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class Landing extends Component {
   constructor(props) {
@@ -45,7 +48,7 @@ class Landing extends Component {
           console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
-            endUrl = '/studentDashboard';
+            endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
@@ -72,13 +75,13 @@ class Landing extends Component {
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
       alert('Please sign in with a cornell email (netid@cornell.edu)');
-      logoutGoogle();
+      return logoutGoogle();
     }
     axios.get(`/api/hasRegistered/${response.profileObj.email.replace('@cornell.edu', '')}`).then((hasRegistered) => {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/studentDashboard';
+        window.location.href = '/opportunities';
       } else {
         window.location.href = '/studentRegister';
       }
@@ -132,47 +135,6 @@ class Landing extends Component {
     window.location.href = '/newopp';
   }
 
-  handleUpdateSearch(e) {
-    this.setState({ searchBar: e.target.value });
-    if (e.target.value == '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
-    }
-  }
-
-  handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.setState({ clickedEnter: true });
-      axios.get(`${'/api/opportunities/search' + '?search='}${this.state.searchBar}`)
-        .then((response) => {
-          const matching = [];
-          for (let i = 0; i < response.data.length; i++) {
-            matching.push(response.data[i]._id);
-          }
-          this.setState({ matchingSearches: matching });
-        })
-        .catch((error) => {
-          Utils.handleTokenError(error);
-        });
-    }
-  }
-
-  onFocus() {
-    this.setState({ searching: true });
-  }
-
-  onBlur() {
-    this.setState({ searching: false });
-  }
-
-  clearSearch() {
-    this.setState({ searching: false });
-    this.setState({ searchBar: '' });
-    this.setState({ matchingSearches: [] });
-    this.setState({ clickedEnter: false });
-  }
-
-
   logoutClear() {
     logoutGoogle();
   }
@@ -197,124 +159,55 @@ class Landing extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Student Log In"
-                    // hostedDomain="cornell.edu"
-                  onSuccess={this.responseGoogleStudent.bind(this)}
+                  buttonText="Log In/Sign Up"
+                  onSuccess={this.responseGoogleStudent}
                   onFailure={this.loginFailure.bind(this)}
-                  className="login button"
+                  className="signup"
                 />
+
               </div>
             ) : (
-              <li />
-            )}
+                <li />
+              )}
           </nav>
         </header>
 
         <section id="home" className="hero">
           <div className="background-image" />
-          <h1>Research Connect for Labs</h1>
-          <h3>Find your next research opportunity.</h3>
-
-          <div className="row search-div-container">
-            <div className="search-icon-div">
-              <SearchIcon style={{ height: '100%' }} size={36} />
-            </div>
-            <input
-              onFocus={this.onFocus.bind(this)}
-              onBlur={this.onBlur.bind(this)}
-              className="search-bar"
-              onKeyPress={this.handleKeyPress.bind(this)}
-              onChange={this.handleUpdateSearch.bind(this)}
-              value={this.state.searchBar}
-              type="text"
-              name="search"
-              placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"
-            />
-            <div className="delete-div">
-              {
-                this.state.searchBar != '' ? (
-                  <DeleteIcon
-                    onClick={this.clearSearch.bind(this)}
-                    className="clear-icon"
-                    style={{ height: '100%' }}
-                    size={36}
-                  />
-                ) : ''
-              }
-            </div>
-          </div>
-        </section>
-
-        <section className="incollab">
-          <Container className="middleContainer">
-            <Row>
-              <Col><p className="collab">In Collabortation with ...     </p></Col>
-              <Col><img className="middleImage" src={cis} /></Col>
-              {/* <Col><img className="middleImage-curb" src={curb} /></Col> */}
-              <Col><img className="middleImage" src={CDTI} /></Col>
-            </Row>
-          </Container>
+          <h1>Research Connect</h1>
+          <h3>Find your next CS research opportunity.</h3>
+          <SearchBar />
 
         </section>
 
         <section className="middleContainer2">
-          <Container>
-            <Row>
-              <p>
-Are you a professor, student, or other faculty member looking for research assistants?
-                <a href="/profLanding">Visit Research Connect for Labs </a>
-              </p>
-            </Row>
+          <Container style={{marginLeft: "auto"}}>
+            {/*<Row>*/}
+            {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
+            {/*</Row>*/}
             <Row>
               <p className="big ">Explore Popular Areas of Interest</p>
             </Row>
             <Row>
               <Col className="text-center">
                 <Row><img className="middleImage" src={blueIcon} /></Row>
-                <Row className="text-center">
-                  {' '}
-                  <p id="no-max-width">
-DATA
-                    <br />
-                    {' '}
-SCIENCE
-                  </p>
-                  {' '}
-                </Row>
+                <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
-                <Row />
-                <img className="middleImage" src={greenIcon} />
-                <Row />
-                <Row>
-                  {' '}
-                  <p>COMPUTATIONAL BIOLOGY</p>
-                  {' '}
-                </Row>
+                <Row><img className="middleImage" src={greenIcon} /> </Row>
+                <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={redIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>MACHINE LEARNING</p>
-                  {' '}
-                </Row>
+                <Row> <p>MACHINE LEARNING</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={yellowIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>NATURAL LANGUAGE PROCESSING</p>
-                  {' '}
-                </Row>
+                <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={purpleIcon} /></Row>
-                <Row>
-                  {' '}
-                  <p>COMPUTER VISION</p>
-                  {' '}
-                </Row>
+                <Row> <p>COMPUTER VISION</p> </Row>
               </Col>
 
             </Row>
@@ -325,17 +218,17 @@ SCIENCE
           <div className="students-title">
             <h2>Discover your passion.</h2>
             <section>
-              <Row>
-                <Col><img className="list-image" src={pen} /></Col>
-                <Col><p>Search for opportunities by sorting by your interests and qualifications.</p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
+                <Col><p className="picP">Search for computer science opportunities and stop guessing who is accepting.</p></Col>
               </Row>
-              <Row>
-                <Col><img className="list-image" src={img2} /></Col>
-                <Col><p>Get connected to leading researchers and investigators in fields that interest you.</p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
+                <Col><p className="picP">Get help writing emails to professors.</p></Col>
               </Row>
-              <Row>
-                <Col><img className="list-image" src={lightbulb} /></Col>
-                <Col><p>Apply for lab positions directly from our platform.</p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
+                <Col><p className="picP">View our complete guide on finding research.</p></Col>
               </Row>
 
             </section>
@@ -358,21 +251,28 @@ SCIENCE
                 <h2>Made for students by students.</h2>
               </Row>
               <Row>
-                <Col><p>We know how frustrating it can be to get involved with a lab at Cornell. That’s why we created Research Connect.</p></Col>
+                <Col><p>We know how confusing and frustrating it can be to get involved with CS research at Cornell. That’s why we created Research Connect.</p></Col>
               </Row>
               <Row>
                 <section className="list">
+                  <Row className="picRow">
+                    <Col><img className="list-image" src={check} /></Col>
+
+                    <Col>
+
+                      <p className="picP">Apply to positions without having to guess if they’re open.</p></Col>
+                  </Row>
                   <Row>
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p>No more cold emails. </p></Col>
+                    <Col>
+
+                      <p>Search for opportunities by sorting by your interests. </p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-Image" src={check} /></Col>
-                    <Col><p>Less waiting.</p></Col>
-                  </Row>
-                  <Row>
-                    <Col><img className="list-Image" src={check} /></Col>
-                    <Col><p>More research. </p></Col>
+                    <Col><img className="list-image" src={check} /></Col>
+                    <Col>
+
+                      <p>Connect with leading researchers! in fields that inspire you.</p></Col>
                   </Row>
 
                 </section>
@@ -387,7 +287,7 @@ SCIENCE
 
         <section id="forprofs" className="our work for-profs">
           <div className="students-title center-text">
-            <h2>Doing research in leading labs on campus has never been easier.</h2>
+            <h2>Doing research in leading groups on campus has never been easier.</h2>
             <br />
             <div className="center-text">
               <p id="no-max-width">Join today to start your research journey and get connected. </p>
@@ -398,13 +298,12 @@ SCIENCE
             <GoogleLogin
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="GET STARTED"
-              onSuccess={this.responseGoogle}
+              onSuccess={this.responseGoogleStudent}
               onFailure={this.loginFailure.bind(this)}
               className="signup2 button"
             />
           </div>
         </section>
-
 
         <footer className="footer-all">
           <ul>

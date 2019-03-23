@@ -16,11 +16,15 @@ import img2 from '../../images/img2.png';
 import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
+import * as ReactGA from 'react-ga';
 
 class ProfessorLanding extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
   }
 
   componentDidMount() {
@@ -31,7 +35,7 @@ class ProfessorLanding extends Component {
           console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
-            endUrl = '/studentDashboard';
+            endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
@@ -64,7 +68,7 @@ class ProfessorLanding extends Component {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/studentDashboard';
+        window.location.href = '/opportunities';
       } else {
         window.location.href = '/studentRegister';
       }
@@ -160,7 +164,7 @@ class ProfessorLanding extends Component {
           <h1>Research Connect for Labs</h1>
           <h3>Easily find and recruit assistants for labs</h3>
           <Container>
-            <Row className = "buttonHero">
+            <Row className="buttonHero">
               <Col>
                 <input
                   className="white-button"
@@ -185,32 +189,21 @@ class ProfessorLanding extends Component {
 
         </section>
 
-        <section className="incollab">
-          <Container className="middleContainer">
-            <Row>
-              <Col><p className="collab">In Collabortation with ...     </p></Col>
-              <Col><img className="middleImage" src={cis} /></Col>
-              {/*<Col><img className="middleImage-curb" src={curb} /></Col>*/}
-              <Col><img className="middleImage" src={CDTI} /></Col>
-            </Row>
-          </Container>
-        </section>
-
         <section id="about" className="why-us">
           <div className="students-title">
             <h2>Let qualified students come to you. </h2>
             <section>
-              <Row>
-                <Col><img className="list-image" src={pen} /></Col>
-                <Col><p>Customize listings to reach out to hundreds of qualified students.</p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image1" src={pen} /></Col>
+                <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
               </Row>
-              <Row>
-                <Col><img className="list-image" src={img2} /></Col>
-                <Col><p>Easily review applications and sort by what you’re looking for.</p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image2" src={img2} /></Col>
+                <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
               </Row>
-              <Row>
-                <Col><img className="list-image" src={lightbulb} /></Col>
-                <Col><p>Connect and recruit applicants straight from our platform. </p></Col>
+              <Row className="picRow">
+                <Col><img id="list-image3" src={lightbulb} /></Col>
+                <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
               </Row>
 
             </section>
@@ -237,17 +230,17 @@ class ProfessorLanding extends Component {
               </Row>
               <Row>
                 <section className="list">
-                  <Row>
+                  <Row className="picRow">
                     <Col><img className="list-image" src={check} /></Col>
-                    <Col><p>Customize listings to reach out to hundreds of qualified students.</p></Col>
+                    <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
                   </Row>
-                  <Row>
+                  <Row className="picRow">
                     <Col><img className="list-Image" src={check} /></Col>
-                    <Col><p>Easily review applications and sort by what you’re looking for.</p></Col>
+                    <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
                   </Row>
-                  <Row>
+                  <Row className="picRow">
                     <Col><img className="list-Image" src={check} /></Col>
-                    <Col><p>Connect and recruit applicants straight from our platform. </p></Col>
+                    <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
                   </Row>
 
                 </section>
@@ -280,6 +273,17 @@ class ProfessorLanding extends Component {
           </div>
         </section>
 
+
+        {/*<section className="incollab">*/}
+          {/*<Container className="middleContainer">*/}
+            {/*<Row>*/}
+              {/*<Col><p className="collab">In Collabortation with ...     </p></Col>*/}
+              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
+              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
+              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
+            {/*</Row>*/}
+          {/*</Container>*/}
+        {/*</section>*/}
 
         <footer className="footer-all">
           <ul>

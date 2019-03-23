@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  verify, undergradModel, labAdministratorModel, debug, handleVerifyError,
+  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup, sgAnnouncementsGroup
 } = require('../common.js');
 const common = require('../common.js');
 
@@ -29,6 +29,82 @@ app.get('/la/:netId', (req, res) => {
       return null;
     });
     return null;
+  }).catch((error) => {
+    handleVerifyError(error, res);
+  });
+});
+
+/**
+ * Params in body: tokenId (contains google auth token)
+ */
+app.post('/email', (req, res) => {
+  const { tokenId } = req.body;
+  verify(tokenId, (netId) => {
+    if (!netId) {
+      return res.send('');
+    }
+    undergradModel.findOne({ netId }, (err, undergrad) => {
+      if (err || !undergrad) {
+        debug(err);
+        return res.send('');
+      }
+      return res.send(undergrad.emailHtml);
+    });
+    }).catch((error) => {
+    handleVerifyError(error, res);
+  });
+});
+
+app.get('/star', (req, res) => {
+  verify(req.query.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    undergradModel.find({ netId: decrypted }, (err, undergrads) => {
+      debug("netid");
+      if (err) {
+        debug('Not found');
+        return err;
+      }
+      debug('Found');
+      if (undergrads.length) {
+      }
+      else {
+        debug('no results found');
+      }
+      if(req.query.type === 'opportunity') {
+        return res.send(undergrads[0].starredOpportunities);
+      }
+      else if(req.query.type === 'faculty') {
+        return res.send(undergrads[0].starredFaculty);
+      }
+    });
+  }).catch((error) => {
+      handleVerifyError(error, res);
+  });
+});
+
+/**
+ * takes in the token_id, opportunity id (`id`) and the type enum and returns true if the opportunity id is in the array
+ */
+app.get('/isStarred', (req, res) => {
+  const itemId = req.query.id;
+  const type = req.query.type;
+  verify(req.query.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    let searchObj = { netId: decrypted };
+    if (type === "opportunity"){
+      searchObj["starredOpportunities"] = itemId;
+    }
+    else {
+      searchObj["starredFaculty"] = itemId;
+    }
+    undergradModel.findOne(searchObj, (err, undergrad) => {
+      // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
+      return res.send(!!undergrad);
+    });
   }).catch((error) => {
     handleVerifyError(error, res);
   });
@@ -87,7 +163,10 @@ app.post('/', (req, res) => {
       data.courses = data.courses.map((element) => {
         const trimmed = element.trim();
         if (trimmed) {
-          return trimmed;
+          const courseNumberRegex = /[0-9]{4}/; // look for first set of four consecutive digits. eg: 1110 in CS 1110
+          const matchResult = trimmed.match(courseNumberRegex);
+          const courseNumber = trimmed.slice(0, matchResult.index + 4);
+          return courseNumber;
         }
         return null;
       });
@@ -100,7 +179,6 @@ app.post('/', (req, res) => {
       return res.status(400).send('Missing either first name, last name, or graduation year');
     }
     const undergrad = new undergradModel({
-
       firstName: data.firstName,
       lastName: data.lastName,
       gradYear: data.gradYear, // number
@@ -109,15 +187,43 @@ app.post('/', (req, res) => {
       netId,
       courses: data.courses,
     });
+    debug("undergrad: ");
     debug(undergrad);
     undergrad.save((err) => {
+      debug("undergrad saved");
       if (err) {
         res.status(500).send({ errors: err.errors });
         debug(err);
         debug('error in saving ugrad');
         debug(err);
       } else { // Handle this error however you see fit
-        debug('saved');
+        debug('saved, now to:');
+        debug(`${netId}@cornell.edu`);
+        const msg = {
+          to: `${netId}@cornell.edu`,
+          from: {
+            name: 'Research Connect',
+            email: 'hello@research-connect.com',
+          },
+          replyTo: 'acb352@cornell.edu',
+          asm: {
+            groupId: sgAnnouncementsGroup,
+          },
+          subject: 'Guide to Finding Research!',
+          html: `Hi ${undergrad.firstName},<br />
+                       Thanks for signing up for Research Connect! To help you 
+                       in your research journey, we've provided a comprehensive 
+                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a> 
+                       <br /><br />Thanks,
+                       <br />The Research Connect Team<br /><br />`,
+        };
+        debug("before send");
+        sgMail.send(msg).catch((e) => {
+          console.log('error in sending below');
+          console.log(e);
+          console.log(e.response.body.errors);
+        });
+        debug("after send");
         res.status(200).send('success!');
       }
       // Now the opportunity is saved in the commonApp collection on mlab!
@@ -176,6 +282,68 @@ app.delete('/:id', (req, res) => {
       id,
     };
     res.status(200).send(response);
+  });
+});
+
+/**
+ * Removes val from arr if it's already in there, otherwise adds it.
+ * @param arr
+ * @param val
+ */
+function addOrRemoveIfExists(arr, val){
+  if (arr.includes(val)){
+    arr.splice(arr.indexOf(val), 1);
+  }
+  else {
+    arr.push(val);
+  }
+}
+
+/**
+ * Adds `id` to array in undergrad of `token_id` to the array for `type`
+ * sends back the updated array of starred items
+ * If `id` is already in the array, then it's removed
+ */
+app.post('/star', (req, res) => {
+  const data = req.body;
+  const itemId = req.body.id;
+  const type = req.body.type;
+  verify(data.token_id, (decrypted) => {
+    if (!decrypted) {
+      return res.send([]);
+    }
+    undergradModel.find({ netId: decrypted }, (err, undergrad) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        let arr = [];
+        if (itemId) {
+          if (type === 'opportunity') {
+            arr = undergrad[0].starredOpportunities;
+          }
+          else if (type === 'faculty') {
+            arr = undergrad[0].starredFaculty;
+          }
+          addOrRemoveIfExists(arr, itemId);
+        }
+        else {
+          debug('no faculty or opportunity id present.');
+          res.status(500).send("no faculty or opportunity id present");
+          return;
+        }
+          // Save the updated document back to the database
+        undergrad[0].save((err2, todo) => {
+          if (err2) {
+            res.status(500).send(err2);
+            return;
+          }
+          debug('success!');
+          res.status(200).send(arr);
+        });
+      }
+    });
+  }).catch((error) => {
+    handleVerifyError(error, res);
   });
 });
 

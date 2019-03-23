@@ -27,6 +27,7 @@
 
   .opportunity-row {
     margin-bottom: 100px;
+    align-items: baseline;
   }
 
   .opp-title-card {
@@ -81,7 +82,7 @@
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-    margin-top: 80px;
+    //margin-top: 80px;
     margin-left: 45px;
 
     h6 {
@@ -148,6 +149,7 @@
     font-size: 24px;
     font-weight: bolder;
   }
+
 
   .button {
     background-color: #b31b1b;

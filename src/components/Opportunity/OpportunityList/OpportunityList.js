@@ -1,85 +1,106 @@
 import React, { Component } from 'react';
 import Opportunity from '../Opportunity';
 import './OpportunityList.scss';
+import axios from 'axios';
+import * as Utils from '../../Utils';
 
 class OpportunityList extends Component {
   constructor(props) {
     super(props);
+    this.state = {starredOps : []};
+    Utils.updateMultipleChoiceFilter.bind(this);
+  }
+
+  getStarredOps(){
+    console.log("SENDING API REQUEST TO GET ALL STARRED OPS");
+    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      let data = response.data;
+      this.setState({starredOps: data});
+    })
+    .catch((error)=> {
+      console.log(error);
+    });
+  }
+
+  updateStar(opId){
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "opportunity";
+    let id = opId;
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      if (response && response.data) {
+        let starredVals = response.data;
+        this.setState({starredOps: starredVals})
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   countNodes(nodes) {
     const tempCount = nodes.filter(node => !(!node)).length;
-    return tempCount === 1 ? 'There is 1 result' : `There are ${tempCount} results`;
+      return tempCount === 1 ? 'There is 1 result' : tempCount === 0 ? 
+      'There are no results' : `There are ${tempCount} results`;
+    
+  }
+
+  union(arr1, arr2) {
+    const arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
+    return arr3;
+  }
+
+  checkboxFilter(filterSelected, filterAllowed) {
+    return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
+  }
+
+  componentDidMount(){
+    console.log("component mounted");
+    this.getStarredOps();
   }
 
   render() {
-    if (!this.props.data) {
-      return (<div />);
-    }
+    if (!this.props.data) return null;
+
     const oppNodes = this.props.data.map((opp) => {
-      /* The variable 'willshow' will be set to false if any filter excludes this opportunity */
-      let willShow = true;
+      let willShow = true; // set to false if any filter excludes this opportunity
       const filteredOptions = this.props.filteredOptions;
-      /**
-         * filter for years allowed. Saying if the Freshman option is checked (hence the .Freshman, since it's a checkbox
-         so that value must either be true or false) and if this row has freshman in its array of years allowed, then
-         we return true and should show this opportunity
-         */
-      const froshSelected = filteredOptions.yearSelect.Freshman;
-      const sophSelected = filteredOptions.yearSelect.Sophomore;
-      const juniorSelected = filteredOptions.yearSelect.Junior;
-      const seniorSelected = filteredOptions.yearSelect.Senior;
+
       const matchingSearches = filteredOptions.matchingSearches;
-      const yearsAllowed = opp.yearsAllowed;
-      const csSelected = filteredOptions.majorSelect.cs;
-      const bioSelected = filteredOptions.majorSelect.biology;
-      const minGPA = filteredOptions.gpaSelect.val;
-      const season = filteredOptions.startDate.season;
-      const year = filteredOptions.startDate.year;
-      const moneySelected = filteredOptions.compensationSelect.Money;
-      const creditSelected = filteredOptions.compensationSelect.Credit;
-      const compensations = opp.compensation;
-
-      if (filteredOptions.searchBar != '' && filteredOptions.clickedEnter) {
-        const matches = matchingSearches.some(search => search == opp._id);
-        if (!matches) {
-          willShow = false;
+      if (filteredOptions.searchBar !== '' && filteredOptions.clickedEnter) {
+        let matches = false;
+        for (let i = 0; i < matchingSearches.length; i++) {
+          if (matchingSearches[i] === opp._id) {
+            matches = true;
+          }
         }
+        willShow = matches;
       }
 
-      if (!((froshSelected && yearsAllowed.indexOf('freshman') != -1)
-          || (sophSelected && yearsAllowed.indexOf('sophomore') != -1)
-          || (juniorSelected && yearsAllowed.indexOf('junior') != -1)
-          || (seniorSelected && yearsAllowed.indexOf('senior') != -1)
-          || (!froshSelected && !sophSelected && !juniorSelected && !seniorSelected))) {
-        willShow = false;
-      }
+      const minGPA = filteredOptions.gpaSelect;
+      willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
 
-      /**
-          * Similar to above, checks if the cs box is checked in the majorSelect component (a bunch of major checkboxes)
-          * and also checks to see if this opportunity is in the cs area.
-          * */
-      if (!((csSelected && opp.areas.indexOf('Computer Science') != -1)
-            || (bioSelected && opp.areas.indexOf('Biology') != -1)
-            || (!csSelected && !bioSelected))) {
-        willShow = false;
-      }
+      let startDate = filteredOptions.startDate;
+      let oppStartDate = opp.startSeason + " " + opp.startYear;
+      willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
 
-      if ((minGPA != null) && (minGPA < opp.minGPA)) {
-        willShow = false;
-      }
+      // multiple/checkbox choices
+      const yearsSelected = filteredOptions.yearSelect;
+      const yearsAllowed = opp.yearsAllowed;
+      willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
 
-      if ((season != null) && ((season != opp.startSeason) || (year != opp.startYear))) {
-        willShow = false;
-      }
+      const csAreasSelected = filteredOptions.csAreasSelect;
+      const csAreasAllowed = opp.areas;
+      willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
 
-      if (!((moneySelected && compensations.indexOf('pay') != -1)
-          || (creditSelected && compensations.indexOf('credit') != -1)
-          || (!moneySelected && !creditSelected))) {
-        willShow = false;
-      }
+      const compensationsSelected = filteredOptions.compensationSelect;
+      const compensationsAllowed = opp.compensation;
+      willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
+      // end multiple/checkbox choices
 
       if (willShow) {
+        let starred = this.state.starredOps.includes(opp._id);
         return (
           <Opportunity
             filteredOptions={this.props.filteredOptions}
@@ -108,6 +129,8 @@ class OpportunityList extends Component {
             prereqsMatch={opp.prereqsMatch}
             spots={opp.spots}
             opId={opp._id}
+            starred={starred}
+            updateStar={this.updateStar.bind(this)}
           />
         );
       }
@@ -116,19 +139,22 @@ class OpportunityList extends Component {
     const nodeCount = this.countNodes(oppNodes);
     const searchCrit = this.props.searching ? (
       <p>
-        {nodeCount}
-        {' '}
-matching your search criteria.
+        {nodeCount} {' '} matching your search criteria.
       </p>
-    ) : <span />;
+    ) :  <p>
+    {nodeCount} {' '} 
+  </p>;
+
+    console.log("rendered again");
+    console.log(this.state.starredOps);
     return (
       <div>
         <div className="node-list-div">
           { searchCrit }
+
         </div>
         { oppNodes }
       </div>
-
     );
   }
 }

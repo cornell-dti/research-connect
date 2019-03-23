@@ -154,7 +154,6 @@ app.get('/', (req, res) => {
               if (urlLabId && urlLabId !== 'null') {
                 debug('2');
                 labModel.findById(urlLabId, (err3, lab) => {
-                  debug(lab);
                   let oppIdsToOnlyInclude = lab.opportunities;
                   // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
                   oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(
@@ -177,8 +176,6 @@ app.get('/', (req, res) => {
           undergrad1.courses = undergrad1.courses.map(
             course => replaceAll(course, ' ', ''),
           );
-          debug(undergrad1);
-          debug('test');
           // only get the ones that are currenlty open
           opportunityModel.find({
             opens: {
@@ -188,8 +185,6 @@ app.get('/', (req, res) => {
               $gte: new Date(),
             },
           }).sort(sortOrderObj).lean().exec((err2, opportunities) => {
-            debug('length!!!!');
-            debug(opportunities);
             if (!opportunities) {
               return res.send({});
             }
@@ -223,7 +218,6 @@ app.get('/', (req, res) => {
                     )) {
                   prereqsMatch = true;
                 }
-                debug('h');
                 let thisLab = findLabWithAdmin(labs,
                   opportunities[i].creatorNetId);
                 // prevent "undefined" values if there's some error
@@ -238,8 +232,6 @@ app.get('/', (req, res) => {
                 opportunities[i].labName = thisLab.name;
                 opportunities[i].labPage = thisLab.labPage;
                 opportunities[i].labDescription = thisLab.labDescription;
-                debug(opportunities[i]);
-                debug(Object.getOwnPropertyNames(opportunities[i]));
                 /**
                  if (opportunities[i].contactName === 'dummy value') {
                   console.log('In here');
@@ -296,7 +288,7 @@ app.get('/', (req, res) => {
             });
             if (opportunities) {
               for (let i = 0; i < opportunities.length; i++) {
-                debug(opportunities[i].prereqsMatch);
+                // debug(opportunities[i].prereqsMatch);
               }
               if (err) {
                 // handle the error appropriately
@@ -352,13 +344,15 @@ function getUniqueTitle(title, supervisor) {
         if (!supervisor) {
           newTitle = `${title}`;
         } else {
-          newTitle = `${title} (${supervisor})`;
+          newTitle = `${title} - ${supervisor}`;
         }
         // find all opps that have the title that case insensitive starts with: title + supervisor
         // if there's an opp called "intern (john smith) 2", then this will match the intern (john smith) and we'll add the 3 after it
+        debug(`new title so far: ${newTitle}`);
         opportunityModel.find(
           { title: { $regex: `^${newTitle}`, $options: 'i' } }, 'title',
           (err2, otherTitles2) => {
+            debug(`other titles found: ${otherTitles2}`);
             if (err2) {
               debug(err2);
             }
@@ -391,6 +385,7 @@ app.post('/', async (req, res, next) => {
     ) {
       return res.status(400).send();
     }
+
     debug(`email: ${data.email}`);
     debug(`netid: ${data.creatorNetId}`);
     debug(`labpage: ${data.labPage}`);
@@ -423,8 +418,7 @@ app.post('/', async (req, res, next) => {
     if (data.maxHours) {
       // eslint-disable-next-line prefer-destructuring
       maxHours = data.maxHours;
-    }
-    else {
+    } else {
       maxHours = 0;
     }
     if (maxHours < data.minHours) {
@@ -476,6 +470,7 @@ app.post('/', async (req, res, next) => {
     const token = data.creatorNetId;
     // notice how we "thunk" (to use 3110 language) getUniqueTitle so we can get the promise it returns and await it to get its value
     const newTitle = await getUniqueTitle(data.title, data.supervisor);
+    console.log(`new title: ${newTitle}`);
     verify(token, (netIdActual) => {
       let ghostPost = false;
       let ghostEmail = '';
@@ -490,7 +485,7 @@ app.post('/', async (req, res, next) => {
         netIdActual = 'acb352';
         ghostPost = true;
         ghostEmail = data.email;
-        ghostName = data.name;
+        ghostName = data.supervisor;
       }
       const opportunity = new opportunityModel({
         creatorNetId: netIdActual,
@@ -531,19 +526,25 @@ app.post('/', async (req, res, next) => {
         labModel.findOne(
           { labAdmins: netIdActual },
           (error, lab) => {
-            const opps = lab.opportunities;
-            opps.push(mongoose.Types.ObjectId(oppId));
-            lab.opportunities = opps;
-            lab.markModified('opportunities');
-            lab.save(() => {
-            });
+            if (lab && lab.opportunities) {
+              const opps = lab.opportunities;
+              opps.push(mongoose.Types.ObjectId(oppId));
+              lab.opportunities = opps;
+              lab.markModified('opportunities');
+              lab.save(() => {
+              });
+            }
           },
         );
         // const opportunityMajor = req.body.majorsAllowed;
         undergradModel.find({},
           (err2, studentsWhoMatch) => {
+          debug("students who match");
+            // studentsWhoMatch = [studentsWhoMatch[0]]; // just FOR TESTING
             Object.keys(studentsWhoMatch).forEach((undergrad1) => {
               const { firstName } = studentsWhoMatch[undergrad1];
+              // to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
+              debug("in email message!");
               const msg = {
                 to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
                 from: {
@@ -556,12 +557,21 @@ app.post('/', async (req, res, next) => {
                 },
                 subject: 'New Research Opportunity Available!',
                 html: `Hi ${firstName},<br />
-                       A new opportunity called ${opportunity.title} was just posted in an area you expressed interest in. 
-                       You can view it <a href="https://www.research-connect.com/opportunity/${oppId}?ref=email">here!</a> 
+                       A new opportunity was just posted in an area you expressed interest in.
+                       <br /><b>Title: </b><p>${opportunity.title}</p>
+                       <br /><b>Supervisor: </b><p>${opportunity.supervisor}</p>
+                       <br /><b>Undergrad Tasks: </b><p>${opportunity.undergradTasks}</p>
+                       <br /><p>You can view more details about the opportunity and how to apply at <a href="https://www.research-connect.com/opportunity/${oppId}?ref=email">here!</a> </p>
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              sgMail.send(msg);
+              debug("sending email now!");
+
+              sgMail.send(msg).catch((e) => {
+                console.log('error in sending below');
+                console.log(e);
+                console.log(e.response.body.errors);
+              });
             });
             debug('finished emailling students');
           });

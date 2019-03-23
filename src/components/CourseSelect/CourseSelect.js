@@ -10,7 +10,8 @@ class CourseSelect extends React.Component {
     };
   }
 
-  addCourse() {
+  addCourse(e) {
+    e.preventDefault();
     const courses = [...this.state.courses];
     const cur = this.newText.value.split(' ').join('').toUpperCase();
     if (cur !== '' && !courses.includes(cur)) {

@@ -32,8 +32,7 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sgMail = sgMail;
-module.exports.sgOppsGroup = process.env.SENDGRID_OPPS_GROUP;
-debug(typeof process.env.SENDGRID_OPPS_GROUP);
+module.exports.sgOppsGroup = parseInt(process.env.SENDGRID_OPPS_GROUP, 10);
 module.exports.sgAnnouncementsGroup = parseInt(process.env.SENDGRID_ANNOUNCEMENTS_GROUP, 10);
 module.exports.sgStatusGroup = parseInt(process.env.SENDGRID_STATUS_GROUP, 10);
 
@@ -60,6 +59,9 @@ function dateIsBetween(date, lowerBound, upperBound) {
 module.exports.dateIsBetween = dateIsBetween;
 
 function gradYearToString(gradYear) {
+  if (!gradYear) {
+    return 'freshman';
+  }
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'sophomore';
@@ -111,7 +113,10 @@ const undergradSchema = new Schema({
   transcriptId: { type: String, required: false },
   skills: { type: [String], required: false },
   subscribed: { type: Boolean, default: true },
-  // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
+  emailHtml: { type: String, default: `Template: <br><b>1st Paragraph:</b> Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.<br><b>2nd Paragraph:</b> Mention you're interested in opportunities in their lab, talk about your experience in this area (if applicable).<br><b>3rd Paragraph:</b> Include a link to your resume (and transcript if you'd like).` },
+  starredOpportunities: { type: [String], required: false, default: [] },
+  starredFaculty: { type: [String], required: false, default: [] },
+    // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
   // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });
 const undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); // a mongoose model = a Collection on mlab/mongodb;
@@ -254,6 +259,7 @@ const opportunitySchema = new Schema({
   additionalInformation: { type: String, default: '', required: false },
   contactName: { type: String, default: 'N/A' },
   datePosted: { type: String, default: (new Date()).toISOString(), required: false },
+  facultyId: {type: String, default: "", required: false}
 });
 opportunitySchema.index({ '$**': 'text' });
 opportunitySchema.pre('validate', function (next) {

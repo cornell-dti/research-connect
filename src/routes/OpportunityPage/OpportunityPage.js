@@ -3,11 +3,24 @@ import axios from 'axios';
 import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
-import ProfessorNavbar
-  from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
-import * as Utils from '../../components/Utils.js';
+import * as Utils from '../../components/Utils';
+import VariableNavbar from '../../components/Navbars/VariableNavbar';
+import * as ReactGA from 'react-ga';
+import Star from '../../components/Star/Star'
+
+function LinkFaculty(props) {
+  if (props.facultyId){
+    return (<span> You can view info about this faculty and use our email tips & writer
+    <a href={"/faculty/" + props.facultyId}> here. </a></span>)
+  }
+  else {
+    return (<span>You can learn how to write a good email by looking at the template
+      for another faculty at the bottom of <a href="/faculty/5b8eba793136d653ddc3dfb4">this</a> page, as well as our email writing tips on the sidebar.</span>)
+  }
+}
 
 class OpportunityPage extends Component {
   constructor(props) {
@@ -23,12 +36,32 @@ class OpportunityPage extends Component {
       netId: 'unknown',
       role: '',
       detectedLoggedOut: false,
+      starred: false
     };
-
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.parseClasses = this.parseClasses.bind(this);
     this.parseMajors = this.parseMajors.bind(this);
     this.parseYears = this.parseYears.bind(this);
     this.parseGPA = this.parseGPA.bind(this);
+  }
+
+  star(){
+    console.log("this is working");
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "opportunity";
+    let id = this.getId();
+
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      if(response && response.data){
+        let stars = response.data;
+        this.setState({starred: stars.includes(id)});
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   getId() {
@@ -125,6 +158,14 @@ class OpportunityPage extends Component {
 
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
   componentWillMount() {
+    axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      let data = response.data;
+      this.setState({ starred: data.includes(this.props.match.params.id) });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     axios.get(`/api/opportunities/${this.props.match.params.id}?netId=${
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
@@ -186,6 +227,7 @@ class OpportunityPage extends Component {
     }).catch((error) => {
       this.sendToHome(error);
     });
+
   }
 
   printQuestions() {
@@ -382,7 +424,8 @@ Freshman
               <CheckBox key="no" className="greenCheck" />
               <span key="n"> No Preference</span>
             </div>
-          </ul>);
+          </ul>
+        );
       }
       return (
         <ul>
@@ -432,7 +475,8 @@ Freshman
 No Preference
               </span>
             </div>
-          </ul>);
+          </ul>
+        );
       }
       return (
         <ul>
@@ -544,10 +588,7 @@ No Preference
     const isNotLoggedIn = !(this.state.role);
     return (
       <div>
-        {this.state.role && this.state.role === 'undergrad'
-          && <Navbar current="opportunities" />}
-        {this.state.role && this.state.role !== 'undergrad'
-          && <ProfessorNavbar current="opportunities" />}
+        <VariableNavbar current="opportunities" role={this.state.role} />
 
         <div className={`opportunities-page-wrapper ${
           isLab ? 'opportunity-lab' : ''}`}
@@ -559,7 +600,13 @@ No Preference
             <div className="column opp-details-column">
               <div className="row opp-title-card">
                 <div className="column left-column">
-                  <div className="header">{this.state.opportunity.title}</div>
+                  <div className="header">
+                  {this.state.opportunity.title}
+                  <Star
+                    update={this.star.bind(this)}
+                    starred={this.state.starred}
+                  />
+                  </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
                 <div className="column right-column">
@@ -621,12 +668,14 @@ Back To Opportunities
                   <div className="opp-details-section">
                     <div className="header">Start Season</div>
                     <div>
-                      {this.state.opportunity.startSeason
-                        ? `${this.state.opportunity.startSeason} `
-                        : '(Season not specified) '}
-                      {this.state.opportunity.startYear
-                        ? this.state.opportunity.startYear
-                        : '(Year not specified)'}
+                      Varies, can contact any time.
+                      {/* Changed it b/c launch was soon and these opportunities had no specific start date... must change later TODO */}
+                      {/*{this.state.opportunity.startSeason*/}
+                        {/*? `${this.state.opportunity.startSeason} `*/}
+                        {/*: '(Season not specified) '}*/}
+                      {/*{this.state.opportunity.startYear*/}
+                        {/*? this.state.opportunity.startYear*/}
+                        {/*: '(Year not specified)'}*/}
                     </div>
                   </div>
                   <div className="opp-details-section">
@@ -688,8 +737,8 @@ Back To Opportunities
                             {`${this.state.opportunity.ghostEmail
                             } `}
                             with your resume and why you're interested in order
-                            to apply. You do not need to take
-                            any action here.
+                            to apply.
+                           <LinkFaculty facultyId={this.state.opportunity.facultyId} />
                           </div>
                         )
                         : (
@@ -728,21 +777,11 @@ Please
                       <div className="header">
                         {'Please '}
                         <a
-                          href="/#student-sign-up"
+                          href="/#forprofs"
                         >
 create an account
                         </a>
-                        {' to apply or add your email '}
-                        <a
-                          href="http://bit.ly/2Pv2LY4"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-here
-                        </a>
-                        {' '}
-to get alerted of new
-                        opportunities!
+                        {' to apply.'}
                       </div>
                     </div>
                   </div>

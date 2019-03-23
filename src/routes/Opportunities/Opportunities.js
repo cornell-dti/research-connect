@@ -6,14 +6,24 @@ import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Footer from '../../components/Footer/Footer';
 import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
-import YearSelect from '../../components/YearSelect/YearSelect';
-import MajorSelect from '../../components/MajorSelect/MajorSelect';
-import GPASelect from '../../components/GPASelect/GPASelect';
-import StartDate from '../../components/StartDate/StartDate';
-import CompensationSelect from '../../components/CompensationSelect/CompensationSelect';
+// import MajorSelect from '../../components/MajorSelect/MajorSelect';
+// import GPASelect from '../../components/GPASelect/GPASelect';
+import * as ReactGA from 'react-ga';
+
+// necessary for all filters
+import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
+import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
+import GPAFilter from '../../components/Filter/GPAFilter';
+import CompensationFilter from '../../components/Filter/CompensationFilter';
+import CSAreasFilter from '../../components/Filter/CSAreasFilter';
+import StartDateFilter from '../../components/Filter/StartDateFilter';
+
+
+// import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
@@ -21,20 +31,37 @@ class Opportunities extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: {},
-      gpaSelect: {},
+      yearSelect: [],
+      gpaSelect: '2.5',
       majorSelect: {},
-      startDate: {},
-      compensationSelect: {},
+      startDate: '',
+      compensationSelect: [],
       searchBar: '',
       matchingSearches: [],
       searching: false,
       clickedEnter: false,
       role: '',
+      csAreasSelect: [],
     };
+    ReactGA.initialize('UA-69262899-9');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  handleSearchTerms() {
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm) {
+      console.log("in search term");
+      this.setState({ searchBar: searchTerm });
+      document.getElementById("searchOpps").value = searchTerm;
+    }
   }
 
   componentDidMount() {
+    this.handleSearchTerms();
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
       return;
@@ -55,14 +82,17 @@ class Opportunities extends Component {
       .catch((error) => {
         Utils.handleTokenError(error);
       });
-  }
 
-  handleUpdateYear(yearObj) {
-    this.setState({ yearSelect: yearObj });
-  }
-
-  handleUpdateGPA(gpaObj) {
-    this.setState({ gpaSelect: gpaObj });
+    //They can search from the home page, make it do something
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    console.log("search term!");
+    console.log(searchTerm);
+    if (searchTerm) {
+      console.log("in search term");
+      this.setState({ searchBar: searchTerm });
+      document.getElementById("searchOpps").value = searchTerm;
+    }
   }
 
   handleUpdateMajor(majorObj) {
@@ -73,15 +103,13 @@ class Opportunities extends Component {
     this.setState({ startDate: dateObj });
   }
 
-  handleUpdateCompensation(compensationObj) {
-    this.setState({ compensationSelect: compensationObj });
-  }
-
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (e.target.value == '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
+      this.setState({
+        matchingSearches: [],
+        clickedEnter: false,
+      });
     }
   }
 
@@ -126,16 +154,7 @@ class Opportunities extends Component {
     // TODO make temp navbar into a component
     return (
       <div className="opportunities-wrapper">
-        {this.state.role && this.state.role === 'undergrad' && <Navbar current="opportunities" />}
-        {this.state.role && this.state.role !== 'undergrad' && <ProfessorNavbar current="opportunities" />}
-        {!this.state.role && (
-        <div className="go-home" onClick={() => this.goHome()}>
-          <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
-Home
-        </div>
-        )
-          /** END code for detecting role and changing navbar */
-        }
+        <VariableNavbar role={this.state.role} current="opportunities" />
         <div className="row search-div-container">
           <div className="search-icon-div">
             <SearchIcon style={{ height: '100%' }} size={36} />
@@ -149,57 +168,48 @@ Home
             value={this.state.searchBar}
             type="text"
             name="search"
+            id="searchOpps"
             placeholder="Search keywords (e.g. psychology, machine learning, Social Media Lab)"
           />
           <div className="delete-div">
             {
-            this.state.searchBar != '' ? (
-              <DeleteIcon
-                onClick={this.clearSearch.bind(this)}
-                className="clear-icon"
-                style={{ height: '100%' }}
-                size={36}
-              />
-            ) : ''
+              this.state.searchBar != '' ? (
+                <DeleteIcon
+                  onClick={this.clearSearch.bind(this)}
+                  className="clear-icon"
+                  style={{ height: '100%' }}
+                  size={36}
+                />
+              ) : ''
             }
           </div>
         </div>
-
+        <br />
         <div className="opp-container row" id="top-align">
           <div className="column column-20">
             <div className="filter-box">
-              <div className="filter-child">
-                Filter by...
 
-              </div>
+              <Filter label="Filter by..." style={{ textAlign: 'center' }} />
 
+              <SchoolYearFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
               <hr />
-
-              <div className="filter-child">
-                <label htmlFor="yearField">School Year</label>
-                <YearSelect updateYear={this.handleUpdateYear.bind(this)} />
-              </div>
-
+              <GPAFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
+              />
               <hr />
-
-              <div className="filter-child">
-                <label htmlFor="gpaField">GPA Requirement</label>
-                <GPASelect updateGPA={this.handleUpdateGPA.bind(this)} />
-              </div>
-
+              <StartDateFilter
+                update={Utils.updateSingleChoiceFilter.bind(this)}
+              />
               <hr />
-
-              <div className="filter-child">
-                <label htmlFor="startDateField">Start Date</label>
-                <StartDate updateDate={this.handleUpdateDate.bind(this)} />
-              </div>
-
+              <CompensationFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
               <hr />
-
-              <div className="filter-child">
-                <label htmlFor="compensationField">Compensation</label>
-                <CompensationSelect updateCompensation={this.handleUpdateCompensation.bind(this)} />
-              </div>
+              <CSAreasFilter
+                update={Utils.updateMultipleChoiceFilter.bind(this)}
+              />
 
             </div>
           </div>

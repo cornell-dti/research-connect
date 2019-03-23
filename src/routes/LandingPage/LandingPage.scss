@@ -221,11 +221,35 @@
   color: #fff;
 }
 
+.search-bar {
+  margin-bottom: 0;
+}
+
+#list-image1{
+    width : 50px;
+    max-width: 50px ;
+    height: 50px;
+    max-height: 50px;
+
+}
+#list-image2{
+    width : 50px;
+    max-width: 50px ;
+    height: 50px;
+    max-height: 50px;
+
+}
 #whiteButton:hover{
   opacity: 0.9;
   background-color: rgb(166, 57, 45);
   border-color: transparent;
   color: #fff;
+}
+#list-image3{
+    width : 40px;
+    max-width: 40px ;
+    height: 50px;
+    max-height: 50px;
 }
 
 .white-button{
@@ -369,7 +393,7 @@
 }
 
 col {
-    height : 5 px;
+    height : 5px;
 }
 /*--------------------
  	Middle Strip
@@ -380,9 +404,19 @@ col {
     padding: 20px;
     margin-top: 5%;
     margin-left :10%;
-    text-align: center; 
-
+    text-align: center;
+    min-width: 180px;
+    min-height: 180px;
 }
+
+.picP {
+  margin-bottom: 0 !important;
+}
+
+.picRow {
+  margin-bottom: 35px !important;
+}
+
  section.middleContainer2{
      align-items: center;
      justify-content: center;
@@ -474,14 +508,15 @@ col {
 }
 
 
-.collab p{
+#collab{
    
 	
 	color: #8F8F8F;
 	font-family: "Helvetica Neue";
 	font-size: 20px;
     letter-spacing: -0.01px;
-    font-weight: 350;
+    font-weight: 300;
+    margin-bottom: 0;
 	
 }
 /*--------------------
@@ -626,9 +661,13 @@ col {
 
 }
 
-.landingPage section.why-us .students-title .list-image{
-  width : 100px;
-  height : 70px;
+
+
+.list-image{
+  max-width : 70px;
+  max-height : 60px;
+  min-width : 70px;
+  min-height : 60px;
 
 }
 .landingPage section.why-us .students-title h2{
@@ -707,6 +746,9 @@ col {
 
     max-width: 800px;
     width: 80%;
+}
+body{
+    background-color: #FFFFFF
 }
 
 .contact form input {
@@ -824,6 +866,14 @@ col {
     margin: 10px 10px 10px -10px;
     padding: 10px;
   }
+
+.collabImage {
+  padding: 20px;
+  margin-top: 5%;
+  margin-left :10%;
+  text-align: center;
+}
+
 
 
 /* -- Demo ads -- */

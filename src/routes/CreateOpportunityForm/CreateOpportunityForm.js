@@ -8,109 +8,89 @@ import ReactTooltip from 'react-tooltip';
 import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
-import { css } from 'react-emotion';
+import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as Utils from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+import YearsAllowed from '../../components/Detail/YearsAllowed';
+import CompensationAllowed from '../../components/Detail/CompensationAllowed';
+import CSAreasAllowed from '../../components/Detail/CSAreasAllowed';
+import * as ReactGA from 'react-ga';
 
 
 class CreateOppForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      creatorNetId: sessionStorage.getItem('token_id'),
-      labPage: '',
-      areas: [],
-      email: '',
-      title: '',
-      projectDescription: '',
-      undergradTasks: '',
-      qualifications: '',
-      compensation: [],
-      startSeason: '',
-      startYear: '',
-      yearsAllowed: [],
-      questions: {},
-      requiredClasses: [],
-      minGPA: '',
-      minHours: '',
-      maxHours: '',
-      opens: moment(),
-      closes: moment().add(365, 'days'),
-      labName: '',
-      supervisor: '',
-      additionalInformation: '',
-      numQuestions: 0,
-      titleIsValid: false,
-      emailIsValid: false,
-      tasksAreValid: false,
-      seasonIsValid: false,
-      // compensationIsValid: false,
-      yearIsValid: false,
-      supervisorIsValid: false,
-      triedSubmitting: false,
-      isButtonDisabled: false,
-      buttonValue: 'Submit New Position',
-      loading: false,
-      detailsButtonValue: 'Show Advanced Options',
-      showDetails: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+          creatorNetId: sessionStorage.getItem('token_id'),
+          labPage: '',
+          areas: [],
+          email: '',
+          title: '',
+          projectDescription: '',
+          undergradTasks: '',
+          qualifications: '',
+          compensation: [],
+          startSeason: '',
+          startYear: '',
+          yearsAllowed: [],
+          questions: {},
+          requiredClasses: [],
+          minGPA: '',
+          minHours: '',
+          maxHours: '',
+          opens: moment(),
+          closes: moment().add(365, 'days'),
+          labName: '',
+          supervisor: '',
+          additionalInformation: '',
+          numQuestions: 0,
+          titleIsValid: false,
+          emailIsValid: false,
+          tasksAreValid: false,
+          seasonIsValid: false,
+          // compensationIsValid: false,
+          yearIsValid: false,
+          supervisorIsValid: false,
+          triedSubmitting: false,
+          isButtonDisabled: false,
+          buttonValue: 'Submit New Position',
+          loading: false,
+          selectedOptions: null,
+          areaData: [],
+          detailsButtonValue: 'Show Advanced Options',
+          showDetails: false,
+        };
+      ReactGA.initialize('UA-69262899-9');
+      ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.handleChange = this.handleChange.bind(this);
     this.addQuestion = this.addQuestion.bind(this);
     this.displayQuestions = this.displayQuestions.bind(this);
   }
 
-  /**
-     onSubmit = (e) => {
-        this.setState({triedSubmitting: true});
-        e.preventDefault();
-        // get our form data out of state
-        const {
-            netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation,
-            startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens,
-            closes, labName, supervisor, numQuestions, titleIsValid, tasksAreValid, seasonIsValid, yearIsValid
-        } = this.state;
-        if (titleIsValid && tasksAreValid && seasonIsValid && yearIsValid) {
-            axios.post('/opportunities', {
-                netId,
-                creatorNetId,
-                labPage,
-                areas,
-                title,
-                projectDescription,
-                undergradTasks,
-                qualifications,
-                compensation,
-                startSeason,
-                startYear,
-                yearsAllowed,
-                questions,
-                requiredClasses,
-                minGPA,
-                minHours,
-                maxHours,
-                opens,
-                closes,
-                labName,
-                supervisor,
-                numQuestions
-            })
+  //Returns an array of CS areas
+  displayAreas() {
+    let arrayOfAreas = [];
+    for (let i = 0; i < this.state.areaData.length; i++) {
+      arrayOfAreas.push({label:this.state.areaData[i].name, value: this.state.areaData[i]._id});
+    }
+    return arrayOfAreas;
+  }
 
-                .then((result) => {
-                    //access the results here....
-                    document.location.href = "/professorView"
-                });
-        }
-        else {
-            window.scrollTo(0, 0);
-        }
-    };
-     */
-
-  // display the questions interface to add/delete questions
+  loadAreasFromServer() {
+//Need code for getting areas
+        axios.get('/api/labs')
+            .then(res => {
+                this.setState({areaData: res.data});
+                console.log(res.data);
+            }).catch(function (error) {
+            Utils.handleTokenError(error);
+        });
+    }
+    //display the questions interface to add/delete questions
   displayQuestions() {
     const questionBoxes = [];
     for (let i = 0; i < this.state.numQuestions; i++) {
@@ -160,16 +140,7 @@ class CreateOppForm extends React.Component {
         questionsEdit[newString] = questionsCopy[question];
       }
     }
-
-
-    this.setState({ numQuestions: newQnum });
-
-    this.setState({
-      questions: questionsEdit,
-    });
-    // setTimeout(() => {
-    //           this.makeBoxes()
-    //       }, 40);
+    this.setState({ numQuestions: newQnum, questions: questionsEdit });
   }
 
   addQuestion(event) {
@@ -200,35 +171,23 @@ class CreateOppForm extends React.Component {
     );
   }
 
-  setYears() {
-    const yearArray = [];
-    if (this.freshman.checked) {
-      yearArray.push('freshman');
-    }
-    if (this.sophomore.checked) {
-      yearArray.push('sophomore');
-    }
-    if (this.junior.checked) {
-      yearArray.push('junior');
-    }
-    if (this.senior.checked) {
-      yearArray.push('senior');
-    }
-    this.setState({ yearsAllowed: yearArray });
+  updateFilterOption(filterType, option){
+    this.setState((state) => {
+    	if (state[filterType].includes(option))
+    		return {[filterType]: state[filterType].filter(original => original !== option)};
+      else
+        return {[filterType]: [...state[filterType], option]};
+    });
   }
 
-  setCompensation() {
-    const compensationArray = [];
-    if (this.pay.checked) {
-      compensationArray.push('pay');
-    }
-    if (this.credit.checked) {
-      compensationArray.push('credit');
-    }
-    if (this.undetermined.checked) {
-      compensationArray.push('undetermined');
-    }
-    this.setState({ compensation: compensationArray });
+  handleUpdateYear(e){
+    let option = e.target.value;
+    this.updateFilterOption("yearsAllowed", option);
+  }
+
+  handleUpdateCompensation(e){
+    let option = e.target.value;
+    this.updateFilterOption("compensation", option);
   }
 
   toggleDetails() {
@@ -241,74 +200,62 @@ class CreateOppForm extends React.Component {
     this.setState({ showDetails: oppositeValue });
   }
 
-  // Set values of form items in state and change their validation state if they're invalid
+    // Set values of form items in state and change their validation state if they're invalid
   handleChange(event) {
-    if (event.target.name === 'labName') {
-      this.setState({ labName: event.target.value });
-    } else if (event.target.name === 'netID') {
-      this.setState({ creatorNetId: event.target.value });
-    } else if (event.target.name === 'title') {
-      if (event.target.value.length > 0) {
-        this.setState({ titleIsValid: true });
-      } else {
-        this.setState({ titleIsValid: false });
-      }
-      this.setState({ title: event.target.value });
-    } else if (event.target.name === 'email') {
-      if (event.target.value.length > 0) {
-        this.setState({ emailIsValid: true });
-      } else {
-        this.setState({ emailIsValid: false });
-      }
-      this.setState({ email: event.target.value });
-    } else if (event.target.name === 'areas') {
-      const areaArray = event.target.value.split(',');
-      this.setState({ areas: areaArray });
-    } else if (event.target.name === 'pi') {
-      this.setState({ pi: event.target.value });
-    } else if (event.target.name === 'supervisor') {
-      if (event.target.value.length > 0) {
-        this.setState({ supervisorIsValid: true });
-      } else {
-        this.setState({ supervisorIsValid: false });
-      }
-      this.setState({ supervisor: event.target.value });
-    } else if (event.target.name === 'descript') {
-      this.setState({ projectDescription: event.target.value });
-    } else if (event.target.name === 'tasks') {
-      if (event.target.value.length > 0) {
-        this.setState({ tasksAreValid: true });
-      } else {
-        this.setState({ tasksAreValid: false });
-      }
-      this.setState({ undergradTasks: event.target.value });
-    } else if (event.target.name === 'qual') {
-      this.setState({ qualifications: event.target.value });
-    } else if (event.target.name === 'classes') {
-      const classArray = event.target.value.split(',');
-      this.setState({ requiredClasses: classArray });
-    } else if (event.target.name === 'startSeason') {
-      if (event.target.value !== 'Select') {
-        this.setState({ seasonIsValid: true });
-      } else {
-        this.setState({ seasonIsValid: false });
-      }
-      this.setState({ startSeason: event.target.value });
-    } else if (event.target.name === 'startYear') {
-      if (event.target.value !== 'Select') {
-        this.setState({ yearIsValid: true });
-      } else {
-        this.setState({ yearIsValid: false });
-      }
-      this.setState({ startYear: event.target.value });
-    } else if (event.target.name === 'gpa') {
-      this.setState({ minGPA: event.target.value });
-    } else if (event.target.name === 'min') {
-      this.setState({ minHours: event.target.value });
-    } else if (event.target.name === 'max') {
-      this.setState({ maxHours: event.target.value });
-    } else if (event.target.name === 'additional') {
-      this.setState({ additionalInformation: event.target.value });
+    if (event.target.name === "labName") {
+      this.setState({labName: event.target.value});
+    }
+    else if (event.target.name === "netID") {
+      this.setState({creatorNetId: event.target.value});
+    }
+    else if (event.target.name === "title") {
+      let st = event.target.value.length > 0;
+      this.setState({title: event.target.value, titleIsValid: st});
+    }
+    else if (event.target.name === 'email') {
+      let st = event.target.value.length > 0;
+      this.setState({email: event.target.value, emailIsValid: st});
+    }
+    else if (event.target.name === "pi") {
+      this.setState({pi: event.target.value});
+    }
+    else if (event.target.name === "supervisor") {
+      let st = event.target.value.length > 0;
+      this.setState({ supervisor: event.target.value, supervisorIsValid: st });
+    }
+    else if (event.target.name === "descript") {
+      this.setState({projectDescription: event.target.value});
+    }
+    else if (event.target.name === "tasks") {
+      let st = event.target.value.length > 0;
+      this.setState({undergradTasks: event.target.value, tasksAreValid: st});
+    }
+    else if (event.target.name === "qual") {
+      this.setState({qualifications: event.target.value});
+    }
+    else if (event.target.name === "classes") {
+      let classArray = event.target.value.split(",");
+      this.setState({requiredClasses: classArray});
+    }
+    else if (event.target.name === "startSeason") {
+      let st = event.target.value !== "Select";
+      this.setState({startSeason: event.target.value, seasonIsValid: st});
+    }
+    else if (event.target.name === "startYear") {
+      let st = event.target.value !== "Select";
+      this.setState({startYear: event.target.value, yearIsValid: st});
+    }
+    else if (event.target.name === "gpa") {
+      this.setState({minGPA: event.target.value});
+    }
+    else if (event.target.name === "min") {
+      this.setState({minHours: event.target.value});
+    }
+    else if (event.target.name === "max") {
+      this.setState({maxHours: event.target.value});
+    }
+    else if (event.target.name === "additional"){
+      this.setState({additionalInformation: event.target.value})
     }
   }
 
@@ -316,9 +263,7 @@ class CreateOppForm extends React.Component {
     const stateLabel = `q${i.toString()}`;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
-    this.setState({
-      questions: questionsCopy,
-    });
+    this.setState({ questions: questionsCopy, });
   }
 
   handleOpenDateChange(date) {
@@ -329,24 +274,21 @@ class CreateOppForm extends React.Component {
     this.setState({ closes: date });
   }
 
+  isValid(){
+    return this.state.titleIsValid && this.state.tasksAreValid && this.state.seasonIsValid && this.state.yearIsValid;
+  }
 
-    // takes care of sending the form data to the back-end
-    onSubmit = (e) => {
-      this.setState({ triedSubmitting: true });
-      e.preventDefault();
-      // get our form data out of state
-      const {
-        email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result,
-      } = this.state;
+  // takes care of sending the form data to the back-end
+  onSubmit = (e) => {
+    this.setState({ triedSubmitting: true });
+    e.preventDefault();
+    // get our form data out of state
+    const { email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result,} = this.state;
 
-      // makes sure all the fields that are required are valid
-      if (!(this.state.titleIsValid
-            && this.state.tasksAreValid
-            && this.state.seasonIsValid
-            // this.state.compensationIsValid &&
-            && this.state.yearIsValid)) {
-        return;
-      }
+    // makes sure all the fields that are required are valid
+    if (! this.isValid()) {
+      return;
+    }
       axios.post('/api/opportunities', {
         email,
         netId,
@@ -406,17 +348,19 @@ class CreateOppForm extends React.Component {
     };
 
     render() {
-      const override = css`
-        display: block;
-        margin: 0 auto;
-        border-color: red;
-        `;
+      // const override = css`
+      //   display: block;
+      //   margin: 0 auto;
+      //   border-color: red;
+      //   `;
 
       if (this.state.loading) {
         return (
           <div className="sweet-loading">
             <ClipLoader
-              className={override}
+             style = {{display: "block",
+             margin: 0,
+             borderColor: "red"}}
               sizeUnit="px"
               size={150}
               color="#ff0000"
@@ -587,13 +531,13 @@ class CreateOppForm extends React.Component {
                     <option value={((new Date().getFullYear() + 1))}>{new Date().getFullYear() + 1}</option>
                   </select>
                   <InfoIcon data-tip data-for="info-start" className=" info-icon" size={20} />
+
                   <ReactTooltip place="right" id="info-start" aria-haspopup="true" role="example">
                     <p className="info-text">
-Indicates the semester the student will start working in
-                                        the lab.
+                      Indicates the semester the student will start working in the lab.
                     </p>
-
                   </ReactTooltip>
+
                 </div>
 
                 <div className={this.state.showDetails ? '' : 'hidden'}>
@@ -614,14 +558,11 @@ Indicates the semester the student will start working in
                       size={20}
                     />
                     <ReactTooltip place="right" id="info-descript" aria-haspopup="true" role="example">
-                      <p className="info-text">Example:</p>
                       <p className="info-text">
-Apprentice will conduct a genetic screen to discover
-                                        novel genes required for tissue morphogenesis and will be trained in
-                                        general wet-lab work and microdissection.
-                        {' '}
+                      Example: Apprentice will conduct a genetic screen to discover
+                      novel genes required for tissue morphogenesis and will be trained in
+                      general wet-lab work and microdissection.
                       </p>
-
                     </ReactTooltip>
                   </div>
 
@@ -652,51 +593,12 @@ Apprentice will conduct a genetic screen to discover
                           <li>Above B+ in Intro Chem</li>
                         </ul>
                       </div>
-
                     </ReactTooltip>
                   </div>
 
-                  <div className="years-allowed compensation">
-                    {/* className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}> */}
-                    {/* <span className="required-star">*</span> */}
-
-                    <label className="label-inline">
-Student Compensation (leave blank if just
-                                    experience):
-                      {' '}
-                    </label>
-                    <br />
-                    <input
-                      ref={(node) => {
-                        this.pay = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
-                      type="checkbox"
-                      name="pay"
-                      value="pay"
-                    />
-                    <label className="label-inline">Pay </label>
-                    <input
-                      ref={(node) => {
-                        this.credit = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
-                      type="checkbox"
-                      name="credit"
-                      value="credit"
-                    />
-                    <label className="label-inline">Course Credit </label>
-                    <input
-                      ref={(node) => {
-                        this.undetermined = node;
-                      }}
-                      onChange={this.setCompensation.bind(this)}
-                      type="checkbox"
-                      name="undetermined"
-                      value="undetermined"
-                    />
-                    <label className="label-inline">Not sure yet</label>
-                  </div>
+                  <CompensationAllowed
+                    update={Utils.updateMultipleChoiceFilter.bind(this)}
+                  />
 
                   <div className="hours row input-row optional">
                     <input
@@ -724,12 +626,10 @@ Student Compensation (leave blank if just
                       size={20}
                     />
                     <ReactTooltip place="right" id="info-hours" aria-haspopup="true" role="example">
-
                       <p className="info-text">
-Estimate the minimum hours you would expect the student to
-                                        work each week and the maximum hours you would ever require.
+                      Estimate the minimum hours you would expect the student to
+                      work each week and the maximum hours you would ever require.
                       </p>
-
                     </ReactTooltip>
                   </div>
 
@@ -767,83 +667,17 @@ Estimate the minimum hours you would expect the student to
                     <ReactTooltip place="right" id="info-gpa" aria-haspopup="true" role="example">
                       <div className="info-text">
                         <span>Students with a GPA lower than this minimum will be discouraged from applying.</span>
-
-                      </div>
-
-                    </ReactTooltip>
-                  </div>
-
-
-                  <div className="years-allowed optional">
-                    <label className="label-inline">Years Desired: </label>
-                    <input
-                      ref={(node) => {
-                        this.freshman = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
-                      type="checkbox"
-                      name="Freshman"
-                      value="Freshman"
-                    />
-                    <label className="label-inline">Freshmen </label>
-                    <input
-                      ref={(node) => {
-                        this.sophomore = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
-                      type="checkbox"
-                      name="Sophomore"
-                      value="Sophomore"
-                    />
-                    <label className="label-inline">Sophomores </label>
-                    <input
-                      ref={(node) => {
-                        this.junior = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
-                      type="checkbox"
-                      name="Junior"
-                      value="Junior"
-                    />
-                    <label className="label-inline">Juniors</label>
-                    <input
-                      ref={(node) => {
-                        this.senior = node;
-                      }}
-                      onChange={this.setYears.bind(this)}
-                      type="checkbox"
-                      name="Senior"
-                      value="Senior"
-                    />
-                    <label className="label-inline">Seniors </label>
-                  </div>
-                  <div className="row input-row optional">
-                    <textarea
-                      className="column column-90"
-                      placeholder="Topics of Research (Please separate with commas)"
-                      type="text"
-                      name="areas"
-                      value={this.state.areas}
-                      onChange={this.handleChange}
-                    />
-
-                    <InfoIcon
-                      data-tip
-                      data-for="info-topics"
-                      className="column column-5 info-icon"
-                      size={20}
-                    />
-                    <ReactTooltip place="right" id="info-topics" aria-haspopup="true" role="example">
-                      <div className="info-text">
-                        <span>Examples:</span>
-                        <ul className="info-text">
-                          <li>Computational Biology</li>
-                          <li>Natural Language Processing</li>
-                          <li>Protein Classification</li>
-                        </ul>
                       </div>
                     </ReactTooltip>
                   </div>
+
+                  <YearsAllowed
+                    update={Utils.updateMultipleChoiceFilter.bind(this)}
+                  />
+
+                  <CSAreasAllowed
+                    update={Utils.updateMultipleChoiceFilter.bind(this)}
+                  />
 
                   <div className="row input-row optional">
                     <textarea
@@ -861,12 +695,11 @@ Estimate the minimum hours you would expect the student to
                       className="column column-5 info-icon"
                       size={20}
                     />
+
                     <ReactTooltip place="right" id="info-additional" aria-haspopup="true" role="example">
-                      <div className="info-text">
-                        <span>Include any other relevant information to your opportunity not already described in the form.</span>
-
-                      </div>
-
+                      <p className="info-text">
+                        Include any other relevant information to your opportunity not already described in the form.
+                      </p>
                     </ReactTooltip>
                   </div>
 
@@ -893,20 +726,17 @@ Estimate the minimum hours you would expect the student to
                     <InfoIcon data-tip data-for="info-questions" className="info-icon-title" size={20} />
                     <ReactTooltip place="top" id="info-questions" aria-haspopup="true" role="example">
                       <p className="info-text-large">
-                                        We recommend asking "Why are you interested in this lab and/or position?" to
-                                        gauge interest.
-                                        You will nonetheless be able to view each student
-                        {"'"}
-s cover letter, year, GPA,
-                                        résumé,
-                                        and major, in addition to their responses to these questions once they
-                                        apply.
+                        We recommend asking "Why are you interested in this lab and/or position?" to
+                        gauge interest.You will nonetheless be able to view each students' cover
+                        letter, year, GPA, résumé, and major, in addition to their responses to these
+                        questions once they apply.
                       </p>
                     </ReactTooltip>
+
                     <p>
-Here you can add any position-specific questions or
-                                    requests for additional information, which students will be required to answer in
-                                    order to apply.
+                    Here you can add any position-specific questions or
+                    requests for additional information, which students will be required to answer in
+                    order to apply.
                     </p>
 
                     {this.displayQuestions()}
