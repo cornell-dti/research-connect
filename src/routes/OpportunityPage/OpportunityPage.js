@@ -53,14 +53,6 @@ class OpportunityPage extends Component {
     });
   }
 
-  getId() {
-    // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
-    const url = (window.location.href);
-    const length = url.length;
-    const finURL = url.slice(0, length - 1);
-    return (finURL.slice((finURL.lastIndexOf('/') + 1)));
-  }
-
   isEmpty(obj) {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) { return false; }
@@ -607,7 +599,7 @@ No Preference
                     && (
                     <a
                       className="button"
-                      href={`/EditOpp?Id=${this.getId()}/`}
+                      href={`/EditOpp?Id=${this.props.match.id}/`}
                     >
 Edit
                       Opportunity
