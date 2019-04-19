@@ -128,7 +128,7 @@ class ProfessorLanding extends Component {
 
   render() {
     return (
-      <div className="proflandingPage">
+      <div className="proflandingPage" lang = "en">
         <header>
           <h2>
             <a href="/">
@@ -194,29 +194,29 @@ class ProfessorLanding extends Component {
             <h2>Let qualified students come to you. </h2>
             <section>
               <Row className="picRow">
-                <Col><img id="list-image1" src={pen} /></Col>
+                <Col><img id="list-image1" src={pen} alt = "pen" /></Col>
                 <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image2" src={img2} /></Col>
+                <Col><img id="list-image2" src={img2} alt = "magnifying glass"/></Col>
                 <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image3" src={lightbulb} /></Col>
+                <Col><img id="list-image3" src={lightbulb} alt = "lightbulb"/></Col>
                 <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
               </Row>
 
             </section>
           </div>
           <div>
-            <img className="triangle" src={triangler} alt="research connect logo" />
+            <img className="triangle" src={triangler} alt="opportunites page screenshot" />
           </div>
         </section>
 
 
         <section id="forstudents" className="our-work for-students">
           <div>
-            <img className="triangle" src={trianglel} alt="research connect logo" />
+            <img className="triangle" src={trianglel} alt="application page logo" />
           </div>
 
           <div className="students-title">
@@ -231,15 +231,15 @@ class ProfessorLanding extends Component {
               <Row>
                 <section className="list">
                   <Row className="picRow">
-                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><img className="list-image" src={check} alt = "check"/></Col>
                     <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
                   </Row>
                   <Row className="picRow">
-                    <Col><img className="list-Image" src={check} /></Col>
+                    <Col><img className="list-Image" src={check} alt = "check"/></Col>
                     <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
                   </Row>
                   <Row className="picRow">
-                    <Col><img className="list-Image" src={check} /></Col>
+                    <Col><img className="list-Image" src={check} alt = "check"/></Col>
                     <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
                   </Row>
 
@@ -287,12 +287,12 @@ class ProfessorLanding extends Component {
 
         <footer className="footer-all">
           <ul>
-            <li><a href="#"><i className="fa fa-twitter-square" /></a></li>
-            <li><a href="#"><i className="fa fa-facebook-square" /></a></li>
-            <li><a href="#"><i className="fa fa-snapchat-square" /></a></li>
-            <li><a href="mailto:acb352@cornell.edu"><i className="fas fa-envelope" /></a></li>
+            <li><a href="#" aria-label = "twitter"><i className="fa fa-twitter-square" /></a></li>
+            <li><a href="#" aria-label = "facebook"><i className="fa fa-facebook-square" /></a></li>
+            <li><a href="#" aria-label = "snapchat"><i className="fa fa-snapchat-square" /></a></li>
+            <li><a href="mailto:acb352@cornell.edu" aria-label = "email"><i className="fas fa-envelope" /></a></li>
             <li>
-              <a href="https://github.com/cornell-dti/research-connect">
+              <a href="https://github.com/cornell-dti/research-connect" aria-label = "github">
                 <i className="fa fa-github-square" />
               </a>
             </li>
