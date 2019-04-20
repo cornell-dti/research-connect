@@ -1,10 +1,40 @@
 import React, {Component} from 'react';
 import Faculty from '../Faculty';
 import '../../Opportunity/OpportunityList/OpportunityList.scss';
+import axios from 'axios';
 
 class FacultyList extends Component {
   constructor(props) {
     super(props);
+    this.state = {starredFac : []};
+  }
+
+  getStarredFac(){
+    console.log("SENDING API REQUEST TO GET ALL STARRED FACULTY");
+    axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
+    .then((response) => {
+      let data = response.data;
+      this.setState({starredFac: data});
+    })
+    .catch((error)=> {
+      console.log(error);
+    });
+  }
+
+  updateStar(opId){
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "faculty";
+    let id = opId;
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      if (response && response.data) {
+        let starredVals = response.data;
+        this.setState({starredFac: starredVals})
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   countNodes(nodes) {
@@ -21,6 +51,11 @@ class FacultyList extends Component {
       countString = 'There are ' + tempCount.toString() + ' results';
     }
     return (countString);
+  }
+
+  componentDidMount(){
+    console.log("component mounted");
+    this.getStarredFac();
   }
 
   render() {
@@ -72,6 +107,8 @@ class FacultyList extends Component {
                 bio={prof['bio']}
                 researchInterests={prof['researchInterests']}
                 researchDescription={prof['researchDescription']}
+                starred={this.state.starredFac.includes(prof['_id'])}
+                updateStar={this.updateStar.bind(this)}
             />
         );
       }
@@ -87,9 +124,7 @@ class FacultyList extends Component {
           </div>
           {profNodes}
         </div>
-
     );
-
   }
 }
 

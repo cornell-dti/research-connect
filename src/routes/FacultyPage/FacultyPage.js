@@ -12,6 +12,7 @@ import * as Utils from '../../components/Utils';
 import { logoutGoogle } from '../../components/Utils';
 import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
+import Star from '../../components/Star/Star'
 
 // Utils.gradYearToString(2020) == "Sophomore"
 
@@ -33,7 +34,6 @@ const ListItems = (props) => {
   return props.items.map(item => <p key={item}>{item}</p>);
 };
 
-
 class FacultyPage extends Component {
   constructor(props) {
     super(props);
@@ -41,13 +41,33 @@ class FacultyPage extends Component {
       profInfo: {},
       buttonValue: 'Send Email',
       isButtonDisabled: false,
-      tokenId: ''
+      tokenId: '',
+      starred: false
     };
     this.TextEditor = React.createRef();
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.separateInterests = this.separateInterests.bind(this);
+  }
+
+
+  star(){
+    console.log("this is working");
+    let token_id = sessionStorage.getItem('token_id');
+    let type = "faculty";
+    let id = this.props.match.params.id;
+
+    axios.post('/api/undergrads/star', { token_id, type, id })
+    .then((response) => {
+      if(response && response.data){
+        let stars = response.data;
+        this.setState({starred: stars.includes(id)});
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the faculty member
@@ -62,6 +82,15 @@ class FacultyPage extends Component {
         console.log(error);
         Utils.handleTokenError(error);
       });
+    axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
+      .then((response) => {
+        let data = response.data;
+        this.setState({ starred: data.includes(this.props.match.params.id) });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     if (!sessionStorage.getItem('token_id')) {
       console.log('not logged in');
       this.setState({ role: null });
@@ -167,7 +196,13 @@ class FacultyPage extends Component {
                 </div>
                 <div className="column column-5" />
                 <div className="column column-75">
-                  <h3><b>{this.state.profInfo.name}</b></h3>
+                  <h3>
+                    <b>{this.state.profInfo.name}</b>
+                    <Star
+                      update={this.star.bind(this)}
+                      starred={this.state.starred}
+                    />
+                  </h3>
 
                   <p>
                     <b>Professor</b>

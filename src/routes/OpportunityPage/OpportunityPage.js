@@ -50,7 +50,7 @@ class OpportunityPage extends Component {
     console.log("this is working");
     let token_id = sessionStorage.getItem('token_id');
     let type = "opportunity";
-    let id = this.getId();
+    let id = this.props.match.params.id;
 
     axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
@@ -62,14 +62,6 @@ class OpportunityPage extends Component {
     .catch((error) => {
       console.log(error);
     });
-  }
-
-  getId() {
-    // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
-    const url = (window.location.href);
-    const length = url.length;
-    const finURL = url.slice(0, length - 1);
-    return (finURL.slice((finURL.lastIndexOf('/') + 1)));
   }
 
   isEmpty(obj) {
@@ -618,7 +610,7 @@ No Preference
                     && (
                     <a
                       className="button"
-                      href={`/EditOpp?Id=${this.getId()}/`}
+                      href={`/EditOpp?Id=${this.props.match.id}/`}
                     >
 Edit
                       Opportunity
