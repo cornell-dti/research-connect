@@ -67,7 +67,7 @@ class Starred extends React.Component {
         />
       );
     });
-    return oppNodes.slice(0, this.props.limit);
+    return this.props.limit ? oppNodes.slice(0, this.props.limit) : oppNodes;
   }
 
   genFacCards(){
@@ -90,21 +90,8 @@ class Starred extends React.Component {
         />
       );
     });
-    return profNodes.slice(0, this.props.limit);
+    return this.props.limit ? profNodes.slice(0, this.props.limit) : profNodes;
   }
-
-  // genFacDisplay(l){
-  //   let start = l === 1 ? 'There is 1 starred faculty ' : `There are ${l} starred faculty `;
-  //   let end = `out of ${this.state.starred.length} starred faculty`;
-  //   return `${start}displayed ${end}`;
-  // }
-
-  // genOppDisplay(l){
-  //   let start = l === 1 ? 'There is 1 starred opportunity ' : `There are ${l} starred opportunities `;
-  //   let count = this.state.starred.length;
-  //   let end = count === 1 ? `out of ${count} starred opportunity` : `out of ${count} starred opportunities `;
-  //   return `${start}displayed ${end}`;
-  // }
 
   componentWillMount(){
     this.loadData();
@@ -115,18 +102,14 @@ class Starred extends React.Component {
 
     if(this.props.type === "opportunity"){
       nodes = this.genOppCards();
-      // display = this.genOppDisplay(nodes.length);
     }
     else if(this.props.type === "faculty"){
       nodes = this.genFacCards();
-      // display = this.genFacDisplay(nodes.length);
     }
 
     return (
       <div>
-        <div className="node-list-div">
-          <p>View all {this.state.starred.length}</p>
-        </div>
+        {this.props.display(this.props.type, this.state.starred.length)}
         {nodes}
       </div>
     );
@@ -136,6 +119,7 @@ class Starred extends React.Component {
 Starred.propTypes = {
   type: PropTypes.string, //enum for getting starred items API call
   limit: PropTypes.number, //limit of showable starred items
+  display: PropTypes.func
 };
 
 export default Starred;

@@ -4,14 +4,6 @@ import './StudentDashboard.scss';
 import axios from 'axios';
 import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
-// http://react-icons.github.io/react-icons/fa.html
-import User from 'react-icons/lib/fa/user';
-import UserTimes from 'react-icons/lib/fa/graduation-cap';
-import Newspaper from 'react-icons/lib/fa/newspaper-o';
-import Inbox from 'react-icons/lib/fa/inbox';
-import Edit from 'react-icons/lib/fa/edit';
-import * as Utils from '../../components/Utils';
-import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as ReactGA from 'react-ga';
@@ -26,6 +18,14 @@ class StudentDashboard extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  display(t, l){
+    return (
+      <div className="node-list-div">
+        <a href={`/saved${t}`}>View all {l}</a>
+      </div>
+    );
   }
 
   componentWillMount() {
@@ -52,12 +52,6 @@ class StudentDashboard extends Component {
   }
 
   render() {
-    // const override = css`
-	  //   display: block;
-	  //   margin: 0 auto;
-	  //   border-color: red;
-		// `;
-
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
@@ -73,11 +67,6 @@ class StudentDashboard extends Component {
         </div>
       );
     }
-
-    const newspaper = <Newspaper />;
-    const edit = <Edit />;
-    const user = <User />;
-    const userTie = <UserTimes />;
 
     return (
       <div>
@@ -97,6 +86,7 @@ class StudentDashboard extends Component {
                 <Starred
                   type="opportunity"
                   limit={5}
+                  display={this.display}
                 />
               </div>
               <div>
@@ -106,6 +96,7 @@ class StudentDashboard extends Component {
                 <Starred
                   type="faculty"
                   limit={5}
+                  display={this.display}
                 />
               </div>
             </div>

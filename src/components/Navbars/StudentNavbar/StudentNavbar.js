@@ -20,17 +20,17 @@ class StudentNavbar extends Component {
       <div className="header-wrapper">
         <div className="header-all">
           <div className="logo-div">
-            <a href="/opportunities"><img className="logo" src={logo} /></a>
+            <a href="/studentDashboard"><img className="logo" src={logo} /></a>
           </div>
           <nav>
             {/* <li className={this.props.current === 'studentDashboard' ? 'current-page' : ''}>
               <a href="/studentDashboard">Dashboard</a>
             </li> */}
             <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-              <a href="/opportunities">View Opportunities</a>
+              <a href="/opportunities">Opportunities</a>
             </li>
             <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
-              <a href="/faculty">Email Faculty</a>
+              <a href="/faculty">Faculty</a>
             </li>
             <li className={this.props.current === 'guide' ? 'current-page' : ''}>
               <a href="/guide">How to Find Research</a>
