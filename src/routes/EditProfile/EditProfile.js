@@ -549,12 +549,13 @@ Uploaded:
                       </div>
                     )
                     : (
-                      <h5>
-                        {' '}
+                      <h5 aria-label = "edit-icon">
+                        {
                         <Pencil
-                            size={20} className="pencil-icon"
+                            size={20} className="pencil-icon" alt = "edit"
                             onClick={this.handleEditResume.bind(this)}
                           />
+                        }
                       </h5>
                     )
                                     }

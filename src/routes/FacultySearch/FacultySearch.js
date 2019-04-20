@@ -174,6 +174,7 @@ class FacultySearch extends Component {
                 type="text"
                 name="search"
                 placeholder="Search by keywords, departments, interest, name, etc."
+                aria-label = "Search"
             />
 
             <div className="column column-10 delete-div">

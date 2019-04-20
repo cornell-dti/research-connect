@@ -64,6 +64,7 @@ class SearchBar extends React.Component {
               type="text"
               name="search"
               placeholder="Search keywords (e.g. machine learning, programming languages, computer science)"
+              aria-label = "Search"
           />
           <div className="delete-div">
             {
