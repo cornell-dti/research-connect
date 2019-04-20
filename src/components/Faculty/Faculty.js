@@ -47,7 +47,7 @@ class Faculty extends Component {
           <div className="column column-90">
             <h4>{ this.props.name }</h4>
             <h5>{this.props.department}</h5>
-            {this.props.lab != null
+            {this.props.lab !== null
               ?( <h5>{this.props.lab}</h5>)
               : <br/>}
            
