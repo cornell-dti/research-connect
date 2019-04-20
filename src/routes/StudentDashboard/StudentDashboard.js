@@ -22,11 +22,10 @@ class StudentDashboard extends Component {
     super(props);
     this.state = {
       loading: true,
-      name: '',
+      name: ''
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
   }
 
   componentWillMount() {
@@ -88,50 +87,29 @@ class StudentDashboard extends Component {
           <div className="row">
             <div className="column column-50">
               <div className="dashboard-header">
-Welcome back
-                {' '}
-                {this.state.name}
-!
+                Welcome back, {this.state.name}!
               </div>
 
-              <DashboardAction
-                icon={edit}
-                iconColor="#A5CCFE"
-                text="View Opportunities"
-                href="/opportunities"
-              />
-              <DashboardAction
-                icon={userTie}
-                iconColor="#F5FEAB"
-                text="View & Email Faculty"
-                href="/faculty"
-              />
-              <DashboardAction
-                icon={user}
-                iconColor="#FEABCD"
-                text="Edit Your Profile"
-                href="/editprofile"
-              />
-              <DashboardAction
-                icon={newspaper}
-                iconColor="#91D781"
-                text="Contact Us"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform"
-              />
-
+              <div>
+                <div>
+                  Your Saved Opportunities
+                </div>
+                <Starred
+                  type="opportunity"
+                  limit={5}
+                />
+              </div>
+              <div>
+                <div>
+                  Your Saved Faculty
+                </div>
+                <Starred
+                  type="faculty"
+                  limit={5}
+                />
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="student-dash-container">
-          <Starred 
-            type="opportunities"
-            limit={10}
-          />
-          <Starred 
-            type="faculty"
-            limit={10}
-          />
         </div>
 
         <Footer />
