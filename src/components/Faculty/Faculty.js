@@ -10,6 +10,7 @@ class Faculty extends Component {
 
   convertDescription(str) {
     // if string is empty
+    console.log(this.props.lab);
     if (!str) {
       return '';
     }
@@ -47,7 +48,7 @@ class Faculty extends Component {
           <div className="column column-90">
             <h4>{ this.props.name }</h4>
             <h5>{this.props.department}</h5>
-            {this.props.lab !== null
+            {this.props.lab !== null && this.propslab !== "" && this.props.lab !== undefined
               ?( <h5>{this.props.lab}</h5>)
               : <br/>}
            
