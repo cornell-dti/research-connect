@@ -15,7 +15,7 @@ import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as ReactGA from 'react-ga';
-
+import Starred from '../../components/StarredItems/Starred';
 
 class StudentDashboard extends Component {
   constructor(props) {
@@ -121,6 +121,17 @@ Welcome back
 
             </div>
           </div>
+        </div>
+
+        <div className="student-dash-container">
+          <Starred 
+            type="opportunities"
+            limit={10}
+          />
+          <Starred 
+            type="faculty"
+            limit={10}
+          />
         </div>
 
         <Footer />

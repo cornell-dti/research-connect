@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
+import Faculty from '../Faculty/Faculty';
+import Opportunity from '../Opportunity/Opportunity';
 
 class Starred extends React.Component {
   constructor(props){
@@ -9,11 +10,22 @@ class Starred extends React.Component {
     this.state = {starred: [], data : []};
   }
 
-  getStarred(){
-    axios.get(`/api/undergrads/star?type=${this.props.type}&token_id=${sessionStorage.getItem('token_id')}`)
+  loadData(){
+    // line below is necessary because backend has different naming conventions
+    let wrapper = this.props.type === "opportunities" ? "opportunity" : "faculty";
+
+    axios.get(`/api/undergrads/star?type=${wrapper}&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
       let data = response.data;
-      this.setState({starred: data});
+      axios.get(`/api/${this.props.type}`)
+      .then((res) => {
+        let all = res.data;
+        console.log(data);
+        console.log(all);
+        let onlyStarred = all.filter(i => data.includes(i._id))
+        this.setState({starred: data, data: onlyStarred});
+        console.log("got up tto here");
+      });
     })
     .catch((error)=> {
       console.log(error);
@@ -23,7 +35,6 @@ class Starred extends React.Component {
   updateStar(id){
     let token_id = sessionStorage.getItem('token_id');
     let type = this.props.type;
-    let id = id;
 
     axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
@@ -60,7 +71,7 @@ class Starred extends React.Component {
   }
 
   genFacCards(){
-    let profNodes = this.state.data.map((prof, idx) => {
+    let profNodes = this.state.data.map((prof) => {
       let starred = this.state.starred.includes(prof['_id']);
       if(starred){
         return (
@@ -84,20 +95,26 @@ class Starred extends React.Component {
     return profNodes;
   }
 
+  countNodes(nodes) {
+    const tempCount = nodes.filter(node => !(!node)).length;
+      return tempCount === 1 ? 'There is 1 result' : tempCount === 0 ? 
+      'There are no results' : `There are ${tempCount} results`;
+  }
+
   componentDidMount(){
-    this.getStarred();
+    this.loadData();
   }
 
   render() {
     let nodes;
 
-    if(type == "opportunity"){
+    if(this.props.type === "opportunities"){
       nodes = this.genOppCards();
     }
-    else if(type == "faculty"){
+    else if(this.props.type === "faculty"){
       nodes = this.genFacCards();
     }
-    nodes = nodes.slice(0, this.props.max);
+    nodes = nodes.slice(0, this.props.limit);
     let nodeCount = this.countNodes(nodes);
 
     return (
@@ -115,7 +132,7 @@ class Starred extends React.Component {
 
 Starred.propTypes = {
   type: PropTypes.string, //enum for getting starred items API call
-  max: PropTypes.number, //limit of showable starred items
+  limit: PropTypes.number, //limit of showable starred items
 };
 
 export default Starred;
