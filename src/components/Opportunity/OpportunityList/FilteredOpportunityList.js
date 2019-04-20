@@ -26,7 +26,7 @@ class FilteredOpportunityList extends Component {
   }
 
   filterOpps(opp) {
-    axios.get(`/api/undergrads/${sessionStorage.getItem('token_id')}`)
+    axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then((res) => {
         const info = res.data[0];
         const uGradYear = Utils.gradYearToString(info.gradYear);
