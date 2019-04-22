@@ -20,7 +20,7 @@ class StudentNavbar extends Component {
       <div className="header-wrapper">
         <div className="header-all">
           <div className="logo-div">
-            <a href="/opportunities"><img className="logo" src={logo} /></a>
+            <a href="/opportunities"><img className="logo" src={logo} alt = "Research Connect Logo"/></a>
           </div>
           <nav>
             {/* <li className={this.props.current === 'studentDashboard' ? 'current-page' : ''}>
