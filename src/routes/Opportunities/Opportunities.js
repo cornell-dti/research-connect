@@ -189,8 +189,8 @@ class Opportunities extends Component {
           <div className="column column-20">
             <div className="filter-box">
 
-              <Filter label="Filter by..." style={{ textAlign: 'center' }} />
-
+              <Filter label="Filter by..."/>
+              <hr />
               <SchoolYearFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />
