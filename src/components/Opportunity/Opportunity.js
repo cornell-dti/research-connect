@@ -129,7 +129,8 @@ class Opportunity extends Component {
               <Star
                 update={this.star.bind(this)}
                 starred={this.props.starred}
-              /></div>
+              />
+            </div>
           </div>
 
           <div className="column column-25">

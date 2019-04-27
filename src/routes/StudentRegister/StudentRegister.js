@@ -68,7 +68,6 @@ class StudentRegister extends Component {
         name={inputName}
         value={inputName}
         onChange={this.onChange}
-
       >
         <option id={inputName} key="empty" value="">{placehold}</option>
         {newArray}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Faculty from '../Faculty/Faculty';
 import Opportunity from '../Opportunity/Opportunity';
+import './Starred.scss';
 
 class Starred extends React.Component {
   constructor(props){
@@ -93,6 +94,21 @@ class Starred extends React.Component {
     return this.props.limit ? profNodes.slice(0, this.props.limit) : profNodes;
   }
 
+  display(){
+    if(this.props.label){
+      return (
+        <div>
+          <p className="labelheader">
+            {this.props.label} 
+            <a href={`/saved${this.props.type}`} className={`${this.props.type}link`}>
+              VIEW ALL {this.state.starred.length} >
+            </a>
+          </p>
+        </div>
+      );
+    }
+  }
+
   componentWillMount(){
     this.loadData();
   }
@@ -106,11 +122,13 @@ class Starred extends React.Component {
     else if(this.props.type === "faculty"){
       nodes = this.genFacCards();
     }
-
+    
     return (
-      <div>
-        {this.props.display(this.props.type, this.state.starred.length)}
-        {nodes}
+      <div className="wrapper"> 
+        { this.display() }
+        <div className="node-list-div">
+          {nodes}
+        </div>
       </div>
     );
   }//end render
@@ -119,7 +137,7 @@ class Starred extends React.Component {
 Starred.propTypes = {
   type: PropTypes.string, //enum for getting starred items API call
   limit: PropTypes.number, //limit of showable starred items
-  display: PropTypes.func
+  label: PropTypes.string
 };
 
 export default Starred;

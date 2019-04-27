@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './StudentDashboard.scss';
 import axios from 'axios';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
@@ -18,14 +17,6 @@ class StudentDashboard extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-  }
-
-  display(t, l){
-    return (
-      <div className="node-list-div">
-        <a href={`/saved${t}`}>View all {l}</a>
-      </div>
-    );
   }
 
   componentWillMount() {
@@ -74,31 +65,26 @@ class StudentDashboard extends Component {
 
         <div className="student-dash-container">
           <div className="row">
-            <div className="column column-50">
+            <div className="column column-10"></div>
+            <div className="column column-80">
               <div className="dashboard-header">
                 Welcome back, {this.state.name}!
               </div>
 
-              <div>
-                <div>
-                  Your Saved Opportunities
-                </div>
-                <Starred
-                  type="opportunity"
-                  limit={5}
-                  display={this.display}
-                />
+              <div className="bottom">
+              <Starred
+                type="opportunity"
+                limit={3}
+                label="Your Saved Opportunities"
+              />
+
+              <Starred
+                type="faculty"
+                limit={3}
+                label="Your Saved Faculty"
+              />
               </div>
-              <div>
-                <div>
-                  Your Saved Faculty
-                </div>
-                <Starred
-                  type="faculty"
-                  limit={5}
-                  display={this.display}
-                />
-              </div>
+
             </div>
           </div>
         </div>
