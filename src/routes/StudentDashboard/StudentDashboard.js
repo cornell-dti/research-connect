@@ -22,7 +22,7 @@ class StudentDashboard extends Component {
   componentWillMount() {
     axios.all([
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
-      axios.get(`/api/undergrads/${sessionStorage.getItem('token_id')}`),
+      axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`),
     ])
       .then(axios.spread((role, res) => {
         if (role.data !== 'undergrad') {

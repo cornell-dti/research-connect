@@ -110,7 +110,7 @@ app.get('/isStarred', (req, res) => {
   });
 });
 
-app.get('/:tokenId', (req, res) => {
+app.get('/token/:tokenId', (req, res) => {
   verify(req.params.tokenId, (decrypted) => {
     if (!decrypted) {
       return res.send([]);

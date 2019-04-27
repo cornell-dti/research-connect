@@ -55,7 +55,7 @@ class EditProfile extends Component {
 
   loadInfoFromServer() {
     console.log('Begin loadInfoFromServer');
-    axios.get(`/api/undergrads/${sessionStorage.getItem('token_id')}`)
+    axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then((res) => {
         const info = res.data[0];
         const skills = info.skills === undefined ? [] : info.skills;
@@ -549,12 +549,13 @@ Uploaded:
                       </div>
                     )
                     : (
-                      <h5>
-                        {' '}
+                      <h5 aria-label = "edit-icon">
+                        {
                         <Pencil
-                            size={20} className="pencil-icon"
+                            size={20} className="pencil-icon" alt = "edit"
                             onClick={this.handleEditResume.bind(this)}
                           />
+                        }
                       </h5>
                     )
                                     }

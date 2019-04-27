@@ -128,7 +128,7 @@ class OpportunityPage extends Component {
   };
 
   getUndergradData() {
-    return axios.get(`/api/undergrads/${sessionStorage.getItem('token_id')}`)
+    return axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then(response => (response.data ? response.data : null))
       .catch((error) => {
         this.sendToHome(error);
@@ -203,7 +203,7 @@ class OpportunityPage extends Component {
         }
       });
 
-       axios.get('/api/undergrads/' + sessionStorage.getItem('token_id'))
+       axios.get('/api/undergrads/token' + sessionStorage.getItem('token_id'))
        .then((response) => {
         if (!this.isEmpty(response.data)) {
           this.setState({ netId: response.data[0].netId });

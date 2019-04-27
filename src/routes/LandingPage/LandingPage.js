@@ -145,7 +145,7 @@ class Landing extends Component {
         <header>
           <h2>
             <a href="/">
-              <img alt="Research Connect" className="logo" src={logoWithText} />
+              <img alt="Research Connect logo" className="logo" src={logoWithText} />
             </a>
           </h2>
 
@@ -186,27 +186,27 @@ class Landing extends Component {
             {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
             {/*</Row>*/}
             <Row>
-              <p className="big ">Explore Popular Areas of Interest</p>
+              <h2 class ="big ">Explore Popular Areas of Interest</h2>
             </Row>
             <Row>
               <Col className="text-center">
-                <Row><img className="middleImage" src={blueIcon} /></Row>
+                <Row><img className="middleImage" src={blueIcon} alt = ""/></Row>
                 <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={greenIcon} /> </Row>
+                <Row><img className="middleImage" src={greenIcon} alt = ""/> </Row>
                 <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={redIcon} /></Row>
+                <Row><img className="middleImage" src={redIcon} alt = ""/></Row>
                 <Row> <p>MACHINE LEARNING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={yellowIcon} /></Row>
+                <Row><img className="middleImage" src={yellowIcon} alt = ""/></Row>
                 <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={purpleIcon} /></Row>
+                <Row><img className="middleImage" src={purpleIcon} alt = ""/></Row>
                 <Row> <p>COMPUTER VISION</p> </Row>
               </Col>
 
@@ -219,29 +219,29 @@ class Landing extends Component {
             <h2>Discover your passion.</h2>
             <section>
               <Row className="picRow">
-                <Col><img id="list-image1" src={pen} height="72" width="100" /></Col>
+                <Col><img id="list-image1" src={pen} height="72" width="100" alt = "pen"/></Col>
                 <Col><p className="picP">Search for computer science opportunities and stop guessing who is accepting.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image2" src={img2} height="72" width="100" /></Col>
+                <Col><img id="list-image2" src={img2} height="72" width="100" alt = "magnifying glass"/></Col>
                 <Col><p className="picP">Get help writing emails to professors.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image3" src={lightbulb} height="72" width="100" /></Col>
+                <Col><img id="list-image3" src={lightbulb} height="72" width="100" alt = "lightbulb"/></Col>
                 <Col><p className="picP">View our complete guide on finding research.</p></Col>
               </Row>
 
             </section>
           </div>
           <div>
-            <img className="triangle" src={triangler} alt="research connect logo" />
+            <img className="triangle" src={triangler} alt="opportunities page screenshot" />
           </div>
         </section>
 
 
         <section id="forstudents" className="our-work for-students">
           <div>
-            <img className="triangle" src={trianglel} alt="research connect logo" />
+            <img className="triangle" src={trianglel} alt="application screenshot" />
           </div>
 
           <div className="students-title">
@@ -256,20 +256,20 @@ class Landing extends Component {
               <Row>
                 <section className="list">
                   <Row className="picRow">
-                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><img className="list-image" src={check} alt = "check"/></Col>
 
                     <Col>
 
                       <p className="picP">Apply to positions without having to guess if they’re open.</p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><img className="list-image" src={check} alt = "check"/></Col>
                     <Col>
 
                       <p>Search for opportunities by sorting by your interests. </p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-image" src={check} /></Col>
+                    <Col><img className="list-image" src={check} alt = "check"/></Col>
                     <Col>
 
                       <p>Connect with leading researchers! in fields that inspire you.</p></Col>
@@ -306,20 +306,20 @@ class Landing extends Component {
         </section>
 
         <footer className="footer-all">
-          <ul>
-            <li><a href="#"><i className="fa fa-twitter-square" /></a></li>
-            <li><a href="#"><i className="fa fa-facebook-square" /></a></li>
-            <li><a href="#"><i className="fa fa-snapchat-square" /></a></li>
-            <li><a href="mailto:acb352@cornell.edu"><i className="fas fa-envelope" /></a></li>
+          {/* <ul>
+            <li><a href="#" aria-label = "twitter"><i className="fa fa-twitter-square" /></a></li>
+            <li><a href="#" aria-label = "facebook"><i className="fa fa-facebook-square" /></a></li>
+            <li><a href="#" aria-label = "snapchat"><i className="fa fa-snapchat-square" /></a></li>
+            <li><a href="mailto:acb352@cornell.edu" aria-label = "email"><i className="fas fa-envelope" /></a></li>
             <li>
-              <a href="https://github.com/cornell-dti/research-connect">
+              <a href="https://github.com/cornell-dti/research-connect" aria-label = "github">
                 <i className="fa fa-github-square" />
               </a>
             </li>
-          </ul>
+          </ul> */}
           <p>Created by</p>
           <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
-            <img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo" />
+            <img className="CDTIlogo" src={CDTIlogo} alt="Cornell Design & Tech Initiative" />
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
