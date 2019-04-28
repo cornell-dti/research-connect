@@ -7,7 +7,8 @@
   .dashboard-header {
     font-size: 48px;
     color: black;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
+    font-weight: 400;
   }
 }
 
@@ -16,4 +17,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.bottom {
+  margin-bottom: 100px;
 }

@@ -20,6 +20,8 @@ import Doc from './routes/Doc/Doc';
 import LandingPage from './routes/LandingPage/LandingPage';
 import ProfessorLanding from './routes/ProfessorLanding/ProfessorLanding';
 import ResearchGuide from './routes/ResearchGuide/ResearchGuide';
+import SavedOpportunties from './routes/SavedOpportunities/SavedOpportunities';
+import SavedFaculty from './routes/SavedFaculty/SavedFaculty';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -40,6 +42,8 @@ ReactDOM.render(
         <Route exact path="/guide" component={ResearchGuide} />
         <Route path="/doc/:id" component={Doc} />
         <Route exact path="/editProfile" component={EditProfile} />
+        <Route exact path ='/savedopportunity' component={SavedOpportunties} />
+        <Route exact path ='/savedfaculty' component={SavedFaculty} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/*" component={Error} />
       </Switch>
