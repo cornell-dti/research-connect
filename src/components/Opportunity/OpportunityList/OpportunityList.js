@@ -130,6 +130,7 @@ class OpportunityList extends Component {
             spots={opp.spots}
             opId={opp._id}
             starred={starred}
+            datePosted={opp.datePosted}
             updateStar={this.updateStar.bind(this)}
           />
         );

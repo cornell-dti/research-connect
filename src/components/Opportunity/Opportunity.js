@@ -130,6 +130,7 @@ class Opportunity extends Component {
                 update={this.star.bind(this)}
                 starred={this.props.starred}
               /></div>
+            <div>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>
           </div>
 
           <div className="column column-25">
