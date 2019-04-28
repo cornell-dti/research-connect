@@ -145,7 +145,7 @@ class Landing extends Component {
         <header>
           <h2>
             <a href="/">
-              <img alt="Research Connect" className="logo" src={logoWithText} />
+              <img alt="Research Connect logo" className="logo" src={logoWithText} />
             </a>
           </h2>
 
@@ -190,23 +190,23 @@ class Landing extends Component {
             </Row>
             <Row>
               <Col className="text-center">
-                <Row><img className="middleImage" src={blueIcon} alt = "data science icon"/></Row>
+                <Row><img className="middleImage" src={blueIcon} alt = ""/></Row>
                 <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={greenIcon} alt = "computational biology icon"/> </Row>
+                <Row><img className="middleImage" src={greenIcon} alt = ""/> </Row>
                 <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={redIcon} alt = "machine learning icon"/></Row>
+                <Row><img className="middleImage" src={redIcon} alt = ""/></Row>
                 <Row> <p>MACHINE LEARNING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={yellowIcon} alt = "natural language processing icon"/></Row>
+                <Row><img className="middleImage" src={yellowIcon} alt = ""/></Row>
                 <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={purpleIcon} alt = "computer vision icon"/></Row>
+                <Row><img className="middleImage" src={purpleIcon} alt = ""/></Row>
                 <Row> <p>COMPUTER VISION</p> </Row>
               </Col>
 
@@ -306,7 +306,7 @@ class Landing extends Component {
         </section>
 
         <footer className="footer-all">
-          <ul>
+          {/* <ul>
             <li><a href="#" aria-label = "twitter"><i className="fa fa-twitter-square" /></a></li>
             <li><a href="#" aria-label = "facebook"><i className="fa fa-facebook-square" /></a></li>
             <li><a href="#" aria-label = "snapchat"><i className="fa fa-snapchat-square" /></a></li>
@@ -316,10 +316,10 @@ class Landing extends Component {
                 <i className="fa fa-github-square" />
               </a>
             </li>
-          </ul>
+          </ul> */}
           <p>Created by</p>
           <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
-            <img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo" />
+            <img className="CDTIlogo" src={CDTIlogo} alt="Cornell Design & Tech Initiative" />
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
