@@ -43,7 +43,6 @@ class OpportunityList extends Component {
     const tempCount = nodes.filter(node => !(!node)).length;
       return tempCount === 1 ? 'There is 1 result' : tempCount === 0 ? 
       'There are no results' : `There are ${tempCount} results`;
-    
   }
 
   union(arr1, arr2) {

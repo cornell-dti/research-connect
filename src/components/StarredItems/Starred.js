@@ -1,19 +1,34 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
+import Faculty from '../Faculty/Faculty';
+import Opportunity from '../Opportunity/Opportunity';
+import './Starred.scss';
 
 class Starred extends React.Component {
   constructor(props){
     super(props);
-    this.state = {starred: [], data : []};
+    this.state = {starred: [], data: []};
   }
 
-  getStarred(){
+  loadData(){
+    // line below is necessary because backend has different naming conventions,
+    // api/undergrads uses opportunity
+    // api/opportunities 
+    let wrapper = this.props.type === "opportunity" ? "opportunities" : "faculty";
+
     axios.get(`/api/undergrads/star?type=${this.props.type}&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
       let data = response.data;
-      this.setState({starred: data});
+      axios.get(`/api/${wrapper}`)
+      .then((res) => {
+        let all = res.data;
+        console.log(data);
+        console.log(all);
+        let onlyStarred = all.filter(i => data.includes(i._id))
+        this.setState({data: onlyStarred, starred: data});
+        console.log("got up to here");
+      });
     })
     .catch((error)=> {
       console.log(error);
@@ -22,8 +37,7 @@ class Starred extends React.Component {
 
   updateStar(id){
     let token_id = sessionStorage.getItem('token_id');
-    let type = this.props.type;
-    let id = id;
+    let type = this.props.type 
 
     axios.post('/api/undergrads/star', { token_id, type, id })
     .then((response) => {
@@ -40,74 +54,81 @@ class Starred extends React.Component {
   genOppCards() {
     const oppNodes = this.state.data.map((opp) => {
       let starred = this.state.starred.includes(opp._id);
-      if(starred){
-        return (
-          <Opportunity
-            title={opp.title}
-            projectDescription={opp.projectDescription}
-            prereqsMatch={opp.prereqsMatch}
-            opId={opp._id}
-            opens={opp.opens}
-            closes={opp.closes}
-            undergradTasks={opp.undergradTasks}
-            starred={starred}
-            updateStar={this.updateStar.bind(this)}
-          />
-        );
-      }
+      return (
+        <Opportunity
+          title={opp.title}
+          projectDescription={opp.projectDescription}
+          prereqsMatch={opp.prereqsMatch}
+          opId={opp._id}
+          opens={opp.opens}
+          closes={opp.closes}
+          undergradTasks={opp.undergradTasks}
+          starred={starred}
+          updateStar={this.updateStar.bind(this)}
+        />
+      );
     });
-    return oppNodes;
+    return this.props.limit ? oppNodes.slice(0, this.props.limit) : oppNodes;
   }
 
   genFacCards(){
-    let profNodes = this.state.data.map((prof, idx) => {
+    let profNodes = this.state.data.map((prof) => {
       let starred = this.state.starred.includes(prof['_id']);
-      if(starred){
-        return (
-          <Faculty
-            key={prof['_id']}
-            ID={prof['_id']}
-            filteredOptions={this.props.filteredOptions}
-            name={prof['name']}
-            department={prof['department']}
-            lab={prof['lab']}
-            photoId={prof['photoId']}
-            bio={prof['bio']}
-            researchInterests={prof['researchInterests']}
-            researchDescription={prof['researchDescription']}
-            starred={starred}
-            updateStar={this.updateStar.bind(this)}
-          />
-        );
-      }
+      return (
+        <Faculty
+          key={prof['_id']}
+          ID={prof['_id']}
+          filteredOptions={this.props.filteredOptions}
+          name={prof['name']}
+          department={prof['department']}
+          lab={prof['lab']}
+          photoId={prof['photoId']}
+          bio={prof['bio']}
+          researchInterests={prof['researchInterests']}
+          researchDescription={prof['researchDescription']}
+          starred={starred}
+          updateStar={this.updateStar.bind(this)}
+        />
+      );
     });
-    return profNodes;
+    return this.props.limit ? profNodes.slice(0, this.props.limit) : profNodes;
   }
 
-  componentDidMount(){
-    this.getStarred();
+  display(){
+    if(this.props.label){
+      return (
+        <div>
+          <p className="labelheader">
+            {this.props.label} 
+            <a href={`/saved${this.props.type}`} className={`${this.props.type}link`}>
+              VIEW ALL {this.state.starred.length} >
+            </a>
+          </p>
+        </div>
+      );
+    }
+  }
+
+  componentWillMount(){
+    this.loadData();
   }
 
   render() {
     let nodes;
 
-    if(type == "opportunity"){
+    if(this.props.type === "opportunity"){
       nodes = this.genOppCards();
     }
-    else if(type == "faculty"){
+    else if(this.props.type === "faculty"){
       nodes = this.genFacCards();
     }
-    nodes = nodes.slice(0, this.props.max);
-    let nodeCount = this.countNodes(nodes);
-
+    
     return (
-      <div>
+      <div className="wrapper"> 
+        { this.display() }
         <div className="node-list-div">
-          <p>
-            {nodeCount} matching your search criteria.
-          </p>
+          {nodes}
         </div>
-        {nodes}
       </div>
     );
   }//end render
@@ -115,7 +136,8 @@ class Starred extends React.Component {
 
 Starred.propTypes = {
   type: PropTypes.string, //enum for getting starred items API call
-  max: PropTypes.number, //limit of showable starred items
+  limit: PropTypes.number, //limit of showable starred items
+  label: PropTypes.string
 };
 
 export default Starred;

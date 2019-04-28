@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import '../App/App.scss';
 import Dropzone from 'react-dropzone';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar.js';
 import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
@@ -14,7 +13,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 const majorList = Utils.getMajorList();
 const gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
 
-class StudentRegister extends React.Component {
+class StudentRegister extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +68,6 @@ class StudentRegister extends React.Component {
         name={inputName}
         value={inputName}
         onChange={this.onChange}
-
       >
         <option id={inputName} key="empty" value="">{placehold}</option>
         {newArray}
