@@ -30,7 +30,7 @@ class StudentNavbar extends Component {
             </li>
             <li className={this.props.current === 'guide' ? 'current-page' : ''}>
               <a href="/guide">How to Find Research</a>
-            </li>g
+            </li>
             <li className={this.props.current === 'editprofile' ? 'current-page' : ''}>
               <a href="/editprofile">My Profile</a>
             </li>
