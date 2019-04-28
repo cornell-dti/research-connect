@@ -274,16 +274,7 @@ class ProfessorLanding extends Component {
         </section>
 
 
-        {/*<section className="incollab">*/}
-          {/*<Container className="middleContainer">*/}
-            {/*<Row>*/}
-              {/*<Col><p className="collab">In Collabortation with ...     </p></Col>*/}
-              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
-              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
-              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
-            {/*</Row>*/}
-          {/*</Container>*/}
-        {/*</section>*/}
+
 
         <footer className="footer-all">
           <ul>
