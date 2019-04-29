@@ -248,7 +248,6 @@ class EditProfile extends Component {
     }
     return <div className="display-list">{list}</div>;
   }
-
   displaySkills() {
     const list = [];
     if (this.state.editSkills) {
@@ -282,6 +281,7 @@ class EditProfile extends Component {
             placeholder="Add new skill here"
             value={this.state.newSkill}
           />
+    
           <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill.bind(this)} />
           {list}
         </div>
