@@ -394,18 +394,10 @@ col {
 .container{
     width : 100%;
     margin-top: 5%;
-    margin-bottom: 5%;
-    margin-left: 5%;
+    margin: 0;
+     justify-content: center
 }
-.container .middleContainer{
-    margin-top: 5%;
-    padding: 0;
-    margin-bottom: 5%;
-    margin-left: 5%;
-    width : 100%;
 
-
-}
 .row{
     align-items: center;
     padding: 0;

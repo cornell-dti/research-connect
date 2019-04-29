@@ -57,8 +57,9 @@
 .landingPage section{
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 10px 10%;
+    align-items: center;
+    padding: 10px 10%;
+    padding-bottom: 0px;
 }
 
 .landingPage  .background-image {
@@ -633,7 +634,7 @@ col {
     background-color: white;
 }
 .landingPage section.why-us{
-    padding-top: 80px;
+    padding-top: 0px;
     padding-right: 0px;
     background-color: white;
 
