@@ -480,13 +480,6 @@ col {
         max-width: none;
     }
 
-
-
-
-
-    
-
-
 .container{
     width : 100%;
     margin-top: 5%;
@@ -840,6 +833,10 @@ body{
     }
 
 }
+
+div#search {
+    max-width: 700px;
+}
   .search-div-container {
 
     background-color: white;
@@ -883,4 +880,8 @@ body{
     #bsaHolder {
         display: none;
     }
+}
+
+SearchBar .search{
+    max-width: 600px;
 }

@@ -780,7 +780,7 @@ create an account
                   )
                 }
             </div>
-            <div className="column">
+            <div className="column" >
               <div className="opp-qualifications">
                 <div className="opp-qual-title">
                   <div>Preferred Qualifications</div>

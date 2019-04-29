@@ -76,14 +76,24 @@
       text-align: center;
     }
   }
+      
+    .column{
+      margin-top: 10px;
+      padding-top: 10px;
+    }
 
   .opp-qualifications {
 
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-    //margin-top: 80px;
+    margin-top: 80px;
     margin-left: 45px;
+    
+    .column{
+      margin-top: 10px;
+      padding-top: 10px;
+    }
 
     h6 {
       color: #0b0b0b;
@@ -106,7 +116,7 @@
     }
 
     .opp-qual-title {
-      background-color: #b31b1b;
+      background-color: gray;
       width: 100%;
       text-align: center;
       color: white;
