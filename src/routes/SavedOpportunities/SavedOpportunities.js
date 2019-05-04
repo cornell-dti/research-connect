@@ -8,18 +8,18 @@ class SavedOpportunities extends Component {
   constructor(props) {
     super(props);
   }
-  
-  display(t,l){
+
+  display(t, l) {
     return;
   }
 
   render() {
     return (
       <div>
-        <Navbar current="studentDashboard" />
+        <Navbar current="savedops" />
         <div className="student-dash-container">
           <div className="row">
-          <div className="column column-10"></div>
+            <div className="column column-10"></div>
             <div className="column column-80">
               <div className="dashboard-header">
                 Your Saved Opportunities

@@ -9,22 +9,22 @@ class SavedFaculty extends Component {
     super(props);
   }
 
-  display(t,l){
+  display(t, l) {
     return;
   }
 
   render() {
     return (
       <div>
-        <Navbar current="studentDashboard" />
+        <Navbar current="savedfac" />
         <div className="student-dash-container">
           <div className="row">
-          <div className="column column-10"></div>
+            <div className="column column-10"></div>
             <div className="column column-80">
               <div className="dashboard-header">
                 Your Saved Faculty
               </div>
-              <Starred type="faculty" display={this.display}/>
+              <Starred type="faculty" display={this.display} />
             </div>
           </div>
         </div>
