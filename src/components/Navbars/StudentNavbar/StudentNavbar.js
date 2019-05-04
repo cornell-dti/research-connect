@@ -19,7 +19,7 @@ class StudentNavbar extends Component {
       <div className="header-wrapper">
         <div className="header-all">
           <div className="logo-div">
-            <a href="/studentDashboard"><img className="logo" src={logo} alt = "Research Connect Logo"/></a>
+            <a href="/studentDashboard"><img className="logo" src={logo} alt="Research Connect Logo" /></a>
           </div>
           <nav>
             <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
@@ -28,6 +28,15 @@ class StudentNavbar extends Component {
             <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
               <a href="/faculty">Faculty</a>
             </li>
+
+            <li className={this.props.current === 'savedops' ? 'current-page' : ''}>
+              <a href="/savedopportunity">Saved Opportunities</a>
+            </li>
+
+            <li className={this.props.current === 'savedfac' ? 'current-page' : ''}>
+              <a href="/savedfaculty">Saved Faculty</a>
+            </li>
+
             <li className={this.props.current === 'guide' ? 'current-page' : ''}>
               <a href="/guide">How to Find Research</a>
             </li>

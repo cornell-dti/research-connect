@@ -47,9 +47,11 @@ class StudentDashboard extends Component {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            style = {{display: "block",
-            margin: 0,
-            borderColor: "red"}}
+            style={{
+              display: "block",
+              margin: 0,
+              borderColor: "red"
+            }}
             sizeUnit="px"
             size={150}
             color="#ff0000"
@@ -72,17 +74,17 @@ class StudentDashboard extends Component {
               </div>
 
               <div className="bottom">
-              <Starred
-                type="opportunity"
-                limit={3}
-                label="Your Saved Opportunities"
-              />
+                <Starred
+                  type="opportunity"
+                  limit={3}
+                  label="Your Saved Opportunities"
+                />
 
-              <Starred
-                type="faculty"
-                limit={3}
-                label="Your Saved Faculty"
-              />
+                <Starred
+                  type="faculty"
+                  limit={3}
+                  label="Your Saved Faculty"
+                />
               </div>
 
             </div>
