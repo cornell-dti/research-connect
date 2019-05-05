@@ -70,14 +70,11 @@ class Opportunities extends Component {
     // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        /* if (!response || response.data === "none" || !response.data) {
-          alert("You must be signed in to view this.");
-          window.location.href = '/';
+        if (!response || response.data === "none" || !response.data) {
         }
         else{
           this.setState({role: response.data});
-        } */
-        this.setState({ role: response.data });
+        } 
       })
       .catch((error) => {
         Utils.handleTokenError(error);
