@@ -146,7 +146,7 @@ class ProfessorLanding extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Lab Log In"
+                  buttonText="Lab Log In/Sign Up"
                   onSuccess={this.responseGoogle}
                   onFailure={this.loginFailure.bind(this)}
                   className="signup"

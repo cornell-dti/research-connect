@@ -46,8 +46,7 @@ class OpportunityList extends Component {
   }
 
   union(arr1, arr2) {
-    const arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
-    return arr3;
+    return arr1.filter(i => arr2.indexOf(i) > -1);
   }
 
   checkboxFilter(filterSelected, filterAllowed) {

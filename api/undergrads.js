@@ -64,13 +64,14 @@ app.get('/star', (req, res) => {
       debug("netid");
       if (err) {
         debug('Not found');
-        return err;
+        return res.status(500).send([]);
       }
       debug('Found');
       if (undergrads.length) {
       }
       else {
         debug('no results found');
+        return res.send([]);
       }
       if(req.query.type === 'opportunity') {
         return res.send(undergrads[0].starredOpportunities);
@@ -316,6 +317,10 @@ app.post('/star', (req, res) => {
       if (err) {
         res.status(500).send(err);
       } else {
+        // this would happen if a lab admin is POSTing
+        if (!undergrad.length) {
+          return res.send([]);
+        }
         let arr = [];
         if (itemId) {
           if (type === 'opportunity') {
