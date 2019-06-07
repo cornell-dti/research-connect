@@ -4,7 +4,7 @@
  */
 const express = require('express');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, labModel, mongoose, debug, handleVerifyError
+  undergradModel, labAdministratorModel, opportunityModel, labModel, mongoose, debug, handleVerifyError, verify
 } = require('../common.js');
 
 const app = express.Router();
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
       return res.send(err);
     }
     if (labAdmin === null) {
-      return res.status(401).send({});
+      return res.status(401).send(`Lab administrator with Net ID "${labAdminId}" was not found in the database for lab administrators.`);
     }
     // get the lab of the lab admin who made this request
     labModel.findById(labAdmin.labId, (err2, lab) => {
