@@ -4,7 +4,7 @@
  */
 const express = require('express');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, labModel, mongoose, debug,
+  undergradModel, labAdministratorModel, opportunityModel, labModel, mongoose, debug, handleVerifyError
 } = require('../common.js');
 
 const app = express.Router();
@@ -27,8 +27,8 @@ app.get('/:id', (req, res) => {
 // previously POST /getApplications
 app.get('/', (req, res) => {
   // decryptGoogleToken(req.query.id, function (tokenBody) {
-  // verify(req.query.id, (labAdminId) => {
-  const labAdminId = 'acb352352';
+  verify(req.query.id, (labAdminId) => {
+  // const labAdminId = 'acb352352';
   // let labAdminId = tokenBody.email.replace("@cornell.edu", "");
   const opportunitiesArray = [];
   const reformatted = {};
@@ -122,9 +122,9 @@ app.get('/', (req, res) => {
     });
     return null;
   });
-  // }).catch((error) => {
-  //   handleVerifyError(error, res);
-  // });
+  }).catch((error) => {
+    handleVerifyError(error, res);
+  });
 });
 
 // previously POST /storeApplication

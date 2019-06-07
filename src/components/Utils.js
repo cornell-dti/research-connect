@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function dateIsBetween(date, lowerBound, upperBound) {
   return (lowerBound <= date && date <= upperBound);
 }
@@ -84,6 +86,35 @@ function tryLoggingOut() {
   }
 }
 
+function userHasNoRole(roleEndpointResponse){
+  return (!roleEndpointResponse || roleEndpointResponse.data === 'none' ||
+      !roleEndpointResponse.data);
+}
+
+function getRoleFromResponse(roleEndpointResponse) {
+  if (userHasNoRole(roleEndpointResponse)) {
+    return null;
+  } else {
+    return roleEndpointResponse.data;
+  }
+}
+
+function getTokenId(){
+  return sessionStorage.getItem('token_id');
+}
+
+const ROLE_ENDPOINT = '/api/role/';
+export function getUserRole(){
+  return new Promise((resolve) => {
+    axios.get(`${ROLE_ENDPOINT}${getTokenId()}`).
+        then((response) => {
+          resolve(getRoleFromResponse(response));
+        }).
+        catch((error) => {
+          resolve(handleTokenError(error));
+        });
+  })
+}
 
 /**
  * Takes care of the response and checking for errors specifically due to outdated tokens.
@@ -137,6 +168,9 @@ export function getParameterByName(name, url) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+exports.roleStringForUndergrads = 'undergrad';
+exports.roleStringForGrads = 'grad';
 
 export function getMajorList() {
   const majorList = ['Africana Studies', 'Agricultural Sciences', 'American Studies', 'Animal Science', 'Anthropology', 'Applied Economics and Management', 'Archaeology', 'Architecture', 'Asian Studies', 'Astronomy', 'Atmospheric Science', 'Biological Engineering', 'Biological Sciences', 'Biology and Society', 'Biomedical Engineering', 'Biometry and Statistics', 'Chemical Engineering', 'Chemistry and Chemical Biology', 'China and Asia-Pacific Studies', 'Civil Engineering', 'Classics (Classics, Classical Civ., Greek, Latin)', 'College Scholar Program', 'Communication', 'Comparative Literature', 'Computer Science', 'Design and Environmental Analysis', 'Development Sociology', 'Economics', 'Electrical and Computer Engineering', 'Engineering Physics', 'English', 'Entomology', 'Environmental and Sustainability Sciences', 'Environmental Engineering', 'Feminist, Gender & Sexuality Studies', 'Fiber Science and Apparel Design', 'Fine Arts', 'Food Science', 'French', 'German', 'German Area Studies', 'Global & Public Health Sciences', 'Government', 'History', 'History of Architecture (transfer students only)', 'History of Art', 'Hotel Administration School of Hotel Administration', 'Human Biology, Health and Society', 'Human Development', 'Independent Major—Arts and Sciences', 'Independent Major—Engineering', 'Industrial and Labor Relations School of Industrial and Labor Relations', 'Information Science', 'Information Science, Systems, and Technology', 'Interdisciplinary Studies', 'International Agriculture and Rural Development', 'Italian', 'Landscape Architecture', 'Linguistics', 'Materials Science and Engineering', 'Mathematics', 'Mechanical Engineering', 'Music', 'Near Eastern Studies', 'Nutritional Sciences', 'Operations Research and Engineering', 'Performing and Media Arts', 'Philosophy', 'Physics', 'Plant Science', 'Policy Analysis and Management', 'Psychology', 'Religious Studies', 'Science and Technology Studies', 'Science of Earth Systems', 'Sociology', 'Spanish', 'Statistical Science', 'Urban and Regional Studies', 'Viticulture and Enology', 'Undecided'];
