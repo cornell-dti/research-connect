@@ -610,7 +610,7 @@ No Preference
                     && (
                     <a
                       className="button"
-                      href={`/EditOpp?Id=${this.props.match.id}/`}
+                      href={`/EditOpp?Id=${this.props.match.params.id}/`}
                     >
 Edit
                       Opportunity

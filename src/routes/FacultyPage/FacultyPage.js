@@ -51,7 +51,6 @@ class FacultyPage extends Component {
     this.separateInterests = this.separateInterests.bind(this);
   }
 
-
   star(){
     console.log("this is working");
     let token_id = sessionStorage.getItem('token_id');

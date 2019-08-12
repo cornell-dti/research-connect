@@ -686,8 +686,9 @@ function processOpportunity(tokenNetId, oppId, res) {
   debug(`toke net id: ${tokenNetId}`);
   opportunityModel.findById(oppId).lean().exec((err, opportunity) => {
     if (err) {
+      debug('error in process opportunity')
       debug(err);
-      res.send(err);
+      return res.send(err);
     }
     if (!opportunity) {
       return res.send('');
