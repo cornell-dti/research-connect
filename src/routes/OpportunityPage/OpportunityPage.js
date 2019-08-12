@@ -658,16 +658,16 @@ Back To Opportunities
                     </div>
                   </div>
                   <div className="opp-details-section">
-                    <div className="header">Start Season</div>
+                    <div className="header">Start Period:</div>
                     <div>
-                      Varies, can contact any time.
+                      {/*Varies, can contact any time.*/}
                       {/* Changed it b/c launch was soon and these opportunities had no specific start date... must change later TODO */}
-                      {/*{this.state.opportunity.startSeason*/}
-                        {/*? `${this.state.opportunity.startSeason} `*/}
-                        {/*: '(Season not specified) '}*/}
-                      {/*{this.state.opportunity.startYear*/}
-                        {/*? this.state.opportunity.startYear*/}
-                        {/*: '(Year not specified)'}*/}
+                      {this.state.opportunity.startSeason
+                        ? `${this.state.opportunity.startSeason} `
+                        : '(Season not specified) '}
+                      {this.state.opportunity.startYear
+                        ? `${this.state.opportunity.startYear}`
+                        : ' (Year not specified)'}
                     </div>
                   </div>
                   <div className="opp-details-section">
