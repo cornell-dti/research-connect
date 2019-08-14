@@ -137,16 +137,38 @@ app.get('/', (req, res) => {
     };
   }
 
+  /**
+   * For all this MongoDB logic, the idea is that given the startSeason and
+   * startYear of an opportunity, we only want to show opportunities that are
+   * still relevant. So given the season and year, (assuming it's 2019), here's
+   * an example of what would be shown.
+   Summer 2019:
+   Return Summer Fall Winter 2019 and anything 2020 (don't return Spring 2019
+   opportunities since Spring 2019 is before Summer 2019).
+
+   Spring 2019:
+   Return all Spring Fall Winter 2019, Any other season as slong as 2020
+
+   Fall 2019:
+   Return ((Fall or Winter) AND 2019) or (anything 2020)
+
+   Winter 2019:
+   Return anything with year > 2019
+
+   */
   const currentSeason = getSeason();
   const season = getSeason();
   const currentYear = (new Date()).getFullYear();
   const searchSeasons = getSeasonsAfter(currentSeason);
-  let searchYear;
+  let returnOppsPastYear;
+  // for Winter, the season doesn't matter since we return all opps for that
+  // year. So for this variable, any opps that are past the year assigned
+  // will be returned.
   if (season === 'Winter') {
-    searchYear = currentYear;
+    returnOppsPastYear = currentYear;
   }
   else {
-    searchYear = currentYear + 1;
+    returnOppsPastYear = currentYear + 1;
   }
   const seasonDoesntExist = {startSeason: {$exists: true, $eq: null}};
   const yearDoesntExist = {startYear: {$exists: true, $eq: null}};
@@ -165,11 +187,10 @@ app.get('/', (req, res) => {
   const validYearAndSeason = {
     $or: [
       {$and: [inSeason, inYear]},
-      {startYear: {$gte: searchYear}}
+      {startYear: {$gte: returnOppsPastYear}}
       ]
   };
   let findTimelyOpps = 	{$and: [timeRange, validYearAndSeason]};
-  // findTimelyOpps = 	{$and: [timeRange, seasonMatches]};
 
   if (token && token !== 'null') {
     verify(token, (undergradNetId) => {
@@ -318,13 +339,7 @@ function getSeason() {
   return (season);
 }
 
-/**
- * Spring 2019:
- *
- *
- */
-
-
+// gets the season s that come after the given season (inclusive).
 function getSeasonsAfter(thisSeason) {
   if (thisSeason === 'Spring') {
     return ['Spring', 'Summer', 'Fall', 'Winter'];
@@ -336,6 +351,8 @@ function getSeasonsAfter(thisSeason) {
     return ['Fall', 'Winter']
   }
   else if (thisSeason === 'Winter') {
+    // return all seasons for Winter since Winter can be at the end of the
+    // year or at the beginning
     return ['Spring', 'Summer', 'Fall', 'Winter'];
   }
 }
