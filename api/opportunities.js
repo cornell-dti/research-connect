@@ -122,6 +122,55 @@ app.get('/', (req, res) => {
   const token = req.query.netId;
   const urlLabId = req.query.labId;
   const sortOrderObj = { opens: sortOrder };
+  let timeRange;
+  // if there's a lab id in the url, then it's a lab administrator trying to view their own opportunities
+  if (urlLabId) {
+    timeRange = {};
+  } else {
+    timeRange = {
+      opens: {
+        $lte: new Date(),
+      },
+      closes: {
+        $gte: new Date(),
+      },
+    };
+  }
+
+  const currentSeason = getSeason();
+  const season = getSeason();
+  const currentYear = (new Date()).getFullYear();
+  const searchSeasons = getSeasonsAfter(currentSeason);
+  let searchYear;
+  if (season === 'Winter') {
+    searchYear = currentYear;
+  }
+  else {
+    searchYear = currentYear + 1;
+  }
+  const seasonDoesntExist = {startSeason: {$exists: true, $eq: null}};
+  const yearDoesntExist = {startYear: {$exists: true, $eq: null}};
+  const yearMatches = {
+    startYear: {$gte: currentYear}
+  };
+  const seasonMatches = {
+    startSeason: {$in: searchSeasons}
+  };
+  const inSeason = {
+    $or: [seasonDoesntExist, seasonMatches]
+  };
+  const inYear = {
+    $or: [yearDoesntExist, yearMatches]
+  };
+  const validYearAndSeason = {
+    $or: [
+      {$and: [inSeason, inYear]},
+      {startYear: {$gte: searchYear}}
+      ]
+  };
+  let findTimelyOpps = 	{$and: [timeRange, validYearAndSeason]};
+  // findTimelyOpps = 	{$and: [timeRange, seasonMatches]};
+
   if (token && token !== 'null') {
     verify(token, (undergradNetId) => {
       debug(`here! ${undergradNetId}`);
@@ -130,21 +179,7 @@ app.get('/', (req, res) => {
         const undergrad1 = undergrad;
         // if they're a lab admin, show all the opportunites and set all prereqsMatch to true
         if (undergrad1 === undefined || undergrad1 === null) {
-          let timeRange;
-          // if there's a lab id in the url, then it's a lab administrator trying to view their own opportunities
-          if (urlLabId) {
-            timeRange = {};
-          } else {
-            timeRange = {
-              opens: {
-                $lte: new Date(),
-              },
-              closes: {
-                $gte: new Date(),
-              },
-            };
-          }
-          opportunityModel.find(timeRange)
+          opportunityModel.find(findTimelyOpps)
             .sort(sortOrderObj)
             .exec((err2, opportunities) => {
               for (let i = 0; i < opportunities.length; i++) {
@@ -177,14 +212,7 @@ app.get('/', (req, res) => {
             course => replaceAll(course, ' ', ''),
           );
           // only get the ones that are currenlty open
-          opportunityModel.find({
-            opens: {
-              $lte: new Date(),
-            },
-            closes: {
-              $gte: new Date(),
-            },
-          }).sort(sortOrderObj).lean().exec((err2, opportunities) => {
+          opportunityModel.find(findTimelyOpps).sort(sortOrderObj).lean().exec((err2, opportunities) => {
             if (!opportunities) {
               return res.send({});
             }
@@ -232,57 +260,6 @@ app.get('/', (req, res) => {
                 opportunities[i].labName = thisLab.name;
                 opportunities[i].labPage = thisLab.labPage;
                 opportunities[i].labDescription = thisLab.labDescription;
-                /**
-                 if (opportunities[i].contactName === 'dummy value') {
-                  console.log('In here');
-                  // var contact = getLabAdmin(opportunities[i]._id,opportunities[i]);
-
-                  // var contact = getLabAdmin();
-                  // opportunities[i]["contactName"] = contact;
-                  const oppId = opportunities[i]._id;
-                  labModel.find({ opportunities: mongoose.Types.ObjectId(oppId) }, (err3, lab) => {
-                    if (lab) {
-                      debug('The lab is not null');
-                      const admins = [];
-                      lab.forEach((oneLab) => {
-                      // for (let i = 0; i < lab.length; i++) {
-                        debug(`This lab is: ${oneLab}`);
-                        oneLab.labAdmins.forEach((labAdmin) => {
-                        // for (let j = 0; j < oneLab.labAdmins.length; j++) {
-                          admins.push(labAdmin);
-                        });
-                      });
-
-                      let maximum = '';
-                      let maxStatus = '';
-                      admins.forEach((admin) => {
-                      // for (let i = 0; i < admins.length; i++) {
-                        // console.log("We are working with netid: "+admins[i]);
-                        labAdministratorModel.findOne({ netId: admin }, (err4, ad) => {
-                          if (ad) {
-                            debug('Ad is not null');
-                            const r = ad.role;
-                            if (roleToInt(r) > roleToInt(maxStatus)) {
-                              maximum = ad.netId;
-                              maxStatus = r;
-                            }
-                            if (i >= admins.length - 1) {
-                              debug(`Here maximum is this: ${maximum}`);
-                              opportunities[i].contactName = maximum;
-                            }
-                          }
-                        });
-                      });
-                    } else {
-                      debug('We done goofed');
-                    }
-                  });
-                } else {
-                  debug('Contact names are already in');
-                }
-                debug(`Here is the contactName: ${opportunities[i].contactName}`);
-                debug(`Here is the additional info: ${opportunities[i].additionalInformation}`);
-                 */
               }
               res.send(opportunities);
             });
@@ -303,14 +280,8 @@ app.get('/', (req, res) => {
       handleVerifyError(error, res);
     });
   } else {
-    opportunityModel.find({
-      opens: {
-        $lte: new Date(),
-      },
-      closes: {
-        $gte: new Date(),
-      },
-    }).sort(sortOrderObj).exec((err, opportunities) => {
+    console.log('ran');
+    opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((err, opportunities) => {
       for (let i = 0; i < opportunities.length; i++) {
         opportunities[i].prereqsMatch = true;
       }
@@ -318,6 +289,56 @@ app.get('/', (req, res) => {
     });
   }
 });
+
+function getSeason() {
+  let month = (new Date()).getMonth();
+  let season = 1;
+  switch(month) {
+    case 12:
+    case 1:
+    case 2:
+      season = 'Winter';
+      break;
+    case 3:
+    case 4:
+    case 5:
+      season = 'Spring';
+      break;
+    case 6:
+    case 7:
+    case 8:
+      season = 'Summer';
+      break;
+    case 9:
+    case 10:
+    case 11:
+      season = 'Fall';
+      break;
+  }
+  return (season);
+}
+
+/**
+ * Spring 2019:
+ *
+ *
+ */
+
+
+function getSeasonsAfter(thisSeason) {
+  if (thisSeason === 'Spring') {
+    return ['Spring', 'Summer', 'Fall', 'Winter'];
+  }
+  if (thisSeason === 'Summer') {
+    return ['Summer', 'Fall', 'Winter'];
+  }
+  else if (thisSeason === 'Fall') {
+    return ['Fall', 'Winter']
+  }
+  else if (thisSeason === 'Winter') {
+    return ['Spring', 'Summer', 'Fall', 'Winter'];
+  }
+}
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);

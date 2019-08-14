@@ -134,7 +134,7 @@ class Opportunity extends Component {
           </div>
 
           <div className="column column-25">
-            <div style={{textAlign: "right", fontWeight: 'bold'}}>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>
+            <div style={{textAlign: "right"}}>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>
             {this.checkPrereqs()}
           </div>
         </div>
