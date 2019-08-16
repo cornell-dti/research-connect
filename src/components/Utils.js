@@ -104,14 +104,24 @@ function getTokenId(){
 }
 
 const ROLE_ENDPOINT = '/api/role/';
-export function getUserRole(){
+export function getUserRole(redirectIfNotLoggedIn = false){
   return new Promise((resolve) => {
-    axios.get(`${ROLE_ENDPOINT}${getTokenId()}`).
+    const token = getTokenId();
+    const isNotLoggedIn = !token;
+    if (!redirectIfNotLoggedIn && isNotLoggedIn){
+      return resolve('none');
+    }
+    axios.get(`${ROLE_ENDPOINT}${token}`).
         then((response) => {
           resolve(getRoleFromResponse(response));
         }).
         catch((error) => {
-          resolve(handleTokenError(error));
+          if (redirectIfNotLoggedIn) {
+              resolve(handleTokenError(error));
+          }
+          else {
+              resolve('none');
+          }
         });
   })
 }
