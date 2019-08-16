@@ -156,16 +156,16 @@ app.get('/', (req, res) => {
    Return anything with year > 2019
 
    */
-  const currentSeason = getSeason();
-  let season = getSeason();
+  let currentSeason = getSeason();
+  const season = getSeason();
   let currentYear = (new Date()).getFullYear();
   // Since we want opportunities to still be vaguely relevant, we also show
   // opportunities from the most recent school semester
-  if (season === 'Fall' || season === 'Summer') {
-    season = 'Spring';
+  if (currentSeason === 'Fall' || currentSeason === 'Summer') {
+    currentSeason = 'Spring';
   }
-  else if (season === 'Spring') {
-    season = 'Fall';
+  else if (currentSeason === 'Spring') {
+    currentSeason = 'Fall';
     currentYear -= 1;
   }
   const searchSeasons = getSeasonsAfter(currentSeason);
@@ -310,7 +310,6 @@ app.get('/', (req, res) => {
       handleVerifyError(error, res);
     });
   } else {
-    console.log('ran');
     opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((err, opportunities) => {
       if (!opportunities) {
         return res.send([]);
@@ -326,35 +325,37 @@ app.get('/', (req, res) => {
 function getSeason() {
   let month = (new Date()).getMonth();
   const dayOfMonth = (new Date()).getDate();
+  const January = 0;
+  const December = 11;
   let season = 1;
   switch(month) {
     // Cornell School Winter:
-    case 12:
-    case 1:
-      if (month === 12 && dayOfMonth >= 21 || month === 1 && dayOfMonth < 10){
+    case December:
+    case January:
+      if (month === December && dayOfMonth >= 21 || month === January && dayOfMonth < 10){
         season = 'Winter';
       }
-      else if (month === 12 && dayOfMonth < 21){
+      else if (month === December && dayOfMonth < 21){
         season = 'Fall';
       }
       else {
         season = 'Spring'
       }
       break;
+    case 1:
     case 2:
     case 3:
     case 4:
-    case 5:
       season = 'Spring';
       break;
+    case 5:
     case 6:
-    case 7:
       season = 'Summer';
       break;
+    case 7:
     case 8:
     case 9:
     case 10:
-    case 11:
       season = 'Fall';
       break;
   }
