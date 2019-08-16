@@ -1,10 +1,24 @@
+
 .profile-page-wrapper {
   margin-top: 40px;
    width: 100%;
    margin: auto;
    font-size: 20px;
+
+.display-list {
+  margin-top: 0px;
+}
+h4{
+  margin: 1rem;
+
+}
+
 .edit-bold{
   font-weight:bold; 
+  margin-left: 0px;
+}
+.sub-section {
+    margin-top: 0px;
 }
 .wallpaper {
   background: url('../../images/wallpaper-bg.png');
@@ -46,6 +60,7 @@
 
 .left-column {
   text-align: left; 
+  margin-bottom: 5px;
 }
 
 .edit-row {
@@ -210,8 +225,9 @@
   opacity: 0.7;
  
 }
-.sub-section {
+h5.sub-section {
   font-weight: bold; 
+      margin-bottom: 0px;
 }
 .edit-submit {
   background-color: #b31b1b;

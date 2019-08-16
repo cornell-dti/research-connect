@@ -51,19 +51,17 @@ Relevant Coursework:
             <div className="status">
               <Info style={{ verticalAlign: 'top' }} className="info-icon" />
               {' '}
-Status:
-              {
-								this.props.data.status ? Utils.capitalizeFirstLetter(this.props.data.status) : 'Applied'
-							}
+Status:{' '}
+              { this.props.data.status ? Utils.capitalizeFirstLetter(this.props.data.status) : 'Applied' }
             </div>
             <div className="date-applied">
               <Calendar style={{ verticalAlign: 'text-top' }} className="cal-icon" />
               {' '}
-Date Applied:
+Date Applied:{' '}
               { Utils.convertDate(this.props.data.timeSubmitted) }
             </div>
             <div className="opportunity">
-Opportunity:
+Opportunity:{' '}
               { this.props.opportunity.title }
             </div>
           </div>

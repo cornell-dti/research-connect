@@ -66,20 +66,17 @@ class Opportunities extends Component {
       this.setState({ role: null });
       return;
     }
-
     // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        /* if (!response || response.data === "none" || !response.data) {
-          alert("You must be signed in to view this.");
-          window.location.href = '/';
+        if (!response || response.data === "none" || !response.data) {
         }
         else{
           this.setState({role: response.data});
-        } */
-        this.setState({ role: response.data });
+        } 
       })
       .catch((error) => {
+        console.log('error in /api/role for in Opportunities');
         Utils.handleTokenError(error);
       });
 
@@ -125,6 +122,7 @@ class Opportunities extends Component {
           this.setState({ matchingSearches: matching });
         })
         .catch((error) => {
+          console.log('error in /api/opportunities/search in Opportunities');
           Utils.handleTokenError(error);
         });
     }
@@ -189,8 +187,8 @@ class Opportunities extends Component {
           <div className="column column-20">
             <div className="filter-box">
 
-              <Filter label="Filter by..." style={{ textAlign: 'center' }} />
-
+              <Filter label="Filter by..."/>
+              <hr />
               <SchoolYearFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
               />

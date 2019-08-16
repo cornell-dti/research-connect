@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function dateIsBetween(date, lowerBound, upperBound) {
   return (lowerBound <= date && date <= upperBound);
 }
@@ -84,6 +86,35 @@ function tryLoggingOut() {
   }
 }
 
+function userHasNoRole(roleEndpointResponse){
+  return (!roleEndpointResponse || roleEndpointResponse.data === 'none' ||
+      !roleEndpointResponse.data);
+}
+
+function getRoleFromResponse(roleEndpointResponse) {
+  if (userHasNoRole(roleEndpointResponse)) {
+    return null;
+  } else {
+    return roleEndpointResponse.data;
+  }
+}
+
+function getTokenId(){
+  return sessionStorage.getItem('token_id');
+}
+
+const ROLE_ENDPOINT = '/api/role/';
+export function getUserRole(){
+  return new Promise((resolve) => {
+    axios.get(`${ROLE_ENDPOINT}${getTokenId()}`).
+        then((response) => {
+          resolve(getRoleFromResponse(response));
+        }).
+        catch((error) => {
+          resolve(handleTokenError(error));
+        });
+  })
+}
 
 /**
  * Takes care of the response and checking for errors specifically due to outdated tokens.
@@ -138,53 +169,56 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+exports.roleStringForUndergrads = 'undergrad';
+exports.roleStringForGrads = 'grad';
+
 export function getMajorList() {
   const majorList = ['Africana Studies', 'Agricultural Sciences', 'American Studies', 'Animal Science', 'Anthropology', 'Applied Economics and Management', 'Archaeology', 'Architecture', 'Asian Studies', 'Astronomy', 'Atmospheric Science', 'Biological Engineering', 'Biological Sciences', 'Biology and Society', 'Biomedical Engineering', 'Biometry and Statistics', 'Chemical Engineering', 'Chemistry and Chemical Biology', 'China and Asia-Pacific Studies', 'Civil Engineering', 'Classics (Classics, Classical Civ., Greek, Latin)', 'College Scholar Program', 'Communication', 'Comparative Literature', 'Computer Science', 'Design and Environmental Analysis', 'Development Sociology', 'Economics', 'Electrical and Computer Engineering', 'Engineering Physics', 'English', 'Entomology', 'Environmental and Sustainability Sciences', 'Environmental Engineering', 'Feminist, Gender & Sexuality Studies', 'Fiber Science and Apparel Design', 'Fine Arts', 'Food Science', 'French', 'German', 'German Area Studies', 'Global & Public Health Sciences', 'Government', 'History', 'History of Architecture (transfer students only)', 'History of Art', 'Hotel Administration School of Hotel Administration', 'Human Biology, Health and Society', 'Human Development', 'Independent Major—Arts and Sciences', 'Independent Major—Engineering', 'Industrial and Labor Relations School of Industrial and Labor Relations', 'Information Science', 'Information Science, Systems, and Technology', 'Interdisciplinary Studies', 'International Agriculture and Rural Development', 'Italian', 'Landscape Architecture', 'Linguistics', 'Materials Science and Engineering', 'Mathematics', 'Mechanical Engineering', 'Music', 'Near Eastern Studies', 'Nutritional Sciences', 'Operations Research and Engineering', 'Performing and Media Arts', 'Philosophy', 'Physics', 'Plant Science', 'Policy Analysis and Management', 'Psychology', 'Religious Studies', 'Science and Technology Studies', 'Science of Earth Systems', 'Sociology', 'Spanish', 'Statistical Science', 'Urban and Regional Studies', 'Viticulture and Enology', 'Undecided'];
   return majorList;
 }
 
 export function getResearchInterestsList() {
-  const researchInterests = [ 'Programming Languages - CS',
-    'Computer Architecture',
-    'Computer Systems',
-    'Security',
-    'Systems and Networking - CS',
-    'Complex Systems, Network Science and Computation',
-    'All of Programming.',
-    'Statistics and Machine Learning',
-    'Artificial Intelligence',
-    'Scientific Computing',
-    'Algorithms',
-    'Theory of Computation',
-    'Cloud and Distributed Computing',
-    'Market Design',
-    'Data Mining',
-    'Graphics',
-    'Energy Systems',
-    'Biomedical Imaging and Instrumentation',
-    'Bioengineering',
-    'Biomedical Engineering',
-    'Robotics',
-    'Image Analysis' ];
+  const researchInterests = [' Programming Languages - CS',
+    ' Computer Architecture',
+    ' Computer Systems',
+    ' Security',
+    ' Systems and Networking - CS',
+    ' Complex Systems, Network Science and Computation',
+    ' All of Programming.',
+    ' Statistics and Machine Learning',
+    ' Artificial Intelligence',
+    ' Scientific Computing',
+    ' Algorithms',
+    ' Theory of Computation',
+    ' Cloud and Distributed Computing',
+    ' Market Design',
+    ' Data Mining',
+    ' Graphics',
+    ' Energy Systems',
+    ' Biomedical Imaging and Instrumentation',
+    ' Bioengineering',
+    ' Biomedical Engineering',
+    ' Robotics',
+    ' Image Analysis'];
   return researchInterests;
 }
 
 export function getCSAreas() {
   return {
-    cc: 'Cloud Computing and/or Distributed systems',
-    os: 'Operating systems',
-    networks: 'Computer networks',
-    algos: 'Algorithms',
-    hci: 'Human-Computer Interaction',
-    pl: 'Programming Languages',
-    nlp: 'Natural Language Processing',
-    ml: 'Machine Learning and/or Artificial Intelligence',
-    robotics: 'Robotics',
-    graphics: 'Graphics',
-    security: 'Security',
-    optimization: 'Optimization',
-    compBio: 'Computational Biology',
-    other: 'Other',
+    cc: ' Cloud Computing and/or Distributed systems',
+    os: ' Operating systems',
+    networks: ' Computer networks',
+    algos: ' Algorithms',
+    hci: ' Human-Computer Interaction',
+    pl: ' Programming Languages',
+    nlp: ' Natural Language Processing',
+    ml: ' Machine Learning and/or Artificial Intelligence',
+    robotics: ' Robotics',
+    graphics: ' Graphics',
+    security: ' Security',
+    optimization: ' Optimization',
+    compBio: ' Computational Biology',
+    other: ' Other',
   };
 }
 
@@ -203,17 +237,17 @@ function tryLoggingOut() {
     try {
       // sometimes stalls on signOut() or disconnect)(
       auth2.signOut().then(
-          auth2.disconnect().then((e) => {
-            console.log('disconnecting');
-            sessionStorage.clear();
-            window.location.href = '/';
-          }, (e) => {
-            console.log("disconnect didn't work, error below");
-            console.log(e);
-            // auth2.disconnect didn't work...
-            sessionStorage.clear();
-            window.location.href = '/';
-          }),
+        auth2.disconnect().then((e) => {
+          console.log('disconnecting');
+          sessionStorage.clear();
+          window.location.href = '/';
+        }, (e) => {
+          console.log("disconnect didn't work, error below");
+          console.log(e);
+          // auth2.disconnect didn't work...
+          sessionStorage.clear();
+          window.location.href = '/';
+        }),
       ).catch((e) => {
         console.log('error with auth2.signout below');
         console.log(e);
@@ -230,12 +264,12 @@ function tryLoggingOut() {
 }
 
 export function getCompensation() {
-  return { money: 'Money', credit: 'Credit' };
+  return { money: ' Money', credit: ' Credit' };
 }
 
 export function getYears() {
   return {
-    freshman: 'Freshman', sophomore: 'Sophmore', junior: 'Junior', senior: 'Senior',
+    freshman: ' Freshman', sophomore: ' Sophmore', junior: ' Junior', senior: ' Senior',
   };
 }
 
@@ -245,8 +279,8 @@ export function getGPA() {
   };
 }
 
-export function getStartYears(){
-  return {'':'Select', 'Fall 2018':'Fall 2018', 'Spring 2019':'Spring 2019', 'Summer 2019':'Summer 2019', 'Fall 2019':'Fall 2019', 'Spring 2020':'Spring 2020'};
+export function getStartYears() {
+  return { '': 'Select', 'Fall 2018': 'Fall 2018', 'Spring 2019': 'Spring 2019', 'Summer 2019': 'Summer 2019', 'Fall 2019': 'Fall 2019', 'Spring 2020': 'Spring 2020' };
 }
 
 export function updateSingleChoiceFilter(filterName, option) {

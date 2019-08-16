@@ -29,6 +29,7 @@ class ResearchGuide extends Component {
           this.setState({role: response.data});
         }).
         catch((error) => {
+          console.log('error in research guide');
           Utils.handleTokenError(error);
         });
   }

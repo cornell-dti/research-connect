@@ -87,6 +87,7 @@ class CreateOppForm extends React.Component {
                 this.setState({areaData: res.data});
                 console.log(res.data);
             }).catch(function (error) {
+              console.log('error in create opportunity form');
             Utils.handleTokenError(error);
         });
     }

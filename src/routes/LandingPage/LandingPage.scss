@@ -57,8 +57,9 @@
 .landingPage section{
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 10px 10%;
+    align-items: center;
+    padding: 10px 10%;
+    padding-bottom: 0px;
 }
 
 .landingPage  .background-image {
@@ -479,13 +480,6 @@ col {
         max-width: none;
     }
 
-
-
-
-
-    
-
-
 .container{
     width : 100%;
     margin-top: 5%;
@@ -633,7 +627,7 @@ col {
     background-color: white;
 }
 .landingPage section.why-us{
-    padding-top: 80px;
+    padding-top: 0px;
     padding-right: 0px;
     background-color: white;
 
@@ -839,6 +833,10 @@ body{
     }
 
 }
+
+div#search {
+    max-width: 700px;
+}
   .search-div-container {
 
     background-color: white;
@@ -882,4 +880,8 @@ body{
     #bsaHolder {
         display: none;
     }
+}
+
+SearchBar .search{
+    max-width: 600px;
 }

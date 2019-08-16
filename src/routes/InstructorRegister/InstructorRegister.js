@@ -91,6 +91,7 @@ class InstructorRegister extends React.Component {
                 this.setState({data: res.data});
                 console.log(res.data);
             }).catch(function (error) {
+                console.log('error in intstructor reigster /api/labs');
             Utils.handleTokenError(error);
         });
     }
@@ -237,6 +238,7 @@ class InstructorRegister extends React.Component {
                     this.setState({buttonDisabled: true, 
                     buttonValue: "Submitted"})
                 }).catch(function (error) {
+                    console.log('error in /api/labadmins');
                 Utils.handleTokenError(error);
             });
         }

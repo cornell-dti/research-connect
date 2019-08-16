@@ -8,6 +8,7 @@ class OpportunityList extends Component {
   constructor(props) {
     super(props);
     this.state = {starredOps : []};
+    this.setUserRole();
     Utils.updateMultipleChoiceFilter.bind(this);
   }
 
@@ -43,28 +44,31 @@ class OpportunityList extends Component {
     const tempCount = nodes.filter(node => !(!node)).length;
       return tempCount === 1 ? 'There is 1 result' : tempCount === 0 ? 
       'There are no results' : `There are ${tempCount} results`;
-    
   }
 
   union(arr1, arr2) {
-    const arr3 = arr1.filter(i => arr2.indexOf(i) > -1);
-    return arr3;
+    return arr1.filter(i => arr2.indexOf(i) > -1);
   }
 
   checkboxFilter(filterSelected, filterAllowed) {
     return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
   }
 
+  async setUserRole(){
+    this.setState({role: await Utils.getUserRole()})
+  }
+
   componentDidMount(){
     console.log("component mounted");
     this.getStarredOps();
+
   }
 
   render() {
     if (!this.props.data) return null;
 
     const oppNodes = this.props.data.map((opp) => {
-      let willShow = true; // set to false if any filter excludes this opportunity
+      let opportunityWillShow = true; // set to false if any filter excludes this opportunity
       const filteredOptions = this.props.filteredOptions;
 
       const matchingSearches = filteredOptions.matchingSearches;
@@ -75,31 +79,31 @@ class OpportunityList extends Component {
             matches = true;
           }
         }
-        willShow = matches;
+        opportunityWillShow = matches;
       }
 
       const minGPA = filteredOptions.gpaSelect;
-      willShow = willShow && (!opp.minGPA || minGPA < opp.minGPA);
+      opportunityWillShow = opportunityWillShow && (!opp.minGPA || minGPA < opp.minGPA);
 
       let startDate = filteredOptions.startDate;
       let oppStartDate = opp.startSeason + " " + opp.startYear;
-      willShow = willShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
+      opportunityWillShow = opportunityWillShow && (startDate === "" || oppStartDate === " " || startDate === oppStartDate);
 
       // multiple/checkbox choices
       const yearsSelected = filteredOptions.yearSelect;
       const yearsAllowed = opp.yearsAllowed;
-      willShow = willShow && this.checkboxFilter(yearsSelected, yearsAllowed);
+      opportunityWillShow = opportunityWillShow && this.checkboxFilter(yearsSelected, yearsAllowed);
 
       const csAreasSelected = filteredOptions.csAreasSelect;
       const csAreasAllowed = opp.areas;
-      willShow = willShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
+      opportunityWillShow = opportunityWillShow && this.checkboxFilter(csAreasSelected, csAreasAllowed);
 
       const compensationsSelected = filteredOptions.compensationSelect;
       const compensationsAllowed = opp.compensation;
-      willShow = willShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
+      opportunityWillShow = opportunityWillShow && this.checkboxFilter(compensationsSelected, compensationsAllowed);
       // end multiple/checkbox choices
 
-      if (willShow) {
+      if (opportunityWillShow) {
         let starred = this.state.starredOps.includes(opp._id);
         return (
           <Opportunity
@@ -132,6 +136,7 @@ class OpportunityList extends Component {
             starred={starred}
             datePosted={opp.datePosted}
             updateStar={this.updateStar.bind(this)}
+            role={this.state.role}
           />
         );
       }

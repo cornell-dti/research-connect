@@ -59,7 +59,7 @@ class FacultyList extends Component {
   }
 
   render() {
-    let profNodes = this.props.data.map((prof, idx) => {
+    let profNodes = this.props.data.map((prof) => {
       // if (idx > this.props.numShowing){
       //   return;
       // }

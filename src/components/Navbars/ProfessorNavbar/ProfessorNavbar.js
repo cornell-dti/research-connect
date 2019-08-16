@@ -43,6 +43,7 @@ class ProfessorNavbar extends Component {
       })
       .catch((error) => {
         if (!(this.props.current === 'newopp')) {
+          console.log('handling token error on nprof navbar 1')
           Utils.handleTokenError(error);
         }
       });

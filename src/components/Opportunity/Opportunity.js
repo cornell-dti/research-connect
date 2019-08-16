@@ -107,16 +107,25 @@ class Opportunity extends Component {
     return 'Open';
   }
 
-  checkEdit() {
-    const lab = false;
-    axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
-      .then((response) => {
-        if (!response || response.data == 'none' ||
-            !response.data || response.data == 'undergrad') {
-          return false;
-        }
-        return true;
-      });
+  static undergradIsViewingPage(role){
+    return role === Utils.roleStringForUndergrads;
+  }
+
+  handleShowingStar(role){
+    if (Opportunity.undergradIsViewingPage(role)) {
+        return <Star
+            update={this.star.bind(this)}
+            starred={this.props.starred}
+        />
+    }
+      return '';
+  }
+
+  handleShowingPrereqs(role){
+      if (Opportunity.undergradIsViewingPage(role)){
+          return this.checkPrereqs();
+      }
+      return '';
   }
 
   render() {
@@ -126,16 +135,14 @@ class Opportunity extends Component {
           <div className="column column-75">
             <div className="title">
               { this.props.title }
-              <Star
-                update={this.star.bind(this)}
-                starred={this.props.starred}
-              /></div>
+              { this.handleShowingStar(this.props.role) }
+            </div>
             {/*<div>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>*/}
           </div>
 
           <div className="column column-25">
-            <div style={{textAlign: "right"}}>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>
-            {this.checkPrereqs()}
+            <div style={{textAlign: "right"}}>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'}
+            {this.handleShowingPrereqs(this.props.role)}</div>
           </div>
         </div>
         { this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }

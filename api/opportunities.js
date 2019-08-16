@@ -303,6 +303,9 @@ app.get('/', (req, res) => {
   } else {
     console.log('ran');
     opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((err, opportunities) => {
+      if (!opportunities) {
+        return res.send([]);
+      }
       for (let i = 0; i < opportunities.length; i++) {
         opportunities[i].prereqsMatch = true;
       }
@@ -597,8 +600,6 @@ app.post('/', async (req, res, next) => {
                 html: `Hi ${firstName},<br />
                        A new opportunity was just posted in an area you expressed interest in.
                        <br /><b>Title: </b><p>${opportunity.title}</p>
-                       <br /><b>Supervisor: </b><p>${opportunity.supervisor}</p>
-                       <br /><b>Undergrad Tasks: </b><p>${opportunity.undergradTasks}</p>
                        <br /><p>You can view more details about the opportunity and how to apply at <a href="https://www.research-connect.com/opportunity/${oppId}?ref=email">here!</a> </p>
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
@@ -726,8 +727,9 @@ function processOpportunity(tokenNetId, oppId, res) {
   debug(`toke net id: ${tokenNetId}`);
   opportunityModel.findById(oppId).lean().exec((err, opportunity) => {
     if (err) {
+      debug('error in process opportunity')
       debug(err);
-      res.send(err);
+      return res.send(err);
     }
     if (!opportunity) {
       return res.send('');

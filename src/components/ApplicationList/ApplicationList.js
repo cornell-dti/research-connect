@@ -16,6 +16,7 @@ class ApplicationList extends Component {
         this.setState({ data: response.data });
       })
       .catch((error) => {
+        console.log('error in applicationsList.js');
         Utils.handleTokenError(error);
       });
   }

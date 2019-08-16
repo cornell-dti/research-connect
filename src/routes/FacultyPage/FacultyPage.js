@@ -51,7 +51,6 @@ class FacultyPage extends Component {
     this.separateInterests = this.separateInterests.bind(this);
   }
 
-
   star(){
     console.log("this is working");
     let token_id = sessionStorage.getItem('token_id');
@@ -108,6 +107,7 @@ class FacultyPage extends Component {
           }
         })
         .catch((error) => {
+          console.log('error in /api/role for faculty page');
           Utils.handleTokenError(error);
         });
     }
@@ -172,6 +172,7 @@ class FacultyPage extends Component {
       })
       .catch((error) => {
         this.breakButton();
+        console.log('error in /api/faculty/email in faculty page');
         Utils.handleTokenError(error);
       });
   }

@@ -59,6 +59,7 @@ class Landing extends Component {
           }
         })
         .catch((error) => {
+          console.log('token error handled on landing page');
           Utils.handleTokenError(error);
         });
     }
@@ -114,7 +115,7 @@ class Landing extends Component {
         }
       });
     }).catch((error) => {
-      console.log('Error');
+      console.log('token error handled on 2nd landing page catch');
       console.log(error);
       Utils.handleTokenError(error);
     });
@@ -176,37 +177,37 @@ class Landing extends Component {
           <div className="background-image" />
           <h1>Research Connect</h1>
           <h3>Find your next CS research opportunity.</h3>
-          <SearchBar />
+          <SearchBar id="search-div-container1" />
 
         </section>
 
         <section className="middleContainer2">
-          <Container style={{marginLeft: "auto"}}>
+          <Container style={{ marginLeft: "auto" }}>
             {/*<Row>*/}
             {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
             {/*</Row>*/}
             <Row>
-              <h2 class ="big ">Explore Popular Areas of Interest</h2>
+              <h2 class="big ">Explore Popular Areas of Interest</h2>
             </Row>
             <Row>
               <Col className="text-center">
-                <Row><img className="middleImage" src={blueIcon} alt = ""/></Row>
+                <Row><img className="middleImage" src={blueIcon} alt="" /></Row>
                 <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={greenIcon} alt = ""/> </Row>
+                <Row><img className="middleImage" src={greenIcon} alt="" /> </Row>
                 <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={redIcon} alt = ""/></Row>
+                <Row><img className="middleImage" src={redIcon} alt="" /></Row>
                 <Row> <p>MACHINE LEARNING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={yellowIcon} alt = ""/></Row>
+                <Row><img className="middleImage" src={yellowIcon} alt="" /></Row>
                 <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={purpleIcon} alt = ""/></Row>
+                <Row><img className="middleImage" src={purpleIcon} alt="" /></Row>
                 <Row> <p>COMPUTER VISION</p> </Row>
               </Col>
 
@@ -219,15 +220,15 @@ class Landing extends Component {
             <h2>Discover your passion.</h2>
             <section>
               <Row className="picRow">
-                <Col><img id="list-image1" src={pen} height="72" width="100" alt = "pen"/></Col>
+                <Col><img id="list-image1" src={pen} height="72" width="100" alt="pen" /></Col>
                 <Col><p className="picP">Search for computer science opportunities and stop guessing who is accepting.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image2" src={img2} height="72" width="100" alt = "magnifying glass"/></Col>
+                <Col><img id="list-image2" src={img2} height="72" width="100" alt="magnifying glass" /></Col>
                 <Col><p className="picP">Get help writing emails to professors.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image3" src={lightbulb} height="72" width="100" alt = "lightbulb"/></Col>
+                <Col><img id="list-image3" src={lightbulb} height="72" width="100" alt="lightbulb" /></Col>
                 <Col><p className="picP">View our complete guide on finding research.</p></Col>
               </Row>
 
@@ -256,20 +257,20 @@ class Landing extends Component {
               <Row>
                 <section className="list">
                   <Row className="picRow">
-                    <Col><img className="list-image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-image" src={check} alt="check" /></Col>
 
                     <Col>
 
                       <p className="picP">Apply to positions without having to guess if they’re open.</p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-image" src={check} alt="check" /></Col>
                     <Col>
 
                       <p>Search for opportunities by sorting by your interests. </p></Col>
                   </Row>
                   <Row>
-                    <Col><img className="list-image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-image" src={check} alt="check" /></Col>
                     <Col>
 
                       <p>Connect with leading researchers! in fields that inspire you.</p></Col>

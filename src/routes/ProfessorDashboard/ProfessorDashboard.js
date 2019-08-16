@@ -48,21 +48,24 @@ class ProfessorDashboard extends Component {
 	      this.setState({ apps });
 	      this.setState({ opportunities: opps });
 	      this.setState({ labId: lab.data });
-	  }));
+	  })).catch((error) => {
+        this.setState({
+            errorLoadingDataExists: true,
+            errorMessage: `We could not find any data for the email and netid 
+            associated with your account. More info: ${error}`
+        })
+    });
   }
 
   componentDidMount() {
-    this.state.loading = false;
+      this.setState({
+          loading: false,
+          errorLoadingDataExists: false,
+          errorMessage: '',
+      });
   }
 
   render() {
-    console.log('rendering');
-    // const override = css`
-	  //   display: block;
-	  //   margin: 0 auto;
-	  //   border-color: red;
-		// `;
-
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
@@ -78,6 +81,11 @@ class ProfessorDashboard extends Component {
           />
         </div>
       );
+    }
+    else if (this.state.errorLoadingDataExists) {
+        return (
+            <div>{this.state.errorMessage}</div>
+        )
     }
 
     const newspaper = <Newspaper />;

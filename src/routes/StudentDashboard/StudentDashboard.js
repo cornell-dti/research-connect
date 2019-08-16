@@ -2,31 +2,21 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './StudentDashboard.scss';
 import axios from 'axios';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
-// http://react-icons.github.io/react-icons/fa.html
-import User from 'react-icons/lib/fa/user';
-import UserTimes from 'react-icons/lib/fa/graduation-cap';
-import Newspaper from 'react-icons/lib/fa/newspaper-o';
-import Inbox from 'react-icons/lib/fa/inbox';
-import Edit from 'react-icons/lib/fa/edit';
-import * as Utils from '../../components/Utils';
-import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as ReactGA from 'react-ga';
-
+import Starred from '../../components/StarredItems/Starred';
 
 class StudentDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      name: '',
+      name: ''
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
   }
 
   componentWillMount() {
@@ -53,19 +43,15 @@ class StudentDashboard extends Component {
   }
 
   render() {
-    // const override = css`
-	  //   display: block;
-	  //   margin: 0 auto;
-	  //   border-color: red;
-		// `;
-
     if (this.state.loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            style = {{display: "block",
-            margin: 0,
-            borderColor: "red"}}
+            style={{
+              display: "block",
+              margin: 0,
+              borderColor: "red"
+            }}
             sizeUnit="px"
             size={150}
             color="#ff0000"
@@ -75,49 +61,31 @@ class StudentDashboard extends Component {
       );
     }
 
-    const newspaper = <Newspaper />;
-    const edit = <Edit />;
-    const user = <User />;
-    const userTie = <UserTimes />;
-
     return (
       <div>
         <Navbar current="studentDashboard" />
 
         <div className="student-dash-container">
           <div className="row">
-            <div className="column column-50">
+            <div className="column column-10"></div>
+            <div className="column column-80">
               <div className="dashboard-header">
-Welcome back
-                {' '}
-                {this.state.name}
-!
+                Welcome back, {this.state.name}!
               </div>
 
-              <DashboardAction
-                icon={edit}
-                iconColor="#A5CCFE"
-                text="View Opportunities"
-                href="/opportunities"
-              />
-              <DashboardAction
-                icon={userTie}
-                iconColor="#F5FEAB"
-                text="View & Email Faculty"
-                href="/faculty"
-              />
-              <DashboardAction
-                icon={user}
-                iconColor="#FEABCD"
-                text="Edit Your Profile"
-                href="/editprofile"
-              />
-              <DashboardAction
-                icon={newspaper}
-                iconColor="#91D781"
-                text="Contact Us"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform"
-              />
+              <div className="bottom">
+                <Starred
+                  type="opportunity"
+                  limit={3}
+                  label="Your Saved Opportunities"
+                />
+
+                <Starred
+                  type="faculty"
+                  limit={3}
+                  label="Your Saved Faculty"
+                />
+              </div>
 
             </div>
           </div>

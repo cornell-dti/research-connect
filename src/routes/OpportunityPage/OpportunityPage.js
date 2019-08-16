@@ -73,6 +73,7 @@ class OpportunityPage extends Component {
 
   sendToHome(error) {
     if (!this.state.detectedLoggedOut) {
+      console.log('error in sendToHome in opportunity page');
       Utils.handleTokenError(error);
       window.location.href = '/';
       console.log('done');
@@ -610,7 +611,7 @@ No Preference
                     && (
                     <a
                       className="button"
-                      href={`/EditOpp?Id=${this.props.match.id}/`}
+                      href={`/EditOpp?Id=${this.props.match.params.id}/`}
                     >
 Edit
                       Opportunity
@@ -780,7 +781,7 @@ create an account
                   )
                 }
             </div>
-            <div className="column">
+            <div className="column" >
               <div className="opp-qualifications">
                 <div className="opp-qual-title">
                   <div>Preferred Qualifications</div>

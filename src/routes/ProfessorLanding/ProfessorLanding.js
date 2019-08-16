@@ -46,6 +46,7 @@ class ProfessorLanding extends Component {
           }
         })
         .catch((error) => {
+          console.log('error in proffessor landing /api/role')
           Utils.handleTokenError(error);
         });
     }
@@ -101,7 +102,7 @@ class ProfessorLanding extends Component {
         }
       });
     }).catch((error) => {
-      console.log('Error');
+      console.log('Error in /api/hasRegistered on prof landing page');
       console.log(error);
       Utils.handleTokenError(error);
     });
@@ -146,7 +147,7 @@ class ProfessorLanding extends Component {
               <div>
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
-                  buttonText="Lab Log In"
+                  buttonText="Lab Log In/Sign Up"
                   onSuccess={this.responseGoogle}
                   onFailure={this.loginFailure.bind(this)}
                   className="signup"
@@ -274,16 +275,7 @@ class ProfessorLanding extends Component {
         </section>
 
 
-        {/*<section className="incollab">*/}
-          {/*<Container className="middleContainer">*/}
-            {/*<Row>*/}
-              {/*<Col><p className="collab">In Collabortation with ...     </p></Col>*/}
-              {/*<Col><img className="collabImage" src={cis} /></Col>*/}
-              {/*/!*<Col><img className="middleImage-curb" src={curb} /></Col>*!/*/}
-              {/*<Col><img className="collabImage" src={CDTI} /></Col>*/}
-            {/*</Row>*/}
-          {/*</Container>*/}
-        {/*</section>*/}
+
 
         <footer className="footer-all">
           <ul>
