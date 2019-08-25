@@ -604,7 +604,7 @@ No Preference
                   </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
-                <div className="column right-column">
+                <div className="column right-column" style={{marginBottom: 0}}>
                   {!isNotLoggedIn && !isLab
                     && <a className="button" href="#Application">Apply</a>
                       /* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
