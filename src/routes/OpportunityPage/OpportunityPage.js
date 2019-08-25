@@ -12,13 +12,15 @@ import * as ReactGA from 'react-ga';
 import Star from '../../components/Star/Star'
 
 function LinkFaculty(props) {
+  // if we manually enter their faculty ID in the database, then we can show
+  // their faculty page here
   if (props.facultyId){
     return (<span> You can view info about this faculty and use our email tips & writer
     <a href={"/faculty/" + props.facultyId}> here. </a></span>)
   }
   else {
     return (<span>You can learn how to write a good email by looking at the template
-      for another faculty at the bottom of <a href="/faculty/5b8eba793136d653ddc3dfb4">this</a> page, as well as our email writing tips on the sidebar.</span>)
+      for another faculty at the bottom of <a href="/faculty/5b8eba793136d653ddc3dfb4" target="_blank">this</a> page, as well as our email writing tips on the sidebar of that page.</span>)
   }
 }
 

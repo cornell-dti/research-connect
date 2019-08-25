@@ -330,7 +330,8 @@ class CreateOppForm extends React.Component {
             if (this.state.creatorNetId) {
               document.location.href = '/professorView';
             } else {
-              document.location.href = '/profLanding';
+              alert('Submitted! You can find your opportunity on the opportunities page of our site! (research-connect.com/opportunities/)');
+              document.location.href = '/opportunities';
             }
           });
         }).catch((error) => {
@@ -385,7 +386,8 @@ class CreateOppForm extends React.Component {
             <div className="new-opp-form">
               <div className="form-title">
                 <h3>Create New Position</h3>
-                <h6>Interested students must fill out a cover letter to apply. If you post without an account, their info will be emailed to you. If you post with an account, you can also view their info through our portal and edit your opportunity.</h6>
+                <h6>If you post without an account, students will have to write an email to you if they are interested.
+                   If you post with an account, students will write a cover letter on the site and you can view their info through our portal as well as edit your opportunity.</h6>
                 <span className="required-star-top">* Required Fields</span>
               </div>
               <form
@@ -477,7 +479,9 @@ class CreateOppForm extends React.Component {
                   <span className="required-star">*</span>
                   <textarea
                     className="column column-90"
-                    placeholder="General Description and/or Undergraduate Tasks"
+                    placeholder="General description, undergraduate tasks, or
+                     just a link to your website and text saying to email you
+                     if anything looks interesting."
                     name="tasks"
                     type="text"
                     value={this.state.undergradTasks}
