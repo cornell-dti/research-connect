@@ -429,7 +429,6 @@ function getUniqueTitle(title, supervisor) {
 }
 
 app.post('/', async (req, res, next) => {
-  // TODO test what next() does, create middleware from https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016 ?
   try {
     // req is json containing the stuff that was sent if there was anything
     const data = req.body;
@@ -632,7 +631,7 @@ app.post('/', async (req, res, next) => {
                 console.log(e.response.body.errors);
               });
             });
-            debug('finished emailling students');
+            debug('finished emailing students');
           });
       });
       debug('done with function');
