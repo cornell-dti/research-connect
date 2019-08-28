@@ -453,7 +453,7 @@ class CreateOppForm extends React.Component {
 
                   <input
                     className="column column-90"
-                    placeholder="Position Title"
+                    placeholder="Project Title/Overview (i.e. Efficiency through the interaction of programming languages and computer architecture)"
                     type="text"
                     name="title"
                     value={this.state.title}
