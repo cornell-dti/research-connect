@@ -243,7 +243,9 @@ app.put('/:netId', (req, res) => {
   debug('We have reached the backend');
   debug(req.body);
   const data = req.body;
-  const nId = req.params.netId;
+  let nId = req.params.netId;
+ verify(req.params.tokenId, (decrypted) => {
+   nId = decrypted;
   undergradModel.find({ netId: nId }, (err, undergrad) => {
     if (err) {
       res.status(500).send(err);
@@ -271,6 +273,7 @@ app.put('/:netId', (req, res) => {
       });
     }
   });
+ });
 });
 
 app.delete('/:id', (req, res) => {

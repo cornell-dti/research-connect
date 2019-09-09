@@ -400,7 +400,7 @@ class EditProfile extends Component {
             console.log(error);
           });
       }
-      axios.put(`/api/undergrads/${this.state.netId}`, {
+      axios.put(`/api/undergrads/${sessionStorage.getItem('token_id')}`, {
         year, major, gpa, relevantCourses, relevantSkills,
       })
         .then((result) => {
