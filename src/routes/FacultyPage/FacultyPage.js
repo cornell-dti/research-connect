@@ -20,7 +20,7 @@ import Star from '../../components/Star/Star'
  * @param props should be awards=this.state.profInfo.awards
  */
 const ListItems = (props) => {
-  if (!props.items || props.items.length === 0) {
+  if (!props.items || props.items.length === 0 || !Array.isArray(props.items)) {
     let returnVals = [];
     if (props.pub){
       // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
@@ -371,41 +371,41 @@ Website:
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="opp-details-card" id="emailText">
-                  {this.state.role ? (
-                    <div>
-                      <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} />
-                      <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                        <input
-                          type="submit"
-                          className="button"
-                          style={{ width: '150px' }}
-                          value={this.state.buttonValue}
-                          disabled={this.state.isButtonDisabled}
-                          onClick={this.sendEmail.bind(this)}
-                        />
-                        <br />
-                        <p style={{ fontSize: '10px' }}>
-                          {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="header">
-                      {'Please '}
-                      <a
-                        href="/#student-sign-up"
-                      >
-                        create an account
-                      </a>
-                      {` to use our email composer! Your email will be saved as
-                      a template as well as scheduled to be sent out at the
-                      ideal time.`}
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/*<div className="row">*/}
+              {/*  <div className="opp-details-card" id="emailText">*/}
+              {/*    {this.state.role ? (*/}
+              {/*      <div>*/}
+              {/*        <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} />*/}
+              {/*        <div style={{ textAlign: 'center', marginTop: '10px' }}>*/}
+              {/*          <input*/}
+              {/*            type="submit"*/}
+              {/*            className="button"*/}
+              {/*            style={{ width: '150px' }}*/}
+              {/*            value={this.state.buttonValue}*/}
+              {/*            disabled={this.state.isButtonDisabled}*/}
+              {/*            onClick={this.sendEmail.bind(this)}*/}
+              {/*          />*/}
+              {/*          <br />*/}
+              {/*          <p style={{ fontSize: '10px' }}>*/}
+              {/*            {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`}*/}
+              {/*          </p>*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    ) : (*/}
+              {/*      <div className="header">*/}
+              {/*        {'Please '}*/}
+              {/*        <a*/}
+              {/*          href="/#student-sign-up"*/}
+              {/*        >*/}
+              {/*          create an account*/}
+              {/*        </a>*/}
+              {/*        {` to use our email composer! Your email will be saved as*/}
+              {/*        a template as well as scheduled to be sent out at the*/}
+              {/*        ideal time.`}*/}
+              {/*      </div>*/}
+              {/*    )}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
             </div>
             <div className="column">
               <div className="opp-qualifications">
