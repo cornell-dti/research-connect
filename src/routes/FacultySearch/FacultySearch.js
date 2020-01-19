@@ -43,7 +43,8 @@ class FacultySearch extends Component {
     axios.get("/api/faculty", {
       params: {
         department: "tech",
-        limit: this.state.numShowing,
+        // limit: this.state.numShowing,
+        limit: 0,
         area: this.state.area,
         search: searchText
       }
@@ -271,15 +272,15 @@ class FacultySearch extends Component {
                     numShowing={this.state.numShowing}
                     data={this.state.data}
                   />
-                  <div className="centered">
-                    <input
-                      type="submit"
-                      className="button"
-                      id="button-load"
-                      value="Load More"
-                      onClick={this.handlePageClick.bind(this)}
-                    />
-                  </div>
+                  {/*<div className="centered">*/}
+                  {/*  <input*/}
+                  {/*    type="submit"*/}
+                  {/*    className="button"*/}
+                  {/*    id="button-load"*/}
+                  {/*    value="Load More"*/}
+                  {/*    onClick={this.handlePageClick.bind(this)}*/}
+                  {/*  />*/}
+                  {/*</div>*/}
                 </div>
               </div>
             </div>

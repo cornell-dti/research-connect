@@ -62,7 +62,7 @@ class Faculty extends Component {
             <h5>{this.props.department}</h5>
             {this.props.lab !== null && this.propslab !== "" && this.props.lab !== undefined
               ?( <h5>{this.props.lab}</h5>)
-              : <br/>}
+              : <span></span>}
            
             <div>
               {this.props.researchDescription && this.props.researchDescription.length > 0 ? this.convertDescription(this.props.researchDescription)
