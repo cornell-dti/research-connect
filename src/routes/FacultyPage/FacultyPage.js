@@ -27,42 +27,49 @@ const ListItems = (props) => {
       // returnVals.push("Click");
       // returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
       // returnVals.push("if you're interested in viewing the abstracts (summaries) of their most recent and their most cited papers.");
-      returnVals.push("No publications available. Check Google Scholar to " +
+      returnVals.push("Check the professor's website at the top of this page or Google Scholar to " +
         "find papers they've written.");
       return returnVals;
     }
     return 'Not listed';
   }
-  return props.items.map(item => <p key={item}>{item}</p>);
+  // remove � characters when mapping
+  return props.items.map(item => <p key={item}>{item.replace(/\uFFFD/g, '')}</p>);
 };
 
 class AcceptingMessage extends React.Component {
   render() {
     let acceptingStatus = this.props.acceptingStatus;
+    let status = [];
     if (acceptingStatus === "yes") {
-      return <p>This professor is currently open to working with undergrads this
+      status.push(<p><b>Accepting: </b>This professor is currently open to working with undergrads this
         semester.
         If you meet the qualifications below, then apply by emailing the
         professor.
-        See the sidebar on the right for email writing tips.</p>
+        See the sidebar on the right for email writing tips.
+      Please note that this may change if the professor reaches their capacity
+      for the number of undergrads they can take this semester.</p>)
     } else if (acceptingStatus === "no") {
-      return <p>This professor does not plan to work with undergrads this
+      status.push(<p><b>Not Accepting: </b>This professor does not plan to work with undergrads this
         semester,
         so it's not worth asking to do research with them. This could change
-        in future semesters.</p>
+        in future semesters.</p>)
     } else if (acceptingStatus === "maybe") {
-      return <p>This professor indicated that they may work with undergrads
+      status.push(<p><b>Possibly Accepting: </b>This professor indicated that they may work with undergrads
         this semester, but there's also a chance that they won't work with any.
         You can still email the professor if their work seems interesting. See
-        the sidebar on the right for email writing tips.</p>
+        the sidebar on the right for email writing tips.</p>)
     } else {
-      return <p>We have no information on whether this professor plans to
+      status.push(<p><b>Unknown: </b>We have no information on whether this professor plans to
         work with undergrads this semester. You can still email the professor
         if their work seems interesting. See the sidebar on the right for
-        email writing tips.</p>
+        email writing tips.</p>)
     }
+    status.push(<p>Last updated: January 2020.</p>);
+    return <div>{status}</div>;
   }
 }
+
 
 class FacultyPage extends Component {
   constructor(props) {
