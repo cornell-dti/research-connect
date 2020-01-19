@@ -124,7 +124,7 @@ app.get('/', (req, res) => {
   const sortOrderObj = { opens: sortOrder };
   let timeRange;
   // if there's a lab id in the url, then it's a lab administrator trying to view their own opportunities
-  if (urlLabId) {
+  if (urlLabId && urlLabId !== "null") {
     timeRange = {};
   } else {
     timeRange = {

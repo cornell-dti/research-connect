@@ -47,8 +47,8 @@ class AcceptingMessage extends React.Component {
         If you meet the qualifications below, then apply by emailing the
         professor.
         See the sidebar on the right for email writing tips.
-      Please note that this may change if the professor reaches their capacity
-      for the number of undergrads they can take this semester.</p>)
+      <b>Please note that this may change if the professor reaches their capacity
+        for the number of undergrads they can take this semester.</b></p>)
     } else if (acceptingStatus === "no") {
       status.push(<p><b>Not Accepting: </b>This professor does not plan to work with undergrads this
         semester,
