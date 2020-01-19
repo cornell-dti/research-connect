@@ -83,8 +83,8 @@ class ResearchGuide extends Component {
                     </div>
                     <div className="opp-details-section">
                       <h1 className="title">Is It Too Early/Late To Reach Out For Research?</h1>
-                      <h2 className="step">It can't hurt; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest!
-                      PhD students are usually flexible.</h2>
+                      <p className="instructions">It can't hurt; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest!
+                      </p>
                     </div>
                     <div className="opp-details-section">
                       <h1 className="title">I Still Have Questions About Finding Research</h1>
