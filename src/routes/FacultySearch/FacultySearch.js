@@ -11,6 +11,7 @@ import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ReactPaginate from 'react-paginate';
 import '../Opportunities/Opportunities.scss';
+import '../OpportunityPage/OpportunityPage.scss';
 import * as ReactGA from 'react-ga';
 
 import './FacultySearch.scss';

@@ -53,77 +53,75 @@ class FacultyList extends Component {
     return (countString);
   }
 
+
   componentDidMount(){
     console.log("component mounted");
     this.getStarredFac();
+    console.log('did mount');
+    console.log(this.props);
+
   }
 
   render() {
-    let profNodes = this.props.data.map((prof) => {
-      // if (idx > this.props.numShowing){
-      //   return;
-      // }
-      /*The variable 'willshow' will be set to false if any filter excludes this faculty member */
-      let willShow = true;
+    const headerStyle = {
+      color: "black",
+      fontSize: "24px",
+      fontWeight: "bolder",
+    };
+    let profs = {"yes": [], "no": [], "maybe": [], "unknown": []};
+    console.log('wiwll mount');
+    console.log(this.props);
+    this.props.data.forEach((prof) => {
+      console.log(prof);
       const filteredOptions = this.props.filteredOptions;
-
-      let departmentSelected = filteredOptions.department;
-      let areaSelected = filteredOptions.area;
-      let matchingSearches = filteredOptions.matchingSearches;
-      /* checks if search bar filter matches a key word somewhere
-       * EDIT: doesn't the backend have a function for this?
-        * */
-      // if (filteredOptions.searchBar != '' && filteredOptions.clickedEnter) {
-      //   let matches = false;
-      //   for (let i = 0; i < matchingSearches.length; i++) {
-      //     if (matchingSearches[i] == prof._id) {
-      //       matches = true;
-      //     }
-      //   }
-      //   if (!matches) {
-      //     willShow = false;
-      //   }
-      // }
-      /* checks if filters have been added and excludes faculty if no match*/
-      // if (departmentSelected && prof.department !== departmentSelected) {
-      //   willShow = false;
-      // }
-      // if (areaSelected &&
-      //     (prof.researchInterests.indexOf(areaSelected) === -1)) {
-      //   willShow = false;
-      // }
-
-      if (willShow) {
-
-        return (
-            <Faculty
-                key={prof['_id']}
-                ID={prof['_id']}
-                filteredOptions={this.props.filteredOptions}
-                name={prof['name']}
-                department={prof['department']}
-                lab={prof['lab']}
-                photoId={prof['photoId']}
-                bio={prof['bio']}
-                researchInterests={prof['researchInterests']}
-                researchDescription={prof['researchDescription']}
-                starred={this.state.starredFac.includes(prof['_id'])}
-                updateStar={this.updateStar.bind(this)}
-            />
-        );
-      }
-
+      // let departmentSelected = filteredOptions.department;
+      // let areaSelected = filteredOptions.area;
+      // let matchingSearches = filteredOptions.matchingSearches;
+      console.log(prof.accepting);
+      profs[prof.accepting].push(
+        <Faculty
+          key={prof['_id']}
+          ID={prof['_id']}
+          filteredOptions={this.props.filteredOptions}
+          name={prof['name']}
+          department={prof['department']}
+          lab={prof['lab']}
+          photoId={prof['photoId']}
+          bio={prof['bio']}
+          researchInterests={prof['researchInterests']}
+          researchDescription={prof['researchDescription']}
+          starred={this.state.starredFac.includes(prof['_id'])}
+          updateStar={this.updateStar.bind(this)}
+        />)
     });
-    let nodeCount = this.countNodes(profNodes);
+    console.log('done');
+    console.log(profs);
+    Object.keys(profs).forEach((status) => {
+      if (profs[status].length === 0){
+        profs[status] = [<p>No professors matching this criteria.</p>]
+      }
+    });
+    let nodeCount = this.countNodes(profs);
     return (
-        <div>
-          <div className="node-list-div">
-            <p>
-              {nodeCount} matching your search criteria.
-            </p>
-          </div>
-          {profNodes}
+      <div>
+        <div className="node-list-div">
+          {/*<p>*/}
+          {/*  {nodeCount} matching your search criteria.*/}
+          {/*</p>*/}
+          <p>Information last updated January 2020.</p>
         </div>
+        <div style={headerStyle}>Professors Recruiting Undergrads This Semester</div>
+        {profs["yes"]}
+        <br />
+        <div style={headerStyle}>Professors Maybe Recruiting Undergrads This Semester</div>
+        {profs["maybe"]}
+        <br />
+        <div style={headerStyle}>Professors Not Recruiting Undergrads This Semester</div>
+        {profs["no"]}
+        <br />
+        <div style={headerStyle}>Unknown Whether Professor Is Recruiting Undergrads This Semester</div>
+        {profs["unknown"]}
+      </div>
     );
   }
 }
