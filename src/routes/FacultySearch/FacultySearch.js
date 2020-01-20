@@ -64,9 +64,9 @@ class FacultySearch extends Component {
         search: searchText
       }
     })
-      .then((res) => {
-        this.setState({ data: res.data });
-      });
+    .then((res) => {
+      this.setState({ data: res.data });
+    });
   }
 
   componentDidMount() {
@@ -126,12 +126,12 @@ class FacultySearch extends Component {
         this.getFaculty();
       });
       /** DEPRECATED SEARCH METHOD
-      axios.get(`/api/faculty/search?search='${this.state.searchBar}`).
-          then((response) => {
+       axios.get(`/api/faculty/search?search='${this.state.searchBar}`).
+       then((response) => {
             const matching = response.data.map(d => d._id);
             this.setState({matchingSearches: matching});
           }).
-          catch((error) => {
+       catch((error) => {
             Utils.handleTokenError(error);
           });
        */
@@ -205,37 +205,18 @@ class FacultySearch extends Component {
             {this.state.searchBar != ''
               ?
               <DeleteIcon onClick={this.clearSearch.bind(this)}
-                className="clear-icon" size={30} />
+                          className="clear-icon" size={30} />
               :
               ''}
           </div>
         </div>
 
-        <div className="opp-container row" id="noAlign" style={{marginBottom: 0}}>
+        <div className="opp-container row" id="noAlign">
 
-          <div className="column column-20">
-            <span />
-          </div>
-          <div className="column column-80 opportunities-list-wrapper" style={{marginBottom: "10px"}}>
-            <div className="row">
-              <div className="column column-70">
-                <div className="opp-list-container">
-                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
-                  <OpportunityBox
-                    filteredOptions={this.state.opportunitiesOptions}
-                    url="opportunities"
-                    searching={this.state.opportunitiesOptions.searching}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="opp-container row" style={{alignItems: "baseline"}}>
           <div className="column column-20">
             <div className="filter-box">
               <div className='filter-child'>
-                <label>Filter by....</label>
+                <label>Filter Faculty By....</label>
               </div>
               {/*<h4>Filters</h4>*/}
               <hr id="noHrMargin" />
@@ -305,7 +286,19 @@ class FacultySearch extends Component {
             </div>
           </div>
           <div className="column column-80 opportunities-list-wrapper">
-          <div className="row">
+            <div className="row">
+              <div className="column column-70">
+                <div className="opp-list-container">
+                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
+                  <OpportunityBox
+                    filteredOptions={this.state.opportunitiesOptions}
+                    url="opportunities"
+                    searching={this.state.opportunitiesOptions.searching}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
               <div className="column column-70">
                 <div className="opp-list-container">
                   <span style={headerStyle}>Research Opportunities By Professor</span>
@@ -326,7 +319,8 @@ class FacultySearch extends Component {
                   {/*</div>*/}
                 </div>
               </div>
-          </div>
+            </div>
+
           </div>
         </div>
         <Footer />
