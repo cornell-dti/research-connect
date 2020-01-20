@@ -167,7 +167,10 @@ const facultySchema = new Schema({
   labPage: { type: String },
   department: { type: String },
   email: { type: String },
-  accepting: { type: String, enum: ['yes', 'no', 'unknown', 'maybe', ''] },
+  accepting: { type: String, enum: ['yes', 'no', 'unknown', 'maybe'], default: 'unknown' },
+  semestersAccepted: {type: [String]}, // used to eventualyl tell students if this professor has accepted in  the past and is likely to accept in future
+  qualifications: {type: String, default: ''},
+  requiredCourses: {type: [String], default: []},  // this is here so one day we can automatically check if students have the required courses
   bio: { type: String },
   teaching: { type: String },
 });

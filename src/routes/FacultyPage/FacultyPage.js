@@ -20,19 +20,56 @@ import Star from '../../components/Star/Star'
  * @param props should be awards=this.state.profInfo.awards
  */
 const ListItems = (props) => {
-  if (!props.items || props.items.length === 0) {
+  if (!props.items || props.items.length === 0 || !Array.isArray(props.items)) {
     let returnVals = [];
     if (props.pub){
       // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
-      returnVals.push("Click");
-      returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
-      returnVals.push("if you're interested in viewing the abstracts (summaries) of their most recent and their most cited papers.");
+      // returnVals.push("Click");
+      // returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
+      // returnVals.push("if you're interested in viewing the abstracts (summaries) of their most recent and their most cited papers.");
+      returnVals.push("Check the professor's website at the top of this page or Google Scholar to " +
+        "find papers they've written.");
       return returnVals;
     }
     return 'Not listed';
   }
-  return props.items.map(item => <p key={item}>{item}</p>);
+  // remove � characters when mapping
+  return props.items.map(item => <p key={item}>{item.replace(/\uFFFD/g, '')}</p>);
 };
+
+class AcceptingMessage extends React.Component {
+  render() {
+    let acceptingStatus = this.props.acceptingStatus;
+    let status = [];
+    if (acceptingStatus === "yes") {
+      status.push(<p><b>Accepting: </b>This professor is currently open to working with undergrads this
+        semester.
+        If you meet the qualifications below, then apply by emailing the
+        professor.
+        See the sidebar on the right for email writing tips.
+      <b>Please note that this may change if the professor reaches their capacity
+        for the number of undergrads they can take this semester.</b></p>)
+    } else if (acceptingStatus === "no") {
+      status.push(<p><b>Not Accepting: </b>This professor does not plan to work with undergrads this
+        semester,
+        so it's not worth asking to do research with them. This could change
+        in future semesters.</p>)
+    } else if (acceptingStatus === "maybe") {
+      status.push(<p><b>Possibly Accepting: </b>This professor indicated that they may work with undergrads
+        this semester, but there's also a chance that they won't work with any.
+        You can still email the professor if their work seems interesting. See
+        the sidebar on the right for email writing tips.</p>)
+    } else {
+      status.push(<p><b>Unknown: </b>We have no information on whether this professor plans to
+        work with undergrads this semester. You can still email the professor
+        if their work seems interesting. See the sidebar on the right for
+        email writing tips.</p>)
+    }
+    status.push(<p>Last updated: January 2020.</p>);
+    return <div>{status}</div>;
+  }
+}
+
 
 class FacultyPage extends Component {
   constructor(props) {
@@ -177,6 +214,18 @@ class FacultyPage extends Component {
       });
   }
 
+  joinSentence( array, oxford_comma ){
+    let lastWord = "";
+    if (array.length > 1) {
+      lastWord = " and " + array.pop();
+      if (oxford_comma && array.length > 1){
+        lastWord = "," + lastWord;
+      }
+    }
+    return array.join(", ") + lastWord;
+  }
+
+
   render() {
     const noInfoMessage = 'No description provided';
     const isNotLoggedIn = !(this.state.role);
@@ -206,21 +255,21 @@ class FacultyPage extends Component {
                   </h3>
 
                   <p>
-                    <b>Professor</b>
+                    {this.state.profInfo.title}
                     {' '}
 in
                     {' '}
-                    <b>{this.state.profInfo.department}</b>
+                    {this.state.profInfo.department}
                     {' '}
 at
-                    <b>{this.state.profInfo.labName ? this.state.profInfo.labName : ' Cornell'}</b>
+                    {this.state.profInfo.labName ? this.state.profInfo.labName : ' Cornell'}
                   </p>
                   <p>
-                    <b>
+
 Areas of
                                     Interest:
                       {' '}
-                    </b>
+
                     {(this.state.profInfo.researchInterests && this.state.profInfo.researchInterests.length !== 0)
                       ? this.separateInterests(this.state.profInfo.researchInterests) : 'None found'}
                   </p>
@@ -276,6 +325,23 @@ Website:
                 </div>
 
               </div>
+
+              <div className="row">
+                <div className="opp-details-card">
+                  <div className="opp-details-section">
+                    <div className="header">Doing Research With This Professor</div>
+                    <p>
+                      <AcceptingMessage acceptingStatus={this.state.profInfo.accepting} />
+                    </p>
+                  </div>
+                  {this.state.profInfo.accepting !== 'yes' ? '' :
+                    <div className="opp-details-section">
+                      <div className="header">Qualifications</div>
+                        <p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : "This professor did not explicitly specify any qualifications."}</p>
+                    </div>}
+                </div>
+              </div>
+
               <div className="row">
                 <div className="opp-details-card">
                   <div className="opp-details-section">
@@ -312,41 +378,41 @@ Website:
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="opp-details-card" id="emailText">
-                  {this.state.role ? (
-                    <div>
-                      <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} />
-                      <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                        <input
-                          type="submit"
-                          className="button"
-                          style={{ width: '150px' }}
-                          value={this.state.buttonValue}
-                          disabled={this.state.isButtonDisabled}
-                          onClick={this.sendEmail.bind(this)}
-                        />
-                        <br />
-                        <p style={{ fontSize: '10px' }}>
-                          {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="header">
-                      {'Please '}
-                      <a
-                        href="/#student-sign-up"
-                      >
-                        create an account
-                      </a>
-                      {` to use our email composer! Your email will be saved as
-                      a template as well as scheduled to be sent out at the
-                      ideal time.`}
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/*<div className="row">*/}
+              {/*  <div className="opp-details-card" id="emailText">*/}
+              {/*    {this.state.role ? (*/}
+              {/*      <div>*/}
+              {/*        <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} />*/}
+              {/*        <div style={{ textAlign: 'center', marginTop: '10px' }}>*/}
+              {/*          <input*/}
+              {/*            type="submit"*/}
+              {/*            className="button"*/}
+              {/*            style={{ width: '150px' }}*/}
+              {/*            value={this.state.buttonValue}*/}
+              {/*            disabled={this.state.isButtonDisabled}*/}
+              {/*            onClick={this.sendEmail.bind(this)}*/}
+              {/*          />*/}
+              {/*          <br />*/}
+              {/*          <p style={{ fontSize: '10px' }}>*/}
+              {/*            {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`}*/}
+              {/*          </p>*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    ) : (*/}
+              {/*      <div className="header">*/}
+              {/*        {'Please '}*/}
+              {/*        <a*/}
+              {/*          href="/#student-sign-up"*/}
+              {/*        >*/}
+              {/*          create an account*/}
+              {/*        </a>*/}
+              {/*        {` to use our email composer! Your email will be saved as*/}
+              {/*        a template as well as scheduled to be sent out at the*/}
+              {/*        ideal time.`}*/}
+              {/*      </div>*/}
+              {/*    )}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
             </div>
             <div className="column">
               <div className="opp-qualifications">
@@ -358,14 +424,14 @@ Website:
 
                 <div className="opp-qual-section">
                   <h6 className="header">How Do I Find Research?</h6>
-                  One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to professor's
+                  One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to the professor's
                   office and ask them about their research and then express your interest in working with them. See our <a href="/guide"> "How to Find Research" </a> section for more info.
                 </div>
 
                 <div className="opp-qual-section">
                   <h6 className="header">What to Write?</h6>
-                  (Note that we save the email you send here so you can use it as a template for the next professor)
-                  <br />1st Paragraph: Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.
+                  {/*(Note that we save the email you send here so you can use it as a template for the next professor)*/}
+                  1st Paragraph: Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.
                   <br />2nd Paragraph: Say you're interested in opportunities in their lab, talk about your experience in this area if applicable.
                   <br />3rd Paragraph: Include a link to your resume (and transcript if you'd like).
 
@@ -375,17 +441,20 @@ Website:
 
                 <div className="opp-qual-section">
                   <h6 className="header">Is It Too Early To Reach Out For [Summer/Fall/Spring] Research?</h6>
-                  Nope; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
+                  No; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
 
                 </div>
 
-                <hr />
+                {/*<hr />*/}
 
-                <div className="opp-qual-section">
-                  <h6 className="header">Technical Details</h6>
-                  We use the Sendgrid API so the email comes from you and when professors responds they're responding to you!
-                  We'll also schedule the email to go out the soonest weekday morning, when they're least likely to have it slip through their inbox.
-                </div>
+                {/*<div className="opp-qual-section">*/}
+                {/*  <h6 className="header">Technical Details</h6>*/}
+                {/*  Regarding the email composer at the bottom of this page:*/}
+                {/*  We use the Sendgrid API so the email comes from you and when */}
+                {/*  professors responds they're responding to you!*/}
+                {/*  We'll also schedule the email to go out the soonest weekday */}
+                {/*  morning, when they're least likely to have it slip through their inbox.*/}
+                {/*</div>*/}
               </div>
             </div>
           </div>

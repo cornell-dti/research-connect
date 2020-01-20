@@ -22,11 +22,11 @@ class StudentNavbar extends Component {
             <a href="/studentDashboard"><img className="logo" src={logo} alt="Research Connect Logo" /></a>
           </div>
           <nav>
-            <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-              <a href="/opportunities">Opportunities</a>
-            </li>
+            {/*<li className={this.props.current === 'opportunities' ? 'current-page' : ''}>*/}
+            {/*  <a href="/opportunities">Opportunities</a>*/}
+            {/*</li>*/}
             <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
-              <a href="/faculty">Faculty</a>
+              <a href="/faculty">View Opportunities</a>
             </li>
 
             <li className={this.props.current === 'savedops' ? 'current-page' : ''}>

@@ -16,8 +16,28 @@ app.get('/test', (req, res) => {
   });
 });
 
+/**
+ * For the current iteration, we only want CS Professors not at Cornell Tech.
+ * However, the database still has those professors in it. So we need to filter
+ * whenever we query. We're keeping them in the db in case we need them one day.
+ */
+function getBaseFacultyFilter(){
+  return {
+    "department": {
+      "$in": [
+        "Computer Science"
+      ]
+    },
+    "office": {
+      "$regex": "^((?!Cornell Tech).)*$",
+    },
+    "title": {
+      "$regex": "^((?!PhD Student).)*$",
+    }
+  }
+}
+
 /** gets all the faculty in the database.
- * @param ?department=tech means only return CS or ECE professors (I would include Info Sci but we don't have info on them yet...)
  * @param limit users can specify to only return x number of results by appending ?limit=x at the end of their query. i.e. GET /api/faculty?limit=10
  * @param skip users can also specify to skip x number of results. Default is 0. i.e. GET /api/faculty?limit=10&skip=20
  * @param area. shows only faculty in that area. returns all if falsy.
@@ -25,7 +45,7 @@ app.get('/test', (req, res) => {
  * @return array of faculty members
  */
 app.get('/', (req, res) => {
-  let { department, skip, limit, area, search } = req.query;
+  let { skip, limit, area, search } = req.query;
   // if they didn't make skip a number or just didn't specify it, make it 0.
   if (Number.isNaN(Number(skip)) || !skip) {
     skip = 0;
@@ -37,14 +57,12 @@ app.get('/', (req, res) => {
   } else {
     limit = 0;
   }
-  let facultyFilter = {};
-  if (department === "tech") {
-    facultyFilter = {
-      department: {$in: ["Computer Science"]}
-    }
-  }
+  let facultyFilter = getBaseFacultyFilter();
+  console.log(1);
+  console.log(facultyFilter);
+  console.log(area);
   if (area) {
-    facultyFilter["researchInterests"] = {$in: [area]}
+    facultyFilter["researchInterests"] = {$in: [area.trim()]}
   }
   if (search) {
     facultyFilter["$text"] = {$search: search};
@@ -91,11 +109,12 @@ app.get('/', (req, res) => {
  */
 app.get('/search', (req, res) => {
   debug(req.query.search);
-  let searchQuery = { $text: { $search: req.query.search } };
+  let searchQuery = getBaseFacultyFilter();
+  searchQuery["$text"] = { $search: req.query.search };
   // if req.query.search is empty string or undefined (falsy) then just send back all faculty
   if (!req.query.search) {
     // when you don't specify any criteria, mongo returns everything
-    searchQuery = {};
+    searchQuery = getBaseFacultyFilter();
   }
   facultyModel.find(searchQuery, (err, search) => {
     if (err) {

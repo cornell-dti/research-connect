@@ -82,7 +82,7 @@ class Landing extends Component {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/opportunities';
+        window.location.href = '/faculty';
       } else {
         window.location.href = '/studentRegister';
       }
@@ -140,6 +140,10 @@ class Landing extends Component {
     logoutGoogle();
   }
 
+  viewOpps() {
+    window.location.href = '/faculty';
+  }
+
   render() {
     return (
       <div className="landingPage">
@@ -178,6 +182,14 @@ class Landing extends Component {
           <h1>Research Connect</h1>
           <h3>Find your next CS research opportunity.</h3>
           <SearchBar id="search-div-container1" />
+          <input
+            className="white-button"
+            id="whiteButton"
+            type="button"
+            onClick={this.viewOpps.bind(this)}
+            value="View All Opportunities"
+            style={{backgroundColor: "white", borderColor: "white", color: "rgb(166,57,45)", marginTop: "20px", width: "30rem", height: "5rem"}}
+          />
 
         </section>
 

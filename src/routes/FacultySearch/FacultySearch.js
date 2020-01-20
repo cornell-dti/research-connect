@@ -6,11 +6,13 @@ import SearchIcon from 'react-icons/lib/io/search';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
+import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ReactPaginate from 'react-paginate';
 import '../Opportunities/Opportunities.scss';
+import '../OpportunityPage/OpportunityPage.scss';
 import * as ReactGA from 'react-ga';
 
 import './FacultySearch.scss';
@@ -29,6 +31,19 @@ class FacultySearch extends Component {
       role: '',
       numShowing: 20,
       data: [],
+      opportunitiesOptions: {
+        yearSelect: [],
+        gpaSelect: '2.5',
+        majorSelect: {},
+        startDate: '',
+        compensationSelect: [],
+        searchBar: '',
+        matchingSearches: [],
+        searching: false,
+        clickedEnter: false,
+        role: '',
+        csAreasSelect: [],
+      }
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -43,14 +58,15 @@ class FacultySearch extends Component {
     axios.get("/api/faculty", {
       params: {
         department: "tech",
-        limit: this.state.numShowing,
+        // limit: this.state.numShowing,
+        limit: 0,
         area: this.state.area,
         search: searchText
       }
     })
-      .then((res) => {
-        this.setState({ data: res.data });
-      });
+    .then((res) => {
+      this.setState({ data: res.data });
+    });
   }
 
   componentDidMount() {
@@ -79,7 +95,10 @@ class FacultySearch extends Component {
 
   handleChange(event) {
     if (event.target.name === 'area') {
+      console.log('event target value:');
+      console.log(event.target.value);
       this.setState({ area: event.target.value, numShowing: 20 }, () => {
+        console.log(this.state.area);
         this.getFaculty();
       });
     } else if (event.target.name === 'department') {
@@ -107,12 +126,12 @@ class FacultySearch extends Component {
         this.getFaculty();
       });
       /** DEPRECATED SEARCH METHOD
-      axios.get(`/api/faculty/search?search='${this.state.searchBar}`).
-          then((response) => {
+       axios.get(`/api/faculty/search?search='${this.state.searchBar}`).
+       then((response) => {
             const matching = response.data.map(d => d._id);
             this.setState({matchingSearches: matching});
           }).
-          catch((error) => {
+       catch((error) => {
             Utils.handleTokenError(error);
           });
        */
@@ -150,12 +169,17 @@ class FacultySearch extends Component {
     }
     let areasOptions = [];
     areas.forEach((area) => {
-      areasOptions.push(<option value={area} key={area}>{area}</option>)
+      areasOptions.push(<option value={area.trim()} key={area}>{area}</option>)
     });
     return areasOptions;
   }
 
   render() {
+    const headerStyle = {
+      color: "black",
+      fontSize: "40px",
+      fontWeight: "bold",
+    };
     return (
       <div className="opportunities-wrapper">
         <VariableNavbar role={this.state.role} current={'facultysearch'} />
@@ -181,7 +205,7 @@ class FacultySearch extends Component {
             {this.state.searchBar != ''
               ?
               <DeleteIcon onClick={this.clearSearch.bind(this)}
-                className="clear-icon" size={30} />
+                          className="clear-icon" size={30} />
               :
               ''}
           </div>
@@ -192,7 +216,7 @@ class FacultySearch extends Component {
           <div className="column column-20">
             <div className="filter-box">
               <div className='filter-child'>
-                <label>Filter by....</label>
+                <label>Filter Faculty By....</label>
               </div>
               {/*<h4>Filters</h4>*/}
               <hr id="noHrMargin" />
@@ -265,21 +289,34 @@ class FacultySearch extends Component {
             <div className="row">
               <div className="column column-70">
                 <div className="opp-list-container">
+                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
+                  <OpportunityBox
+                    filteredOptions={this.state.opportunitiesOptions}
+                    url="opportunities"
+                    searching={this.state.opportunitiesOptions.searching}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="column column-70">
+                <div className="opp-list-container">
+                  <span style={headerStyle}>Research Opportunities By Professor</span>
                   <FacultyBox
                     filteredOptions={this.state}
                     url="opportunities"
                     numShowing={this.state.numShowing}
                     data={this.state.data}
                   />
-                  <div className="centered">
-                    <input
-                      type="submit"
-                      className="button"
-                      id="button-load"
-                      value="Load More"
-                      onClick={this.handlePageClick.bind(this)}
-                    />
-                  </div>
+                  {/*<div className="centered">*/}
+                  {/*  <input*/}
+                  {/*    type="submit"*/}
+                  {/*    className="button"*/}
+                  {/*    id="button-load"*/}
+                  {/*    value="Load More"*/}
+                  {/*    onClick={this.handlePageClick.bind(this)}*/}
+                  {/*  />*/}
+                  {/*</div>*/}
                 </div>
               </div>
             </div>

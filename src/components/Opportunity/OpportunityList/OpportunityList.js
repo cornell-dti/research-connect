@@ -155,10 +155,10 @@ class OpportunityList extends Component {
     console.log(this.state.starredOps);
     return (
       <div>
-        <div className="node-list-div">
-          { searchCrit }
+        {/*<div className="node-list-div">*/}
+        {/*  { searchCrit }*/}
 
-        </div>
+        {/*</div>*/}
         { oppNodes }
       </div>
     );

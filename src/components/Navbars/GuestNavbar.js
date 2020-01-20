@@ -19,11 +19,11 @@ class GuestNavbar extends Component {
               <a href="/"><img alt="Research Connect Logo" className="logo" src={logo} /></a>
             </div>
             <nav>
-              <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-                <a href="/opportunities">View Opportunities</a>
-              </li>
+              {/*<li className={this.props.current === 'opportunities' ? 'current-page' : ''}>*/}
+              {/*  <a href="/opportunities">View Opportunities</a>*/}
+              {/*</li>*/}
               <li className={this.props.current === 'facultysearch' ? 'current-page' : ''}>
-                <a href="/faculty">Email Faculty</a>
+                <a href="/faculty">View Opportunities</a>
               </li>
               <li className={this.props.current === 'guide' ? 'current-page' : ''}>
                 <a href="/guide">How to Find Research</a>
