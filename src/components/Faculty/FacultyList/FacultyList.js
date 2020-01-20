@@ -10,7 +10,6 @@ class FacultyList extends Component {
   }
 
   getStarredFac(){
-    console.log("SENDING API REQUEST TO GET ALL STARRED FACULTY");
     axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
     .then((response) => {
       let data = response.data;
@@ -55,11 +54,7 @@ class FacultyList extends Component {
 
 
   componentDidMount(){
-    console.log("component mounted");
     this.getStarredFac();
-    console.log('did mount');
-    console.log(this.props);
-
   }
 
   render() {
@@ -69,15 +64,11 @@ class FacultyList extends Component {
       fontWeight: "bolder",
     };
     let profs = {"yes": [], "no": [], "maybe": [], "unknown": []};
-    console.log('wiwll mount');
-    console.log(this.props);
     this.props.data.forEach((prof) => {
-      console.log(prof);
       const filteredOptions = this.props.filteredOptions;
       // let departmentSelected = filteredOptions.department;
       // let areaSelected = filteredOptions.area;
       // let matchingSearches = filteredOptions.matchingSearches;
-      console.log(prof.accepting);
       profs[prof.accepting].push(
         <Faculty
           key={prof['_id']}
@@ -94,8 +85,6 @@ class FacultyList extends Component {
           updateStar={this.updateStar.bind(this)}
         />)
     });
-    console.log('done');
-    console.log(profs);
     Object.keys(profs).forEach((status) => {
       if (profs[status].length === 0){
         profs[status] = [<p>No professors matching this criteria.</p>]

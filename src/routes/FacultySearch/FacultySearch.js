@@ -81,7 +81,10 @@ class FacultySearch extends Component {
 
   handleChange(event) {
     if (event.target.name === 'area') {
+      console.log('event target value:');
+      console.log(event.target.value);
       this.setState({ area: event.target.value, numShowing: 20 }, () => {
+        console.log(this.state.area);
         this.getFaculty();
       });
     } else if (event.target.name === 'department') {
@@ -152,7 +155,7 @@ class FacultySearch extends Component {
     }
     let areasOptions = [];
     areas.forEach((area) => {
-      areasOptions.push(<option value={area} key={area}>{area}</option>)
+      areasOptions.push(<option value={area.trim()} key={area}>{area}</option>)
     });
     return areasOptions;
   }

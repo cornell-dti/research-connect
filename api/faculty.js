@@ -21,19 +21,21 @@ app.get('/test', (req, res) => {
  * However, the database still has those professors in it. So we need to filter
  * whenever we query. We're keeping them in the db in case we need them one day.
  */
-const baseFacultyFilter = {
-  "department": {
-    "$in": [
-      "Computer Science"
-    ]
-  },
-  "office": {
-    "$regex": "^((?!Cornell Tech).)*$",
-  },
-  "title": {
-    "$regex": "^((?!PhD Student).)*$",
+function getBaseFacultyFilter(){
+  return {
+    "department": {
+      "$in": [
+        "Computer Science"
+      ]
+    },
+    "office": {
+      "$regex": "^((?!Cornell Tech).)*$",
+    },
+    "title": {
+      "$regex": "^((?!PhD Student).)*$",
+    }
   }
-};
+}
 
 /** gets all the faculty in the database.
  * @param limit users can specify to only return x number of results by appending ?limit=x at the end of their query. i.e. GET /api/faculty?limit=10
@@ -55,13 +57,17 @@ app.get('/', (req, res) => {
   } else {
     limit = 0;
   }
-  let facultyFilter = baseFacultyFilter;
+  let facultyFilter = getBaseFacultyFilter();
+  console.log(1);
+  console.log(facultyFilter);
+  console.log(area);
   if (area) {
-    facultyFilter["researchInterests"] = {$in: [area]}
+    facultyFilter["researchInterests"] = {$in: [area.trim()]}
   }
   if (search) {
     facultyFilter["$text"] = {$search: search};
   }
+  console.log(facultyFilter);
   facultyModel.find(facultyFilter)
     .skip(skip)
     .limit(parseInt(limit, 10))
@@ -104,12 +110,12 @@ app.get('/', (req, res) => {
  */
 app.get('/search', (req, res) => {
   debug(req.query.search);
-  let searchQuery = baseFacultyFilter;
+  let searchQuery = getBaseFacultyFilter();
   searchQuery["$text"] = { $search: req.query.search };
   // if req.query.search is empty string or undefined (falsy) then just send back all faculty
   if (!req.query.search) {
     // when you don't specify any criteria, mongo returns everything
-    searchQuery = baseFacultyFilter;
+    searchQuery = getBaseFacultyFilter();
   }
   facultyModel.find(searchQuery, (err, search) => {
     if (err) {
