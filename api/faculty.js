@@ -67,7 +67,6 @@ app.get('/', (req, res) => {
   if (search) {
     facultyFilter["$text"] = {$search: search};
   }
-  console.log(facultyFilter);
   facultyModel.find(facultyFilter)
     .skip(skip)
     .limit(parseInt(limit, 10))

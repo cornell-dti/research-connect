@@ -6,6 +6,7 @@ import SearchIcon from 'react-icons/lib/io/search';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
+import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
@@ -30,6 +31,19 @@ class FacultySearch extends Component {
       role: '',
       numShowing: 20,
       data: [],
+      opportunitiesOptions: {
+        yearSelect: [],
+        gpaSelect: '2.5',
+        majorSelect: {},
+        startDate: '',
+        compensationSelect: [],
+        searchBar: '',
+        matchingSearches: [],
+        searching: false,
+        clickedEnter: false,
+        role: '',
+        csAreasSelect: [],
+      }
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -161,6 +175,11 @@ class FacultySearch extends Component {
   }
 
   render() {
+    const headerStyle = {
+      color: "black",
+      fontSize: "40px",
+      fontWeight: "bold",
+    };
     return (
       <div className="opportunities-wrapper">
         <VariableNavbar role={this.state.role} current={'facultysearch'} />
@@ -270,6 +289,19 @@ class FacultySearch extends Component {
             <div className="row">
               <div className="column column-70">
                 <div className="opp-list-container">
+                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
+                  <OpportunityBox
+                    filteredOptions={this.state.opportunitiesOptions}
+                    url="opportunities"
+                    searching={this.state.opportunitiesOptions.searching}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="column column-70">
+                <div className="opp-list-container">
+                  <span style={headerStyle}>Research Opportunities By Professor</span>
                   <FacultyBox
                     filteredOptions={this.state}
                     url="opportunities"
