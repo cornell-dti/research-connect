@@ -13,6 +13,7 @@ import OpportunityBox from '../../components/Opportunity/OpportunityBox/Opportun
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
 import * as ReactGA from 'react-ga';
+import { Route, Redirect } from 'react-router'
 
 // necessary for all filters
 import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
@@ -152,6 +153,7 @@ class Opportunities extends Component {
     // TODO make temp navbar into a component
     return (
       <div className="opportunities-wrapper">
+        <Redirect to='/faculty' />
         <VariableNavbar role={this.state.role} current="opportunities" />
         <div className="row search-div-container">
           <div className="search-icon-div">

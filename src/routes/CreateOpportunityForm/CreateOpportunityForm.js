@@ -330,8 +330,8 @@ class CreateOppForm extends React.Component {
             if (this.state.creatorNetId) {
               document.location.href = '/professorView';
             } else {
-              alert('Submitted! You can find your opportunity on the opportunities page of our site! (research-connect.com/opportunities/)');
-              document.location.href = '/opportunities';
+              alert('Submitted! You can find your opportunity on the opportunities page of our site! (research-connect.com/faculty/)');
+              document.location.href = '/faculty';
             }
           });
         }).catch((error) => {

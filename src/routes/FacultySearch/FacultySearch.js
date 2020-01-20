@@ -211,8 +211,27 @@ class FacultySearch extends Component {
           </div>
         </div>
 
-        <div className="opp-container row" id="noAlign">
+        <div className="opp-container row" id="noAlign" style={{marginBottom: 0}}>
 
+          <div className="column column-20">
+            <span />
+          </div>
+          <div className="column column-80 opportunities-list-wrapper" style={{marginBottom: "10px"}}>
+            <div className="row">
+              <div className="column column-70">
+                <div className="opp-list-container">
+                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
+                  <OpportunityBox
+                    filteredOptions={this.state.opportunitiesOptions}
+                    url="opportunities"
+                    searching={this.state.opportunitiesOptions.searching}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="opp-container row" style={{alignItems: "baseline"}}>
           <div className="column column-20">
             <div className="filter-box">
               <div className='filter-child'>
@@ -286,19 +305,7 @@ class FacultySearch extends Component {
             </div>
           </div>
           <div className="column column-80 opportunities-list-wrapper">
-            <div className="row">
-              <div className="column column-70">
-                <div className="opp-list-container">
-                  <span style={headerStyle}>Formal Research Opportunity Listings</span>
-                  <OpportunityBox
-                    filteredOptions={this.state.opportunitiesOptions}
-                    url="opportunities"
-                    searching={this.state.opportunitiesOptions.searching}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row">
+          <div className="row">
               <div className="column column-70">
                 <div className="opp-list-container">
                   <span style={headerStyle}>Research Opportunities By Professor</span>
@@ -319,8 +326,7 @@ class FacultySearch extends Component {
                   {/*</div>*/}
                 </div>
               </div>
-            </div>
-
+          </div>
           </div>
         </div>
         <Footer />

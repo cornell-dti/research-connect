@@ -69,7 +69,7 @@ class ProfessorLanding extends Component {
       console.log('has registered');
       console.log(hasRegistered);
       if (hasRegistered.data) {
-        window.location.href = '/opportunities';
+        window.location.href = '/faculty';
       } else {
         window.location.href = '/studentRegister';
       }
