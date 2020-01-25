@@ -128,32 +128,11 @@ class StudentRegister extends Component {
     } else {
       this.setState({ [e.target.name]: (e.target.value).replace(/ /g, '').split(',') });
     }
-    // console.log(`COURSES ${this.state.courses}`);
   };
 
   handleUpdateCourses(courseList) {
     this.setState({ courses: courseList });
   }
-
-  // createGpaOptions() {
-  //   const options = [];
-  //   for (let i = 25; i <= 43; i++) {
-  //     options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
-  //   }
-  //   options.push(<option key={50} value={(5.0).toString()}>No GPA</option>);
-  //   return (
-  //     <select
-  //       name="GPA"
-  //       id="GPA"
-  //       className={!this.state.GPAValid && this.state.triedSubmitting ? 'error gpa-select left-input' : 'gpa-select left-input'}
-  //       value={this.state.GPA}
-  //       onChange={this.onChange}
-  //     >
-  //       <option key="" value="">Select GPA</option>
-  //       {options}
-  //     </select>
-  //   );
-  // }
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -180,13 +159,6 @@ class StudentRegister extends Component {
     this.setState({ token_id: sessionStorage.getItem('token_id') });
     const token_id = sessionStorage.getItem('token_id');
 
-    // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
-    //     .then(function (response) {
-    //         console.log(response);
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error);
-    //     });
     if (firstNameValid && lastNameValid && gradYearValid && majorValid) {
       let oneRan = false;
       const getUrl = window.location;
@@ -201,49 +173,6 @@ class StudentRegister extends Component {
           this.setState({ buttonValue: 'Submitted!' });
 
           window.location.replace(`${baseUrl}/opportunities`);
-
-
-          // access the results here....
-          // if (this.state.transcript != null && this.state.transcript.length !== 0) {
-          //   axios.post('/api/docs', { token_id, transcript })
-          //     .then((result) => {
-          //       if (oneRan) {
-          //         window.location.replace(`${baseUrl}/opportunities`);
-          //       } else {
-          //         oneRan = true;
-          //       }
-          //     }).catch((error) => {
-          //       console.log('error in creating transcript');
-          //       console.log(error);
-          //       // if it's not a session error...
-          //       if (!Utils.handleTokenError(error)) {
-          //         console.log('token error handled at student register');
-          //         Utils.handleNonTokenError(error);
-          //       }
-          //     });
-          // }
-
-          // if (this.state.resume != null && this.state.resume.length !== 0) {
-          //   console.log('resume is not null!');
-          //   axios.post('/api/docs', { token_id, resume })
-          //     .then((result) => {
-          //       if (oneRan || !this.state.transcript) {
-          //         window.location.replace(`${baseUrl}/opportunities`);
-          //       } else {
-          //         oneRan = true;
-          //       }
-          //       console.log('resume result');
-          //       console.log(result);
-          //     }).catch((error) => {
-          //       console.log('error in posting resume');
-          //       console.log(error);
-          //       // if it's not a session error...
-          //       if (!Utils.handleTokenError(error)) {
-          //         console.log('error in /api/docs in student register');
-          //         Utils.handleNonTokenError(error);
-          //       }
-          //     });
-          // }
 
         }).catch((error) => {
           console.log('error in creating undergrad');
@@ -270,13 +199,6 @@ class StudentRegister extends Component {
     const {
       firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
     } = this.state;
-    // if (this.state.netId === "") {
-    //     axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-    //         this.setState({netId: res.data});
-    //         console.log("res data!");
-    //         console.log(res.data);
-    //     });
-    // }
     return (
       <div>
         <div className="student-reg-form">
@@ -301,45 +223,13 @@ class StudentRegister extends Component {
               onChange={this.onChange}
             />
 
-
             {this.optionify(gradYears, 'gradYear')}
 
             {this.optionify(majorList, 'major')}
 
-
-            {/* {this.createGpaOptions()} */}
-
             <div className="student-register-course-select">
               <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
             </div>
-
-            <div className="dropzone">
-
-              {/* <Dropzone
-                  className="edit-drop"
-                  style={{
-                    position: 'relative',
-                    background: '#ededed',
-                    padding: '10px',
-                    width: '50%',
-                    margin: '0 0 0 25%',
-                    border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
-                  }}
-                  onDrop={this.onDropResume.bind(this)}
-                accept={"application/pdf"}>
-                  <p>Click/drag to drop a PDF resume (required)</p>
-                </Dropzone> */}
-
-              <div className="uploaded-message">
-                {resume != null ? (
-                  <p>
-                    Uploaded:
-                      {resume.name}
-                  </p>
-                ) : ''}
-              </div>
-            </div>
-
 
             <br />
 
