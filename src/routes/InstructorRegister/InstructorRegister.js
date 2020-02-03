@@ -164,22 +164,6 @@ class InstructorRegister extends React.Component {
     this.setState({ labDescription: event.target.value });
   }
 
-  hanldeChangelabDescript(event) {
-    this.setState({ labDescription: event.target.value });
-  }
-
-  hanldeChangeLabDescript(event) {
-    this.setSTate({ labDescription: event.target.value });
-  }
-
-  handleChagneLabDescript(event) {
-    this.setState({ labDescription: event.target.value });
-  }
-
-  handleChangeLabDescript(event) {
-    this.setState({ labDescription: event.target.value });
-  }
-
   handleChangePI(event) {
     this.setState({ pi: event.target.value });
     if (event.target.value != '') {
