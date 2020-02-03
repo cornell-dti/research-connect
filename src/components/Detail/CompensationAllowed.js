@@ -8,6 +8,7 @@ class CompensationAllowed extends Component {
     return (
       <Detail
         filterType="compensation"
+        detailName="compensation"
         label="Student Compensation (leave blank if just experience):"
         updateDetail={this.props.update}
         choices= {Utils.getCompensation()}

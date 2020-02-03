@@ -13,6 +13,8 @@ import { logoutGoogle } from '../../components/Utils';
 import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
 import Star from '../../components/Star/Star'
+import Linkify from 'react-linkify';
+
 
 // Utils.gradYearToString(2020) == "Sophomore"
 
@@ -337,7 +339,7 @@ Website:
                   {this.state.profInfo.accepting !== 'yes' ? '' :
                     <div className="opp-details-section">
                       <div className="header">Qualifications</div>
-                        <p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : "This professor did not explicitly specify any qualifications."}</p>
+                          <Linkify properties={{target: '_blank'}}><p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : "This professor did not explicitly specify any qualifications."}</p></Linkify>
                     </div>}
                 </div>
               </div>
