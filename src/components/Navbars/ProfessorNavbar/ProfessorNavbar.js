@@ -89,7 +89,7 @@ class ProfessorNavbar extends Component {
             </li>)}
             {!simplifyNavbar && (
             <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
-              <a href={`/opportunities?labId=${this.state.labId}`}>Your Opportunities</a>
+              <a href={`/opportunities?labId=${this.state.labId}`}>Opportunities</a>
             </li>
             )}
             {// professor does not have edit profile

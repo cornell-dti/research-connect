@@ -246,6 +246,9 @@ class CreateOppForm extends React.Component {
       let st = event.target.value !== "Select";
       this.setState({startYear: event.target.value, yearIsValid: st});
     }
+    else if (event.target.name === "compensation") {
+      this.setState({compensation: event.target.value})
+    }
     else if (event.target.name === "gpa") {
       this.setState({minGPA: event.target.value});
     }

@@ -300,6 +300,10 @@ export function updateSingleChoiceFilter(filterName, option) {
 
 export function updateMultipleChoiceFilter(filterName, option) {
   this.setState((state) => {
+    console.log("updating");
+    console.log(state);
+    console.log(filterName);
+    console.log(option);
     if (state[filterName].includes(option)) {
       // console.log('Removing ' + option + ' from ' + filterName);
       return { [filterName]: state[filterName].filter(original => original !== option) };
