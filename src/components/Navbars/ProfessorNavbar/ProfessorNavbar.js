@@ -43,7 +43,7 @@ class ProfessorNavbar extends Component {
       })
       .catch((error) => {
         if (!(this.props.current === 'newopp')) {
-          console.log('handling token error on nprof navbar 1')
+          console.log('handling token error on nprof navbar 1');
           Utils.handleTokenError(error);
         }
       });
@@ -69,7 +69,8 @@ class ProfessorNavbar extends Component {
             {!simplifyNavbar && (
             <li className={this.props.current === 'professorDashboard' ? 'current-page' : ''}>
               <a href="/professorDashboard">Dashboard</a>
-            </li>)}
+            </li>
+            )}
             {simplifyNavbar && (
             <li>
               <a href="/profLanding">Home</a>
@@ -86,7 +87,8 @@ class ProfessorNavbar extends Component {
             {!simplifyNavbar && (
             <li className={this.props.current === 'professorView' ? 'current-page' : ''}>
               <a href="/professorView">Applications</a>
-            </li>)}
+            </li>
+            )}
             {!simplifyNavbar && (
             <li className={this.props.current === 'opportunities' ? 'current-page' : ''}>
               <a href={`/opportunities?labId=${this.state.labId}`}>Opportunities</a>

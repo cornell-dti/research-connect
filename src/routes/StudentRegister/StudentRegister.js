@@ -5,8 +5,9 @@ import Dropzone from 'react-dropzone';
 import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
-import * as Utils from '../../components/Utils.js';
+import * as Utils from '../../components/Utils';
 import * as ReactGA from 'react-ga';
+
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 
@@ -95,8 +96,8 @@ class StudentRegister extends Component {
   onChange = (e) => {
     // Because we named the inputs to match their corresponding values in state, it's
     // super easy to update the state
-    const state = this.state;
-    const name = e.target.name;
+    const { state } = this;
+    const { name } = e.target;
     if (name !== 'courses') {
       const validationName = `${name}Valid`;
       this.setState({ [name]: e.target.value });
@@ -144,7 +145,7 @@ class StudentRegister extends Component {
     const token_id = sessionStorage.getItem('token_id');
 
     if (firstNameValid && lastNameValid && gradYearValid && majorValid) {
-      let oneRan = false;
+      const oneRan = false;
       const getUrl = window.location;
       const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
       axios.post('/api/undergrads', {
@@ -157,7 +158,6 @@ class StudentRegister extends Component {
           this.setState({ buttonValue: 'Submitted!' });
 
           window.location.replace(`${baseUrl}/opportunities`);
-
         }).catch((error) => {
           console.log('error in creating undergrad');
           console.log(error);

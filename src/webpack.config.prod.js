@@ -1,15 +1,11 @@
-
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const path = require('path');
-const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
- const  plugins=[
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
-    }),
+const plugins = [
+  new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id].css',
+  }),
   new OptimizeCssAssetsPlugin({
     cssProcessorOptions: { discardComments: { removeAll: true } },
   }),
@@ -43,11 +39,11 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../public/'
-            }
+              publicPath: '../public/',
+            },
           },
-          "css-loader"
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf)$/,

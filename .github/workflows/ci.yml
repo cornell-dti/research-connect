@@ -12,5 +12,7 @@ jobs:
           node-version: '10.x'
       - name: NPM Install
         run: npm install
+      - name: Lint
+        run: npm run lint || echo "Suppress failure for now"
       - name: Build
         run: npm run build

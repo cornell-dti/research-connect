@@ -3,6 +3,8 @@ import axios from 'axios';
 import '../../index.css';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
+import ReactPaginate from 'react-paginate';
+import * as ReactGA from 'react-ga';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
@@ -10,10 +12,8 @@ import OpportunityBox from '../../components/Opportunity/OpportunityBox/Opportun
 import * as Utils from '../../components/Utils';
 import ProfessorNavbar
   from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
-import ReactPaginate from 'react-paginate';
 import '../Opportunities/Opportunities.scss';
 import '../OpportunityPage/OpportunityPage.scss';
-import * as ReactGA from 'react-ga';
 
 import './FacultySearch.scss';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
@@ -43,7 +43,7 @@ class FacultySearch extends Component {
         clickedEnter: false,
         role: '',
         csAreasSelect: [],
-      }
+      },
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -54,19 +54,19 @@ class FacultySearch extends Component {
   }
 
   getFaculty() {
-    let searchText = this.state.clickedEnter ? this.state.searchBar : "";
-    axios.get("/api/faculty", {
+    const searchText = this.state.clickedEnter ? this.state.searchBar : '';
+    axios.get('/api/faculty', {
       params: {
-        department: "tech",
+        department: 'tech',
         // limit: this.state.numShowing,
         limit: 0,
         area: this.state.area,
-        search: searchText
-      }
+        search: searchText,
+      },
     })
-    .then((res) => {
-      this.setState({ data: res.data });
-    });
+      .then((res) => {
+        this.setState({ data: res.data });
+      });
   }
 
   componentDidMount() {
@@ -74,8 +74,8 @@ class FacultySearch extends Component {
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
     } else {
-      axios.get(`/api/role/${sessionStorage.getItem('token_id')}`).
-        then((response) => {
+      axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
+        .then((response) => {
           if (!response || response.data === 'none' || !response.data) {
             this.setState({ role: null });
             // alert('You must be signed in to view this.');
@@ -83,9 +83,9 @@ class FacultySearch extends Component {
           } else {
             this.setState({ role: response.data });
           }
-        }).
-        catch((error) => {
-          console.log("error here");
+        })
+        .catch((error) => {
+          console.log('error here');
           console.log(error);
           Utils.handleTokenError(error);
         });
@@ -138,7 +138,7 @@ class FacultySearch extends Component {
     }
   }
 
-  handlePageClick = data => {
+  handlePageClick = (data) => {
     const totalShowing = this.state.numShowing + 20;
     this.setState({ numShowing: totalShowing }, () => {
       this.getFaculty();
@@ -167,22 +167,22 @@ class FacultySearch extends Component {
     if (areas.length === 0) {
       return;
     }
-    let areasOptions = [];
+    const areasOptions = [];
     areas.forEach((area) => {
-      areasOptions.push(<option value={area.trim()} key={area}>{area}</option>)
+      areasOptions.push(<option value={area.trim()} key={area}>{area}</option>);
     });
     return areasOptions;
   }
 
   render() {
     const headerStyle = {
-      color: "black",
-      fontSize: "40px",
-      fontWeight: "bold",
+      color: 'black',
+      fontSize: '40px',
+      fontWeight: 'bold',
     };
     return (
       <div className="opportunities-wrapper">
-        <VariableNavbar role={this.state.role} current={'facultysearch'} />
+        <VariableNavbar role={this.state.role} current="facultysearch" />
 
         <div className="row search-div-container">
           <div className="search-icon-div">
@@ -203,11 +203,14 @@ class FacultySearch extends Component {
 
           <div className="column column-10 delete-div">
             {this.state.searchBar != ''
-              ?
-              <DeleteIcon onClick={this.clearSearch.bind(this)}
-                          className="clear-icon" size={30} />
-              :
-              ''}
+              ? (
+                <DeleteIcon
+                  onClick={this.clearSearch.bind(this)}
+                  className="clear-icon"
+                  size={30}
+                />
+              )
+              : ''}
           </div>
         </div>
 
@@ -215,60 +218,60 @@ class FacultySearch extends Component {
 
           <div className="column column-20">
             <div className="filter-box">
-              <div className='filter-child'>
+              <div className="filter-child">
                 <label>Filter Faculty By....</label>
               </div>
-              {/*<h4>Filters</h4>*/}
+              {/* <h4>Filters</h4> */}
               <hr id="noHrMargin" />
-              <div className='filter-child'>
+              <div className="filter-child">
                 <label>Research Area</label>
                 <select onChange={this.handleChange} name="area" className="select-wrapper">
                   <option value="">All</option>
                   {this.generateAreaOptions()}
-                  {/*<option value="Information Science">Information Science*/}
-                  {/*</option>*/}
-                  {/*<option value="Computer Science">Computer Science</option>*/}
-                  {/*<option value="Electrical and Computer Engineering">Electrical*/}
-                  {/*and Computer Engineering*/}
-                  {/*</option>*/}
-                  {/*<option value="Applied and Engineering Physics">Applied and*/}
-                  {/*Engineering Physics*/}
-                  {/*</option>*/}
-                  {/*<option*/}
-                  {/*value="Operations Research and Information Engineering">Operations*/}
-                  {/*Research & Info Engineering*/}
-                  {/*</option>*/}
-                  {/*<option*/}
-                  {/*value="Sibley School of Mechanical and Aerospace Engineering">Mechanical*/}
-                  {/*and Aerospace Engineering*/}
-                  {/*</option>*/}
-                  {/*<option*/}
-                  {/*value="Smith School of Chemical and Biomolecular Engineering">Chemical*/}
-                  {/*and Biomolecular Engineering*/}
-                  {/*</option>*/}
-                  {/*<option*/}
-                  {/*value="Biological and Environmental Engineering">Biological*/}
-                  {/*and Environmental Engineering*/}
-                  {/*</option>*/}
-                  {/*<option*/}
-                  {/*value="Meinig School of Biomedical Engineering">Biomedical*/}
-                  {/*Engineering*/}
-                  {/*</option>*/}
-                  {/*<option value="Civil and Environmental Engineering">Civil and*/}
-                  {/*Environmental Engineering*/}
-                  {/*</option>*/}
-                  {/*<option value="Materials Science and Engineering">Material*/}
-                  {/*Science*/}
-                  {/*</option>*/}
-                  {/*<option value="Earth and Atmospheric Sciences">Earth and*/}
-                  {/*Atmospheric Sciences*/}
-                  {/*</option>*/}
-                  {/*<option value="College of Human Ecology">College of Human*/}
-                  {/*Ecology*/}
-                  {/*</option>*/}
-                  {/*<option value="Earth and Atmospheric Sciences">Earth and*/}
-                  {/*Atmospheric Sciences*/}
-                  {/*</option>*/}
+                  {/* <option value="Information Science">Information Science */}
+                  {/* </option> */}
+                  {/* <option value="Computer Science">Computer Science</option> */}
+                  {/* <option value="Electrical and Computer Engineering">Electrical */}
+                  {/* and Computer Engineering */}
+                  {/* </option> */}
+                  {/* <option value="Applied and Engineering Physics">Applied and */}
+                  {/* Engineering Physics */}
+                  {/* </option> */}
+                  {/* <option */}
+                  {/* value="Operations Research and Information Engineering">Operations */}
+                  {/* Research & Info Engineering */}
+                  {/* </option> */}
+                  {/* <option */}
+                  {/* value="Sibley School of Mechanical and Aerospace Engineering">Mechanical */}
+                  {/* and Aerospace Engineering */}
+                  {/* </option> */}
+                  {/* <option */}
+                  {/* value="Smith School of Chemical and Biomolecular Engineering">Chemical */}
+                  {/* and Biomolecular Engineering */}
+                  {/* </option> */}
+                  {/* <option */}
+                  {/* value="Biological and Environmental Engineering">Biological */}
+                  {/* and Environmental Engineering */}
+                  {/* </option> */}
+                  {/* <option */}
+                  {/* value="Meinig School of Biomedical Engineering">Biomedical */}
+                  {/* Engineering */}
+                  {/* </option> */}
+                  {/* <option value="Civil and Environmental Engineering">Civil and */}
+                  {/* Environmental Engineering */}
+                  {/* </option> */}
+                  {/* <option value="Materials Science and Engineering">Material */}
+                  {/* Science */}
+                  {/* </option> */}
+                  {/* <option value="Earth and Atmospheric Sciences">Earth and */}
+                  {/* Atmospheric Sciences */}
+                  {/* </option> */}
+                  {/* <option value="College of Human Ecology">College of Human */}
+                  {/* Ecology */}
+                  {/* </option> */}
+                  {/* <option value="Earth and Atmospheric Sciences">Earth and */}
+                  {/* Atmospheric Sciences */}
+                  {/* </option> */}
                 </select>
               </div>
               {/* This currently doesn't work, will fix later... but it's v low priority */}
@@ -308,15 +311,15 @@ class FacultySearch extends Component {
                     numShowing={this.state.numShowing}
                     data={this.state.data}
                   />
-                  {/*<div className="centered">*/}
-                  {/*  <input*/}
-                  {/*    type="submit"*/}
-                  {/*    className="button"*/}
-                  {/*    id="button-load"*/}
-                  {/*    value="Load More"*/}
-                  {/*    onClick={this.handlePageClick.bind(this)}*/}
-                  {/*  />*/}
-                  {/*</div>*/}
+                  {/* <div className="centered"> */}
+                  {/*  <input */}
+                  {/*    type="submit" */}
+                  {/*    className="button" */}
+                  {/*    id="button-load" */}
+                  {/*    value="Load More" */}
+                  {/*    onClick={this.handlePageClick.bind(this)} */}
+                  {/*  /> */}
+                  {/* </div> */}
                 </div>
               </div>
             </div>

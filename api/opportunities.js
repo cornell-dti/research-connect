@@ -9,7 +9,7 @@ const common = require('../common.js');
 
 // finds lab where lab admin = {adminNetId}, undefined if the id can't be fine in any lab
 function findLabWithAdmin(labs, adminNetId) {
-  return labs.filter(lab => lab.labAdmins.includes(adminNetId))[0];
+  return labs.filter((lab) => lab.labAdmins.includes(adminNetId))[0];
 }
 
 app.get('/check/:opportunityId', (req, res) => {
@@ -32,7 +32,7 @@ app.get('/check/:opportunityId', (req, res) => {
     }
     // check if at least one application has the net id of the student we're looking for
     res.send(toSearch.some(
-      applicationObj => applicationObj.undergradNetId === idToCheck,
+      (applicationObj) => applicationObj.undergradNetId === idToCheck,
     ));
   });
 });
@@ -124,7 +124,7 @@ app.get('/', (req, res) => {
   const sortOrderObj = { opens: sortOrder };
   let timeRange;
   // if there's a lab id in the url, then it's a lab administrator trying to view their own opportunities
-  if (urlLabId && urlLabId !== "null") {
+  if (urlLabId && urlLabId !== 'null') {
     timeRange = {};
   } else {
     timeRange = {
@@ -163,8 +163,7 @@ app.get('/', (req, res) => {
   // opportunities from the most recent school semester
   if (currentSeason === 'Fall' || currentSeason === 'Summer') {
     currentSeason = 'Spring';
-  }
-  else if (currentSeason === 'Spring') {
+  } else if (currentSeason === 'Spring') {
     currentSeason = 'Fall';
     currentYear -= 1;
   }
@@ -175,31 +174,30 @@ app.get('/', (req, res) => {
   // will be returned.
   if (season === 'Winter') {
     returnOppsPastYear = currentYear;
-  }
-  else {
+  } else {
     returnOppsPastYear = currentYear + 1;
   }
-  const seasonDoesntExist = {startSeason: {$exists: true, $eq: null}};
-  const yearDoesntExist = {startYear: {$exists: true, $eq: null}};
+  const seasonDoesntExist = { startSeason: { $exists: true, $eq: null } };
+  const yearDoesntExist = { startYear: { $exists: true, $eq: null } };
   const yearMatches = {
-    startYear: {$gte: currentYear}
+    startYear: { $gte: currentYear },
   };
   const seasonMatches = {
-    startSeason: {$in: searchSeasons}
+    startSeason: { $in: searchSeasons },
   };
   const inSeason = {
-    $or: [seasonDoesntExist, seasonMatches]
+    $or: [seasonDoesntExist, seasonMatches],
   };
   const inYear = {
-    $or: [yearDoesntExist, yearMatches]
+    $or: [yearDoesntExist, yearMatches],
   };
   const validYearAndSeason = {
     $or: [
-      {$and: [inSeason, inYear]},
-      {startYear: {$gte: returnOppsPastYear}}
-      ]
+      { $and: [inSeason, inYear] },
+      { startYear: { $gte: returnOppsPastYear } },
+    ],
   };
-  let findTimelyOpps = 	{$and: [timeRange, validYearAndSeason]};
+  const findTimelyOpps = 	{ $and: [timeRange, validYearAndSeason] };
 
   if (token && token !== 'null') {
     verify(token, (undergradNetId) => {
@@ -222,11 +220,11 @@ app.get('/', (req, res) => {
                   let oppIdsToOnlyInclude = lab.opportunities;
                   // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
                   oppIdsToOnlyInclude = oppIdsToOnlyInclude.map(
-                    opp => opp.toString(),
+                    (opp) => opp.toString(),
                   );
                   // remove all opportunities that don't belong to the lab (i.e. if their id isn't in the lab.opportunities ids list
                   opportunities = opportunities.filter(
-                    opp => oppIdsToOnlyInclude.includes(
+                    (opp) => oppIdsToOnlyInclude.includes(
                       opp._id.toString(),
                     ),
                   );
@@ -239,7 +237,7 @@ app.get('/', (req, res) => {
             });
         } else {
           undergrad1.courses = undergrad1.courses.map(
-            course => replaceAll(course, ' ', ''),
+            (course) => replaceAll(course, ' ', ''),
           );
           // only get the ones that are currenlty open
           opportunityModel.find(findTimelyOpps).sort(sortOrderObj).lean().exec((err2, opportunities) => {
@@ -253,7 +251,7 @@ app.get('/', (req, res) => {
               for (let i = 0; i < opportunities.length; i++) {
                 let prereqsMatch = false;
                 opportunities[i].requiredClasses = opportunities[i].requiredClasses.map(
-                  course => replaceAll(course, ' ', ''),
+                  (course) => replaceAll(course, ' ', ''),
                 );
                 // checks for gpa, major, and gradYear
                 if (opportunities[i].minGPA <= undergrad1.gpa
@@ -264,7 +262,7 @@ app.get('/', (req, res) => {
                         const courseSubs = coursePrereqs[val];
                         if (courseSubs !== undefined) {
                           return undergrad1.courses.some(
-                            course => courseSubs.includes(course),
+                            (course) => courseSubs.includes(course),
                           );
                         }
                         return false;
@@ -323,23 +321,21 @@ app.get('/', (req, res) => {
 });
 
 function getSeason() {
-  let month = (new Date()).getMonth();
+  const month = (new Date()).getMonth();
   const dayOfMonth = (new Date()).getDate();
   const January = 0;
   const December = 11;
   let season = 1;
-  switch(month) {
+  switch (month) {
     // Cornell School Winter:
     case December:
     case January:
-      if (month === December && dayOfMonth >= 21 || month === January && dayOfMonth < 10){
+      if (month === December && dayOfMonth >= 21 || month === January && dayOfMonth < 10) {
         season = 'Winter';
-      }
-      else if (month === December && dayOfMonth < 21){
+      } else if (month === December && dayOfMonth < 21) {
         season = 'Fall';
-      }
-      else {
-        season = 'Spring'
+      } else {
+        season = 'Spring';
       }
       break;
     case 1:
@@ -370,10 +366,10 @@ function getSeasonsAfter(thisSeason) {
   if (thisSeason === 'Summer') {
     return ['Summer', 'Fall', 'Winter'];
   }
-  else if (thisSeason === 'Fall') {
-    return ['Fall', 'Winter']
+  if (thisSeason === 'Fall') {
+    return ['Fall', 'Winter'];
   }
-  else if (thisSeason === 'Winter') {
+  if (thisSeason === 'Winter') {
     // return all seasons for Winter since Winter can be at the end of the
     // year or at the beginning
     return ['Spring', 'Summer', 'Fall', 'Winter'];
@@ -599,12 +595,12 @@ app.post('/', async (req, res, next) => {
         // const opportunityMajor = req.body.majorsAllowed;
         undergradModel.find({},
           (err2, studentsWhoMatch) => {
-          debug("students who match");
+            debug('students who match');
             // studentsWhoMatch = [studentsWhoMatch[0]]; // just FOR TESTING
             Object.keys(studentsWhoMatch).forEach((undergrad1) => {
               const { firstName } = studentsWhoMatch[undergrad1];
               // to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
-              debug("in email message!");
+              debug('in email message!');
               const msg = {
                 to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
                 from: {
@@ -623,7 +619,7 @@ app.post('/', async (req, res, next) => {
                        <br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              debug("sending email now!");
+              debug('sending email now!');
 
               sgMail.send(msg).catch((e) => {
                 console.log('error in sending below');
@@ -746,7 +742,7 @@ function processOpportunity(tokenNetId, oppId, res) {
   debug(`toke net id: ${tokenNetId}`);
   opportunityModel.findById(oppId).lean().exec((err, opportunity) => {
     if (err) {
-      debug('error in process opportunity')
+      debug('error in process opportunity');
       debug(err);
       return res.send(err);
     }

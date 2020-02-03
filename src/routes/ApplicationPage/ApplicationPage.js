@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import './ApplicationPage.scss';
-import EmailDialog from '../../components/EmailDialog/EmailDialog';
-import Footer from '../../components/Footer/Footer';
-import * as Utils from '../../components/Utils';
 import ExternalLink from 'react-icons/lib/fa/external-link';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
+import * as Utils from '../../components/Utils';
+import Footer from '../../components/Footer/Footer';
+import EmailDialog from '../../components/EmailDialog/EmailDialog';
+import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
 class ApplicationPage extends Component {
   constructor(props) {
@@ -73,7 +73,7 @@ class ApplicationPage extends Component {
   }
 
   toDivList(lst) {
-    return lst.map(e => (
+    return lst.map((e) => (
       <div key={e}>
         {' '}
         {e}
@@ -102,7 +102,7 @@ class ApplicationPage extends Component {
           <div className="resume-link">
             <a href={this.state.transcriptId} target="_blank">
               <h6 className="no-margin">
-                  View Transcript
+                View Transcript
 
                 <ExternalLink
                   className="red-link"
@@ -132,9 +132,11 @@ class ApplicationPage extends Component {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            style = {{display: "block",
-            margin: 0,
-            borderColor: "red"}}
+            style={{
+              display: 'block',
+              margin: 0,
+              borderColor: 'red',
+            }}
             sizeUnit="px"
             size={150}
             color="#ff0000"
@@ -145,10 +147,10 @@ class ApplicationPage extends Component {
     }
 
     const questionsAndResponses = [];
-    const responses = this.state.application.responses;
+    const { responses } = this.state.application;
     console.log('at questions');
     console.log(this.state.opportunity);
-    const questions = this.state.opportunity.questions;
+    const { questions } = this.state.opportunity;
     let c = 0;
     for (const question in responses) {
       questionsAndResponses.push(
@@ -165,7 +167,7 @@ class ApplicationPage extends Component {
         <div className="application-page-container">
           <div className="return-to-apps" onClick={this.returnToApps.bind(this)}>
             <FaLongArrowLeft className="black-arrow" />
-              Return to applications
+            Return to applications
 
           </div>
           <div className="row button-bar">
@@ -202,18 +204,18 @@ class ApplicationPage extends Component {
                     <div className="column app-info-left">
                       <div className="name header">
                         {Utils.capitalizeFirstLetter(this.state.application.lastName)}
-                          ,
+                        ,
                         {Utils.capitalizeFirstLetter(this.state.application.firstName)}
                       </div>
                       <div className="email">
                         {this.state.application.undergradNetId}
-                          @cornell.edu
+                        @cornell.edu
 
                       </div>
                     </div>
                     <div className="column app-info-right">
                       <div className="date-applied">
-                          Date Applied:
+                        Date Applied:
                         {' '}
                         {Utils.convertDate(this.state.application.timeSubmitted)}
                       </div>
@@ -230,12 +232,12 @@ class ApplicationPage extends Component {
                     </div>
                     <div className="column app-info-right">
                       <div className="status">
-                          Status:
+                        Status:
                         {' '}
                         {Utils.capitalizeFirstLetter(this.state.application.status)}
                       </div>
                       <div className="opportunity">
-                          Opportunity:
+                        Opportunity:
                         {' '}
                         {this.state.opportunity.title}
                       </div>
@@ -253,7 +255,7 @@ class ApplicationPage extends Component {
             <div className="column column-app-qual">
               <div className="app-qualifications">
                 <div className="app-qual-title header">
-                    Qualifications
+                  Qualifications
 
                 </div>
 
@@ -265,7 +267,7 @@ class ApplicationPage extends Component {
                       <h6
                         className="no-margin header"
                       >
-                          View Resume
+                        View Resume
                         {' '}
                         <ExternalLink className="red-link" />
                       </h6>

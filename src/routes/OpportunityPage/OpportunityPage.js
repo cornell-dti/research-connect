@@ -3,25 +3,36 @@ import axios from 'axios';
 import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
+import * as ReactGA from 'react-ga';
 import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
-import * as ReactGA from 'react-ga';
-import Star from '../../components/Star/Star'
+import Star from '../../components/Star/Star';
 
 function LinkFaculty(props) {
   // if we manually enter their faculty ID in the database, then we can show
   // their faculty page here
-  if (props.facultyId){
-    return (<span> You can view info about this faculty and use our email tips & writer
-    <a href={"/faculty/" + props.facultyId}> here. </a></span>)
+  if (props.facultyId) {
+    return (
+      <span>
+        {' '}
+        You can view info about this faculty and use our email tips & writer
+        <a href={`/faculty/${props.facultyId}`}> here. </a>
+      </span>
+    );
   }
-  else {
-    return (<span>You can learn how to write a good email by looking at the template
-      for another faculty at the bottom of <a href="/faculty/5b8eba793136d653ddc3dfb4" target="_blank">this</a> page, as well as our email writing tips on the sidebar of that page.</span>)
-  }
+
+  return (
+    <span>
+      You can learn how to write a good email by looking at the template
+      for another faculty at the bottom of
+      <a href="/faculty/5b8eba793136d653ddc3dfb4" target="_blank">this</a>
+      {' '}
+      page, as well as our email writing tips on the sidebar of that page.
+    </span>
+  );
 }
 
 class OpportunityPage extends Component {
@@ -38,7 +49,7 @@ class OpportunityPage extends Component {
       netId: 'unknown',
       role: '',
       detectedLoggedOut: false,
-      starred: false
+      starred: false,
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -48,22 +59,22 @@ class OpportunityPage extends Component {
     this.parseGPA = this.parseGPA.bind(this);
   }
 
-  star(){
-    console.log("this is working");
-    let token_id = sessionStorage.getItem('token_id');
-    let type = "opportunity";
-    let id = this.props.match.params.id;
+  star() {
+    console.log('this is working');
+    const token_id = sessionStorage.getItem('token_id');
+    const type = 'opportunity';
+    const { id } = this.props.match.params;
 
     axios.post('/api/undergrads/star', { token_id, type, id })
-    .then((response) => {
-      if(response && response.data){
-        let stars = response.data;
-        this.setState({starred: stars.includes(id)});
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        if (response && response.data) {
+          const stars = response.data;
+          this.setState({ starred: stars.includes(id) });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   isEmpty(obj) {
@@ -111,7 +122,7 @@ class OpportunityPage extends Component {
     // if (coverLetter) {
     // let allQsAnswered = Object.values(questionAnswers).reduce((allQs, currentQ) => allQs && (currentQ != ''));
     const allQsAnswered = Object.values(questionAnswers)
-      .every(questionVal => !(!questionVal));
+      .every((questionVal) => !(!questionVal));
     if (allQsAnswered === true) {
       this.setState({ submitted: true });
       console.log('submitting form');
@@ -132,7 +143,7 @@ class OpportunityPage extends Component {
 
   getUndergradData() {
     return axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
-      .then(response => (response.data ? response.data : null))
+      .then((response) => (response.data ? response.data : null))
       .catch((error) => {
         this.sendToHome(error);
         // Utils.handleTokenError(error);
@@ -154,13 +165,13 @@ class OpportunityPage extends Component {
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
   componentWillMount() {
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
-    .then((response) => {
-      let data = response.data;
-      this.setState({ starred: data.includes(this.props.match.params.id) });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        const { data } = response;
+        this.setState({ starred: data.includes(this.props.match.params.id) });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     axios.get(`/api/opportunities/${this.props.match.params.id}?netId=${
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
@@ -222,7 +233,6 @@ class OpportunityPage extends Component {
     }).catch((error) => {
       this.sendToHome(error);
     });
-
   }
 
   printQuestions() {
@@ -245,7 +255,7 @@ class OpportunityPage extends Component {
         return aNum - bNum;
       });
 
-      const questionMapping = keys.map(key => (
+      const questionMapping = keys.map((key) => (
         <div id={key} key={key}>
           {this.state.opportunity.questions[key]}
           <br />
@@ -320,7 +330,7 @@ class OpportunityPage extends Component {
               key="fresh"
             >
               {' '}
-Freshman
+              Freshman
             </span>
           </div>);
         } else {
@@ -330,7 +340,7 @@ Freshman
               key="fresh"
             >
               {' '}
-Freshman
+              Freshman
             </span>
           </div>);
         }
@@ -467,7 +477,7 @@ Freshman
                 key="n"
               >
                 {' '}
-No Preference
+                No Preference
               </span>
             </div>
           </ul>
@@ -596,15 +606,15 @@ No Preference
               <div className="row opp-title-card">
                 <div className="column left-column">
                   <div className="header">
-                  {this.state.opportunity.title}
-                  <Star
-                    update={this.star.bind(this)}
-                    starred={this.state.starred}
-                  />
+                    {this.state.opportunity.title}
+                    <Star
+                      update={this.star.bind(this)}
+                      starred={this.state.starred}
+                    />
                   </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
-                <div className="column right-column" style={{marginBottom: 0}}>
+                <div className="column right-column" style={{ marginBottom: 0 }}>
                   {!isNotLoggedIn && !isLab
                     && <a className="button" href="#Application">Apply</a>
                       /* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
@@ -615,11 +625,10 @@ No Preference
                       className="button"
                       href={`/EditOpp?Id=${this.props.match.params.id}/`}
                     >
-Edit
+                      Edit
                       Opportunity
                     </a>
-                    )
-                    }
+                    )}
                   {isNotLoggedIn
                     && (
                     <a
@@ -627,10 +636,9 @@ Edit
                         isNotLoggedIn ? 'back-to-opportunities' : ''}`}
                       href="/opportunities"
                     >
-Back To Opportunities
+                      Back To Opportunities
                     </a>
-                    )
-                    }
+                    )}
 
                 </div>
               </div>
@@ -663,7 +671,7 @@ Back To Opportunities
                   <div className="opp-details-section">
                     <div className="header">Start Period:</div>
                     <div>
-                      {/*Varies, can contact any time.*/}
+                      {/* Varies, can contact any time. */}
                       {/* Changed it b/c launch was soon and these opportunities had no specific start date... must change later TODO */}
                       {this.state.opportunity.startSeason
                         ? `${this.state.opportunity.startSeason} `
@@ -733,7 +741,7 @@ Back To Opportunities
                             } `}
                             with your resume and why you're interested in order
                             to apply.
-                           <LinkFaculty facultyId={this.state.opportunity.facultyId} />
+                            <LinkFaculty facultyId={this.state.opportunity.facultyId} />
                           </div>
                         )
                         : (
@@ -744,7 +752,7 @@ Back To Opportunities
                                 && !this.state.submitted
                                   ? (
                                     <p className="app-error-message">
-Please
+                                      Please
                                       answer all questions in order to
                                       submit.
                                     </p>
@@ -758,8 +766,7 @@ Please
                                 : <p>You have applied to this position.</p>
                             }
                           </div>
-                        )
-                      }
+                        )}
                     </div>
                   </div>
                   )
@@ -774,7 +781,7 @@ Please
                         <a
                           href="/#forprofs"
                         >
-create an account
+                          create an account
                         </a>
                         {' to apply.'}
                       </div>
@@ -783,7 +790,7 @@ create an account
                   )
                 }
             </div>
-            <div className="column" >
+            <div className="column">
               <div className="opp-qualifications">
                 <div className="opp-qual-title">
                   <div>Preferred Qualifications</div>

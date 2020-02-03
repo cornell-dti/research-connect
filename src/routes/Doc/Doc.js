@@ -35,7 +35,7 @@ class Resume extends Component {
   }
 
   render() {
-    const loaded = this.state.loaded;
+    const { loaded } = this.state;
     return (
       <div style={{ height: '100%', width: '100%' }}>
         {loaded ? (

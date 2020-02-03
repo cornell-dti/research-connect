@@ -5,10 +5,10 @@ import greystar from '../../images/greystar.png';
 import './Star.scss';
 
 class Star extends Component {
-  render(){
-    if(sessionStorage.getItem('token_id')) {
-      let star = this.props.starred ? yellowstar : greystar;
-      return (<img class="star" src={star} onClick={this.props.update} alt = "favorite button"/>);
+  render() {
+    if (sessionStorage.getItem('token_id')) {
+      const star = this.props.starred ? yellowstar : greystar;
+      return (<img className="star" src={star} onClick={this.props.update} alt="favorite button" />);
     }
     return null;
   }
@@ -16,7 +16,7 @@ class Star extends Component {
 
 Star.propTypes = {
   starred: PropTypes.bool,
-  update: PropTypes.func
+  update: PropTypes.func,
 };
 
 export default Star;

@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import './ProfessorLanding.scss';
 import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
+import * as ReactGA from 'react-ga';
 import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
 import curb from '../../images/logo2.png';
@@ -16,7 +17,6 @@ import img2 from '../../images/img2.png';
 import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
-import * as ReactGA from 'react-ga';
 
 class ProfessorLanding extends Component {
   constructor(props) {
@@ -24,7 +24,6 @@ class ProfessorLanding extends Component {
     this.state = {};
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
   }
 
   componentDidMount() {
@@ -46,7 +45,7 @@ class ProfessorLanding extends Component {
           }
         })
         .catch((error) => {
-          console.log('error in proffessor landing /api/role')
+          console.log('error in proffessor landing /api/role');
           Utils.handleTokenError(error);
         });
     }
@@ -129,7 +128,7 @@ class ProfessorLanding extends Component {
 
   render() {
     return (
-      <div className="proflandingPage" lang = "en">
+      <div className="proflandingPage" lang="en">
         <header>
           <h2>
             <a href="/">
@@ -155,8 +154,8 @@ class ProfessorLanding extends Component {
 
               </div>
             ) : (
-                <li />
-              )}
+              <li />
+            )}
           </nav>
         </header>
 
@@ -195,15 +194,15 @@ class ProfessorLanding extends Component {
             <h2>Let qualified students come to you. </h2>
             <section>
               <Row className="picRow">
-                <Col><img id="list-image1" src={pen} alt = "pen" /></Col>
+                <Col><img id="list-image1" src={pen} alt="pen" /></Col>
                 <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image2" src={img2} alt = "magnifying glass"/></Col>
+                <Col><img id="list-image2" src={img2} alt="magnifying glass" /></Col>
                 <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
               </Row>
               <Row className="picRow">
-                <Col><img id="list-image3" src={lightbulb} alt = "lightbulb"/></Col>
+                <Col><img id="list-image3" src={lightbulb} alt="lightbulb" /></Col>
                 <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
               </Row>
 
@@ -232,15 +231,15 @@ class ProfessorLanding extends Component {
               <Row>
                 <section className="list">
                   <Row className="picRow">
-                    <Col><img className="list-image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-image" src={check} alt="check" /></Col>
                     <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
                   </Row>
                   <Row className="picRow">
-                    <Col><img className="list-Image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-Image" src={check} alt="check" /></Col>
                     <Col><p className="picP">Easily review applications and sort by what you’re looking for.</p></Col>
                   </Row>
                   <Row className="picRow">
-                    <Col><img className="list-Image" src={check} alt = "check"/></Col>
+                    <Col><img className="list-Image" src={check} alt="check" /></Col>
                     <Col><p className="picP">Connect and recruit applicants straight from our platform. </p></Col>
                   </Row>
 
@@ -275,16 +274,14 @@ class ProfessorLanding extends Component {
         </section>
 
 
-
-
         <footer className="footer-all">
           <ul>
-            <li><a href="#" aria-label = "twitter"><i className="fa fa-twitter-square" /></a></li>
-            <li><a href="#" aria-label = "facebook"><i className="fa fa-facebook-square" /></a></li>
-            <li><a href="#" aria-label = "snapchat"><i className="fa fa-snapchat-square" /></a></li>
-            <li><a href="mailto:acb352@cornell.edu" aria-label = "email"><i className="fas fa-envelope" /></a></li>
+            <li><a href="#" aria-label="twitter"><i className="fa fa-twitter-square" /></a></li>
+            <li><a href="#" aria-label="facebook"><i className="fa fa-facebook-square" /></a></li>
+            <li><a href="#" aria-label="snapchat"><i className="fa fa-snapchat-square" /></a></li>
+            <li><a href="mailto:acb352@cornell.edu" aria-label="email"><i className="fas fa-envelope" /></a></li>
             <li>
-              <a href="https://github.com/cornell-dti/research-connect" aria-label = "github">
+              <a href="https://github.com/cornell-dti/research-connect" aria-label="github">
                 <i className="fa fa-github-square" />
               </a>
             </li>

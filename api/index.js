@@ -4,7 +4,7 @@ const app = express.Router();
 
 const { OAuth2Client } = require('google-auth-library');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, debug, sgMail, verify, handleVerifyError, sgOppsGroup, sgAnnouncementsGroup
+  undergradModel, labAdministratorModel, opportunityModel, debug, sgMail, verify, handleVerifyError, sgOppsGroup, sgAnnouncementsGroup,
 } = require('../common.js');
 
 /**
@@ -13,7 +13,7 @@ const {
 app.get('/sandbox', (req, res) => {
 // eslint-disable-next-line no-unused-vars
   const msg = {
-    to: `abagh0703@gmail.com`,
+    to: 'abagh0703@gmail.com',
     from: {
       name: 'Research Connect',
       email: 'hello@research-connect.com',
@@ -31,8 +31,8 @@ app.get('/sandbox', (req, res) => {
                        <br />The Research Connect Team<br /><br />`,
   };
   debug('sent!');
-  sgMail.send(msg).catch(err => {
-    console.log("error in send");
+  sgMail.send(msg).catch((err) => {
+    console.log('error in send');
     console.log(err);
   });
   debug('really sent!');
@@ -174,7 +174,7 @@ const client = new OAuth2Client('938750905686-krm3o32tgqofhdb05mivarep1et459sm.a
 app.get('/decrypt', (req, res) => {
   const { token } = req.query;
   // const returnEmail = (req.query.returnEmail != null && req.query.returnEmail === 'true');
-  verify(token, netId => res.send(netId));
+  verify(token, (netId) => res.send(netId));
 });
 
 // never called? run code coverage test

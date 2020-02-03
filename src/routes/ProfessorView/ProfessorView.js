@@ -4,23 +4,24 @@ import './ProfessorView.scss';
 import axios from 'axios';
 import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
+import * as ReactGA from 'react-ga';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import ApplicationList from '../../components/ApplicationList/ApplicationList';
 
-//necessary for all filters
-import Filter from '../../components/Filter/Filter'; //this one is just the label, a bit annoying
+// necessary for all filters
+import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
 import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
 
-//import StartDate from '../../components/StartDate/StartDate';
+// import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
-//import GPASelect from '../../components/GPASelect/GPASelect';
+// import GPASelect from '../../components/GPASelect/GPASelect';
 
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
-import * as ReactGA from 'react-ga';
+
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 
@@ -29,9 +30,9 @@ class ProfessorView extends Component {
     super(props);
     this.state = {
       yearSelect: [],
-      gpaSelect: "2.5",
-      //majorSelect: {},
-      //startDate: {},
+      gpaSelect: '2.5',
+      // majorSelect: {},
+      // startDate: {},
       courses: [],
       skills: [],
       opportunity: 'All',
@@ -40,7 +41,6 @@ class ProfessorView extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
   }
 
   handleUpdateMajor(majorObj) {
@@ -79,7 +79,7 @@ class ProfessorView extends Component {
   }
 
   componentDidMount() {
-    this.state.loading = false;    // temporary
+    this.state.loading = false; // temporary
   }
 
   render() {
@@ -88,14 +88,16 @@ class ProfessorView extends Component {
     //   margin: 0 auto;
     //   border-color: red;
     // `;
-    let { loading } = this.state;
+    const { loading } = this.state;
     if (loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            style = {{display: "block",
-            margin: 0,
-            borderColor: "red"}}
+            style={{
+              display: 'block',
+              margin: 0,
+              borderColor: 'red',
+            }}
             // className={override}
             sizeUnit="px"
             size={150}
@@ -147,7 +149,7 @@ class ProfessorView extends Component {
 
                 <hr />
 
-{/*
+                {/*
   //TODO: ADD SKILL SELECT FILTER BACK?
   <div className="filter-child">
     <label htmlFor="skillField">Required Skills</label>

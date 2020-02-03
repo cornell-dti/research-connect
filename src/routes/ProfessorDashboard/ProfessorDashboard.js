@@ -7,12 +7,11 @@ import { ClipLoader } from 'react-spinners';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
 import Edit from 'react-icons/lib/fa/edit';
+import * as ReactGA from 'react-ga';
 import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
-import * as ReactGA from 'react-ga';
-
 
 
 class ProfessorDashboard extends Component {
@@ -26,7 +25,6 @@ class ProfessorDashboard extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
   }
 
   componentWillMount() {
@@ -50,19 +48,19 @@ class ProfessorDashboard extends Component {
 	      this.setState({ labId: lab.data });
 	  })).catch((error) => {
         this.setState({
-            errorLoadingDataExists: true,
-            errorMessage: `We could not find any data for the email and netid 
-            associated with your account. More info: ${error}`
-        })
-    });
+          errorLoadingDataExists: true,
+          errorMessage: `We could not find any data for the email and netid 
+            associated with your account. More info: ${error}`,
+        });
+      });
   }
 
   componentDidMount() {
-      this.setState({
-          loading: false,
-          errorLoadingDataExists: false,
-          errorMessage: '',
-      });
+    this.setState({
+      loading: false,
+      errorLoadingDataExists: false,
+      errorMessage: '',
+    });
   }
 
   render() {
@@ -71,9 +69,11 @@ class ProfessorDashboard extends Component {
         <div className="sweet-loading">
           <ClipLoader
             // className={override}
-            style = {{display: "block",
-            margin: 0,
-            borderColor: "red"}}
+            style={{
+              display: 'block',
+              margin: 0,
+              borderColor: 'red',
+            }}
             sizeUnit="px"
             size={150}
             color="#ff0000"
@@ -82,10 +82,10 @@ class ProfessorDashboard extends Component {
         </div>
       );
     }
-    else if (this.state.errorLoadingDataExists) {
-        return (
-            <div>{this.state.errorMessage}</div>
-        )
+    if (this.state.errorLoadingDataExists) {
+      return (
+        <div>{this.state.errorMessage}</div>
+      );
     }
 
     const newspaper = <Newspaper />;
