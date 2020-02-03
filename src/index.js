@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '@babel/polyfill';
 import './index.css';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import Opportunities from './routes/Opportunities/Opportunities';
