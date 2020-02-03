@@ -92,22 +92,6 @@ class StudentRegister extends Component {
     });
   }
 
-  onDropTranscript = (acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const fileAsBinaryString = reader.result;
-        const encodedData = window.btoa(fileAsBinaryString);
-        // do whatever you want with the file content
-        this.setState({ transcript: [encodedData] });
-      };
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-
-      reader.readAsBinaryString(file);
-    });
-  };
-
   onChange = (e) => {
     // Because we named the inputs to match their corresponding values in state, it's
     // super easy to update the state
@@ -229,35 +213,6 @@ class StudentRegister extends Component {
 
             <div className="student-register-course-select">
               <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
-            </div>
-
-            <br />
-
-            <div className="dropzone">
-
-              <Dropzone
-                className="edit-drop"
-                style={{
-                  position: 'relative',
-                  background: '#ededed',
-                  padding: '10px',
-                  width: '50%',
-                  margin: '0 25%',
-                  border: '1px dashed black',
-                }}
-                onDrop={this.onDropTranscript.bind(this)}
-              >
-                <p>Click/drag to drop transcript (optional)</p>
-
-              </Dropzone>
-              <div className="uploaded-message">
-                {transcript != null ? (
-                  <p>
-                    Uploaded:
-                      {transcript.name}
-                  </p>
-                ) : ''}
-              </div>
             </div>
 
             <br />
