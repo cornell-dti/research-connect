@@ -16,10 +16,8 @@ const {
  * }
  */
 app.post('/send', (req, res) => {
-  debug('top');
   const oppId = req.body.opportunityId;
   const profId = req.body.labAdminNetId;
-  debug(req.body);
   const ugradNetId = req.body.undergradNetId;
   let { message } = req.body;
   const { status } = req.body;
@@ -30,12 +28,10 @@ app.post('/send', (req, res) => {
      *  {yourFirstName}, {yourLastName}, {yourEmail} --> first or last name or email of current lab administrator viewing applications
      *
      */
-  debug(1);
   undergradModel.findOne({ netId: ugradNetId }, (err, ugradInfo) => {
     debug(ugradInfo);
     labAdministratorModel.findOne({ netId: profId }, (err2, prof) => {
       opportunityModel.findById(oppId, (err3, opportunity) => {
-        debug('2');
         for (let i = 0; i < opportunity.applications.length; i++) {
           if (opportunity.applications[i].undergradNetId === ugradNetId) {
             opportunity.applications[i].status = status;
@@ -44,7 +40,6 @@ app.post('/send', (req, res) => {
         }
         const temp = opportunity.messages;
         temp[status] = message;
-        debug(3);
         opportunity.messages = temp;
         opportunity.markModified('messages');
         opportunity.markModified('applications');
@@ -73,7 +68,6 @@ app.post('/send', (req, res) => {
           text: message,
           html: `${replaceAll(message, '\n', '<br />')}<br />`,
         };
-        debug(10);
         sgMail.send(msg);
         res.status(200).end();
       });

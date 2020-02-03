@@ -44,7 +44,6 @@ function generateId() {
 
 // Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/', (req, res) => {
-  debug('reached');
   verify(req.body.token_id, (email) => {
     debug(`email: ${email}`);
     if (email === null) {
@@ -137,7 +136,6 @@ app.post('/', (req, res) => {
           });
         }
       });
-      debug('gend');
     }
     return null;
   }, true).catch((error) => {

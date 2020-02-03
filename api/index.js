@@ -8,82 +8,9 @@ const {
   labAdministratorModel,
   opportunityModel,
   debug,
-  sgMail,
   verify,
   handleVerifyError,
-  sgOppsGroup,
-  sgAnnouncementsGroup,
 } = require('../common.js');
-
-/**
- * Used to test quick functions that require the back-end
- */
-app.get('/sandbox', (req, res) => {
-// eslint-disable-next-line no-unused-vars
-  const msg = {
-    to: 'abagh0703@gmail.com',
-    from: {
-      name: 'Research Connect',
-      email: 'hello@research-connect.com',
-    },
-    replyTo: 'acb352@cornell.edu',
-    asm: {
-      groupId: sgAnnouncementsGroup,
-    },
-    subject: 'Guide to Finding Research!',
-    html: `Hi aram,<br />
-                       Thanks for signing up for Research Connect! To help you
-                       in your research journey, we've provided a comprehensive
-                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a>
-                       <br /><br />Thanks,
-                       <br />The Research Connect Team<br /><br />`,
-  };
-  debug('sent!');
-  sgMail.send(msg).catch((err) => {
-    console.log('error in send');
-    console.log(err);
-  });
-  debug('really sent!');
-
-  return res.send();
-});
-
-app.get('/sandbox2', (req, res, next) => {
-  opportunityModel.find({ title: { $regex: '^Intern', $options: 'i' } }, 'title', (err2, otherTitles2) => {
-    debug(otherTitles2);
-    return res.send(otherTitles2);
-  });
-});
-
-app.post('/sendManual', (req, res) => {
-  return res.end(); // safety lock
-  // eslint-disable-next-line no-unreachable
-  undergradModel.find({},
-    (err, studentsWhoMatch) => {
-      Object.keys(studentsWhoMatch).forEach((undergrad1) => {
-        const { firstName } = studentsWhoMatch[undergrad1];
-        const msg = {
-          // to: "acb352@cornell.edu",
-          to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
-          from: {
-            name: 'Research Connect',
-            email: 'hello@research-connect.com',
-          },
-          replyTo: 'acb352@cornell.edu',
-          asm: {
-            groupId: parseInt(sgOppsGroup, 10),
-          },
-          subject: 'Correction on Previous Opportunity',
-          html: `Hi ${firstName},<br /><br />
-            A link previously sent for the "Undergraduate Research Assistant" position was incorrect. The correct link is <a href="https://www.research-connect.com/opportunity/5c1554ee1f50380015487f12/"></a>https://www.research-connect.com/opportunity/5c1554ee1f50380015487f12/<br />
-            <br /> Thanks,<br /> The Research Connect Team<br /><br />`,
-        };
-        sgMail.send(msg);
-      });
-      return res.end();
-    });
-});
-
 
 /**
  * A method to populate fields. Feel free to change it as need be.
@@ -113,7 +40,6 @@ app.get('/hasRegistered/:input', (req, res) => {
   const { input } = req.params;
   let netId = null;
   let email = null;
-  debug('in hasregistered');
   // if they sent their email...
   if (input.indexOf('@') !== -1) {
     const emailParts = input.split('@');
@@ -134,9 +60,7 @@ app.get('/hasRegistered/:input', (req, res) => {
     }
     // see if they have a netid or not (in which case we'll have to search by email)
     const searchQuery = (email === null ? { netId } : { email });
-    debug('before lab admin');
     labAdministratorModel.findOne(searchQuery, (err2, labAdmin) => {
-      debug('completed');
       debug(labAdmin);
       debug(labAdmin !== null);
       return res.send(labAdmin !== null);
@@ -205,7 +129,7 @@ app.get('/verify/:token', (req) => {
     // const domain = payload['hd'];
   }
 
-  verify2().catch(console.error('4'));
+  verify2();
 });
 
 module.exports = app;
