@@ -39,7 +39,7 @@ class StudentRegister extends Component {
       buttonValue: 'Submit',
     };
     ReactGA.initialize('UA-69262899-9');
-    ReactGA.pageview(window.location.pathname + window.location.search);this.onChange.bind(this);
+    ReactGA.pageview(window.location.pathname + window.location.search); this.onChange.bind(this);
     this.onSubmit.bind(this);
   }
 
@@ -75,317 +75,162 @@ class StudentRegister extends Component {
     );
   }
 
-    onDropResume = (acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const fileAsBinaryString = reader.result;
-          const encodedData = window.btoa(fileAsBinaryString);
-          // do whatever you want with the file content
-          this.setState({ resume: [encodedData] });
-          this.setState({ resumeValid: true });
-        };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+  onDropResume = (acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const fileAsBinaryString = reader.result;
+        const encodedData = window.btoa(fileAsBinaryString);
+        // do whatever you want with the file content
+        this.setState({ resume: [encodedData] });
+        this.setState({ resumeValid: true });
+      };
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
 
-        reader.readAsBinaryString(file);
-      });
-    }
+      reader.readAsBinaryString(file);
+    });
+  }
 
-    onDropTranscript = (acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const fileAsBinaryString = reader.result;
-          const encodedData = window.btoa(fileAsBinaryString);
-          // do whatever you want with the file content
-          this.setState({ transcript: [encodedData] });
-        };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+  onChange = (e) => {
+    // Because we named the inputs to match their corresponding values in state, it's
+    // super easy to update the state
+    const state = this.state;
+    const name = e.target.name;
+    if (name !== 'courses') {
+      const validationName = `${name}Valid`;
+      this.setState({ [name]: e.target.value });
+      if (name === 'gradYear' || name === 'major') {
+        document.getElementById(name).innerHTML = [e.target.value];
+      }
 
-        reader.readAsBinaryString(file);
-      });
-    };
-
-    onChange = (e) => {
-      // Because we named the inputs to match their corresponding values in state, it's
-      // super easy to update the state
-      const state = this.state;
-      const name = e.target.name;
-      if (name !== 'courses') {
-        const validationName = `${name}Valid`;
-        this.setState({ [name]: e.target.value });
-        if (name === 'gradYear' || name === 'major') {
-          document.getElementById(name).innerHTML = [e.target.value];}
-
-        if (e.target.value != '') {
-          this.setState({ [validationName]: true });
-        } else {
-          this.setState({ [validationName]: false });
-        }
+      if (e.target.value != '') {
+        this.setState({ [validationName]: true });
       } else {
-        this.setState({ [e.target.name]: (e.target.value).replace(/ /g, '').split(',') });
+        this.setState({ [validationName]: false });
       }
-      console.log(`COURSES ${this.state.courses}`);
-    };
-
-    handleUpdateCourses(courseList) {
-      this.setState({ courses: courseList });
+    } else {
+      this.setState({ [e.target.name]: (e.target.value).replace(/ /g, '').split(',') });
     }
+  };
 
-    createGpaOptions() {
-      const options = [];
-      for (let i = 25; i <= 43; i++) {
-        options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
-      }
-      options.push(<option key={50} value={(5.0).toString()}>No GPA</option>);
-      return (
-        <select
-          name="GPA"
-          id="GPA"
-          className={!this.state.GPAValid && this.state.triedSubmitting ? 'error gpa-select left-input' : 'gpa-select left-input'}
-          value={this.state.GPA}
-          onChange={this.onChange}
-        >
-          <option key="" value="">Select GPA</option>
-          {options}
-        </select>
-      );
+  handleUpdateCourses(courseList) {
+    this.setState({ courses: courseList });
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    // get our form data out of state
+    const {
+      firstName,
+      lastName,
+      gradYear,
+      major,
+      GPA,
+      netId,
+      email,
+      courses,
+      resume,
+      transcript,
+      firstNameValid,
+      lastNameValid,
+      gradYearValid,
+      majorValid,
+      GPAValid,
+      resumeValid,
+      triedSubmitting,
+    } = this.state;
+    this.setState({ token_id: sessionStorage.getItem('token_id') });
+    const token_id = sessionStorage.getItem('token_id');
+
+    if (firstNameValid && lastNameValid && gradYearValid && majorValid) {
+      let oneRan = false;
+      const getUrl = window.location;
+      const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
+      axios.post('/api/undergrads', {
+        firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id,
+      })
+        .then((result) => {
+          console.log('undergrad created, result:');
+          console.log(result);
+          this.setState({ isButtonDisabled: true });
+          this.setState({ buttonValue: 'Submitted!' });
+
+          window.location.replace(`${baseUrl}/opportunities`);
+
+        }).catch((error) => {
+          console.log('error in creating undergrad');
+          console.log(error);
+          // if it's not a session error...
+          if (!Utils.handleTokenError(error)) {
+            console.log('error in /api/undergrad in student register');
+            Utils.handleNonTokenError(error);
+          }
+        });
+    } else if (!firstNameValid) {
+      alert('First name is required.');
+    } else if (!lastNameValid) {
+      alert('Last name is required.');
+    } else if (!gradYearValid) {
+      alert('Graduation year is required.');
+    } else if (!majorValid) {
+      alert('Major is required.');
     }
-
-    onSubmit = (e) => {
-      e.preventDefault();
-      // get our form data out of state
-      const {
-        firstName,
-        lastName,
-        gradYear,
-        major,
-        GPA,
-        netId,
-        email,
-        courses,
-        resume,
-        transcript,
-        firstNameValid,
-        lastNameValid,
-        gradYearValid,
-        majorValid,
-        GPAValid,
-        resumeValid,
-        triedSubmitting,
-      } = this.state;
-      this.setState({ token_id: sessionStorage.getItem('token_id') });
-      const token_id = sessionStorage.getItem('token_id');
-
-      // axios.get('/api/opportunities/check/9102401rjqlfk?netId="zx55"')
-      //     .then(function (response) {
-      //         console.log(response);
-      //     })
-      //     .catch(function (error) {
-      //         console.log(error);
-      //     });
-      if (firstNameValid && lastNameValid && gradYearValid && majorValid && GPAValid && resumeValid) {
-        let oneRan = false;
-        const getUrl = window.location;
-        const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
-        axios.post('/api/undergrads', {
-          firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id,
-        })
-          .then((result) => {
-            console.log('undergrad created, result:');
-            console.log(result);
-            this.setState({ isButtonDisabled: true });
-            this.setState({ buttonValue: 'Submitted!' });
+  };
 
 
-            // access the results here....
-            if (this.state.transcript != null && this.state.transcript.length !== 0) {
-              axios.post('/api/docs', { token_id, transcript })
-                .then((result) => {
-                  if (oneRan) {
-                    window.location.replace(`${baseUrl}/opportunities`);
-                  } else {
-                    oneRan = true;
-                  }
-                }).catch((error) => {
-                  console.log('error in creating transcript');
-                  console.log(error);
-                  // if it's not a session error...
-                  if (!Utils.handleTokenError(error)) {
-                    console.log('token error handled at student register');
-                    Utils.handleNonTokenError(error);
-                  }
-                });
-            }
+  render() {
+    const {
+      firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
+    } = this.state;
+    return (
+      <div>
+        <div className="student-reg-form">
+          <h3>Student Registration</h3>
+          <form id="studentForm" onSubmit={this.onSubmit}>
+            <input
+              className={!this.state.firstNameValid && this.state.triedSubmitting ? 'error left-input' : 'left-input'}
+              placeholder="First Name"
+              type="text"
+              name="firstName"
+              value={firstName}
+              id="firstName"
+              onChange={this.onChange}
+            />
+            <input
+              className={!this.state.lastNameValid && this.state.triedSubmitting ? 'error left-input' : 'left-input'}
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              value={lastName}
+              id="lastName"
+              onChange={this.onChange}
+            />
 
-            if (this.state.resume != null && this.state.resume.length !== 0) {
-              console.log('resume is not null!');
-              axios.post('/api/docs', { token_id, resume })
-                .then((result) => {
-                  if (oneRan || !this.state.transcript) {
-                    window.location.replace(`${baseUrl}/opportunities`);
-                  } else {
-                    oneRan = true;
-                  }
-                  console.log('resume result');
-                  console.log(result);
-                }).catch((error) => {
-                  console.log('error in posting resume');
-                  console.log(error);
-                  // if it's not a session error...
-                  if (!Utils.handleTokenError(error)) {
-                    console.log('error in /api/docs in student register');
-                    Utils.handleNonTokenError(error);
-                  }
-                });
-            }
-          }).catch((error) => {
-            console.log('error in creating undergrad');
-            console.log(error);
-            // if it's not a session error...
-            if (!Utils.handleTokenError(error)) {
-              console.log('error in /api/undergrad in student register');
-              Utils.handleNonTokenError(error);
-            }
-          });
-      } else if (!firstNameValid) {
-        alert('First name is required.');
-      } else if (!lastNameValid) {
-        alert('Last name is required.');
-      } else if (!gradYearValid) {
-        alert('Graduation year is required.');
-      } else if (!majorValid) {
-        alert('Major is required.');
-      } else if (!GPAValid) {
-        alert('GPA is required.');
-      } else if (!resumeValid) {
-        alert('Resume is required.');
-      }
-    };
+            {this.optionify(gradYears, 'gradYear')}
 
+            {this.optionify(majorList, 'major')}
 
-    render() {
-      const {
-        firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
-      } = this.state;
-      // if (this.state.netId === "") {
-      //     axios.get('/api/decrypt?token=' + sessionStorage.getItem("token_id")).then(res => {
-      //         this.setState({netId: res.data});
-      //         console.log("res data!");
-      //         console.log(res.data);
-      //     });
-      // }
-      return (
-        <div>
-          <div className="student-reg-form">
-            <h3>Student Registration</h3>
-            <form id="studentForm" onSubmit={this.onSubmit}>
+            <div className="student-register-course-select">
+              <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+            </div>
+
+            <br />
+            <div className="centered">
               <input
-                className={!this.state.firstNameValid && this.state.triedSubmitting ? 'error left-input' : 'left-input'}
-                placeholder="First Name"
-                type="text"
-                name="firstName"
-                value={firstName}
-                id="firstName"
-                onChange={this.onChange}
+                type="submit"
+                className="button"
+                value={this.state.buttonValue}
+                disabled={this.state.isButtonDisabled}
               />
-              <input
-                className={!this.state.lastNameValid && this.state.triedSubmitting ? 'error left-input' : 'left-input'}
-                type="text"
-                placeholder="Last Name"
-                name="lastName"
-                value={lastName}
-                id="lastName"
-                onChange={this.onChange}
-              />
+            </div>
+          </form>
 
-
-              {this.optionify(gradYears, 'gradYear')}
-
-              {this.optionify(majorList, 'major')}
-
-
-              {this.createGpaOptions()}
-
-              <div className="student-register-course-select">
-                <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
-              </div>
-
-              <div className="dropzone">
-
-                <Dropzone
-                  className="edit-drop"
-                  style={{
-                    position: 'relative',
-                    background: '#ededed',
-                    padding: '10px',
-                    width: '50%',
-                    margin: '0 0 0 25%',
-                    border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
-                  }}
-                  onDrop={this.onDropResume.bind(this)}
-                accept={"application/pdf"}>
-                  <p>Click/drag to drop a PDF resume (required)</p>
-
-                </Dropzone>
-                <div className="uploaded-message">
-                  {resume != null ? (
-                    <p>
-Uploaded:
-                      {resume.name}
-                    </p>
-                  ) : ''}
-                </div>
-              </div>
-
-
-              <br />
-
-              <div className="dropzone">
-
-                <Dropzone
-                  className="edit-drop"
-                  style={{
-                    position: 'relative',
-                    background: '#ededed',
-                    padding: '10px',
-                    width: '50%',
-                    margin: '0 25%',
-                    border: '1px dashed black',
-                  }}
-                  onDrop={this.onDropTranscript.bind(this)}
-                >
-                  <p>Click/drag to drop transcript (optional)</p>
-
-                </Dropzone>
-                <div className="uploaded-message">
-                  {transcript != null ? (
-                    <p>
-Uploaded:
-                      {transcript.name}
-                    </p>
-                  ) : ''}
-                </div>
-              </div>
-
-              <br />
-              <div className="centered">
-                <input
-                  type="submit"
-                  className="button"
-                  value={this.state.buttonValue}
-                  disabled={this.state.isButtonDisabled}
-                />
-              </div>
-            </form>
-
-          </div>
-          <Footer />
         </div>
-      );
-    }
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default StudentRegister;

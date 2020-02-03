@@ -43,7 +43,7 @@ class CourseSelect extends React.Component {
     return (
       <div className="course-select">
         <div>
-          <input placeholder="enter course (ex: CS1110)" type="text" ref={(ip) => { this.newText = ip; }} />
+          <input placeholder="enter CS courses taken (ex: CS1110)" type="text" ref={(ip) => { this.newText = ip; }} />
           <button className="add-button" onClick={this.addCourse.bind(this)}>Add</button>
         </div>
         <ul>
