@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import PropTypes from 'prop-types';
 import ProfessorNavbar from './ProfessorNavbar/ProfessorNavbar';
 import Navbar from './StudentNavbar/StudentNavbar';

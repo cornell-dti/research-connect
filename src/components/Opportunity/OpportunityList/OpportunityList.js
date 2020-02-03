@@ -13,7 +13,6 @@ class OpportunityList extends Component {
   }
 
   getStarredOps() {
-    console.log('SENDING API REQUEST TO GET ALL STARRED OPS');
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         const { data } = response;

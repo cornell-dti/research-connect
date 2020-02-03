@@ -42,7 +42,6 @@ class ProfessorNavbar extends Component {
       })
       .catch((error) => {
         if (!(this.props.current === 'newopp')) {
-          console.log('handling token error on nprof navbar 1');
           Utils.handleTokenError(error);
         }
       });
@@ -61,7 +60,11 @@ class ProfessorNavbar extends Component {
       <div className="header-wrapper">
         <div className="header-all">
           <div className="logo-div">
-            {!simplifyNavbar && <a href="/professorDashboard"><img alt="Research Connect" className="logo" src={logo} /></a>}
+            {!simplifyNavbar && (
+              <a href="/professorDashboard">
+                <img alt="Research Connect" className="logo" src={logo} />
+              </a>
+            )}
             {simplifyNavbar && <a href="/"><img alt="Research Connect" className="logo" src={logo} /></a>}
           </div>
           <nav>

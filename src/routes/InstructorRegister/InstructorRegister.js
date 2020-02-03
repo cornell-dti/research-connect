@@ -79,9 +79,7 @@ class InstructorRegister extends React.Component {
     axios.get('/api/labs')
       .then((res) => {
         this.setState({ data: res.data });
-        console.log(res.data);
       }).catch((error) => {
-        console.log('error in intstructor reigster /api/labs');
         Utils.handleTokenError(error);
       });
   }
@@ -186,7 +184,6 @@ class InstructorRegister extends React.Component {
       if (firstNameValid && lastNameValid && netIDValid && roleValid && notifValid && labNameValid
             && (!newLab || (labURLValid && piValid))) {
         if (newLab) { this.setState({ labId: null }); }
-        console.log('submitting form');
         axios.post('/api/labAdmins', {
           data,
           newLab,
@@ -211,7 +208,6 @@ class InstructorRegister extends React.Component {
               buttonValue: 'Submitted',
             });
           }).catch((error) => {
-            console.log('error in /api/labadmins');
             Utils.handleTokenError(error);
           });
       }

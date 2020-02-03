@@ -4,13 +4,10 @@ import './Opportunities.scss';
 import '../../index.css';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
-import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as ReactGA from 'react-ga';
-import { Route, Redirect } from 'react-router';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
+import { Redirect } from 'react-router';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Footer from '../../components/Footer/Footer';
-import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
@@ -23,26 +20,21 @@ import CompensationFilter from '../../components/Filter/CompensationFilter';
 import CSAreasFilter from '../../components/Filter/CSAreasFilter';
 import StartDateFilter from '../../components/Filter/StartDateFilter';
 
-
 // import StartDate from '../../components/StartDate/StartDate';
 import * as Utils from '../../components/Utils';
-import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
 class Opportunities extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      yearSelect: [],
       gpaSelect: '2.5',
       majorSelect: {},
       startDate: '',
-      compensationSelect: [],
       searchBar: '',
       matchingSearches: [],
       searching: false,
       clickedEnter: false,
       role: '',
-      csAreasSelect: [],
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -52,10 +44,7 @@ class Opportunities extends Component {
     // They can search from the home page, make it do something
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get('search');
-    console.log('search term!');
-    console.log(searchTerm);
     if (searchTerm) {
-      console.log('in search term');
       this.setState({ searchBar: searchTerm });
       document.getElementById('searchOpps').value = searchTerm;
     }
@@ -76,17 +65,13 @@ class Opportunities extends Component {
         }
       })
       .catch((error) => {
-        console.log('error in /api/role for in Opportunities');
         Utils.handleTokenError(error);
       });
 
     // They can search from the home page, make it do something
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get('search');
-    console.log('search term!');
-    console.log(searchTerm);
     if (searchTerm) {
-      console.log('in search term');
       this.setState({ searchBar: searchTerm });
       document.getElementById('searchOpps').value = searchTerm;
     }
@@ -141,10 +126,6 @@ class Opportunities extends Component {
     this.setState({ searchBar: '' });
     this.setState({ matchingSearches: [] });
     this.setState({ clickedEnter: false });
-  }
-
-  goHome() {
-    window.location.href = '/';
   }
 
   render() {

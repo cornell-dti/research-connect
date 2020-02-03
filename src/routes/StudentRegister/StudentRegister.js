@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as ReactGA from 'react-ga';
-import Dropzone from 'react-dropzone';
 import '../App/App.scss';
 import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
@@ -10,9 +9,14 @@ import * as Utils from '../../components/Utils';
 
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-
 const majorList = Utils.getMajorList();
-const gradYears = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2, new Date().getFullYear() + 3, new Date().getFullYear() + 4];
+const gradYears = [
+  new Date().getFullYear(),
+  new Date().getFullYear() + 1,
+  new Date().getFullYear() + 2,
+  new Date().getFullYear() + 3,
+  new Date().getFullYear() + 4,
+];
 
 class StudentRegister extends Component {
   constructor(props) {
@@ -26,15 +30,10 @@ class StudentRegister extends Component {
       netId: '',
       email: '',
       courses: [],
-      file: null,
-      resume: null,
-      transcript: null,
       firstNameValid: false,
       lastNameValid: false,
       gradYearValid: false,
       majorValid: false,
-      GPAValid: false,
-      resumeValid: false,
       triedSubmitting: false,
       isButtonDisabled: false,
       buttonValue: 'Submit',
@@ -78,23 +77,6 @@ class StudentRegister extends Component {
     );
   }
 
-  onDropResume = (acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const fileAsBinaryString = reader.result;
-        const encodedData = window.btoa(fileAsBinaryString);
-        // do whatever you want with the file content
-        this.setState({ resume: [encodedData] });
-        this.setState({ resumeValid: true });
-      };
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-
-      reader.readAsBinaryString(file);
-    });
-  }
-
   onChange = (e) => {
     // Because we named the inputs to match their corresponding values in state, it's
     // super easy to update the state
@@ -132,39 +114,27 @@ class StudentRegister extends Component {
       netId,
       email,
       courses,
-      resume,
-      transcript,
       firstNameValid,
       lastNameValid,
       gradYearValid,
       majorValid,
-      GPAValid,
-      resumeValid,
-      triedSubmitting,
     } = this.state;
-    this.setState({ token_id: sessionStorage.getItem('token_id') });
     const token_id = sessionStorage.getItem('token_id');
 
     if (firstNameValid && lastNameValid && gradYearValid && majorValid) {
-      const oneRan = false;
       const getUrl = window.location;
       const baseUrl = `${getUrl.protocol}//${getUrl.host}`;
       axios.post('/api/undergrads', {
         firstName, lastName, gradYear, major, GPA, netId, email, courses, token_id,
       })
-        .then((result) => {
-          console.log('undergrad created, result:');
-          console.log(result);
+        .then(() => {
           this.setState({ isButtonDisabled: true });
           this.setState({ buttonValue: 'Submitted!' });
 
           window.location.replace(`${baseUrl}/opportunities`);
         }).catch((error) => {
-          console.log('error in creating undergrad');
-          console.log(error);
           // if it's not a session error...
           if (!Utils.handleTokenError(error)) {
-            console.log('error in /api/undergrad in student register');
             Utils.handleNonTokenError(error);
           }
         });
@@ -179,11 +149,8 @@ class StudentRegister extends Component {
     }
   };
 
-
   render() {
-    const {
-      firstName, lastName, gradYear, major, GPA, netId, courses, resume, transcript,
-    } = this.state;
+    const { firstName, lastName } = this.state;
     return (
       <div>
         <div className="student-reg-form">

@@ -9,7 +9,6 @@ class DashboardAction extends Component {
   }
 
   performAction() {
-    console.log('here');
     window.location.href = this.props.href;
   }
 

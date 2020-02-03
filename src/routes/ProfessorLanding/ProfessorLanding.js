@@ -27,15 +27,13 @@ class ProfessorLanding extends Component {
     if (sessionStorage.getItem('token_id') !== null) {
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
         .then((response) => {
-          console.log('Role: ');
-          console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
             endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
-            logoutGoogle();
+            Utils.logoutGoogle();
           } else {
             endUrl = '/professorDashboard';
             window.location.href = endUrl;
@@ -54,16 +52,13 @@ class ProfessorLanding extends Component {
   }
 
   responseGoogleStudent = (response) => {
-    console.log('response google student ran');
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
       alert('Please sign in with a cornell email (netid@cornell.edu)');
-      logoutGoogle();
+      Utils.logoutGoogle();
     }
     axios.get(`/api/hasRegistered/${response.profileObj.email.replace('@cornell.edu', '')}`).then((hasRegistered) => {
-      console.log('has registered');
-      console.log(hasRegistered);
       if (hasRegistered.data) {
         window.location.href = '/faculty';
       } else {
@@ -73,7 +68,6 @@ class ProfessorLanding extends Component {
   };
 
   responseGoogle = (response) => {
-    console.log('lab researcher signup');
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
     sessionStorage.setItem('netId', response.profileObj.email.replace('@cornell.edu', ''));
@@ -81,16 +75,12 @@ class ProfessorLanding extends Component {
     let role = '';
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}` /* 'prk57' */).then((roleResponse) => {
       role = roleResponse.data;
-      console.log(`landing page role: ${role}`);
       if (role === 'undergrad') {
-        console.log('what');
         this.responseGoogleStudent(response);
         return;
       }
-      console.log(`email: ${response.profileObj.email}`);
       // don't use has registered, just use role. but if you do use this, it takes raw net id not token.
       axios.get(`/api/hasRegistered/${response.profileObj.email}`).then((hasRegistered) => {
-        console.log(`registerd? ${hasRegistered}`);
         if (hasRegistered.data) {
           window.location.href = '/professorDashboard';
         } else {
@@ -98,29 +88,12 @@ class ProfessorLanding extends Component {
         }
       });
     }).catch((error) => {
-      console.log('Error in /api/hasRegistered on prof landing page');
-      console.log(error);
       Utils.handleTokenError(error);
     });
   };
 
-
-  scrollTo(id) {
-    console.log('scrolling');
-    const scrollToElement = require('scroll-to-element');
-    scrollToElement(id, {
-      offset: 0,
-      ease: 'linear',
-      duration: 600,
-    });
-  }
-
   postOpp() {
     window.location.href = '/newopp';
-  }
-
-  logoutClear() {
-    logoutGoogle();
   }
 
   render() {
@@ -223,13 +196,22 @@ class ProfessorLanding extends Component {
                 <h2>Made for students by students.</h2>
               </Row>
               <Row>
-                <Col><p>We know how frustrating it can be to get involved with a lab at Cornell. That’s why we created Research Connect.</p></Col>
+                <Col>
+                  <p>
+                    We know how frustrating it can be to get involved with a lab at Cornell.
+                    {'That\'s why we created Research Connect'}
+                  </p>
+                </Col>
               </Row>
               <Row>
                 <section className="list">
                   <Row className="picRow">
                     <Col><img className="list-image" src={check} alt="check" /></Col>
-                    <Col><p className="picP">Customize listings to reach out to hundreds of qualified students.</p></Col>
+                    <Col>
+                      <p className="picP">
+                        Customize listings to reach out to hundreds of qualified students.
+                      </p>
+                    </Col>
                   </Row>
                   <Row className="picRow">
                     <Col><img className="list-Image" src={check} alt="check" /></Col>
@@ -289,7 +271,15 @@ class ProfessorLanding extends Component {
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
-            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">Report a bug</a></p>
+            <p>
+              <a
+                href="https://goo.gl/forms/MWFfYIRplo3jaVJo2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Report a bug
+              </a>
+            </p>
             <p><a href="mailto:acb352@cornell.edu">Contact</a></p>
           </div>
         </footer>

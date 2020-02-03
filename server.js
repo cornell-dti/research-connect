@@ -109,5 +109,6 @@ module.exports = app;
 
 // starts the server and listens for requests
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Api running on port:: ${port}`);
 });

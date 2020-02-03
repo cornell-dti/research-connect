@@ -7,7 +7,7 @@ import * as Utils from '../Utils';
 class ApplicationList extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], role: '' };
+    this.state = { data: [] };
   }
 
   componentDidMount() {
@@ -16,7 +16,6 @@ class ApplicationList extends Component {
         this.setState({ data: response.data });
       })
       .catch((error) => {
-        console.log('error in applicationsList.js');
         Utils.handleTokenError(error);
       });
   }

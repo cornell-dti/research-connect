@@ -23,11 +23,8 @@ class Starred extends Component {
         axios.get(`/api/${wrapper}`)
           .then((res) => {
             const all = res.data;
-            console.log(data);
-            console.log(all);
             const onlyStarred = all.filter((i) => data.includes(i._id));
             this.setState({ data: onlyStarred, starred: data });
-            console.log('got up to here');
           });
       })
       .catch((error) => {
@@ -101,11 +98,7 @@ class Starred extends Component {
           <p className="labelheader">
             {this.props.label}
             <a href={`/saved${this.props.type}`} className={`${this.props.type}link`}>
-              VIEW ALL
-              {' '}
-              {this.state.starred.length}
-              {' '}
-              >
+              {`VIEW ALL ${this.state.starred.length} >`}
             </a>
           </p>
         </div>

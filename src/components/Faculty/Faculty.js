@@ -12,7 +12,6 @@ class Faculty extends Component {
 
   convertDescription(str) {
     // if string is empty
-    console.log(this.props.lab);
     if (!str) {
       return '';
     }
@@ -61,7 +60,8 @@ class Faculty extends Component {
               : <span />}
 
             <div>
-              {this.props.researchDescription && this.props.researchDescription.length > 0 ? this.convertDescription(this.props.researchDescription)
+              {this.props.researchDescription && this.props.researchDescription.length > 0
+                ? this.convertDescription(this.props.researchDescription)
                 : this.convertDescription(this.props.bio)}
             </div>
             {/* <h5>{this.props.researchInterests}</h5> */}

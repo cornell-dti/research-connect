@@ -25,24 +25,15 @@ class ApplicationPage extends Component {
   }
 
   componentWillMount() {
-    console.log(1);
     axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')
     }&netId=` + 'prk57').then((response) => {
-      console.log('response.data!');
-      console.log(response.data);
       const oppsList = response.data;
-      console.log(2);
       Object.keys(oppsList).forEach((opp) => {
         oppsList[opp].applications.forEach((app) => {
-          console.log(3);
           const curOpp = oppsList[opp].opportunity;
           if (app !== undefined) {
-            console.log(4);
             if (app.id === this.props.match.params.id) {
-              console.log(5);
               this.setState({ application: app, opportunity: curOpp });
-              console.log(this.state.opportunity);
-              console.log(this.state.application);
               axios.get(
                 `/api/undergrads/la/${this.state.application.undergradNetId
                 }?tokenId=${sessionStorage.getItem('token_id')}`,
@@ -91,7 +82,6 @@ class ApplicationPage extends Component {
   }
 
   renderTranscript() {
-    console.log(`transcriptid: ${this.state.transcriptId}`);
     if (!this.state.transcriptId) {
       return null;
     }
@@ -148,8 +138,6 @@ class ApplicationPage extends Component {
 
     const questionsAndResponses = [];
     const { responses } = this.state.application;
-    console.log('at questions');
-    console.log(this.state.opportunity);
     const { questions } = this.state.opportunity;
     let c = 0;
     for (const question in responses) {

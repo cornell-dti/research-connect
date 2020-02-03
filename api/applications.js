@@ -38,7 +38,9 @@ app.get('/', (req, res) => {
         return res.send(err);
       }
       if (labAdmin === null) {
-        return res.status(401).send(`Lab administrator with Net ID "${labAdminId}" was not found in the database for lab administrators.`);
+        return res
+          .status(401)
+          .send(`Lab administrator with Net ID "${labAdminId}" was not found in the database for lab administrators.`);
       }
       // get the lab of the lab admin who made this request
       labModel.findById(labAdmin.labId, (err2, lab) => {
