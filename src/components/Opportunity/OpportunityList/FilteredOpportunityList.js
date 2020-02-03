@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import * as Utils from '../../Utils.js';
+import * as Utils from '../../Utils';
 import Opportunity from '../Opportunity';
 import './OpportunityList.scss';
 
 class FilteredOpportunityList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   countNodes(nodes) {
     let tempCount = 0;
     let countString = '';
     for (const k in nodes) {
       if (nodes[k] != null) {
-        tempCount++;
+        tempCount += 1;
       }
     }
-    if (tempCount == 1) {
+    if (tempCount === 1) {
       countString = 'Here is a top opportunity for you';
     } else {
       countString = `Here are ${tempCount.toString()} good opportunities for you`;
@@ -36,17 +32,17 @@ class FilteredOpportunityList extends Component {
         let hasOptionsCS = true;
         let hasOptionsBio = true;
         let hasMinGPA = true;
-        if ((uGradYear === 'Freshman' && yearsAllowed.indexOf('freshman') == -1)
-          || (uGradYear === 'Sophomore' && yearsAllowed.indexOf('sophomore') == -1)
-          || (uGradYear === 'Junior' && yearsAllowed.indexOf('junior') == -1)
-          || (uGradYear === 'Senior' && yearsAllowed.indexOf('senior') == -1)) {
+        if ((uGradYear === 'Freshman' && yearsAllowed.indexOf('freshman') === -1)
+          || (uGradYear === 'Sophomore' && yearsAllowed.indexOf('sophomore') === -1)
+          || (uGradYear === 'Junior' && yearsAllowed.indexOf('junior') === -1)
+          || (uGradYear === 'Senior' && yearsAllowed.indexOf('senior') === -1)) {
           hasOptionsYear = false;
         }
-        if ((uGradMajor === 'Computer Science' && opp.areas.indexOf('Computer Science') == -1)) {
+        if ((uGradMajor === 'Computer Science' && opp.areas.indexOf('Computer Science') === -1)) {
           hasOptionsCS = false;
         }
         if (
-          (uGradMajor === 'Biology' && opp.areas.indexOf('Biology') != -1)) {
+          (uGradMajor === 'Biology' && opp.areas.indexOf('Biology') !== -1)) {
           hasOptionsBio = false;
         }
         if ((uGradGPA < opp.minGPA)) {
@@ -97,9 +93,9 @@ class FilteredOpportunityList extends Component {
     let x = 0;
     while (filteredOpps.length <= 5 || x < opps.length) {
       const saveOpp = filterOpps(opps[x]);
-      if (saveOpp != '') {
+      if (saveOpp !== '') {
         filteredOpps[x] = saveOpp;
-        x++;
+        x += 1;
       }
     }
     return (

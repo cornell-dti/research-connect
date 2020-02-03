@@ -127,14 +127,14 @@ class CreateOppForm extends React.Component {
     );
   }
 
-  deleteQuestion(data, e) {
-    const deleted = parseInt(data.slice(1));
+  deleteQuestion(data) {
+    const deleted = parseInt(data.slice(1), 10);
     const newQnum = this.state.numQuestions - 1;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     const questionsEdit = {};
 
     for (const question in questionsCopy) {
-      const num = parseInt(question.slice(1));
+      const num = parseInt(question.slice(1), 10);
       if (num < deleted) {
         questionsEdit[question] = questionsCopy[question];
       } else if (num > deleted) {
@@ -145,15 +145,14 @@ class CreateOppForm extends React.Component {
     this.setState({ numQuestions: newQnum, questions: questionsEdit });
   }
 
-  addQuestion(event) {
+  addQuestion() {
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
     this.setState({
       questions: questionsCopy,
     });
-    this.setState({ numQuestions: this.state.numQuestions + 1 });
+    this.setState(({ numQuestions }) => ({ numQuestions: numQuestions + 1 }));
   }
-
 
   createGpaOptions() {
     const options = [];
@@ -175,7 +174,9 @@ class CreateOppForm extends React.Component {
 
   updateFilterOption(filterType, option) {
     this.setState((state) => {
-    	if (state[filterType].includes(option)) return { [filterType]: state[filterType].filter((original) => original !== option) };
+      if (state[filterType].includes(option)) {
+        return { [filterType]: state[filterType].filter((original) => original !== option) };
+      }
       return { [filterType]: [...state[filterType], option] };
     });
   }
@@ -191,13 +192,10 @@ class CreateOppForm extends React.Component {
   }
 
   toggleDetails() {
-    if (this.state.showDetails) {
-      this.setState({ detailsButtonValue: 'Show Advanced Options' });
-    } else {
-      this.setState({ detailsButtonValue: 'Hide Advanced Options' });
-    }
-    const oppositeValue = !this.state.showDetails;
-    this.setState({ showDetails: oppositeValue });
+    this.setState(({ showDetails }) => ({
+      detailsButtonValue: showDetails ? 'Show Advanced Options' : 'Hide Advanced Options',
+      showDetails: !showDetails,
+    }));
   }
 
   // Set values of form items in state and change their validation state if they're invalid
@@ -304,7 +302,7 @@ class CreateOppForm extends React.Component {
       supervisor,
       numQuestions,
     })
-      .then((result) => {
+      .then(() => {
         // access the results here....
         this.setState({ submit: 'Submitted!' });
         this.setState({
@@ -326,12 +324,10 @@ class CreateOppForm extends React.Component {
         if (error.response) {
           if (error.response.status === 400) {
             alert('One of the required fields is not properly filled in.');
-          } else {
+          } else if (!Utils.handleTokenError(error)) {
             // if there's no token-related error, then do the alert.
-            if (!Utils.handleTokenError(error)) {
-              console.log(error.response.data);
-              alert('Something went wrong on our side. Please refresh and try again.');
-            }
+            console.log(error.response.data);
+            alert('Something went wrong on our side. Please refresh and try again.');
           }
         }
       });

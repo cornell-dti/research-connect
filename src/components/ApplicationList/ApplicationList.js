@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './ApplicationList.scss';
 import ApplicationBox from './ApplicationBox/ApplicationBox';
-import * as Utils from '../Utils.js';
+import * as Utils from '../Utils';
 
 class ApplicationList extends Component {
   constructor(props) {
@@ -68,7 +68,7 @@ class ApplicationList extends Component {
 
     Object.entries(data).forEach((oppAppPair) => {
       oppAppPair[1].applications.forEach((app) => {
-        if (app.gpa == 5.0) app.gpa = 'No GPA';
+        if (app.gpa === 5.0) app.gpa = 'No GPA';
         if (app !== undefined) {
           apps.push(
             <ApplicationBox

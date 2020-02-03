@@ -5,10 +5,6 @@ import './Faculty.scss';
 import Star from '../Star/Star';
 
 class Faculty extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   star(e) {
     e.stopPropagation();
     this.props.updateStar(this.props.ID);
@@ -37,7 +33,7 @@ class Faculty extends Component {
     );
   }
 
-  clickRow(rowObj) {
+  clickRow() {
     // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
     document.location.href = (`/faculty/${this.props.ID}`);
   }
@@ -47,7 +43,7 @@ class Faculty extends Component {
       <div className="opportunity-card" onClick={this.clickRow.bind(this)}>
         <div className="row opp-box-row">
           <div className="column column-10">
-            <img alt={`${this.props.name} photo`} src={this.props.photoId} width="75px" />
+            <img alt={this.props.name} src={this.props.photoId} width="75px" />
           </div>
           {/* <div className="column column-10"> */}
           {/* </div> */}

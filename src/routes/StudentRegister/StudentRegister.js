@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import '../App/App.scss';
+import * as ReactGA from 'react-ga';
 import Dropzone from 'react-dropzone';
+import '../App/App.scss';
 import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils';
-import * as ReactGA from 'react-ga';
 
 ReactGA.pageview(window.location.pathname + window.location.search);
 
@@ -47,9 +47,11 @@ class StudentRegister extends Component {
   optionify(inputArray, inputName) {
     const newArray = [];
     for (let i = 0; i < inputArray.length; i++) {
-      newArray.push(<option key={inputArray[i]} value={inputArray[i]}>
-        {inputArray[i]}
-      </option>);
+      newArray.push(
+        <option key={inputArray[i]} value={inputArray[i]}>
+          {inputArray[i]}
+        </option>,
+      );
     }
 
     let placehold = 'Select';
@@ -79,7 +81,7 @@ class StudentRegister extends Component {
   onDropResume = (acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = () => {
         const fileAsBinaryString = reader.result;
         const encodedData = window.btoa(fileAsBinaryString);
         // do whatever you want with the file content
@@ -96,7 +98,6 @@ class StudentRegister extends Component {
   onChange = (e) => {
     // Because we named the inputs to match their corresponding values in state, it's
     // super easy to update the state
-    const { state } = this;
     const { name } = e.target;
     if (name !== 'courses') {
       const validationName = `${name}Valid`;
@@ -105,7 +106,7 @@ class StudentRegister extends Component {
         document.getElementById(name).innerHTML = [e.target.value];
       }
 
-      if (e.target.value != '') {
+      if (e.target.value !== '') {
         this.setState({ [validationName]: true });
       } else {
         this.setState({ [validationName]: false });

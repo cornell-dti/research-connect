@@ -5,7 +5,7 @@ import Faculty from '../Faculty/Faculty';
 import Opportunity from '../Opportunity/Opportunity';
 import './Starred.scss';
 
-class Starred extends React.Component {
+class Starred extends Component {
   constructor(props) {
     super(props);
     this.state = { starred: [], data: [] };
@@ -111,6 +111,7 @@ class Starred extends React.Component {
         </div>
       );
     }
+    return null;
   }
 
   componentWillMount() {
@@ -138,7 +139,7 @@ class Starred extends React.Component {
 }// end class
 
 Starred.propTypes = {
-  type: PropTypes.string, // enum for getting starred items API call
+  type: PropTypes.string.isRequired, // enum for getting starred items API call
   limit: PropTypes.number, // limit of showable starred items
   label: PropTypes.string,
 };

@@ -102,7 +102,7 @@ class Opportunities extends Component {
 
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
-    if (e.target.value == '') {
+    if (e.target.value === '') {
       this.setState({
         matchingSearches: [],
         clickedEnter: false,
@@ -172,7 +172,7 @@ class Opportunities extends Component {
           />
           <div className="delete-div">
             {
-              this.state.searchBar != '' ? (
+              this.state.searchBar !== '' ? (
                 <DeleteIcon
                   onClick={this.clearSearch.bind(this)}
                   className="clear-icon"

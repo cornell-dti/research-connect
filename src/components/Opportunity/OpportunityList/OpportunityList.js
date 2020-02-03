@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Opportunity from '../Opportunity';
 import './OpportunityList.scss';
-import axios from 'axios';
 import * as Utils from '../../Utils';
 
 class OpportunityList extends Component {
@@ -139,6 +139,7 @@ class OpportunityList extends Component {
           />
         );
       }
+      return null;
     });
 
     const nodeCount = this.countNodes(oppNodes);
@@ -158,8 +159,6 @@ class OpportunityList extends Component {
       </p>
     );
 
-    console.log('rendered again');
-    console.log(this.state.starredOps);
     return (
       <div>
         {/* <div className="node-list-div"> */}

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './Footer.scss';
-import { Link } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import CDTIlogo from '../../images/cdti.png';
-
 
 class Navbar extends Component {
   constructor(props) {
@@ -17,8 +15,8 @@ class Navbar extends Component {
         <div className="footer-child">Made by</div>
 
         <div className="footer-child">
-          <a href="http://cornelldti.org/" target="_blank">
-            <img className="logo" src={CDTIlogo} alt="CDTI logo" />
+          <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
+            <img className="logo" src={CDTIlogo} alt="Cornell DTI logo" />
           </a>
         </div>
 

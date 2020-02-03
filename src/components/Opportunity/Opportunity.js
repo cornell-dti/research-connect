@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import '../../index.css';
-import { BrowserRouter as Router } from 'react-router-dom';
 import './Opportunity.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import OpportunityJSON from './Opportunity.json';
-import * as Utils from '../Utils.js';
+import * as Utils from '../Utils';
 import Star from '../Star/Star';
 
 class Opportunity extends Component {
@@ -21,7 +19,7 @@ class Opportunity extends Component {
     if (!findNaN && typeof Array.prototype.indexOf === 'function') {
       indexOf = Array.prototype.indexOf;
     } else {
-      indexOf = (needle) => this.findIndex((item) => findNaN && isNaN(item) || item.toLowerCase() === needle.toLowerCase());
+      indexOf = (needle) => this.findIndex((item) => (findNaN && isNaN(item)) || item.toLowerCase() === needle.toLowerCase());
     }
     return indexOf.call(this, needle) > -1;
   }
@@ -31,7 +29,7 @@ class Opportunity extends Component {
     this.props.updateStar(this.props.opId);
   }
 
-  clickRow(rowObj) {
+  clickRow() {
     document.location.href = (`/opportunity/${this.props.opId}`);
   }
 
@@ -144,7 +142,7 @@ class Opportunity extends Component {
 
           <div className="column column-25">
             <div style={{ textAlign: 'right' }}>
-              For
+              {'For '}
               {this.props.startSeason && this.props.startYear ? `${this.props.startSeason} ${this.props.startYear}` : 'any time'}
               {this.handleShowingPrereqs(this.props.role)}
             </div>

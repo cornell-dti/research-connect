@@ -104,14 +104,14 @@ class ResearchGuide extends Component {
                     <h2 className="header1 step">Ask Us!</h2>
                     <p className="substep">
                       We'd love to answer any questions you have - use the
-                      <a href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform" target="_blank">contact form</a>
+                      <a href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform" target="_blank" rel="noopener noreferrer">contact form</a>
                       {' '}
                       to ask and we'll respond in 24 hours!
                     </p>
                     <h2 className="header1 step">Read the Comprehensive Guide</h2>
                     <p className="substep">
                       We collaborated with ACSU to produce a
-                      <a href="https://medium.com/@researchconnectcu/cornell-cs-research-readme-381206eaabcb" target="_blank"> comprehensive guide </a>
+                      <a href="https://medium.com/@researchconnectcu/cornell-cs-research-readme-381206eaabcb" target="_blank" rel="noopener noreferrer"> comprehensive guide </a>
                       to finding CS research at Cornell. If you're in a rush, the guide's
                       {' '}
                       <a href="https://medium.com/p/381206eaabcb#31a8">FAQ</a>

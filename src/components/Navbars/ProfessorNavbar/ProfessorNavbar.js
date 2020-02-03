@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../Navbar.scss';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import logo from '../../../images/white-logo.png';
 import { logoutGoogle } from '../../Utils';
 import * as Utils from '../../Utils';

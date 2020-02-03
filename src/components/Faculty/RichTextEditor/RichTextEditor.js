@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import {
   Editor,
   EditorState,
@@ -12,7 +11,7 @@ import './RichTextEditor.css';
 import 'draft-js/dist/Draft.css';
 import axios from 'axios';
 
-class RichTextEditor extends React.Component {
+class RichTextEditor extends Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };

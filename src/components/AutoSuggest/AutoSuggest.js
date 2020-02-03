@@ -31,7 +31,7 @@ class AutoSuggest extends React.Component {
     this.props.updateLab(event.target.value, null);
   }
 
-  handleClick(event) {
+  handleClick() {
     this.setState({ showDropdown: true });
     this.getSuggestions();
   }
@@ -45,7 +45,7 @@ class AutoSuggest extends React.Component {
     this.props.updateLab(labName, labId);
   }
 
-  onBlur(event) {
+  onBlur() {
     setTimeout(() => {
       this.setState({
         showDropdown: false,
@@ -107,7 +107,7 @@ class AutoSuggest extends React.Component {
           >
             {suggestions[i].name}
                          </p>);
-          if (this.state.cursor == positionShowing) {
+          if (this.state.cursor === positionShowing) {
             this.setState({ highlightLabName: suggestions[i].name });
             this.setState({ highlightLabId: suggestions[i].id });
           }
@@ -120,13 +120,13 @@ class AutoSuggest extends React.Component {
           >
             {suggestions[i].name}
                          </p>);
-          if (this.state.cursor == positionShowing) {
+          if (this.state.cursor === positionShowing) {
             this.setState({ highlightLabName: suggestions[i].name });
             this.setState({ highlightLabId: suggestions[i].id });
           }
           positionShowing += 1;
         }
-        if (this.state.cursor == -1) {
+        if (this.state.cursor === -1) {
           this.setState({ highlightLabId: null });
           this.setState({ highlightLabName: '' });
         }

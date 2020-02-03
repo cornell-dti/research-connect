@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './FacultyPage.scss';
 import axios from 'axios';
 import '../OpportunityPage/OpportunityPage.scss';
-import ReactDOM from 'react-dom';
 import { stateToHTML } from 'draft-js-export-html';
 import {
   Editor, EditorState, convertFromHTML, ContentState,
@@ -41,12 +40,12 @@ const ListItems = (props) => {
   return props.items.map((item) => <p key={item}>{item.replace(/\uFFFD/g, '')}</p>);
 };
 
-class AcceptingMessage extends React.Component {
-  render() {
-    const { acceptingStatus } = this.props;
-    const status = [];
-    if (acceptingStatus === 'yes') {
-      status.push(<p>
+function AcceptingMessage(props) {
+  const { acceptingStatus } = props;
+  const status = [];
+  if (acceptingStatus === 'yes') {
+    status.push(
+      <p>
         <b>Accepting: </b>
         This professor is currently open to working with undergrads this
         semester.
@@ -57,35 +56,41 @@ class AcceptingMessage extends React.Component {
           Please note that this may change if the professor reaches their capacity
           for the number of undergrads they can take this semester.
         </b>
-      </p>);
-    } else if (acceptingStatus === 'no') {
-      status.push(<p>
+      </p>,
+    );
+  } else if (acceptingStatus === 'no') {
+    status.push(
+      <p>
         <b>Not Accepting: </b>
         This professor does not plan to work with undergrads this
         semester,
         so it's not worth asking to do research with them. This could change
         in future semesters.
-                  </p>);
-    } else if (acceptingStatus === 'maybe') {
-      status.push(<p>
+      </p>,
+    );
+  } else if (acceptingStatus === 'maybe') {
+    status.push(
+      <p>
         <b>Possibly Accepting: </b>
         This professor indicated that they may work with undergrads
         this semester, but there's also a chance that they won't work with any.
         You can still email the professor if their work seems interesting. See
         the sidebar on the right for email writing tips.
-                  </p>);
-    } else {
-      status.push(<p>
+                  </p>,
+    );
+  } else {
+    status.push(
+      <p>
         <b>Unknown: </b>
         We have no information on whether this professor plans to
         work with undergrads this semester. You can still email the professor
         if their work seems interesting. See the sidebar on the right for
         email writing tips.
-                  </p>);
-    }
-    status.push(<p>Last updated: January 2020.</p>);
-    return <div>{status}</div>;
+      </p>,
+    );
   }
+  status.push(<p>Last updated: January 2020.</p>);
+  return <div>{status}</div>;
 }
 
 
@@ -335,6 +340,7 @@ class FacultyPage extends Component {
                           <a
                             href={this.state.profInfo.labPage ? this.state.profInfo.labPage : '#'}
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {this.state.profInfo.labPage ? 'View page' : 'None'}
                           </a>

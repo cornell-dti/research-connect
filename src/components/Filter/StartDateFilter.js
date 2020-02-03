@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Filter from './Filter';
 import * as Utils from '../Utils';
@@ -10,18 +10,16 @@ accessed by "startSeason" and "startYear" so for the two to be equal, you
 need to concat the strings and include a space. Or else it won't work.
 */
 
-class StartDateFilter extends Component {
-  render() {
-    return (
-      <Filter
-        filterType="startDate"
-        label="Start Date"
-        updateFilterOption={this.props.update}
-        choices={Utils.getStartYears()}
-        type="select"
-      />
-    );
-  }
+function StartDateFilter(props) {
+  return (
+    <Filter
+      filterType="startDate"
+      label="Start Date"
+      updateFilterOption={props.update}
+      choices={Utils.getStartYears()}
+      type="select"
+    />
+  );
 }
 
 StartDateFilter.propTypes = {

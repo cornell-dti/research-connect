@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './OpportunitySelect.scss';
 
-class OpportunitySelect extends React.Component {
+class OpportunitySelect extends Component {
   constructor(props) {
     super(props);
     this.state = {

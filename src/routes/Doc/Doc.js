@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import '../ApplicationPage/ApplicationPage.scss';
 import './Doc.scss';
-import * as Utils from '../../components/Utils.js';
 
 class Resume extends Component {
   constructor(props) {

@@ -192,14 +192,14 @@ class EditOppForm extends React.Component {
     );
   }
 
-  deleteQuestion(data, e) {
-    const deleted = parseInt(data.slice(1));
+  deleteQuestion(data) {
+    const deleted = parseInt(data.slice(1), 10);
     const newQnum = this.state.numQuestions - 1;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     const questionsEdit = {};
 
     for (const question in questionsCopy) {
-      const num = parseInt(question.slice(1));
+      const num = parseInt(question.slice(1), 10);
       if (num < deleted) {
         questionsEdit[question] = questionsCopy[question];
       } else if (num > deleted) {
@@ -219,25 +219,11 @@ class EditOppForm extends React.Component {
     //       }, 40);
   }
 
-  addQuestion(event) {
+  addQuestion() {
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
-    this.setState({
-      questions: questionsCopy,
-    });
-    this.setState({ numQuestions: this.state.numQuestions + 1 });
+    this.setState(({ numQuestions }) => ({ questions: questionsCopy, numQuestions: numQuestions + 1 }));
   }
-
-
-  addQuestion(event) {
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
-    this.setState({
-      questions: questionsCopy,
-    });
-    this.setState({ numQuestions: this.state.numQuestions + 1 });
-  }
-
 
   createGpaOptions() {
     const options = [];
@@ -258,7 +244,7 @@ class EditOppForm extends React.Component {
   }
 
   setYears() {
-    if (this.state.yearsAllowed != []) {
+    if (this.state.yearsAllowed !== []) {
       const yearArray = [];
       if (this.freshman.checked) {
         yearArray.push('freshman');
@@ -278,7 +264,7 @@ class EditOppForm extends React.Component {
 
 
   setCompensation() {
-    if (this.state.compensation != []) {
+    if (this.state.compensation !== []) {
       const compensationArray = [];
       if (this.pay.checked) {
         compensationArray.push('pay');
@@ -289,7 +275,7 @@ class EditOppForm extends React.Component {
       if (this.undetermined.checked) {
         compensationArray.push('undetermined');
       }
-      const atLeastOneOptionSelected = compensationArray.length !== 0;
+      // const atLeastOneOptionSelected = compensationArray.length !== 0;
       // this.setState({compensationIsValid: atLeastOneOptionSelected});
       this.setState({ compensation: compensationArray });
     }

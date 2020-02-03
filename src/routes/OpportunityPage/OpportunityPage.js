@@ -4,8 +4,6 @@ import './OpportunityPage.scss';
 import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
 import * as ReactGA from 'react-ga';
-import StudentNavbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
-import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
@@ -132,13 +130,11 @@ class OpportunityPage extends Component {
         .then((result) => {
           console.log(result);
         })
-        .catch(function (error) {
+        .catch((error) => {
           this.sendToHome(error);
           // Utils.handleTokenError(error);
         });
     }
-
-    // }
   };
 
   getUndergradData() {
@@ -203,7 +199,7 @@ class OpportunityPage extends Component {
         return this.hasApplied(ugradNetId, this.state.opportunity._id);
       }).then((appliedStatus) => {
         this.setState({ appliedAlready: appliedStatus });
-      }).catch((err) => {
+      }).catch(() => {
         this.setState({ netId: '' });
       });
       /**
@@ -369,38 +365,38 @@ class OpportunityPage extends Component {
       if (yearsArray.includes('junior')) {
         if (this.state.student
             && Utils.gradYearToString(this.state.student.gradYear) === 'Junior') {
-          yearDivArray.push(<div key="j">
-            <CheckBox
-              className="greenCheck"
-            />
-            <span> Junior</span>
-                            </div>);
+          yearDivArray.push(
+            <div key="j">
+              <CheckBox className="greenCheck" />
+              <span> Junior</span>
+            </div>,
+          );
         } else {
-          yearDivArray.push(<div key="j">
-            <CrossCircle
-              className="cross"
-            />
-            <span> Junior</span>
-                            </div>);
+          yearDivArray.push(
+            <div key="j">
+              <CrossCircle className="cross" />
+              <span> Junior</span>
+            </div>,
+          );
         }
         trackYear = true;
       }
       if (yearsArray.includes('senior')) {
         if (this.state.student
             && Utils.gradYearToString(this.state.student.gradYear) === 'Senior') {
-          yearDivArray.push(<div key="se">
-            <CheckBox
-              className="greenCheck"
-            />
-            <span> Senior</span>
-                            </div>);
+          yearDivArray.push(
+            <div key="se">
+              <CheckBox className="greenCheck" />
+              <span> Senior</span>
+            </div>,
+          );
         } else {
-          yearDivArray.push(<div key="se">
-            <CrossCircle
-              className="cross"
-            />
-            <span> Senior</span>
-                            </div>);
+          yearDivArray.push(
+            <div key="se">
+              <CrossCircle className="cross" />
+              <span> Senior</span>
+            </div>,
+          );
         }
         trackYear = true;
       }
@@ -436,7 +432,7 @@ class OpportunityPage extends Component {
         <ul>
           {arrayIn.map((major) => {
             if (this.state.student != null
-                && this.state.student.major.indexOf(major) != -1) {
+                && this.state.student.major.indexOf(major) !== -1) {
               return (
                 <div key={major}>
                   <CheckBox
@@ -487,7 +483,7 @@ class OpportunityPage extends Component {
         <ul>
           {arrayIn.map((course) => {
             if (this.state.student != null
-                && this.state.student.courses.indexOf(course) != -1) {
+                && this.state.student.courses.indexOf(course) !== -1) {
               return (
                 <div key={course}>
                   <CheckBox
@@ -581,7 +577,7 @@ class OpportunityPage extends Component {
           } */
         this.setState({ role: response.data });
       })
-      .catch(function (error) {
+      .catch((error) => {
         this.sendToHome(error);
         // Utils.handleTokenError(error);
       });

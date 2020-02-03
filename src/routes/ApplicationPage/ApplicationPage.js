@@ -100,7 +100,7 @@ class ApplicationPage extends Component {
       <div>
         <div className="app-qual-section">
           <div className="resume-link">
-            <a href={this.state.transcriptId} target="_blank">
+            <a href={this.state.transcriptId} target="_blank" rel="noopener noreferrer">
               <h6 className="no-margin">
                 View Transcript
 
@@ -263,7 +263,7 @@ class ApplicationPage extends Component {
 
                 <div className="app-qual-section">
                   <div className="resume-link">
-                    <a href={`/doc/${this.state.resumeId}`} target="_blank">
+                    <a href={`/doc/${this.state.resumeId}`} target="_blank" rel="noopener noreferrer">
                       <h6
                         className="no-margin header"
                       >
