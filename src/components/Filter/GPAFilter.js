@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import Filter from './Filter';
-import * as Utils from '../../components/Utils';
 import PropTypes from 'prop-types';
+import Filter from './Filter';
+import * as Utils from '../Utils';
 
 class GPAFilter extends Component {
-  render(){
+  render() {
     return (
       <Filter
         filterType="gpaSelect"
         label="GPA Select"
         updateFilterOption={this.props.update}
         choices={Utils.getGPA()}
-        type = "select"
+        type="select"
       />
     );
   }
 }
 
 GPAFilter.propTypes = {
-  update: PropTypes.func, //lifts the state up
+  update: PropTypes.func, // lifts the state up
 };
 
 export default GPAFilter;

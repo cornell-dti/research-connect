@@ -1,19 +1,17 @@
 const express = require('express');
 
 const app = express.Router();
+const https = require('https');
 const {
   facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
-const https = require('https');
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
 app.get('/test', (req, res) => {
-  https.get('https://bit.ly/2HHdTR1', (resp) => {
-    return res.send("");
-  });
+  https.get('https://bit.ly/2HHdTR1', (resp) => res.send(''));
 });
 
 /**
@@ -21,20 +19,20 @@ app.get('/test', (req, res) => {
  * However, the database still has those professors in it. So we need to filter
  * whenever we query. We're keeping them in the db in case we need them one day.
  */
-function getBaseFacultyFilter(){
+function getBaseFacultyFilter() {
   return {
-    "department": {
-      "$in": [
-        "Computer Science"
-      ]
+    department: {
+      $in: [
+        'Computer Science',
+      ],
     },
-    "office": {
-      "$regex": "^((?!Cornell Tech).)*$",
+    office: {
+      $regex: '^((?!Cornell Tech).)*$',
     },
-    "title": {
-      "$regex": "^((?!PhD Student).)*$",
-    }
-  }
+    title: {
+      $regex: '^((?!PhD Student).)*$',
+    },
+  };
 }
 
 /** gets all the faculty in the database.
@@ -45,7 +43,9 @@ function getBaseFacultyFilter(){
  * @return array of faculty members
  */
 app.get('/', (req, res) => {
-  let { skip, limit, area, search } = req.query;
+  let {
+    skip, limit, area, search,
+  } = req.query;
   // if they didn't make skip a number or just didn't specify it, make it 0.
   if (Number.isNaN(Number(skip)) || !skip) {
     skip = 0;
@@ -57,22 +57,22 @@ app.get('/', (req, res) => {
   } else {
     limit = 0;
   }
-  let facultyFilter = getBaseFacultyFilter();
+  const facultyFilter = getBaseFacultyFilter();
   console.log(1);
   console.log(facultyFilter);
   console.log(area);
   if (area) {
-    facultyFilter["researchInterests"] = {$in: [area.trim()]}
+    facultyFilter.researchInterests = { $in: [area.trim()] };
   }
   if (search) {
-    facultyFilter["$text"] = {$search: search};
+    facultyFilter.$text = { $search: search };
   }
   facultyModel.find(facultyFilter)
     .skip(skip)
     .limit(parseInt(limit, 10))
     .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
     .exec((err, faculty) => {
-      let allAreas = [];
+      const allAreas = [];
       if (err) {
         return res.status(500).send(err);
       }
@@ -94,7 +94,6 @@ app.get('/', (req, res) => {
        */
       return res.send(faculty);
     });
-
 });
 
 /** Searches the database for whatever the user has in their query string
@@ -110,7 +109,7 @@ app.get('/', (req, res) => {
 app.get('/search', (req, res) => {
   debug(req.query.search);
   let searchQuery = getBaseFacultyFilter();
-  searchQuery["$text"] = { $search: req.query.search };
+  searchQuery.$text = { $search: req.query.search };
   // if req.query.search is empty string or undefined (falsy) then just send back all faculty
   if (!req.query.search) {
     // when you don't specify any criteria, mongo returns everything
@@ -182,7 +181,7 @@ app.delete('/:id', (req, res) => {
  * @param lowerBound
  * @param upperBound
  */
-function getRandomInt (lowerBound, upperBound) {
+function getRandomInt(lowerBound, upperBound) {
   return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound;
 }
 
@@ -193,7 +192,7 @@ function getRandomInt (lowerBound, upperBound) {
 function setOptimalHoursMins(date) {
   // GMT is ahead of EST by 4 hours.
   const gmtOffset = 4;
-  date.setHours(getRandomInt(8 + gmtOffset,10 + gmtOffset));
+  date.setHours(getRandomInt(8 + gmtOffset, 10 + gmtOffset));
   date.setMinutes(getRandomInt(0, 60));
   return date;
 }
@@ -208,55 +207,50 @@ function setOptimalHoursMins(date) {
  *  -if MTWTh and after 10am, send next day using setOptimalHoursMins
  *  -if Friday after 10am, send monday using setOptimalHoursMins
  */
-function calculateSendTime(){
+function calculateSendTime() {
   const now = new Date();
-  const dayOfWeek = now.getDay(); //0 = sunday 6 = saturday
+  const dayOfWeek = now.getDay(); // 0 = sunday 6 = saturday
   let timeToSend = new Date();
   let increment = 0;
   const isWeekday = dayOfWeek > 0 && dayOfWeek < 6;
   const currentHour = now.getHours();
   let timezoneDiff = 0;
   // If the host machine isn't in EST...
-  if (now.getTimezoneOffset() !== 240){
+  if (now.getTimezoneOffset() !== 240) {
     // timezoneDiff = hours ahead that the host machine is of EST
-    timezoneDiff = Math.floor((240 - now.getTimezoneOffset()/60));
+    timezoneDiff = Math.floor((240 - now.getTimezoneOffset() / 60));
   }
   const isBefore8am = currentHour < (8 + timezoneDiff);
   const isAfter10am = currentHour > (10 + timezoneDiff);
   let sendNow = false;
   if (!isWeekday) {
-    if (dayOfWeek === 0){
+    if (dayOfWeek === 0) {
       increment = 1; // Sunday/0
-    }
-    else {
+    } else {
       increment = 2; // Saturday/6
     }
   }
   // Weekdays
+  else if (isBefore8am) {
+    increment = 0;
+  } else if (!isBefore8am && !isAfter10am) {
+    increment = 0;
+    sendNow = true;
+  }
+  // Must be past 10am today at this point.
+  // if not friday...
+  else if (dayOfWeek !== 5) {
+    increment = 1;
+  }
+  // Must be past 10am and friday so send on Monday
   else {
-    if (isBefore8am) {
-      increment = 0;
-    }
-    else if (!isBefore8am && !isAfter10am){
-      increment = 0;
-      sendNow = true;
-    }
-    // Must be past 10am today at this point.
-    // if not friday...
-    else if (dayOfWeek !== 5){
-      increment = 1;
-    }
-    // Must be past 10am and friday so send on Monday
-    else {
-      increment = 3;
-    }
+    increment = 3;
   }
 
   timeToSend.setDate(now.getDate() + increment); // set to Monday
   if (!sendNow) {
     timeToSend = setOptimalHoursMins(timeToSend);
-  }
-  else {
+  } else {
     // add some minutes to current time so we can still use sendLater and not
     // have it be a time in the past if the sendgrid api is slow
     timeToSend.setMinutes(timeToSend.getMinutes() + 5);
@@ -278,7 +272,7 @@ app.post('/email', (req, res) => {
   const { emailHtml, profEmail, userToken } = req.body;
   // poor man's logging, goes to 404 on our site and we can see the bitly count
   https.get('https://bit.ly/2HHdTR1', (resp) => {
-    });
+  });
   verify(userToken, (netId) => {
     if (!netId) {
       return res.status(500).send('No account found.');
@@ -292,21 +286,21 @@ app.post('/email', (req, res) => {
       const sendTime = calculateSendTime();
       // convert to Unix timestamp in seconds b/c that's what sendgrid requires
       // https://github.com/sendgrid/sendgrid-nodejs/blob/master/packages/mail/USE_CASES.md
-      let sendTimeSeconds = Math.floor(+sendTime /1000);
+      const sendTimeSeconds = Math.floor(+sendTime / 1000);
       const userEmail = `${netId}@cornell.edu`;
-      const subjectOptions = ["Interest in Doing Research",
-      "Possibility of Conducting Research",
-      "Learning More About Your CS Research"];
+      const subjectOptions = ['Interest in Doing Research',
+        'Possibility of Conducting Research',
+        'Learning More About Your CS Research'];
       const subject = subjectOptions[getRandomInt(0, subjectOptions.length)];
       const msg = {
-        to: profEmail,  // change to 'abagh0703@gmail.com' when testing, profEmail when not
+        to: profEmail, // change to 'abagh0703@gmail.com' when testing, profEmail when not
         from: {
           name: `${undergrad.firstName} ${undergrad.lastName}`,
           email: userEmail,
         },
         bcc: userEmail,
         replyTo: userEmail,
-        subject: subject,
+        subject,
         html: emailHtml,
         sendAt: sendTimeSeconds,
         trackingSettings: {

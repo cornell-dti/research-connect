@@ -50,35 +50,35 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-        <div className="row search-div-container">
-          <div className="search-icon-div">
-            <SearchIcon style={{ height: '100%' }} size={36} />
-          </div>
-          <input
-              onFocus={this.onFocus.bind(this)}
-              onBlur={this.onBlur.bind(this)}
-              className="search-bar"
-              onKeyPress={this.handleKeyPress.bind(this)}
-              onChange={this.handleUpdateSearch.bind(this)}
-              value={this.state.searchBar}
-              type="text"
-              name="search"
-              placeholder="Search keywords (e.g. machine learning, programming languages, computer science)"
-              aria-label = "Search"
-          />
-          <div className="delete-div">
-            {
+      <div className="row search-div-container">
+        <div className="search-icon-div">
+          <SearchIcon style={{ height: '100%' }} size={36} />
+        </div>
+        <input
+          onFocus={this.onFocus.bind(this)}
+          onBlur={this.onBlur.bind(this)}
+          className="search-bar"
+          onKeyPress={this.handleKeyPress.bind(this)}
+          onChange={this.handleUpdateSearch.bind(this)}
+          value={this.state.searchBar}
+          type="text"
+          name="search"
+          placeholder="Search keywords (e.g. machine learning, programming languages, computer science)"
+          aria-label="Search"
+        />
+        <div className="delete-div">
+          {
               this.state.searchBar != '' ? (
-                  <DeleteIcon
-                      onClick={this.clearSearch.bind(this)}
-                      className="clear-icon"
-                      style={{ height: '100%' }}
-                      size={36}
-                  />
+                <DeleteIcon
+                  onClick={this.clearSearch.bind(this)}
+                  className="clear-icon"
+                  style={{ height: '100%' }}
+                  size={36}
+                />
               ) : ''
             }
-          </div>
         </div>
+      </div>
     );
   }
 }

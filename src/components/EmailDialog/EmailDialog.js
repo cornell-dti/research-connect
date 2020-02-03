@@ -90,7 +90,7 @@ class EmailDialog extends React.Component {
 
   getDisabled() {
     const action = this.props.buttonText.toLowerCase();
-    const status = this.props.app.status;
+    const { status } = this.props.app;
     if (status === 'accepted' || status === 'rejected') {
       return true;
     }
@@ -126,7 +126,7 @@ class EmailDialog extends React.Component {
           contentLabel="Modal Content"
         >
           <div className="modal">
-            <h2 ref={subtitle => this.subtitle = subtitle}>Email Student</h2>
+            <h2 ref={(subtitle) => this.subtitle = subtitle}>Email Student</h2>
             <label>Message</label>
             <textarea className="email-text" value={this.state.emailContent} onChange={this.handleChange.bind(this)} />
             <button className="submit-button" onClick={this.sendEmail.bind(this)}>Submit</button>

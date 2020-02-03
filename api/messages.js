@@ -71,7 +71,7 @@ app.post('/send', (req, res) => {
           },
           subject: `Research Connect Application Update for "${opportunity.title}"`,
           text: message,
-          html: replaceAll(message, '\n', '<br />') + '<br />',
+          html: `${replaceAll(message, '\n', '<br />')}<br />`,
         };
         debug(10);
         sgMail.send(msg);

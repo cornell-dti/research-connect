@@ -86,44 +86,42 @@ function tryLoggingOut() {
   }
 }
 
-function userHasNoRole(roleEndpointResponse){
-  return (!roleEndpointResponse || roleEndpointResponse.data === 'none' ||
-      !roleEndpointResponse.data);
+function userHasNoRole(roleEndpointResponse) {
+  return (!roleEndpointResponse || roleEndpointResponse.data === 'none'
+      || !roleEndpointResponse.data);
 }
 
 function getRoleFromResponse(roleEndpointResponse) {
   if (userHasNoRole(roleEndpointResponse)) {
     return null;
-  } else {
-    return roleEndpointResponse.data;
   }
+  return roleEndpointResponse.data;
 }
 
-function getTokenId(){
+function getTokenId() {
   return sessionStorage.getItem('token_id');
 }
 
 const ROLE_ENDPOINT = '/api/role/';
-export function getUserRole(redirectIfNotLoggedIn = false){
+export function getUserRole(redirectIfNotLoggedIn = false) {
   return new Promise((resolve) => {
     const token = getTokenId();
     const isNotLoggedIn = !token;
-    if (!redirectIfNotLoggedIn && isNotLoggedIn){
+    if (!redirectIfNotLoggedIn && isNotLoggedIn) {
       return resolve('none');
     }
-    axios.get(`${ROLE_ENDPOINT}${token}`).
-        then((response) => {
-          resolve(getRoleFromResponse(response));
-        }).
-        catch((error) => {
-          if (redirectIfNotLoggedIn) {
-              resolve(handleTokenError(error));
-          }
-          else {
-              resolve('none');
-          }
-        });
-  })
+    axios.get(`${ROLE_ENDPOINT}${token}`)
+      .then((response) => {
+        resolve(getRoleFromResponse(response));
+      })
+      .catch((error) => {
+        if (redirectIfNotLoggedIn) {
+          resolve(handleTokenError(error));
+        } else {
+          resolve('none');
+        }
+      });
+  });
 }
 
 /**
@@ -263,9 +261,9 @@ function tryLoggingOut() {
         console.log(e);
       });
     } catch (e) {
-      console.log("error with auth signout");
+      console.log('error with auth signout');
       console.log(e);
-      window.location.href = "/";
+      window.location.href = '/';
     }
   } else {
     console.log('auth not null');
@@ -290,7 +288,9 @@ export function getGPA() {
 }
 
 export function getStartYears() {
-  return { '': 'Select', 'Fall 2018': 'Fall 2018', 'Spring 2019': 'Spring 2019', 'Summer 2019': 'Summer 2019', 'Fall 2019': 'Fall 2019', 'Spring 2020': 'Spring 2020' };
+  return {
+    '': 'Select', 'Fall 2018': 'Fall 2018', 'Spring 2019': 'Spring 2019', 'Summer 2019': 'Summer 2019', 'Fall 2019': 'Fall 2019', 'Spring 2020': 'Spring 2020',
+  };
 }
 
 export function updateSingleChoiceFilter(filterName, option) {
@@ -300,13 +300,13 @@ export function updateSingleChoiceFilter(filterName, option) {
 
 export function updateMultipleChoiceFilter(filterName, option) {
   this.setState((state) => {
-    console.log("updating");
+    console.log('updating');
     console.log(state);
     console.log(filterName);
     console.log(option);
     if (state[filterName].includes(option)) {
       // console.log('Removing ' + option + ' from ' + filterName);
-      return { [filterName]: state[filterName].filter(original => original !== option) };
+      return { [filterName]: state[filterName].filter((original) => original !== option) };
     }
 
     // console.log('Adding ' + option + ' to ' + filterName);

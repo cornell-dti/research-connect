@@ -9,7 +9,7 @@ class Faculty extends Component {
     super(props);
   }
 
-  star(e){
+  star(e) {
     e.stopPropagation();
     this.props.updateStar(this.props.ID);
   }
@@ -47,7 +47,7 @@ class Faculty extends Component {
       <div className="opportunity-card" onClick={this.clickRow.bind(this)}>
         <div className="row opp-box-row">
           <div className="column column-10">
-            <img alt= {this.props.name + " photo"} src={this.props.photoId} width="75px" />
+            <img alt={`${this.props.name} photo`} src={this.props.photoId} width="75px" />
           </div>
           {/* <div className="column column-10"> */}
           {/* </div> */}
@@ -60,10 +60,10 @@ class Faculty extends Component {
               />
             </h4>
             <h5>{this.props.department}</h5>
-            {this.props.lab !== null && this.propslab !== "" && this.props.lab !== undefined
-              ?( <h5>{this.props.lab}</h5>)
-              : <span></span>}
-           
+            {this.props.lab !== null && this.propslab !== '' && this.props.lab !== undefined
+              ? (<h5>{this.props.lab}</h5>)
+              : <span />}
+
             <div>
               {this.props.researchDescription && this.props.researchDescription.length > 0 ? this.convertDescription(this.props.researchDescription)
                 : this.convertDescription(this.props.bio)}

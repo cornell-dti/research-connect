@@ -113,10 +113,10 @@ const undergradSchema = new Schema({
   transcriptId: { type: String, required: false },
   skills: { type: [String], required: false },
   subscribed: { type: Boolean, default: true },
-  emailHtml: { type: String, default: `Template: <br><b>1st Paragraph:</b> Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.<br><b>2nd Paragraph:</b> Mention you're interested in opportunities in their lab, talk about your experience in this area (if applicable).<br><b>3rd Paragraph:</b> Include a link to your resume (and transcript if you'd like).` },
+  emailHtml: { type: String, default: 'Template: <br><b>1st Paragraph:</b> Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.<br><b>2nd Paragraph:</b> Mention you\'re interested in opportunities in their lab, talk about your experience in this area (if applicable).<br><b>3rd Paragraph:</b> Include a link to your resume (and transcript if you\'d like).' },
   starredOpportunities: { type: [String], required: false, default: [] },
   starredFaculty: { type: [String], required: false, default: [] },
-    // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
+  // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
   // transcriptId: {type: Schema.Types.ObjectId, ref: "Documents"}
 });
 const undergradModel = mongoose.model('Undergrads', undergradSchema, 'Undergrads'); // a mongoose model = a Collection on mlab/mongodb;
@@ -168,9 +168,9 @@ const facultySchema = new Schema({
   department: { type: String },
   email: { type: String },
   accepting: { type: String, enum: ['yes', 'no', 'unknown', 'maybe'], default: 'unknown' },
-  semestersAccepted: {type: [String]}, // used to eventualyl tell students if this professor has accepted in  the past and is likely to accept in future
-  qualifications: {type: String, default: ''},
-  requiredCourses: {type: [String], default: []},  // this is here so one day we can automatically check if students have the required courses
+  semestersAccepted: { type: [String] }, // used to eventualyl tell students if this professor has accepted in  the past and is likely to accept in future
+  qualifications: { type: String, default: '' },
+  requiredCourses: { type: [String], default: [] }, // this is here so one day we can automatically check if students have the required courses
   bio: { type: String },
   teaching: { type: String },
 });
@@ -262,7 +262,7 @@ const opportunitySchema = new Schema({
   additionalInformation: { type: String, default: '', required: false },
   contactName: { type: String, default: 'N/A' },
   datePosted: { type: String, default: (new Date()).toISOString(), required: false },
-  facultyId: {type: String, default: "", required: false}
+  facultyId: { type: String, default: '', required: false },
 });
 opportunitySchema.index({ '$**': 'text' });
 opportunitySchema.pre('validate', function (next) {

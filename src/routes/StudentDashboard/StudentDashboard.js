@@ -3,9 +3,9 @@ import '../App/App.scss';
 import './StudentDashboard.scss';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
+import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
-import * as ReactGA from 'react-ga';
 import Starred from '../../components/StarredItems/Starred';
 
 class StudentDashboard extends Component {
@@ -13,7 +13,7 @@ class StudentDashboard extends Component {
     super(props);
     this.state = {
       loading: true,
-      name: ''
+      name: '',
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -48,9 +48,9 @@ class StudentDashboard extends Component {
         <div className="sweet-loading">
           <ClipLoader
             style={{
-              display: "block",
+              display: 'block',
               margin: 0,
-              borderColor: "red"
+              borderColor: 'red',
             }}
             sizeUnit="px"
             size={150}
@@ -67,10 +67,13 @@ class StudentDashboard extends Component {
 
         <div className="student-dash-container">
           <div className="row">
-            <div className="column column-10"></div>
+            <div className="column column-10" />
             <div className="column column-80">
               <div className="dashboard-header">
-                Welcome back, {this.state.name}!
+                Welcome back,
+                {' '}
+                {this.state.name}
+                !
               </div>
 
               <div className="bottom">

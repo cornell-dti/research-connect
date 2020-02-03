@@ -17,7 +17,7 @@ class RichTextEditor extends React.Component {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
     this.focus = () => this.refs.editor.focus();
-    this.onChange = editorState => this.setState({ editorState });
+    this.onChange = (editorState) => this.setState({ editorState });
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
@@ -68,30 +68,31 @@ class RichTextEditor extends React.Component {
 
   render() {
     const { editorState } = this.state;
-    if (this.props.tokenId && !this.state.loadedInitialHtml){
+    if (this.props.tokenId && !this.state.loadedInitialHtml) {
       axios.post('/api/undergrads/email', { tokenId: this.props.tokenId })
-      .then((result) => {
-        if (!result){
-          return;
-        }
-        const resultHtml = result.data;
-        console.log("loaded html!");
-        console.log(resultHtml);
-        const blocksFromHTML = convertFromHTML(resultHtml);
-        const content = ContentState.createFromBlockArray(
+        .then((result) => {
+          if (!result) {
+            return;
+          }
+          const resultHtml = result.data;
+          console.log('loaded html!');
+          console.log(resultHtml);
+          const blocksFromHTML = convertFromHTML(resultHtml);
+          const content = ContentState.createFromBlockArray(
             blocksFromHTML.contentBlocks,
-            blocksFromHTML.entityMap
-        );
-        this.setState({editorState: EditorState.createWithContent(content),
-          loadedInitialHtml: true})
+            blocksFromHTML.entityMap,
+          );
+          this.setState({
+            editorState: EditorState.createWithContent(content),
+            loadedInitialHtml: true,
+          });
         // const contentState = textEditorState.editorState.getCurrentContent();
         // this.setState({emailHtml: result});
-      })
-      .catch(function (error) {
-        this.sendToHome(error);
+        })
+        .catch(function (error) {
+          this.sendToHome(error);
         // Utils.handleTokenError(error);
-      });
-
+        });
     }
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
@@ -185,7 +186,7 @@ const BlockStyleControls = (props) => {
     .getType();
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type => (
+      {BLOCK_TYPES.map((type) => (
         <StyleButton
           key={type.label}
           active={type.style === blockType}
@@ -207,7 +208,7 @@ const InlineStyleControls = (props) => {
 
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type => (
+      {INLINE_STYLES.map((type) => (
         <StyleButton
           key={type.label}
           active={currentStyle.has(type.style)}

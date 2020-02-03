@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
+import PropTypes from 'prop-types';
 import ProfessorNavbar from './ProfessorNavbar/ProfessorNavbar';
 import Navbar from './StudentNavbar/StudentNavbar';
 import GuestNavbar from './GuestNavbar';
-import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
-import PropTypes from 'prop-types';
-import * as Utils from '../../components/Utils';
+import * as Utils from '../Utils';
 
 class VariableNavbar extends Component {
   constructor(props) {
@@ -18,13 +18,13 @@ class VariableNavbar extends Component {
 
   render() {
     return (
-        <div>
-          {this.props.role && this.props.role === 'undergrad' &&
-          <Navbar current={this.props.current}/>}
-          {this.props.role && this.props.role !== 'undergrad' &&
-          <ProfessorNavbar current={this.props.current}/>}
-          {!this.props.role && <GuestNavbar current={this.props.current} />}
-        </div>
+      <div>
+        {this.props.role && this.props.role === 'undergrad'
+          && <Navbar current={this.props.current} />}
+        {this.props.role && this.props.role !== 'undergrad'
+          && <ProfessorNavbar current={this.props.current} />}
+        {!this.props.role && <GuestNavbar current={this.props.current} />}
+      </div>
     );
   }
 }

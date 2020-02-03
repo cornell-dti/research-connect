@@ -8,10 +8,10 @@ import Check from 'react-icons/lib/fa/check';
 import Add from 'react-icons/lib/md/add-circle';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as Utils from '../../components/Utils';
-import * as ReactGA from 'react-ga';
 
 
 class EditProfile extends Component {
@@ -249,6 +249,7 @@ class EditProfile extends Component {
     }
     return <div className="display-list">{list}</div>;
   }
+
   displaySkills() {
     const list = [];
     if (this.state.editSkills) {
@@ -282,7 +283,7 @@ class EditProfile extends Component {
             placeholder="Add new skill here"
             value={this.state.newSkill}
           />
-    
+
           <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill.bind(this)} />
           {list}
         </div>
@@ -453,48 +454,54 @@ class EditProfile extends Component {
                     {this.state.editYear
                       ? (
                         <div className="input-div">
-                            <input
-                                className="year edit-input" type="text" name="year" id="year"
-                                value={this.state.year} onChange={this.handleChange.bind(this)}
-                              />
-                            <Check size={25} onClick={this.handleEditYear.bind(this)} className="check-icon" />
-                            {this.state.invalidYear ? 'Invalid Year' : ''}
-                          </div>
+                          <input
+                            className="year edit-input"
+                            type="text"
+                            name="year"
+                            id="year"
+                            value={this.state.year}
+                            onChange={this.handleChange.bind(this)}
+                          />
+                          <Check size={25} onClick={this.handleEditYear.bind(this)} className="check-icon" />
+                          {this.state.invalidYear ? 'Invalid Year' : ''}
+                        </div>
                       )
                       : (
                         <h5>
-                            {this.state.year}
-                            <Pencil
-                                size={20} className="pencil-icon right-column"
-                                onClick={this.handleEditYear.bind(this)}
-                              />
-                          </h5>
-                      )
-
-                            }
+                          {this.state.year}
+                          <Pencil
+                            size={20}
+                            className="pencil-icon right-column"
+                            onClick={this.handleEditYear.bind(this)}
+                          />
+                        </h5>
+                      )}
                     {this.state.editMajor
                       ? (
                         <div className="input-div">
-                            <input
-                                className="major edit-input" type="text" name="major" id="major"
-                                value={this.state.major} onChange={this.handleChange.bind(this)}
-                              />
-                            <Check size={25} onClick={this.handleEditMajor.bind(this)} className="check-icon" />
-                            {this.state.invalidMajor ? 'Required' : ''}
-                          </div>
+                          <input
+                            className="major edit-input"
+                            type="text"
+                            name="major"
+                            id="major"
+                            value={this.state.major}
+                            onChange={this.handleChange.bind(this)}
+                          />
+                          <Check size={25} onClick={this.handleEditMajor.bind(this)} className="check-icon" />
+                          {this.state.invalidMajor ? 'Required' : ''}
+                        </div>
                       )
                       : (
                         <h5>
-                            {this.state.major}
-                            {' '}
-                            <Pencil
-                                size={20} className="pencil-icon right-column"
-                                onClick={this.handleEditMajor.bind(this)}
-                              />
-                          </h5>
-                      )
-
-                            }
+                          {this.state.major}
+                          {' '}
+                          <Pencil
+                            size={20}
+                            className="pencil-icon right-column"
+                            onClick={this.handleEditMajor.bind(this)}
+                          />
+                        </h5>
+                      )}
 
                   </div>
                 </div>
@@ -520,103 +527,108 @@ class EditProfile extends Component {
                     ? (
                       <div className="handleResume">
                         <h5>
-                            <Check
-                                size={23} className="check-icon"
-                                onClick={this.handleEditResume.bind(this)}
-                              />
-                          </h5>
+                          <Check
+                            size={23}
+                            className="check-icon"
+                            onClick={this.handleEditResume.bind(this)}
+                          />
+                        </h5>
                         <Dropzone
-                            className="edit-drop" style={{
-                                position: 'relative',
-                                background: '#ededed',
-                                padding: '10px',
-                                width: '50%',
-                                margin: '0 0 0 25%',
-                                border: !this.state.resumeValid
+                          className="edit-drop"
+                          style={{
+                            position: 'relative',
+                            background: '#ededed',
+                            padding: '10px',
+                            width: '50%',
+                            margin: '0 0 0 25%',
+                            border: !this.state.resumeValid
                                                                     && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
-                              }} onDrop={this.onDropResume.bind(this)}
-                          >
-                            <p>Click/drag to update resume</p>
-                          </Dropzone>
+                          }}
+                          onDrop={this.onDropResume.bind(this)}
+                        >
+                          <p>Click/drag to update resume</p>
+                        </Dropzone>
                         <div className="uploaded-message">
-                            {this.state.resume != null
-                                ? (
-                                    <p>
-Uploaded:
-                                        {this.state.resume.name}
-                                      </p>
-                                ) : ''}
-                          </div>
+                          {this.state.resume != null
+                            ? (
+                              <p>
+                                Uploaded:
+                                {this.state.resume.name}
+                              </p>
+                            ) : ''}
+                        </div>
                       </div>
                     )
                     : (
-                      <h5 aria-label = "edit-icon">
-                        {
+                      <h5 aria-label="edit-icon">
                         <Pencil
-                            size={20} className="pencil-icon" alt = "edit"
-                            onClick={this.handleEditResume.bind(this)}
-                          />
-                        }
+                          size={20}
+                          className="pencil-icon"
+                          alt="edit"
+                          onClick={this.handleEditResume.bind(this)}
+                        />
                       </h5>
-                    )
-                                    }
+                    )}
                 </div>
                 <hr />
                 {this.state.transcriptId ? (
-                <div className="row qual-row trans-resume">
-                  <h5 className="sub-section">Transcript:</h5>
-                  <input
-                    type="button"
-                    className="button viewLink"
-                    value="View"
-                    onClick={this.viewTranscript}
-                  />
-                  {this.state.editTranscript
-                    ? (
-                      <div className="handleTranscript">
-                        <h5>
+                  <div className="row qual-row trans-resume">
+                    <h5 className="sub-section">Transcript:</h5>
+                    <input
+                      type="button"
+                      className="button viewLink"
+                      value="View"
+                      onClick={this.viewTranscript}
+                    />
+                    {this.state.editTranscript
+                      ? (
+                        <div className="handleTranscript">
+                          <h5>
                             <Check
-                                size={23} className="check-icon"
-                                onClick={this.handleEditTranscript.bind(this)}
-                              />
+                              size={23}
+                              className="check-icon"
+                              onClick={this.handleEditTranscript.bind(this)}
+                            />
                           </h5>
 
-                        <Dropzone
-                            className="edit-drop" style={{
-                                position: 'relative',
-                                background: '#ededed',
-                                padding: '10px',
-                                width: '50%',
-                                margin: '0 25%',
-                                border: '1px dashed black',
-                              }} onDrop={this.onDropTranscript.bind(this)}
+                          <Dropzone
+                            className="edit-drop"
+                            style={{
+                              position: 'relative',
+                              background: '#ededed',
+                              padding: '10px',
+                              width: '50%',
+                              margin: '0 25%',
+                              border: '1px dashed black',
+                            }}
+                            onDrop={this.onDropTranscript.bind(this)}
                           >
                             <p>Click/drag to update transcript</p>
 
                           </Dropzone>
-                        <div className="uploaded-message">
+                          <div className="uploaded-message">
                             {this.state.transcript != null
-                                ? (
-                                    <p>
-Uploaded:
-                                        {this.state.transcript.name}
-                                      </p>
-                                ) : ''}
+                              ? (
+                                <p>
+                                  Uploaded:
+                                  {this.state.transcript.name}
+                                </p>
+                              ) : ''}
                           </div>
-                      </div>
-                    )
-                    : (
-                      <h5>
-                        {' '}
-                        <Pencil
-                            size={20} className="pencil-icon"
+                        </div>
+                      )
+                      : (
+                        <h5>
+                          {' '}
+                          <Pencil
+                            size={20}
+                            className="pencil-icon"
                             onClick={this.handleEditTranscript.bind(this)}
                           />
-                      </h5>
-                    )
-                                    }
-                </div>
-                ) : ""}
+                        </h5>
+                      )}
+                  </div>
+                ) : ''}
                 <hr />
                 <hr />
                 <div className="row relevant-row">
@@ -646,7 +658,7 @@ Uploaded:
               style={{ marginLeft: '45%', marginTop: '10px' }}
               onClick={this.onClick}
             >
-Submit
+              Submit
             </button>
           </div>
           <Footer />

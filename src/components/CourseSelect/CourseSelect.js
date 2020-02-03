@@ -34,7 +34,7 @@ class CourseSelect extends React.Component {
   }
 
   removeCourse(course) {
-  	const courses = this.state.courses;
+  	const { courses } = this.state;
     this.removeFromArray(courses, course);
     this.setState({ courses }, () => this.props.updateCourses(courses));
   }
@@ -48,7 +48,7 @@ class CourseSelect extends React.Component {
         </div>
         <ul>
           {
-          	this.state.courses.map(course => (
+          	this.state.courses.map((course) => (
             <li onClick={() => this.removeCourse(course)}>
               { course }
               {' '}

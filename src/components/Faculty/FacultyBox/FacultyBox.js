@@ -32,7 +32,7 @@ class FacultyBox extends Component {
 
   render() {
     return (
-      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.props.data} numShowing={this.props.numShowing}/>
+      <FacultyList countProfs={this.countProfs.bind(this)} filteredOptions={this.props.filteredOptions} data={this.props.data} numShowing={this.props.numShowing} />
     );
   }
 }

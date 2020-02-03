@@ -22,14 +22,14 @@ class ApplicationList extends Component {
   }
 
   coursesSatisfied(studentCourses, filterCourses) {
-    studentCourses = studentCourses.map(course => course.split(' ').join('').toUpperCase());
-    return filterCourses.every(course => studentCourses.includes(course));
+    studentCourses = studentCourses.map((course) => course.split(' ').join('').toUpperCase());
+    return filterCourses.every((course) => studentCourses.includes(course));
   }
 
   skillsSatisfied(studentSkills, filterSkills) {
-    studentSkills = studentSkills.map(skill => skill.toUpperCase());
-    filterSkills = filterSkills.map(skill => skill.toUpperCase());
-    return filterSkills.every(skill => studentSkills.includes(skill));
+    studentSkills = studentSkills.map((skill) => skill.toUpperCase());
+    filterSkills = filterSkills.map((skill) => skill.toUpperCase());
+    return filterSkills.every((skill) => studentSkills.includes(skill));
   }
 
   shouldShow(application) {
@@ -39,16 +39,16 @@ class ApplicationList extends Component {
         && filter.opportunity !== application.opportunity) return false;
 
     const yearsSelected = filter.yearSelect;
-    const gradYear = application.gradYear;
+    const { gradYear } = application;
 
-    if(yearsSelected.includes(Utils.gradYearToGrade(gradYear)) ||
-       yearsSelected.length === 0){
-        const minGPA = filter.gpaSelect;
+    if (yearsSelected.includes(Utils.gradYearToGrade(gradYear))
+       || yearsSelected.length === 0) {
+      const minGPA = filter.gpaSelect;
 
-        if (minGPA <= application.gpa) {
-          return this.coursesSatisfied(application.courses, filter.courses)
+      if (minGPA <= application.gpa) {
+        return this.coursesSatisfied(application.courses, filter.courses)
                  && this.skillsSatisfied(application.skills, filter.skills);
-        }
+      }
     }
 
     return false;

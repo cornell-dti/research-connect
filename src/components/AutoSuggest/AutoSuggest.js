@@ -61,7 +61,7 @@ class AutoSuggest extends React.Component {
 
     if (e.key === 'ArrowUp' && cursor > -1) {
       e.preventDefault();
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         cursor: prevState.cursor - 1,
 
       }));
@@ -70,7 +70,7 @@ class AutoSuggest extends React.Component {
       }, 40);
     } else if (e.key === 'ArrowDown' && cursor < suggestionLength - 1) {
       e.preventDefault();
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         cursor: prevState.cursor + 1,
       }));
       setTimeout(() => {

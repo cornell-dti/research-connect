@@ -7,7 +7,7 @@ import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import OpportunityJSON from './Opportunity.json';
 import * as Utils from '../Utils.js';
-import Star from '../../components/Star/Star';
+import Star from '../Star/Star';
 
 class Opportunity extends Component {
   constructor(props) {
@@ -21,12 +21,12 @@ class Opportunity extends Component {
     if (!findNaN && typeof Array.prototype.indexOf === 'function') {
       indexOf = Array.prototype.indexOf;
     } else {
-      indexOf = needle => this.findIndex(item => findNaN && isNaN(item) || item.toLowerCase() === needle.toLowerCase());
+      indexOf = (needle) => this.findIndex((item) => findNaN && isNaN(item) || item.toLowerCase() === needle.toLowerCase());
     }
     return indexOf.call(this, needle) > -1;
   }
 
-  star(e){
+  star(e) {
     e.stopPropagation();
     this.props.updateStar(this.props.opId);
   }
@@ -74,23 +74,23 @@ class Opportunity extends Component {
   }
 
   checkPrereqs() {
-    if(!sessionStorage.getItem('token_id')){
+    if (!sessionStorage.getItem('token_id')) {
       return null;
     }
     if (this.props.prereqsMatch === true) {
       return (
         <div>
-          <CheckBox className="greenCheck" size = {27} />
+          <CheckBox className="greenCheck" size={27} />
           {' '}
-          <span class = "checkText">All Prereqs Met</span>
+          <span className="checkText">All Prereqs Met</span>
         </div>
       );
     }
     return (
       <div>
-        <CrossCircle className="cal" size = {27} />
+        <CrossCircle className="cal" size={27} />
         {' '}
-        <span class = "checkText">Prereqs Missing</span>
+        <span className="checkText">Prereqs Missing</span>
       </div>
     );
   }
@@ -107,25 +107,27 @@ class Opportunity extends Component {
     return 'Open';
   }
 
-  static undergradIsViewingPage(role){
+  static undergradIsViewingPage(role) {
     return role === Utils.roleStringForUndergrads;
   }
 
-  handleShowingStar(role){
+  handleShowingStar(role) {
     if (Opportunity.undergradIsViewingPage(role)) {
-        return <Star
-            update={this.star.bind(this)}
-            starred={this.props.starred}
+      return (
+        <Star
+          update={this.star.bind(this)}
+          starred={this.props.starred}
         />
+      );
     }
-      return '';
+    return '';
   }
 
-  handleShowingPrereqs(role){
-      if (Opportunity.undergradIsViewingPage(role)){
-          return this.checkPrereqs();
-      }
-      return '';
+  handleShowingPrereqs(role) {
+    if (Opportunity.undergradIsViewingPage(role)) {
+      return this.checkPrereqs();
+    }
+    return '';
   }
 
   render() {
@@ -137,12 +139,15 @@ class Opportunity extends Component {
               { this.props.title }
               { this.handleShowingStar(this.props.role) }
             </div>
-            {/*<div>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div>*/}
+            {/* <div>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'} </div> */}
           </div>
 
           <div className="column column-25">
-            <div style={{textAlign: "right"}}>For {this.props.startSeason && this.props.startYear ? this.props.startSeason + ' ' + this.props.startYear : 'any time'}
-            {this.handleShowingPrereqs(this.props.role)}</div>
+            <div style={{ textAlign: 'right' }}>
+              For
+              {this.props.startSeason && this.props.startYear ? `${this.props.startSeason} ${this.props.startYear}` : 'any time'}
+              {this.handleShowingPrereqs(this.props.role)}
+            </div>
           </div>
         </div>
         { this.convertDescription(this.props.projectDescription, this.props.undergradTasks) }

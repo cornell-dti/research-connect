@@ -3,6 +3,8 @@ import { Container, Row, Col } from 'reactstrap';
 import './LandingPage.scss';
 import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
+import * as ReactGA from 'react-ga';
+import ReactDOM from 'react-dom';
 import check from '../../images/check.png';
 import cis from '../../images/logo1.png';
 import curb from '../../images/logo2.png';
@@ -24,8 +26,7 @@ import logoWithText from '../../images/vectorlogo.png';
 import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
 import SearchBar from '../../components/LandingPage/Student/SearchBar';
-import * as ReactGA from 'react-ga';
-import ReactDOM from 'react-dom';
+
 ReactGA.initialize('UA-69262899-9');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
@@ -172,8 +173,8 @@ class Landing extends Component {
 
               </div>
             ) : (
-                <li />
-              )}
+              <li />
+            )}
           </nav>
         </header>
 
@@ -182,45 +183,73 @@ class Landing extends Component {
           <h1>Research Connect</h1>
           <h3>Find your next CS research opportunity.</h3>
           <SearchBar id="search-div-container1" />
-          {/*<input*/}
-          {/*  className="white-button"*/}
-          {/*  id="whiteButton"*/}
-          {/*  type="button"*/}
-          {/*  onClick={this.viewOpps.bind(this)}*/}
-          {/*  value="View All Opportunities"*/}
-          {/*  style={{backgroundColor: "white", borderColor: "white", color: "rgb(166,57,45)", marginTop: "20px", width: "30rem", height: "5rem"}}*/}
-          {/*/>*/}
+          {/* <input */}
+          {/*  className="white-button" */}
+          {/*  id="whiteButton" */}
+          {/*  type="button" */}
+          {/*  onClick={this.viewOpps.bind(this)} */}
+          {/*  value="View All Opportunities" */}
+          {/*  style={{backgroundColor: "white", borderColor: "white", color: "rgb(166,57,45)", marginTop: "20px", width: "30rem", height: "5rem"}} */}
+          {/* /> */}
 
         </section>
 
         <section className="middleContainer2">
-          <Container style={{ marginLeft: "auto" }}>
-            {/*<Row>*/}
-            {/*<p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p>*/}
-            {/*</Row>*/}
+          <Container style={{ marginLeft: 'auto' }}>
+            {/* <Row> */}
+            {/* <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p> */}
+            {/* </Row> */}
             <Row>
-              <h2 class="big ">Explore Popular Areas of Interest</h2>
+              <h2 className="big ">Explore Popular Areas of Interest</h2>
             </Row>
             <Row>
               <Col className="text-center">
                 <Row><img className="middleImage" src={blueIcon} alt="" /></Row>
-                <Row className="text-center"> <p id="no-max-width">DATA <br /> SCIENCE</p> </Row>
+                <Row className="text-center">
+                  {' '}
+                  <p id="no-max-width">
+                    DATA
+                    <br />
+                    {' '}
+                    SCIENCE
+                  </p>
+                  {' '}
+                </Row>
               </Col>
               <Col>
-                <Row><img className="middleImage" src={greenIcon} alt="" /> </Row>
-                <Row> <p>COMPUTATIONAL BIOLOGY</p> </Row>
+                <Row>
+                  <img className="middleImage" src={greenIcon} alt="" />
+                  {' '}
+                </Row>
+                <Row>
+                  {' '}
+                  <p>COMPUTATIONAL BIOLOGY</p>
+                  {' '}
+                </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={redIcon} alt="" /></Row>
-                <Row> <p>MACHINE LEARNING</p> </Row>
+                <Row>
+                  {' '}
+                  <p>MACHINE LEARNING</p>
+                  {' '}
+                </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={yellowIcon} alt="" /></Row>
-                <Row> <p>NATURAL LANGUAGE PROCESSING</p> </Row>
+                <Row>
+                  {' '}
+                  <p>NATURAL LANGUAGE PROCESSING</p>
+                  {' '}
+                </Row>
               </Col>
               <Col>
                 <Row><img className="middleImage" src={purpleIcon} alt="" /></Row>
-                <Row> <p>COMPUTER VISION</p> </Row>
+                <Row>
+                  {' '}
+                  <p>COMPUTER VISION</p>
+                  {' '}
+                </Row>
               </Col>
 
             </Row>
@@ -273,19 +302,22 @@ class Landing extends Component {
 
                     <Col>
 
-                      <p className="picP">Apply to positions without having to guess if they’re open.</p></Col>
+                      <p className="picP">Apply to positions without having to guess if they’re open.</p>
+                    </Col>
                   </Row>
                   <Row>
                     <Col><img className="list-image" src={check} alt="check" /></Col>
                     <Col>
 
-                      <p>Search for opportunities by sorting by your interests. </p></Col>
+                      <p>Search for opportunities by sorting by your interests. </p>
+                    </Col>
                   </Row>
                   <Row>
                     <Col><img className="list-image" src={check} alt="check" /></Col>
                     <Col>
 
-                      <p>Connect with leading researchers! in fields that inspire you.</p></Col>
+                      <p>Connect with leading researchers! in fields that inspire you.</p>
+                    </Col>
                   </Row>
 
                 </section>

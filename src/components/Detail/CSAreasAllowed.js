@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Detail from './Detail';
-import * as Utils from '../../components/Utils';
 import PropTypes from 'prop-types';
+import Detail from './Detail';
+import * as Utils from '../Utils';
 
 class CSAreasAllowed extends Component {
-  render(){
+  render() {
     return (
       <Detail
         filterType="areas"
@@ -19,7 +19,7 @@ class CSAreasAllowed extends Component {
 }
 
 CSAreasAllowed.propTypes = {
-  update: PropTypes.func, //lifts the state up
+  update: PropTypes.func, // lifts the state up
 };
 
 export default CSAreasAllowed;

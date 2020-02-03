@@ -10,7 +10,7 @@ class SavedFaculty extends Component {
   }
 
   display(t, l) {
-    return;
+
   }
 
   render() {
@@ -19,7 +19,7 @@ class SavedFaculty extends Component {
         <Navbar current="savedfac" />
         <div className="student-dash-container">
           <div className="row">
-            <div className="column column-10"></div>
+            <div className="column column-10" />
             <div className="column column-80">
               <div className="dashboard-header">
                 Your Saved Faculty

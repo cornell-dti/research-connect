@@ -8,6 +8,7 @@ module.exports = {
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'new-cap': ['warn'],
     'react/jsx-filename-extension': ['off'],
+    'react/jsx-fragments': ['off'],
     'react/destructuring-assignment': ['off']
   },
   'env': {

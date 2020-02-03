@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup, sgAnnouncementsGroup
+  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup, sgAnnouncementsGroup,
 } = require('../common.js');
 const common = require('../common.js');
 
@@ -50,7 +50,7 @@ app.post('/email', (req, res) => {
       }
       return res.send(undergrad.emailHtml);
     });
-    }).catch((error) => {
+  }).catch((error) => {
     handleVerifyError(error, res);
   });
 });
@@ -61,27 +61,26 @@ app.get('/star', (req, res) => {
       return res.send([]);
     }
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
-      debug("netid");
+      debug('netid');
       if (err) {
         debug('Not found');
         return res.status(500).send([]);
       }
       debug('Found');
       if (undergrads.length) {
-      }
-      else {
+      } else {
         debug('no results found');
         return res.send([]);
       }
-      if(req.query.type === 'opportunity') {
+      if (req.query.type === 'opportunity') {
         return res.send(undergrads[0].starredOpportunities);
       }
-      else if(req.query.type === 'faculty') {
+      if (req.query.type === 'faculty') {
         return res.send(undergrads[0].starredFaculty);
       }
     });
   }).catch((error) => {
-      handleVerifyError(error, res);
+    handleVerifyError(error, res);
   });
 });
 
@@ -90,22 +89,20 @@ app.get('/star', (req, res) => {
  */
 app.get('/isStarred', (req, res) => {
   const itemId = req.query.id;
-  const type = req.query.type;
+  const { type } = req.query;
   verify(req.query.token_id, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
     }
-    let searchObj = { netId: decrypted };
-    if (type === "opportunity"){
-      searchObj["starredOpportunities"] = itemId;
+    const searchObj = { netId: decrypted };
+    if (type === 'opportunity') {
+      searchObj.starredOpportunities = itemId;
+    } else {
+      searchObj.starredFaculty = itemId;
     }
-    else {
-      searchObj["starredFaculty"] = itemId;
-    }
-    undergradModel.findOne(searchObj, (err, undergrad) => {
+    undergradModel.findOne(searchObj, (err, undergrad) =>
       // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
-      return res.send(!!undergrad);
-    });
+      res.send(!!undergrad));
   }).catch((error) => {
     handleVerifyError(error, res);
   });
@@ -188,10 +185,10 @@ app.post('/', (req, res) => {
       netId,
       courses: data.courses,
     });
-    debug("undergrad: ");
+    debug('undergrad: ');
     debug(undergrad);
     undergrad.save((err) => {
-      debug("undergrad saved");
+      debug('undergrad saved');
       if (err) {
         res.status(500).send({ errors: err.errors });
         debug(err);
@@ -218,13 +215,13 @@ app.post('/', (req, res) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
         };
-        debug("before send");
+        debug('before send');
         sgMail.send(msg).catch((e) => {
           console.log('error in sending below');
           console.log(e);
           console.log(e.response.body.errors);
         });
-        debug("after send");
+        debug('after send');
         res.status(200).send('success!');
       }
       // Now the opportunity is saved in the commonApp collection on mlab!
@@ -244,36 +241,36 @@ app.put('/:netId', (req, res) => {
   debug(req.body);
   const data = req.body;
   let nId = req.params.netId;
- verify(req.params.tokenId, (decrypted) => {
-   nId = decrypted;
-  undergradModel.find({ netId: nId }, (err, undergrad) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
+  verify(req.params.tokenId, (decrypted) => {
+    nId = decrypted;
+    undergradModel.find({ netId: nId }, (err, undergrad) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
       // Update each attribute with any possible attribute that may have been submitted in the body of the request
       // If that attribute isn't in the request body, default back to whatever it was before.
 
-      debug(undergrad);
+        debug(undergrad);
 
-      undergrad[0].gradYear = data.year || undergrad[0].gradYear;
-      undergrad[0].major = data.major || undergrad[0].major;
-      undergrad[0].gpa = data.gpa || undergrad[0].gpa;
-      undergrad[0].courses = data.relevantCourses || undergrad[0].courses;
-      undergrad[0].skills = data.relevantSkills || undergrad[0].skills;
-      undergrad[0].resumeId = data.resumeId || undergrad[0].resumeId;
-      undergrad[0].transcriptId = data.transcriptId || undergrad[0].transcriptId;
+        undergrad[0].gradYear = data.year || undergrad[0].gradYear;
+        undergrad[0].major = data.major || undergrad[0].major;
+        undergrad[0].gpa = data.gpa || undergrad[0].gpa;
+        undergrad[0].courses = data.relevantCourses || undergrad[0].courses;
+        undergrad[0].skills = data.relevantSkills || undergrad[0].skills;
+        undergrad[0].resumeId = data.resumeId || undergrad[0].resumeId;
+        undergrad[0].transcriptId = data.transcriptId || undergrad[0].transcriptId;
 
-      // Save the updated document back to the database
-      undergrad[0].save((err2, todo) => {
-        if (err2) {
-          res.status(500).send(err2);
-        }
-        debug('success!');
-        res.status(200).send(todo);
-      });
-    }
+        // Save the updated document back to the database
+        undergrad[0].save((err2, todo) => {
+          if (err2) {
+            res.status(500).send(err2);
+          }
+          debug('success!');
+          res.status(200).send(todo);
+        });
+      }
+    });
   });
- });
 });
 
 app.delete('/:id', (req, res) => {
@@ -294,11 +291,10 @@ app.delete('/:id', (req, res) => {
  * @param arr
  * @param val
  */
-function addOrRemoveIfExists(arr, val){
-  if (arr.includes(val)){
+function addOrRemoveIfExists(arr, val) {
+  if (arr.includes(val)) {
     arr.splice(arr.indexOf(val), 1);
-  }
-  else {
+  } else {
     arr.push(val);
   }
 }
@@ -311,7 +307,7 @@ function addOrRemoveIfExists(arr, val){
 app.post('/star', (req, res) => {
   const data = req.body;
   const itemId = req.body.id;
-  const type = req.body.type;
+  const { type } = req.body;
   verify(data.token_id, (decrypted) => {
     if (!decrypted) {
       return res.send([]);
@@ -328,18 +324,16 @@ app.post('/star', (req, res) => {
         if (itemId) {
           if (type === 'opportunity') {
             arr = undergrad[0].starredOpportunities;
-          }
-          else if (type === 'faculty') {
+          } else if (type === 'faculty') {
             arr = undergrad[0].starredFaculty;
           }
           addOrRemoveIfExists(arr, itemId);
-        }
-        else {
+        } else {
           debug('no faculty or opportunity id present.');
-          res.status(500).send("no faculty or opportunity id present");
+          res.status(500).send('no faculty or opportunity id present');
           return;
         }
-          // Save the updated document back to the database
+        // Save the updated document back to the database
         undergrad[0].save((err2, todo) => {
           if (err2) {
             res.status(500).send(err2);

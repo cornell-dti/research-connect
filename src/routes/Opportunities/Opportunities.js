@@ -5,6 +5,8 @@ import '../../index.css';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
+import * as ReactGA from 'react-ga';
+import { Route, Redirect } from 'react-router';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Footer from '../../components/Footer/Footer';
@@ -12,8 +14,6 @@ import logo from '../../images/vectorlogo.png';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 // import MajorSelect from '../../components/MajorSelect/MajorSelect';
 // import GPASelect from '../../components/GPASelect/GPASelect';
-import * as ReactGA from 'react-ga';
-import { Route, Redirect } from 'react-router'
 
 // necessary for all filters
 import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
@@ -49,15 +49,15 @@ class Opportunities extends Component {
   }
 
   handleSearchTerms() {
-    //They can search from the home page, make it do something
+    // They can search from the home page, make it do something
     const urlParams = new URLSearchParams(window.location.search);
-    const searchTerm = urlParams.get("search");
-    console.log("search term!");
+    const searchTerm = urlParams.get('search');
+    console.log('search term!');
     console.log(searchTerm);
     if (searchTerm) {
-      console.log("in search term");
+      console.log('in search term');
       this.setState({ searchBar: searchTerm });
-      document.getElementById("searchOpps").value = searchTerm;
+      document.getElementById('searchOpps').value = searchTerm;
     }
   }
 
@@ -70,26 +70,25 @@ class Opportunities extends Component {
     // TODO convert this into a promise and put in utils
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        if (!response || response.data === "none" || !response.data) {
+        if (!response || response.data === 'none' || !response.data) {
+        } else {
+          this.setState({ role: response.data });
         }
-        else{
-          this.setState({role: response.data});
-        } 
       })
       .catch((error) => {
         console.log('error in /api/role for in Opportunities');
         Utils.handleTokenError(error);
       });
 
-    //They can search from the home page, make it do something
+    // They can search from the home page, make it do something
     const urlParams = new URLSearchParams(window.location.search);
-    const searchTerm = urlParams.get("search");
-    console.log("search term!");
+    const searchTerm = urlParams.get('search');
+    console.log('search term!');
     console.log(searchTerm);
     if (searchTerm) {
-      console.log("in search term");
+      console.log('in search term');
       this.setState({ searchBar: searchTerm });
-      document.getElementById("searchOpps").value = searchTerm;
+      document.getElementById('searchOpps').value = searchTerm;
     }
   }
 
@@ -153,7 +152,7 @@ class Opportunities extends Component {
     // TODO make temp navbar into a component
     return (
       <div className="opportunities-wrapper">
-        <Redirect to='/faculty' />
+        <Redirect to="/faculty" />
         <VariableNavbar role={this.state.role} current="opportunities" />
         <div className="row search-div-container">
           <div className="search-icon-div">
@@ -189,7 +188,7 @@ class Opportunities extends Component {
           <div className="column column-20">
             <div className="filter-box">
 
-              <Filter label="Filter by..."/>
+              <Filter label="Filter by..." />
               <hr />
               <SchoolYearFilter
                 update={Utils.updateMultipleChoiceFilter.bind(this)}
