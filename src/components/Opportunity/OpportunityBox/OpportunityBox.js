@@ -6,15 +6,11 @@ import { getParameterByName } from '../../Utils';
 class OpportunityBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: [],
-      oppCount: 0,
-    };
+    this.state = { data: [] };
     this.loadOpportunitiesFromServer = this.loadOpportunitiesFromServer.bind(this);
   }
 
   loadOpportunitiesFromServer() {
-    console.log(this.props.url);
     axios.get(`/api/${this.props.url}?netId=${sessionStorage.getItem('token_id')}&netIdPlain=${sessionStorage.getItem('netId')}&labId=${getParameterByName('labId', window.location.href)}&date=DESC`)
       .then((res) => {
         this.setState({ data: res.data });
@@ -23,20 +19,12 @@ class OpportunityBox extends Component {
 
   componentDidMount() {
     this.loadOpportunitiesFromServer();
-    // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-  }
-
-  countOpps(val) {
-    this.setState({
-      oppCount: val,
-    });
-    console.log(val);
   }
 
   render() {
     return (
       <OpportunityList
-        countOpps={this.countOpps.bind(this)}
+        countOpps={() => {}}
         filteredOptions={this.props.filteredOptions}
         data={this.state.data}
         searching={this.props.searching}

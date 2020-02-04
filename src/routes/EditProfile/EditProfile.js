@@ -26,14 +26,12 @@ class EditProfile extends Component {
       relevantSkills: ['Java', 'Python', 'HTML', 'CSS', 'Javascript', 'Excel'],
       editYear: false,
       editMajor: false,
-      editGPA: false,
       editCourses: true,
       editSkills: true,
       editResume: false,
       editTranscript: false,
       invalidYear: false,
       invalidMajor: false,
-      invalidGPA: false,
       newCourse: '',
       newSkill: '',
       netId: '',
@@ -52,7 +50,6 @@ class EditProfile extends Component {
   }
 
   loadInfoFromServer() {
-    console.log('Begin loadInfoFromServer');
     axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then((res) => {
         const info = res.data[0];
@@ -70,18 +67,7 @@ class EditProfile extends Component {
           resumeId: info.resumeId,
           transcriptId: info.transcriptId,
         });
-        //     this.setState({relevantCourses: info.courses});
-        //     this.setState({firstName: info.firstName});
-        //     this.setState({year: utils.gradYearToString(info.gradYear)});
-        //     this.setState({major: info.major});
-        //     this.setState({gpa: info.gpa});
-        //     this.setState({relevantSkills: skills});
-        //     this.setState({netId: info.netId});
-        //     this.setState({resumeId: info.resumeId});
-        //     this.setState({transcriptId: info.transcriptId});
-        // this.setState({lastName: info.lastName});
       }).catch((error) => {
-        console.log('error in edit profile');
         Utils.handleTokenError(error);
       });
   }
@@ -134,13 +120,6 @@ class EditProfile extends Component {
     this.setState(({ editTranscript }) => ({ editTranscript: !editTranscript }));
   }
 
-  handleEditGPA() {
-    if (this.state.gpa === '') {
-      this.setState({ invalidGPA: true });
-    } else {
-      this.setState(({ editGPA }) => ({ invalidGPA: false, editGPA: !editGPA }));
-    }
-  }
   // Was useful when there was a pencil icon for skills and course. It is commented out if needed
   // handleEditSkills(event) {
   //     this.setState({editSkills: !this.state.editSkills});
@@ -178,8 +157,7 @@ class EditProfile extends Component {
     if (this.state.newSkill !== '') {
       const currentSkills = this.state.relevantSkills;
       currentSkills.push(this.state.newSkill);
-      this.setState({ relevantSkills: currentSkills });
-      this.setState({ newSkill: '' });
+      this.setState({ relevantSkills: currentSkills, newSkill: '' });
     }
   }
 
@@ -283,19 +261,16 @@ class EditProfile extends Component {
   }
 
     viewResume = (e) => {
-      console.log('We are now viewing the resume');
       e.preventDefault();
       window.location.href = `/doc/${this.state.resumeId}`;
     }
 
     viewTranscript = (e) => {
-      console.log('We are now viewing the transcript');
       e.preventDefault();
       window.location.href = `/doc/${this.state.transcriptId}`;
     }
 
     onDropResume = (acceptedFiles) => {
-      console.log('We are dropping resume');
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -310,7 +285,6 @@ class EditProfile extends Component {
 
         reader.readAsBinaryString(file);
       });
-      console.log('We have finished dropping resume');
     }
 
     onDropTranscript = (acceptedFiles) => {
@@ -365,9 +339,7 @@ class EditProfile extends Component {
       axios.put(`/api/undergrads/${sessionStorage.getItem('token_id')}`, {
         year, major, gpa, relevantCourses, relevantSkills,
       })
-        .then((result) => {
-          console.log('undergrad updated, result:');
-          console.log(result);
+        .then(() => {
           setTimeout(() => {
             const baseUrl = `${window.location.protocol}//${window.location.host}`;
             window.location.replace(`${baseUrl}/editprofile`);

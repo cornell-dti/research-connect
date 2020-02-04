@@ -81,8 +81,6 @@ class FacultySearch extends Component {
           }
         })
         .catch((error) => {
-          console.log('error here');
-          console.log(error);
           Utils.handleTokenError(error);
         });
     }
@@ -91,10 +89,7 @@ class FacultySearch extends Component {
 
   handleChange(event) {
     if (event.target.name === 'area') {
-      console.log('event target value:');
-      console.log(event.target.value);
       this.setState({ area: event.target.value, numShowing: 20 }, () => {
-        console.log(this.state.area);
         this.getFaculty();
       });
     } else if (event.target.name === 'department') {

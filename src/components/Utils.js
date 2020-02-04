@@ -134,7 +134,6 @@ export function getUserRole(redirectIfNotLoggedIn = false) {
  */
 export function handleTokenError(error) {
   if (error.response) {
-    console.log(error.response.data);
     if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
       if (window.location.pathname === '/') {
         logoutGoogle();
@@ -154,7 +153,6 @@ export function handleNonTokenError(error) {
   if (error.response.status === 400) {
     alert(error.response.data);
   } else {
-    console.log(error);
     alert('Something went wrong on our side. Please refresh the page and try again');
   }
 }
@@ -300,35 +298,24 @@ export function updateSingleChoiceFilter(filterName, option) {
 
 export function updateMultipleChoiceFilter(filterName, option) {
   this.setState((state) => {
-    console.log('updating');
-    console.log(state);
-    console.log(filterName);
-    console.log(option);
     if (state[filterName].includes(option)) {
-      // console.log('Removing ' + option + ' from ' + filterName);
       return { [filterName]: state[filterName].filter((original) => original !== option) };
     }
-
-    // console.log('Adding ' + option + ' to ' + filterName);
     return { [filterName]: [...state[filterName], option] };
   });
 }
 
 export function logoutGoogle() {
   if (window.gapi) {
-    console.log('logging out window gapi');
     tryLoggingOut();
   } else {
-    console.log('about to set timeout');
     // if window.gapi hasn't loaded yet, wait 2 seconds and try again
     setTimeout(() => {
-      console.log('in set timeout');
       if (window.gapi) {
-        console.log('window gapi loaded, logging out');
+        // window gapi loaded, logging out
         tryLoggingOut();
       } else {
         // if it's still not there for some reason, just do the "works half the time" solution
-        console.log('no gapi');
         sessionStorage.clear();
         window.location.href = '/';
       }

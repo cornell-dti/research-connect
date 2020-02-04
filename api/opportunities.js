@@ -308,7 +308,7 @@ app.get('/', (req, res) => {
       handleVerifyError(error, res);
     });
   } else {
-    opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((err, opportunities) => {
+    opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((_, opportunities) => {
       if (!opportunities) {
         return res.send([]);
       }
@@ -330,7 +330,7 @@ function getSeason() {
     // Cornell School Winter:
     case December:
     case January:
-      if (month === December && dayOfMonth >= 21 || month === January && dayOfMonth < 10) {
+      if ((month === December && dayOfMonth >= 21) || (month === January && dayOfMonth < 10)) {
         season = 'Winter';
       } else if (month === December && dayOfMonth < 21) {
         season = 'Fall';
@@ -353,6 +353,8 @@ function getSeason() {
     case 9:
     case 10:
       season = 'Fall';
+      break;
+    default:
       break;
   }
   return (season);

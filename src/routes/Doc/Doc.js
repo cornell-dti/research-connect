@@ -16,20 +16,10 @@ class Resume extends Component {
   componentWillMount() {
     axios.get(`/api/docs/${this.props.match.params.id}?token=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        console.log('response!');
-        console.log(response);
-        this.setState(
-          {
-            resume: response.data,
-            loaded: true,
-          },
-        );
-        console.log(response.data);
+        this.setState({ resume: response.data, loaded: true });
       })
       .catch((error) => {
-        this.setState({
-          loadText: error.response.data,
-        });
+        this.setState({ loadText: error.response.data });
       });
   }
 

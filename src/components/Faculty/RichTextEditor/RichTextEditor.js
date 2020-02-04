@@ -74,8 +74,6 @@ class RichTextEditor extends Component {
             return;
           }
           const resultHtml = result.data;
-          console.log('loaded html!');
-          console.log(resultHtml);
           const blocksFromHTML = convertFromHTML(resultHtml);
           const content = ContentState.createFromBlockArray(
             blocksFromHTML.contentBlocks,

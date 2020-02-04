@@ -137,8 +137,6 @@ class FacultyPage extends Component {
         this.setState({ profInfo: response.data });
       })
       .catch((error) => {
-        console.log('error in getting this faculty');
-        console.log(error);
         Utils.handleTokenError(error);
       });
     axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
@@ -151,10 +149,8 @@ class FacultyPage extends Component {
       });
 
     if (!sessionStorage.getItem('token_id')) {
-      console.log('not logged in');
       this.setState({ role: null });
     } else {
-      console.log('logged in');
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
         .then((response) => {
           // if they don't have a role or it's just not showing up for some reason, go to home page
@@ -169,7 +165,6 @@ class FacultyPage extends Component {
           }
         })
         .catch((error) => {
-          console.log('error in /api/role for faculty page');
           Utils.handleTokenError(error);
         });
     }

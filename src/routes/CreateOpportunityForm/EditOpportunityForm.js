@@ -376,8 +376,6 @@ class EditOppForm extends React.Component {
       //     this.state.yearIsValid)) {
       //     return;
       // }
-      console.log('ran');
-      console.log(this.getUrlId('Id'));
       axios.put(`/api/opportunities/${this.getUrlId('Id')}`, {
         netId,
         creatorNetId,
@@ -419,12 +417,9 @@ class EditOppForm extends React.Component {
           if (error.response) {
             if (error.response.status === 400) {
               alert('One of the required fields is not properly filled in.');
-            } else {
+            } else if (!Utils.handleTokenError(error)) {
               // if there's no token-related error, then do the alert.
-              if (!Utils.handleTokenError(error)) {
-                console.log(error.response.data);
-                alert('Something went wrong on our side. Please refresh and try again.');
-              }
+              alert('Something went wrong on our side. Please refresh and try again.');
             }
           }
         });
@@ -870,9 +865,7 @@ class EditOppForm extends React.Component {
                     <p className="info-text-large">
                       We recommend asking "Why are you interested in this lab and/or position?" to
                       gauge interest.
-                      You will nonetheless be able to view each student
-                      '
-                      s cover letter, year, GPA,
+                      {'You will nonetheless be able to view each student\'s cover letter, year, GPA,'}
                       résumé,
                       and major, in addition to their responses to these questions once they
                       apply.

@@ -4,7 +4,15 @@ const app = express.Router();
 
 const { OAuth2Client } = require('google-auth-library');
 const {
-  undergradModel, labAdministratorModel, opportunityModel, debug, sgMail, verify, handleVerifyError, sgOppsGroup, sgAnnouncementsGroup,
+  undergradModel,
+  labAdministratorModel,
+  opportunityModel,
+  debug,
+  sgMail,
+  verify,
+  handleVerifyError,
+  sgOppsGroup,
+  sgAnnouncementsGroup,
 } = require('../common.js');
 
 /**
@@ -24,9 +32,9 @@ app.get('/sandbox', (req, res) => {
     },
     subject: 'Guide to Finding Research!',
     html: `Hi aram,<br />
-                       Thanks for signing up for Research Connect! To help you 
-                       in your research journey, we've provided a comprehensive 
-                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a> 
+                       Thanks for signing up for Research Connect! To help you
+                       in your research journey, we've provided a comprehensive
+                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a>
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
   };

@@ -40,11 +40,9 @@ class EmailDialog extends React.Component {
       yourEmail: this.props.opp.creatorNetId,
     })
       .then((response) => {
-        console.log(response);
         this.setState({
           emailContent: response.data[this.props.buttonText.toLowerCase()],
         });
-        console.log(this.state.emailContent);
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +102,6 @@ class EmailDialog extends React.Component {
 
   handleChange(event) {
     this.setState({ emailContent: event.target.value });
-    console.log(this.state.emailContent);
   }
 
   render() {

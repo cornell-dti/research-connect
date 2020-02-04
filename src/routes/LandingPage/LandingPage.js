@@ -27,57 +27,41 @@ ReactGA.initialize('UA-69262899-9');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 class Landing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchBar: '',
-      matchingSearches: [],
-      searching: false,
-      clickedEnter: false,
-    };
-  }
-
   componentDidMount() {
     if (sessionStorage.getItem('token_id') !== null) {
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
         .then((response) => {
-          console.log('Role: ');
-          console.log(response.data);
           let endUrl;
           if (response.data === 'undergrad') {
             endUrl = '/opportunities';
             window.location.href = endUrl;
           } else if (response.data === 'none' || response.data === null) {
             // 'none' means they're not an undergrad or professor
-            logoutGoogle();
+            Utils.logoutGoogle();
           } else {
             endUrl = '/professorDashboard';
             window.location.href = endUrl;
           }
         })
         .catch((error) => {
-          console.log('token error handled on landing page');
           Utils.handleTokenError(error);
         });
     }
   }
 
-  loginFailure(a) {
-    console.log(a);
+  loginFailure() {
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
   }
 
   responseGoogleStudent = (response) => {
-    console.log('response google student ran');
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
       alert('Please sign in with a cornell email (netid@cornell.edu)');
-      return logoutGoogle();
+      Utils.logoutGoogle();
+      return;
     }
     axios.get(`/api/hasRegistered/${response.profileObj.email.replace('@cornell.edu', '')}`).then((hasRegistered) => {
-      console.log('has registered');
-      console.log(hasRegistered);
       if (hasRegistered.data) {
         window.location.href = '/faculty';
       } else {
@@ -87,7 +71,6 @@ class Landing extends Component {
   };
 
   responseGoogle = (response) => {
-    console.log('lab researcher signup');
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
     sessionStorage.setItem('netId', response.profileObj.email.replace('@cornell.edu', ''));
@@ -95,16 +78,12 @@ class Landing extends Component {
     let role = '';
     axios.get(`/api/role/${sessionStorage.getItem('token_id')}` /* 'prk57' */).then((roleResponse) => {
       role = roleResponse.data;
-      console.log(`landing page role: ${role}`);
       if (role === 'undergrad') {
-        console.log('what');
         this.responseGoogleStudent(response);
         return;
       }
-      console.log(`email: ${response.profileObj.email}`);
       // don't use has registered, just use role. but if you do use this, it takes raw net id not token.
       axios.get(`/api/hasRegistered/${response.profileObj.email}`).then((hasRegistered) => {
-        console.log(`registerd? ${hasRegistered}`);
         if (hasRegistered.data) {
           window.location.href = '/professorDashboard';
         } else {
@@ -112,30 +91,9 @@ class Landing extends Component {
         }
       });
     }).catch((error) => {
-      console.log('token error handled on 2nd landing page catch');
-      console.log(error);
       Utils.handleTokenError(error);
     });
   };
-
-
-  scrollTo(id) {
-    console.log('scrolling');
-    const scrollToElement = require('scroll-to-element');
-    scrollToElement(id, {
-      offset: 0,
-      ease: 'linear',
-      duration: 600,
-    });
-  }
-
-  postOpp() {
-    window.location.href = '/newopp';
-  }
-
-  logoutClear() {
-    logoutGoogle();
-  }
 
   viewOpps() {
     window.location.href = '/faculty';
@@ -258,7 +216,11 @@ class Landing extends Component {
             <section>
               <Row className="picRow">
                 <Col><img id="list-image1" src={pen} height="72" width="100" alt="pen" /></Col>
-                <Col><p className="picP">Search for computer science opportunities and stop guessing who is accepting.</p></Col>
+                <Col>
+                  <p className="picP">
+                    Search for computer science opportunities and stop guessing who is accepting.
+                  </p>
+                </Col>
               </Row>
               <Row className="picRow">
                 <Col><img id="list-image2" src={img2} height="72" width="100" alt="magnifying glass" /></Col>
@@ -289,7 +251,12 @@ class Landing extends Component {
                 <h2>Made for students by students.</h2>
               </Row>
               <Row>
-                <Col><p>We know how confusing and frustrating it can be to get involved with CS research at Cornell. That’s why we created Research Connect.</p></Col>
+                <Col>
+                  <p>
+                    We know how confusing and frustrating it can be to get involved with CS research at Cornell.
+                    {'That\'s why we created Research Connect.'}
+                  </p>
+                </Col>
               </Row>
               <Row>
                 <section className="list">
@@ -359,12 +326,20 @@ class Landing extends Component {
             </li>
           </ul> */}
           <p>Created by</p>
-          <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
+          <a href="https://cornelldti.org/" target="_blank" rel="noopener noreferrer">
             <img className="CDTIlogo" src={CDTIlogo} alt="Cornell Design & Tech Initiative" />
           </a>
 
           <div style={{ float: 'left', width: '50%' }}>
-            <p><a href="https://goo.gl/forms/MWFfYIRplo3jaVJo2" target="_blank" rel="noopener noreferrer">Report a bug</a></p>
+            <p>
+              <a
+                href="https://goo.gl/forms/MWFfYIRplo3jaVJo2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Report a bug
+              </a>
+            </p>
             <p><a href="mailto:acb352@cornell.edu">Contact</a></p>
           </div>
         </footer>

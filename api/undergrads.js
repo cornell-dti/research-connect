@@ -100,7 +100,7 @@ app.get('/isStarred', (req, res) => {
     } else {
       searchObj.starredFaculty = itemId;
     }
-    undergradModel.findOne(searchObj, (err, undergrad) =>
+    undergradModel.findOne(searchObj, (_, undergrad) =>
       // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
       res.send(!!undergrad));
   }).catch((error) => {

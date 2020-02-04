@@ -265,7 +265,7 @@ const opportunitySchema = new Schema({
   facultyId: { type: String, default: '', required: false },
 });
 opportunitySchema.index({ '$**': 'text' });
-opportunitySchema.pre('validate', function (next) {
+opportunitySchema.pre('validate', (next) => {
   if (this.maxHours < this.minHours) {
     next(new Error('Min hours must be greater than or equal to max hours.'));
   } else {

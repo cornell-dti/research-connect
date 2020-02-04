@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 class Detail extends Component {
   handleChange(e) {
     const option = e.target.value;
-    console.log(this.props);
-    console.log(this.props.updateDetail);
     this.props.updateDetail(this.props.detailName, option);
   }
 
