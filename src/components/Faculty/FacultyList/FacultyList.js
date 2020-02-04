@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Faculty from '../Faculty';
 import '../../Opportunity/OpportunityList/OpportunityList.scss';
-import axios from 'axios';
 
 class FacultyList extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class FacultyList extends Component {
     let countString = '';
     for (const k in nodes) {
       if (nodes[k] != null) {
-        tempCount++;
+        tempCount += 1;
       }
     }
     if (tempCount === 1) {
@@ -67,7 +67,7 @@ class FacultyList extends Component {
       yes: [], no: [], maybe: [], unknown: [],
     };
     this.props.data.forEach((prof) => {
-      const { filteredOptions } = this.props;
+      // const { filteredOptions } = this.props;
       // let departmentSelected = filteredOptions.department;
       // let areaSelected = filteredOptions.area;
       // let matchingSearches = filteredOptions.matchingSearches;

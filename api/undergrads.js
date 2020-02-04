@@ -209,9 +209,9 @@ app.post('/', (req, res) => {
           },
           subject: 'Guide to Finding Research!',
           html: `Hi ${undergrad.firstName},<br />
-                       Thanks for signing up for Research Connect! To help you 
-                       in your research journey, we've provided a comprehensive 
-                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a> 
+                       Thanks for signing up for Research Connect! To help you
+                       in your research journey, we've provided a comprehensive
+                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a>
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
         };
@@ -334,7 +334,7 @@ app.post('/star', (req, res) => {
           return;
         }
         // Save the updated document back to the database
-        undergrad[0].save((err2, todo) => {
+        undergrad[0].save((err2) => {
           if (err2) {
             res.status(500).send(err2);
             return;

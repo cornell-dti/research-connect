@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Filter from './Filter';
 import * as Utils from '../Utils';
 
-class CSAreasFilter extends Component {
-  render() {
-    return (
-      <Filter
-        filterType="csAreasSelect"
-        label="CS Areas"
-        updateFilterOption={this.props.update}
-        choices={Utils.getCSAreas()}
-        type="checkbox"
-      />
-    );
-  }
+function CSAreasFilter(props) {
+  return (
+    <Filter
+      filterType="csAreasSelect"
+      label="CS Areas"
+      updateFilterOption={props.update}
+      choices={Utils.getCSAreas()}
+      type="checkbox"
+    />
+  );
 }
 
 CSAreasFilter.propTypes = {

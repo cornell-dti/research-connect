@@ -1,38 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../App/App.scss';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Starred from '../../components/StarredItems/Starred';
 
-class SavedFaculty extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  display(t, l) {
-
-  }
-
-  render() {
-    return (
-      <div>
-        <Navbar current="savedfac" />
-        <div className="student-dash-container">
-          <div className="row">
-            <div className="column column-10" />
-            <div className="column column-80">
-              <div className="dashboard-header">
-                Your Saved Faculty
-              </div>
-              <Starred type="faculty" display={this.display} />
-            </div>
-          </div>
+export default () => (
+  <div>
+    <Navbar current="savedfac" />
+    <div className="student-dash-container">
+      <div className="row">
+        <div className="column column-10" />
+        <div className="column column-80">
+          <div className="dashboard-header">Your Saved Faculty</div>
+          <Starred type="faculty" display={() => {}} />
         </div>
-
-        <Footer />
       </div>
-    );
-  }
-}
-
-export default SavedFaculty;
+    </div>
+    <Footer />
+  </div>
+);

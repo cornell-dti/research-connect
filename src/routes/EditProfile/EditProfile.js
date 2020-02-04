@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './EditProfile.scss';
 import '../../index.css';
 import Pencil from 'react-icons/lib/fa/pencil';
-import ExternalLink from 'react-icons/lib/fa/external-link-square';
 import Delete from 'react-icons/lib/ti/delete';
 import Check from 'react-icons/lib/fa/check';
 import Add from 'react-icons/lib/md/add-circle';
@@ -17,7 +16,6 @@ import * as Utils from '../../components/Utils';
 class EditProfile extends Component {
   constructor(props) {
     super(props);
-    console.log(1);
     this.state = {
       firstName: '',
       lastName: '',
@@ -59,7 +57,6 @@ class EditProfile extends Component {
       .then((res) => {
         const info = res.data[0];
         const skills = info.skills === undefined ? [] : info.skills;
-        console.log(info.gradYear);
         const year = info.gradYear;
         this.setState({
           relevantCourses: info.courses,
@@ -73,7 +70,6 @@ class EditProfile extends Component {
           resumeId: info.resumeId,
           transcriptId: info.transcriptId,
         });
-        console.log('after');
         //     this.setState({relevantCourses: info.courses});
         //     this.setState({firstName: info.firstName});
         //     this.setState({year: utils.gradYearToString(info.gradYear)});
@@ -84,13 +80,6 @@ class EditProfile extends Component {
         //     this.setState({resumeId: info.resumeId});
         //     this.setState({transcriptId: info.transcriptId});
         // this.setState({lastName: info.lastName});
-        console.log(this.state.firstName);
-        console.log(info);
-        if (this.state.firstName === '') {
-          console.log("Looks like we didn't load it");
-        } else {
-          console.log('We did load it :D');
-        }
       }).catch((error) => {
         console.log('error in edit profile');
         Utils.handleTokenError(error);
@@ -99,7 +88,6 @@ class EditProfile extends Component {
 
   componentDidMount() {
     this.loadInfoFromServer();
-    console.log('componentDidMount Working');
   }
 
   handleChange(event) {
@@ -114,48 +102,43 @@ class EditProfile extends Component {
     } else if (event.target.id === 'new-skill') {
       this.setState({ newSkill: event.target.value });
     }
-    // else if (event.target.id === "")
   }
 
-  handleEditUpperBox(event) {
-    this.setState({ editYear: !this.state.editYear });
-    this.setState({ editMajor: !this.state.editMajor });
+  handleEditUpperBox() {
+    this.setState(({ editYear, editMajor }) => ({ editYear: !editYear, editMajor: !editMajor }));
   }
 
-  handleEditYear(event) {
+  handleEditYear() {
     const presentYear = new Date().getFullYear();
     const validateYear = [presentYear + 4, presentYear + 3, presentYear + 2, presentYear + 1, presentYear];
     if (validateYear.indexOf(parseInt(this.state.year, 10)) === -1) {
       this.setState({ invalidYear: true });
     } else {
-      this.setState({ invalidYear: false });
-      this.setState({ editYear: !this.state.editYear });
+      this.setState(({ editYear }) => ({ invalidYear: false, editYear: !editYear }));
     }
   }
 
-  handleEditMajor(event) {
+  handleEditMajor() {
     if (this.state.major === '') {
       this.setState({ invalidMajor: true });
     } else {
-      this.setState({ invalidMajor: false });
-      this.setState({ editMajor: !this.state.editMajor });
+      this.setState(({ editMajor }) => ({ invalidMajor: false, editMajor: !editMajor }));
     }
   }
 
-  handleEditResume(event) {
-    this.setState({ editResume: !this.state.editResume });
+  handleEditResume() {
+    this.setState(({ editResume }) => ({ editResume: !editResume }));
   }
 
-  handleEditTranscript(event) {
-    this.setState({ editTranscript: !this.state.editTranscript });
+  handleEditTranscript() {
+    this.setState(({ editTranscript }) => ({ editTranscript: !editTranscript }));
   }
 
-  handleEditGPA(event) {
+  handleEditGPA() {
     if (this.state.gpa === '') {
       this.setState({ invalidGPA: true });
     } else {
-      this.setState({ invalidGPA: false });
-      this.setState({ editGPA: !this.state.editGPA });
+      this.setState(({ editGPA }) => ({ invalidGPA: false, editGPA: !editGPA }));
     }
   }
   // Was useful when there was a pencil icon for skills and course. It is commented out if needed
@@ -167,7 +150,7 @@ class EditProfile extends Component {
   //     this.setState({editCourses: !this.state.editCourses});
   // }
 
-  handleDeleteCourse(data, e) {
+  handleDeleteCourse(data) {
     const currentCourses = this.state.relevantCourses;
     const index = currentCourses.indexOf(data);
     currentCourses.splice(index, 1);
@@ -176,15 +159,14 @@ class EditProfile extends Component {
   }
 
   addCourse() {
-    if (this.state.newCourse != '') {
+    if (this.state.newCourse !== '') {
       const currentCourses = this.state.relevantCourses;
       currentCourses.push(this.state.newCourse);
-      this.setState({ relevantCourses: currentCourses });
-      this.setState({ newCourse: '' });
+      this.setState({ relevantCourses: currentCourses, newCourse: '' });
     }
   }
 
-  handleDeleteSkill(data, e) {
+  handleDeleteSkill(data) {
     const currentSkills = this.state.relevantSkills;
     const index = currentSkills.indexOf(data);
     currentSkills.splice(index, 1);
@@ -193,7 +175,7 @@ class EditProfile extends Component {
   }
 
   addSkill() {
-    if (this.state.newSkill != '') {
+    if (this.state.newSkill !== '') {
       const currentSkills = this.state.relevantSkills;
       currentSkills.push(this.state.newSkill);
       this.setState({ relevantSkills: currentSkills });
@@ -291,12 +273,11 @@ class EditProfile extends Component {
     }
 
     for (let i = 0; i < this.state.relevantSkills.length; i++) {
-      list.push(<p
-        className="display-list-item skill"
-        key={this.state.relevantSkills[i]}
-      >
-        {this.state.relevantSkills[i]}
-                </p>);
+      list.push(
+        <p className="display-list-item skill" key={this.state.relevantSkills[i]}>
+          {this.state.relevantSkills[i]}
+        </p>,
+      );
     }
     return <div className="display-list">{list}</div>;
   }
@@ -317,7 +298,7 @@ class EditProfile extends Component {
       console.log('We are dropping resume');
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = () => {
           const fileAsBinaryString = reader.result;
           const encodedData = window.btoa(fileAsBinaryString);
           // do whatever you want with the file content
@@ -335,7 +316,7 @@ class EditProfile extends Component {
     onDropTranscript = (acceptedFiles) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = () => {
           const fileAsBinaryString = reader.result;
           const encodedData = window.btoa(fileAsBinaryString);
           // do whatever you want with the file content
@@ -349,37 +330,17 @@ class EditProfile extends Component {
     }
 
     onClick = (e) => {
-      console.log('Is this working?');
       e.preventDefault();
       const {
-        firstName,
-        lastName,
         year,
         major,
         gpa,
         relevantCourses,
         relevantSkills,
-        editYear,
-        editMajor,
-        editGPA,
-        editCourses,
-        editSkills,
-        editResume,
-        editTranscript,
-        invalidYear,
-        invalidMajor,
-        invalidGPA,
-        newCourse,
-        newSkill,
-        netId,
-        resumeId,
-        transcriptId,
         resume,
         transcript,
-        resumeValid,
       } = this.state;
       const token_id = sessionStorage.getItem('token_id');
-      console.log('constant is working');
 
       if (this.state.resume != null && this.state.resume.length !== 0) {
         axios.post('/api/docs', { token_id, resume })
@@ -541,8 +502,7 @@ class EditProfile extends Component {
                             padding: '10px',
                             width: '50%',
                             margin: '0 0 0 25%',
-                            border: !this.state.resumeValid
-                                                                    && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
+                            border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
                           }}
                           onDrop={this.onDropResume.bind(this)}
                         >
@@ -654,6 +614,7 @@ class EditProfile extends Component {
               </div>
             </div>
             <button
+              type="button"
               className="column column-50 edit-submit"
               style={{ marginLeft: '45%', marginTop: '10px' }}
               onClick={this.onClick}

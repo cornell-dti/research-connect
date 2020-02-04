@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import axios from 'axios';
 import '../../index.css';
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import SearchIcon from 'react-icons/lib/io/search';
-import ReactPaginate from 'react-paginate';
-import * as ReactGA from 'react-ga';
-import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';
 import * as Utils from '../../components/Utils';
-import ProfessorNavbar
-  from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import '../Opportunities/Opportunities.scss';
 import '../OpportunityPage/OpportunityPage.scss';
 
@@ -113,8 +109,7 @@ class FacultySearch extends Component {
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
     if (!e.target.value) {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false }, () => {
+      this.setState({ matchingSearches: [], clickedEnter: false }, () => {
         this.getFaculty();
       });
     }
@@ -138,9 +133,8 @@ class FacultySearch extends Component {
     }
   }
 
-  handlePageClick = (data) => {
-    const totalShowing = this.state.numShowing + 20;
-    this.setState({ numShowing: totalShowing }, () => {
+  handlePageClick = () => {
+    this.setState(({ numShowing }) => ({ numShowing: numShowing + 20 }), () => {
       this.getFaculty();
     });
   };
@@ -154,18 +148,21 @@ class FacultySearch extends Component {
   }
 
   clearSearch() {
-    this.setState({ searching: false });
-    this.setState({ searchBar: '' });
-    this.setState({ matchingSearches: [] });
-    this.setState({ clickedEnter: false }, () => {
-      this.getFaculty();
-    });
+    this.setState(
+      {
+        searching: false,
+        searchBar: '',
+        matchingSearches: [],
+        clickedEnter: false,
+      },
+      () => this.getFaculty(),
+    );
   }
 
   generateAreaOptions() {
     const areas = Utils.getResearchInterestsList();
     if (areas.length === 0) {
-      return;
+      return [];
     }
     const areasOptions = [];
     areas.forEach((area) => {
@@ -202,7 +199,7 @@ class FacultySearch extends Component {
           />
 
           <div className="column column-10 delete-div">
-            {this.state.searchBar != ''
+            {this.state.searchBar !== ''
               ? (
                 <DeleteIcon
                   onClick={this.clearSearch.bind(this)}

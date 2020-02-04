@@ -30,7 +30,7 @@ class StudentDashboard extends Component {
         }
         const info = res.data[0];
         this.setState({ name: info.firstName });
-        if (this.state.name == '') {
+        if (this.state.name === '') {
           console.log("Looks like we didn't load it");
         } else {
           console.log('We did load it :D');

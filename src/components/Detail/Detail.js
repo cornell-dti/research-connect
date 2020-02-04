@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as Utils from '../Utils';
 
 class Detail extends Component {
   handleChange(e) {

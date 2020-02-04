@@ -8,7 +8,6 @@ import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
 import Edit from 'react-icons/lib/fa/edit';
 import * as ReactGA from 'react-ga';
-import * as Utils from '../../components/Utils';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
@@ -29,27 +28,27 @@ class ProfessorDashboard extends Component {
 
   componentWillMount() {
     axios.all([
-	    axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
-	    axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
-	    axios.get(`/api/labAdmins/lab/${sessionStorage.getItem('token_id')}`),
-	  ])
-	  .then(axios.spread((role, apps, lab) => {
-	  	if (role.data !== 'grad'
-				  && role.data !== 'labtech'
-				  && role.data !== 'postdoc'
-				  && role.data !== 'staffscientist'
-				  && role.data !== 'pi') {
-      	window.location.href = '/';
+      axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
+      axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
+      axios.get(`/api/labAdmins/lab/${sessionStorage.getItem('token_id')}`),
+    ])
+      .then(axios.spread((role, apps, lab) => {
+        if (role.data !== 'grad'
+          && role.data !== 'labtech'
+          && role.data !== 'postdoc'
+          && role.data !== 'staffscientist'
+          && role.data !== 'pi') {
+          window.location.href = '/';
         }
         const opps = Object.keys(apps.data);
         opps.unshift('All');
-	      this.setState({ apps });
-	      this.setState({ opportunities: opps });
-	      this.setState({ labId: lab.data });
-	  })).catch((error) => {
+        this.setState({ apps });
+        this.setState({ opportunities: opps });
+        this.setState({ labId: lab.data });
+      })).catch((error) => {
         this.setState({
           errorLoadingDataExists: true,
-          errorMessage: `We could not find any data for the email and netid 
+          errorMessage: `We could not find any data for the email and netid
             associated with your account. More info: ${error}`,
         });
       });

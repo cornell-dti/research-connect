@@ -197,7 +197,7 @@ app.get('/', (req, res) => {
       { startYear: { $gte: returnOppsPastYear } },
     ],
   };
-  const findTimelyOpps = 	{ $and: [timeRange, validYearAndSeason] };
+  const findTimelyOpps = { $and: [timeRange, validYearAndSeason] };
 
   if (token && token !== 'null') {
     verify(token, (undergradNetId) => {

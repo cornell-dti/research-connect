@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Detail from './Detail';
 import * as Utils from '../Utils';
 
-class CompensationAllowed extends Component {
-  render() {
-    return (
-      <Detail
-        filterType="compensation"
-        detailName="compensation"
-        label="Student Compensation (leave blank if just experience):"
-        updateDetail={this.props.update}
-        choices={Utils.getCompensation()}
-        type="checkbox"
-      />
-    );
-  }
+function CompensationAllowed(props) {
+  return (
+    <Detail
+      filterType="compensation"
+      detailName="compensation"
+      label="Student Compensation (leave blank if just experience):"
+      updateDetail={props.update}
+      choices={Utils.getCompensation()}
+      type="checkbox"
+    />
+  );
 }
 
 CompensationAllowed.propTypes = {

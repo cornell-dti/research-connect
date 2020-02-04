@@ -70,10 +70,10 @@ function tryLoggingOut() {
     // with their compiled code, but this workaround seems to wrok...
     try {
       refreshStorage();
-      auth2.signOut().then((e1) => {
-        auth2.disconnect().then((e2) => {
+      auth2.signOut().then(() => {
+        auth2.disconnect().then(() => {
           refreshStorage();
-        }, (e3) => {
+        }, () => {
           // auth2.disconnect didn't work...
           refreshStorage();
         });
@@ -108,7 +108,7 @@ export function getUserRole(redirectIfNotLoggedIn = false) {
     const token = getTokenId();
     const isNotLoggedIn = !token;
     if (!redirectIfNotLoggedIn && isNotLoggedIn) {
-      return resolve('none');
+      resolve('none');
     }
     axios.get(`${ROLE_ENDPOINT}${token}`)
       .then((response) => {
@@ -245,7 +245,7 @@ function tryLoggingOut() {
     try {
       // sometimes stalls on signOut() or disconnect)(
       auth2.signOut().then(
-        auth2.disconnect().then((e) => {
+        auth2.disconnect().then(() => {
           console.log('disconnecting');
           sessionStorage.clear();
           window.location.href = '/';

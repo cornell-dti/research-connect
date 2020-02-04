@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import SearchIcon from 'react-icons/lib/io/search';
 import DeleteIcon from 'react-icons/lib/ti/delete';
-import axios from 'axios';
 import '../../../routes/LandingPage/LandingPage.scss';
-import * as Utils from '../../Utils';
 
-
-class SearchBar extends React.Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +23,7 @@ class SearchBar extends React.Component {
 
   handleUpdateSearch(e) {
     this.setState({ searchBar: e.target.value });
-    if (e.target.value == '') {
+    if (e.target.value === '') {
       this.setState({ matchingSearches: [] });
       this.setState({ clickedEnter: false });
     }
@@ -68,7 +65,7 @@ class SearchBar extends React.Component {
         />
         <div className="delete-div">
           {
-              this.state.searchBar != '' ? (
+              this.state.searchBar !== '' ? (
                 <DeleteIcon
                   onClick={this.clearSearch.bind(this)}
                   className="clear-icon"

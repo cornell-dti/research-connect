@@ -1,14 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import * as ReactGA from 'react-ga';
 import onClickOutside from 'react-onclickoutside';
-import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
+// import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 import Footer from '../../components/Footer/Footer';
 import '../App/App.scss';
 import './InstructorRegister.scss';
 import AutoSuggest from '../../components/AutoSuggest/AutoSuggest';
 import * as Utils from '../../components/Utils';
-import * as ReactGA from 'react-ga';
-
 
 class InstructorRegister extends React.Component {
   constructor(props) {
@@ -62,15 +61,12 @@ class InstructorRegister extends React.Component {
     if (this.state.newLab) {
       this.setState({ labId: null });
     }
-    this.setState({ labURLValid: false });
-    this.setState({ piValid: false });
-    this.setState({ newLab: !this.state.newLab });
+    this.setState({ labURLValid: false, piValid: false, newLab: !this.state.newLab });
   }
 
   handleUpdateLab(labName, id) {
     if (!this.state.newLab) {
-      this.setState({ labId: id });
-      this.setState({ name: labName });
+      this.setState({ labId: id, name: labName });
       if (labName !== '') {
         this.setState({ labNameValid: true });
       } else {
@@ -78,7 +74,6 @@ class InstructorRegister extends React.Component {
       }
     }
   }
-
 
   loadOpportunitiesFromServer() {
     axios.get('/api/labs')
@@ -96,7 +91,7 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangePosition(event) {
-    if (event.target.value != 'Select Position') {
+    if (event.target.value !== 'Select Position') {
       this.setState({ roleValid: true });
     } else {
       this.setState({ roleValid: false });
@@ -105,7 +100,7 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangeNotifications(event) {
-    if (event.target.value != 'When do you want to receive emails about applications to your postings?') {
+    if (event.target.value !== 'When do you want to receive emails about applications to your postings?') {
       this.setState({ notifValid: true });
     } else {
       this.setState({ notifValid: false });
@@ -114,7 +109,7 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangeFirstName(event) {
-    if (event.target.value != '') {
+    if (event.target.value !== '') {
       this.setState({ firstNameValid: true });
     } else {
       this.setState({ firstNameValid: false });
@@ -123,7 +118,7 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangeLastName(event) {
-    if (event.target.value != '') {
+    if (event.target.value !== '') {
       this.setState({ lastNameValid: true });
     } else {
       this.setState({ lastNameValid: false });
@@ -153,7 +148,7 @@ class InstructorRegister extends React.Component {
 
   handleChangeLabURL(event) {
     this.setState({ labPage: event.target.value });
-    if (event.target.value != '') {
+    if (event.target.value !== '') {
       this.setState({ labURLValid: true });
     } else {
       this.setState({ labURLValid: false });
@@ -166,7 +161,7 @@ class InstructorRegister extends React.Component {
 
   handleChangePI(event) {
     this.setState({ pi: event.target.value });
-    if (event.target.value != '') {
+    if (event.target.value !== '') {
       this.setState({ piValid: true });
     } else {
       this.setState({ piValid: false });
@@ -208,7 +203,7 @@ class InstructorRegister extends React.Component {
           pi,
           token_id,
         })
-          .then((result) => {
+          .then(() => {
             // access the results here....
             document.location.href = '/professorView';
             this.setState({

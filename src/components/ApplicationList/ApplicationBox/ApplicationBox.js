@@ -3,7 +3,7 @@ import './ApplicationBox.scss';
 import '../../../index.css';
 import Calendar from 'react-icons/lib/fa/calendar-check-o';
 import Info from 'react-icons/lib/fa/info-circle';
-import * as Utils from '../../Utils.js';
+import * as Utils from '../../Utils';
 
 class ApplicationBox extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class ApplicationBox extends Component {
     this.state = {};
   }
 
-  clickRow(rowObj) {
+  clickRow() {
     window.location.href = `/application/${this.props.data.id}`;
   }
 

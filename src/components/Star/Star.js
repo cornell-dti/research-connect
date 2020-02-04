@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import yellowstar from '../../images/yellowstar.png';
 import greystar from '../../images/greystar.png';
 import './Star.scss';
 
-class Star extends Component {
-  render() {
-    if (sessionStorage.getItem('token_id')) {
-      const star = this.props.starred ? yellowstar : greystar;
-      return (<img className="star" src={star} onClick={this.props.update} alt="favorite button" />);
-    }
-    return null;
+function Star(props) {
+  if (sessionStorage.getItem('token_id')) {
+    const star = props.starred ? yellowstar : greystar;
+    return <img className="star" src={star} onClick={props.update} alt="favorite button" />;
   }
+  return null;
 }
 
 Star.propTypes = {
-  starred: PropTypes.bool,
+  starred: PropTypes.bool.isRequired,
   update: PropTypes.func,
 };
 

@@ -111,6 +111,7 @@ class EmailDialog extends React.Component {
     return (
       <div>
         <button
+          type="button"
           className="button"
           disabled={this.getDisabled()}
           onClick={this.openModal}
@@ -126,11 +127,11 @@ class EmailDialog extends React.Component {
           contentLabel="Modal Content"
         >
           <div className="modal">
-            <h2 ref={(subtitle) => this.subtitle = subtitle}>Email Student</h2>
+            <h2 ref={(subtitle) => { this.subtitle = subtitle; }}>Email Student</h2>
             <label>Message</label>
             <textarea className="email-text" value={this.state.emailContent} onChange={this.handleChange.bind(this)} />
-            <button className="submit-button" onClick={this.sendEmail.bind(this)}>Submit</button>
-            <button className="close-button" onClick={this.closeModal}>Close</button>
+            <button type="button" className="submit-button" onClick={this.sendEmail.bind(this)}>Submit</button>
+            <button type="button" className="close-button" onClick={this.closeModal}>Close</button>
           </div>
         </Modal>
       </div>
