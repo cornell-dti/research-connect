@@ -12,7 +12,7 @@ const plugins = [
 ];
 
 module.exports = {
-  entry: ['babel-polyfill', './index.js'],
+  entry: './index.js',
   optimization: {
     minimize: true,
   },
@@ -29,7 +29,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react', 'es2015', 'stage-2'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
           },
         },
       },

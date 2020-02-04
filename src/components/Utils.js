@@ -175,8 +175,8 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-exports.roleStringForUndergrads = 'undergrad';
-exports.roleStringForGrads = 'grad';
+export const roleStringForUndergrads = 'undergrad';
+export const roleStringForGrads = 'grad';
 
 export function getMajorList() {
   const majorList = ['Africana Studies', 'Agricultural Sciences', 'American Studies', 'Animal Science', 'Anthropology', 'Applied Economics and Management', 'Archaeology', 'Architecture', 'Asian Studies', 'Astronomy', 'Atmospheric Science', 'Biological Engineering', 'Biological Sciences', 'Biology and Society', 'Biomedical Engineering', 'Biometry and Statistics', 'Chemical Engineering', 'Chemistry and Chemical Biology', 'China and Asia-Pacific Studies', 'Civil Engineering', 'Classics (Classics, Classical Civ., Greek, Latin)', 'College Scholar Program', 'Communication', 'Comparative Literature', 'Computer Science', 'Design and Environmental Analysis', 'Development Sociology', 'Economics', 'Electrical and Computer Engineering', 'Engineering Physics', 'English', 'Entomology', 'Environmental and Sustainability Sciences', 'Environmental Engineering', 'Feminist, Gender & Sexuality Studies', 'Fiber Science and Apparel Design', 'Fine Arts', 'Food Science', 'French', 'German', 'German Area Studies', 'Global & Public Health Sciences', 'Government', 'History', 'History of Architecture (transfer students only)', 'History of Art', 'Hotel Administration School of Hotel Administration', 'Human Biology, Health and Society', 'Human Development', 'Independent Major—Arts and Sciences', 'Independent Major—Engineering', 'Industrial and Labor Relations School of Industrial and Labor Relations', 'Information Science', 'Information Science, Systems, and Technology', 'Interdisciplinary Studies', 'International Agriculture and Rural Development', 'Italian', 'Landscape Architecture', 'Linguistics', 'Materials Science and Engineering', 'Mathematics', 'Mechanical Engineering', 'Music', 'Near Eastern Studies', 'Nutritional Sciences', 'Operations Research and Engineering', 'Performing and Media Arts', 'Philosophy', 'Physics', 'Plant Science', 'Policy Analysis and Management', 'Psychology', 'Religious Studies', 'Science and Technology Studies', 'Science of Earth Systems', 'Sociology', 'Spanish', 'Statistical Science', 'Urban and Regional Studies', 'Viticulture and Enology', 'Undecided'];
@@ -230,43 +230,6 @@ export function getCSAreas() {
 
 export function getNavbarOptions() {
   return ['newopp', 'professorDashboard', 'professorView', 'opportunities', 'studentDashboard', 'editprofile', 'facultysearch'];
-}
-
-// helper function for logoutGoogle
-function tryLoggingOut() {
-  console.log('trying to log out');
-  const auth2 = window.gapi.auth2.getAuthInstance();
-  console.log('got instance');
-  if (auth2 != null) {
-    console.log('auth 2 not null');
-    sessionStorage.clear();
-    try {
-      // sometimes stalls on signOut() or disconnect)(
-      auth2.signOut().then(
-        auth2.disconnect().then(() => {
-          console.log('disconnecting');
-          sessionStorage.clear();
-          window.location.href = '/';
-        }, (e) => {
-          console.log("disconnect didn't work, error below");
-          console.log(e);
-          // auth2.disconnect didn't work...
-          sessionStorage.clear();
-          window.location.href = '/';
-        }),
-      ).catch((e) => {
-        console.log('error with auth2.signout below');
-        console.log(e);
-      });
-    } catch (e) {
-      console.log('error with auth signout');
-      console.log(e);
-      window.location.href = '/';
-    }
-  } else {
-    console.log('auth not null');
-    console.log(auth2);
-  }
 }
 
 export function getCompensation() {
