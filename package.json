@@ -24,7 +24,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^0.4.0",
     "file-loader": "^1.1.11",
-    "google-auth-library": "^1.4.0",
+    "google-auth-library": "^5.9.2",
     "https": "^1.0.0",
     "img-loader": "^2.0.1",
     "less": "^3.0.1",
