@@ -131,10 +131,8 @@ app.get('/', (req, res) => {
 
 // previously POST /storeApplication
 app.post('/', (req, res) => {
-  console.log('Entered the post function');
   opportunityModel.findById(req.body.opportunityId, (err, opportunity) => {
     if (err) {
-      console.log("Post function's find did not work");
       return err;
     }
 
@@ -164,14 +162,6 @@ app.post('/', (req, res) => {
       });
       res.send('success!');
     });
-
-    /*
-        if(application['skills'].length > 0){
-            console.log("good job you printed skills");
-            console.log(application.skills[1]);
-            console.log(application.opportunity);
-        }
-        */
     return null;
   });
 });

@@ -6,14 +6,6 @@ const {
   facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
 
-function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
-}
-
-app.get('/test', (req, res) => {
-  https.get('https://bit.ly/2HHdTR1', (resp) => res.send(''));
-});
-
 /**
  * For the current iteration, we only want CS Professors not at Cornell Tech.
  * However, the database still has those professors in it. So we need to filter
@@ -43,9 +35,8 @@ function getBaseFacultyFilter() {
  * @return array of faculty members
  */
 app.get('/', (req, res) => {
-  let {
-    skip, limit, area, search,
-  } = req.query;
+  let { skip, limit } = req.query;
+  const { area, search } = req.query;
   // if they didn't make skip a number or just didn't specify it, make it 0.
   if (Number.isNaN(Number(skip)) || !skip) {
     skip = 0;
@@ -58,9 +49,6 @@ app.get('/', (req, res) => {
     limit = 0;
   }
   const facultyFilter = getBaseFacultyFilter();
-  console.log(1);
-  console.log(facultyFilter);
-  console.log(area);
   if (area) {
     facultyFilter.researchInterests = { $in: [area.trim()] };
   }
