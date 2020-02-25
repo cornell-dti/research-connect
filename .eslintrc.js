@@ -1,6 +1,5 @@
 module.exports = {
-  'extends': 'airbnb',
-  'parser': 'babel-eslint',
+  'extends': ['airbnb', 'react-app'],
   'rules': {
     'camelcase': ['off'], // Allow usage of token_id
     'no-underscore-dangle': ['off'], // Allow interaction with mongodb.
