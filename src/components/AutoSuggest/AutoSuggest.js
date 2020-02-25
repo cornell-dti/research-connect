@@ -8,13 +8,11 @@ class AutoSuggest extends React.Component {
     this.state = {
       value: '',
       showDropdown: false,
-      labId: null,
       cursor: -1,
       result: <div />,
       suggestionLength: 0,
       highlightLabName: '',
       highlightLabId: null,
-
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -22,30 +20,27 @@ class AutoSuggest extends React.Component {
     this.clickFill = this.clickFill.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
     this.setState({ showDropdown: true, cursor: -1 });
     setTimeout(() => {
       this.getSuggestions();
     }, 40);
     this.props.updateLab(event.target.value, null);
-  }
+  };
 
-  handleClick() {
+  handleClick = () => {
     this.setState({ showDropdown: true });
     this.getSuggestions();
-  }
+  };
 
-  clickFill(labName, labId) {
-    console.log(`click fill: ${labId}`);
-    this.setState({ value: labName });
-    this.setState({ labId });
-    this.setState({ showDropdown: false });
+  clickFill = (labName, labId) => {
+    this.setState({ value: labName, showDropdown: false });
 
     this.props.updateLab(labName, labId);
-  }
+  };
 
-  onBlur() {
+  onBlur = () => {
     setTimeout(() => {
       this.setState({
         showDropdown: false,
@@ -54,7 +49,7 @@ class AutoSuggest extends React.Component {
         cursor: -1,
       });
     }, 120);
-  }
+  };
 
   handleKeyDown(e) {
     const { cursor, suggestionLength } = this.state;
@@ -100,26 +95,29 @@ class AutoSuggest extends React.Component {
     if (suggestions.length > 0) {
       for (let i = 0; i < suggestions.length; i++) {
         if (!(inputLength === 0) && suggestions[i].name.toLowerCase().slice(0, inputLength) === inputValue) {
-          suggArray.push(<p
-            className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
-            onClick={this.clickFill.bind(this, suggestions[i].name, suggestions[i].id)}
-            key={suggestions[i].id}
-          >
-            {suggestions[i].name}
-                         </p>);
+          suggArray.push(
+            <p
+              className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
+              onClick={this.clickFill}
+              key={suggestions[i].id}
+            >
+              {suggestions[i].name}
+            </p>,
+          );
           if (this.state.cursor === positionShowing) {
-            this.setState({ highlightLabName: suggestions[i].name });
-            this.setState({ highlightLabId: suggestions[i].id });
+            this.setState({ highlightLabName: suggestions[i].name, highlightLabId: suggestions[i].id });
           }
           positionShowing += 1;
         } else if (inputLength === 0) {
-          suggArray.push(<p
-            className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
-            onClick={this.clickFill.bind(this, suggestions[i].name, suggestions[i].id)}
-            key={suggestions[i].id}
-          >
-            {suggestions[i].name}
-                         </p>);
+          suggArray.push(
+            <p
+              className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
+              onClick={this.clickFill}
+              key={suggestions[i].id}
+            >
+              {suggestions[i].name}
+            </p>,
+          );
           if (this.state.cursor === positionShowing) {
             this.setState({ highlightLabName: suggestions[i].name });
             this.setState({ highlightLabId: suggestions[i].id });
@@ -149,7 +147,7 @@ class AutoSuggest extends React.Component {
           placeholder="Type Lab Name Exactly As It Appears In The Auto Suggest Box (Or Click On It)"
           type="text"
           value={this.state.value}
-          onBlur={this.onBlur.bind(this)}
+          onBlur={this.onBlur}
           onKeyDown={this.handleKeyDown.bind(this)}
           onChange={this.handleChange}
           onClick={this.handleClick}
