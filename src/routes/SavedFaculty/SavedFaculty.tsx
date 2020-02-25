@@ -12,7 +12,7 @@ export default () => (
         <div className="column column-10" />
         <div className="column column-80">
           <div className="dashboard-header">Your Saved Faculty</div>
-          <Starred type="faculty" display={() => {}} />
+          <Starred type="faculty" />
         </div>
       </div>
     </div>

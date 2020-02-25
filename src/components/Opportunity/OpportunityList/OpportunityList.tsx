@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Opportunity from '../Opportunity';
 import './OpportunityList.scss';
+import { Opportunity as OpportunityType } from '../../../types';
 import * as Utils from '../../Utils';
 
-class OpportunityList extends Component {
-  constructor(props) {
+type Props = {
+  data: OpportunityType[];
+  filteredOptions: any;
+  searching: boolean;
+};
+type State = { starredOps: {}[]; role?: string };
+
+class OpportunityList extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { starredOps: [] };
     this.setUserRole();
@@ -23,7 +31,7 @@ class OpportunityList extends Component {
       });
   }
 
-  updateStar(opId) {
+  updateStar = (opId: string) => {
     const token_id = sessionStorage.getItem('token_id');
     const type = 'opportunity';
     const id = opId;
@@ -37,28 +45,33 @@ class OpportunityList extends Component {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  countNodes(nodes) {
+  countNodes(nodes: any[]) {
     const tempCount = nodes.filter((node) => !(!node)).length;
-    return tempCount === 1 ? 'There is 1 result' : tempCount === 0
-      ? 'There are no results' : `There are ${tempCount} results`;
+    if (tempCount === 0) {
+      return 'There are no results';
+    }
+    if (tempCount === 1) {
+      return 'There is 1 result';
+    }
+    return `There are ${tempCount} results`;
   }
 
-  union(arr1, arr2) {
+  union(arr1: string[], arr2: string[]) {
     return arr1.filter((i) => arr2.indexOf(i) > -1);
   }
 
-  checkboxFilter(filterSelected, filterAllowed) {
+  checkboxFilter(filterSelected: string[], filterAllowed: string[]): boolean {
     return (filterSelected.length === 0 || this.union(filterSelected, filterAllowed).length !== 0);
   }
 
   async setUserRole() {
+    // @ts-ignore
     this.setState({ role: await Utils.getUserRole() });
   }
 
   componentDidMount() {
-    console.log('component mounted');
     this.getStarredOps();
   }
 
@@ -105,35 +118,18 @@ class OpportunityList extends Component {
         const starred = this.state.starredOps.includes(opp._id);
         return (
           <Opportunity
-            filteredOptions={this.props.filteredOptions}
             key={opp._id}
             title={opp.title}
-            area={opp.areas}
-            labId={opp.labId}
-            labName={opp.labName}
-            pi={opp.pi}
-            supervisor={opp.supervisor}
             projectDescription={opp.projectDescription}
             undergradTasks={opp.undergradTasks}
             opens={opp.opens}
             closes={opp.closes}
             startSeason={opp.startSeason}
             startYear={opp.startYear}
-            minSemesters={opp.minSemesters}
-            minHours={opp.minHours}
-            maxHours={opp.maxHours}
-            qualifications={opp.qualifications}
-            minGPA={opp.minGPA}
-            requiredClasses={opp.requiredClasses}
-            questions={opp.questions}
-            additionalInformation={opp.additionalInformation}
-            yearsAllowed={opp.yearsAllowed}
             prereqsMatch={opp.prereqsMatch}
-            spots={opp.spots}
             opId={opp._id}
             starred={starred}
-            datePosted={opp.datePosted}
-            updateStar={this.updateStar.bind(this)}
+            updateStar={this.updateStar}
             role={this.state.role}
           />
         );

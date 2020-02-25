@@ -1,49 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
+// @ts-ignore
 import SearchIcon from 'react-icons/lib/io/search';
+// @ts-ignore
 import DeleteIcon from 'react-icons/lib/ti/delete';
 import '../../../routes/LandingPage/LandingPage.scss';
 
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchBar: '',
-      matchingSearches: [],
-      searching: false,
-      clickedEnter: false,
-    };
-  }
+type State = { searchBar: string };
 
-  clearSearch() {
-    this.setState({ searching: false });
-    this.setState({ searchBar: '' });
-    this.setState({ matchingSearches: [] });
-    this.setState({ clickedEnter: false });
-  }
+class SearchBar extends Component<{}, State> {
+  state: State = { searchBar: '' };
 
-  handleUpdateSearch(e) {
-    this.setState({ searchBar: e.target.value });
-    if (e.target.value === '') {
-      this.setState({ matchingSearches: [] });
-      this.setState({ clickedEnter: false });
-    }
-  }
+  clearSearch = () => this.setState({ searchBar: '' });
 
-  onFocus() {
-    this.setState({ searching: true });
-  }
+  handleUpdateSearch = (e: ChangeEvent<HTMLInputElement>) => this.setState({ searchBar: e.target.value });
 
-  onBlur() {
-    this.setState({ searching: false });
-  }
-
-  handleKeyPress(e) {
+  handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      this.setState({ clickedEnter: true });
       window.location.href = `/opportunities?search=${this.state.searchBar}`;
     }
-  }
-
+  };
 
   render() {
     return (
@@ -52,11 +27,9 @@ class SearchBar extends Component {
           <SearchIcon style={{ height: '100%' }} size={36} />
         </div>
         <input
-          onFocus={this.onFocus.bind(this)}
-          onBlur={this.onBlur.bind(this)}
           className="search-bar"
-          onKeyPress={this.handleKeyPress.bind(this)}
-          onChange={this.handleUpdateSearch.bind(this)}
+          onKeyPress={this.handleKeyPress}
+          onChange={this.handleUpdateSearch}
           value={this.state.searchBar}
           type="text"
           name="search"
@@ -67,7 +40,7 @@ class SearchBar extends Component {
           {
               this.state.searchBar !== '' ? (
                 <DeleteIcon
-                  onClick={this.clearSearch.bind(this)}
+                  onClick={this.clearSearch}
                   className="clear-icon"
                   style={{ height: '100%' }}
                   size={36}

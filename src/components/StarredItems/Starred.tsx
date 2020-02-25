@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import Faculty from '../Faculty/Faculty';
 import Opportunity from '../Opportunity/Opportunity';
 import './Starred.scss';
+import { Opportunity as OpportunityType, Professor } from '../../types';
 
-class Starred extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { starred: [], data: [] };
-  }
+type Props = {
+  type: string; // enum for getting starred items API call
+  limit?: number; // limit of showable starred items
+  label?: string;
+  filteredOptions?: any;
+};
+type Data = OpportunityType | Professor;
+type State<D extends Data = Data> = { starred: D[]; data: D[] };
+
+class Starred extends Component<Props, State> {
+  state: State = { starred: [], data: [] };
 
   loadData() {
     // line below is necessary because backend has different naming conventions,
@@ -19,10 +25,11 @@ class Starred extends Component {
 
     axios.get(`/api/undergrads/star?type=${this.props.type}&token_id=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        const { data } = response;
+        const { data }: { data: OpportunityType[] } = response;
         axios.get(`/api/${wrapper}`)
           .then((res) => {
-            const all = res.data;
+            const all: Data[] = res.data;
+            // @ts-ignore
             const onlyStarred = all.filter((i) => data.includes(i._id));
             this.setState({ data: onlyStarred, starred: data });
           });
@@ -32,7 +39,7 @@ class Starred extends Component {
       });
   }
 
-  updateStar(id) {
+  updateStar(id: string) {
     const token_id = sessionStorage.getItem('token_id');
     const { type } = this.props;
 
@@ -49,8 +56,9 @@ class Starred extends Component {
   }
 
   genOppCards() {
-    const oppNodes = this.state.data.map((opp) => {
-      const starred = this.state.starred.includes(opp._id);
+    const oppNodes = (this.state.data as OpportunityType[]).map((opp) => {
+      // @ts-ignore
+      const starred = (this.state.starred as OpportunityType[]).includes(opp._id);
       return (
         <Opportunity
           title={opp.title}
@@ -69,8 +77,9 @@ class Starred extends Component {
   }
 
   genFacCards() {
-    const profNodes = this.state.data.map((prof) => {
-      const starred = this.state.starred.includes(prof._id);
+    const profNodes = (this.state.data as Professor[]).map((prof) => {
+      // @ts-ignore
+      const starred = (this.state.starred as Professor[]).includes(prof._id);
       return (
         <Faculty
           key={prof._id}
@@ -107,7 +116,7 @@ class Starred extends Component {
     return null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadData();
   }
 
@@ -128,13 +137,7 @@ class Starred extends Component {
         </div>
       </div>
     );
-  }// end render
-}// end class
-
-Starred.propTypes = {
-  type: PropTypes.string.isRequired, // enum for getting starred items API call
-  limit: PropTypes.number, // limit of showable starred items
-  label: PropTypes.string,
-};
+  }
+}
 
 export default Starred;
