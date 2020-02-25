@@ -59,7 +59,8 @@ class ProfessorView extends Component {
     this.setState({ opportunity: opp });
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.state.loading = false; // temporary
     axios.all([
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
       axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
@@ -76,10 +77,6 @@ class ProfessorView extends Component {
         opps.unshift('All');
         this.setState({ opportunities: opps });
       }));
-  }
-
-  componentDidMount() {
-    this.state.loading = false; // temporary
   }
 
   render() {

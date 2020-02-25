@@ -43,7 +43,6 @@ const port = process.env.PORT || 3001;
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 // TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
 app.use(cors());
 app.use(fileUpload());
@@ -84,8 +83,8 @@ app.use('/api/classes', classesRoute);
 // });
 
 app.use('/api', router);
-app.use(express.static('./src/docs'));
-app.use('/*', express.static('./src/docs'));
+app.use(express.static('./build'));
+app.use('/*', express.static('./build'));
 
 
 /** Begin ENDPOINTS */

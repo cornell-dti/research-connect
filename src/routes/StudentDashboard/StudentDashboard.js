@@ -19,7 +19,8 @@ class StudentDashboard extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.state.loading = false;
     axios.all([
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
       axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`),
@@ -31,10 +32,6 @@ class StudentDashboard extends Component {
         const info = res.data[0];
         this.setState({ name: info.firstName });
       }));
-  }
-
-  componentDidMount() {
-    this.state.loading = false;
   }
 
   render() {
