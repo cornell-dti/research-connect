@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+/* eslint-disable react/prop-types */
+import React, { Component, MouseEvent } from 'react';
 import {
   Editor,
   EditorState,
@@ -6,34 +7,39 @@ import {
   getDefaultKeyBinding,
   convertFromHTML,
   ContentState,
+  // @ts-ignore
 } from 'draft-js';
 import './RichTextEditor.css';
 import 'draft-js/dist/Draft.css';
 import axios from 'axios';
 
-class RichTextEditor extends Component {
-  constructor(props) {
+type EditorState = any;
+
+type Props = {
+  tokenId?: string;
+};
+
+class RichTextEditor extends Component<Props, { editorState: EditorState; loadedInitialHtml?: boolean }> {
+  constructor(props: Props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
-    // eslint-disable-next-line react/no-string-refs
-    this.focus = () => this.refs.editor.focus();
-    this.onChange = (editorState) => this.setState({ editorState });
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
 
-  _handleKeyCommand(command, editorState) {
+  // eslint-disable-next-line react/no-string-refs
+  focus = () => (this.refs.editor as any).focus();
+
+  onChange = (editorState: EditorState) => this.setState({ editorState });
+
+  handleKeyCommand = (command: string, editorState: EditorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
     }
     return false;
-  }
+  };
 
-  _mapKeyToEditorCommand(e) {
+  mapKeyToEditorCommand = (e: KeyboardEvent) => {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichUtils.onTab(
         e,
@@ -46,25 +52,25 @@ class RichTextEditor extends Component {
       return undefined;
     }
     return getDefaultKeyBinding(e);
-  }
+  };
 
-  _toggleBlockType(blockType) {
+  toggleBlockType = (blockType: string) => {
     this.onChange(
       RichUtils.toggleBlockType(
         this.state.editorState,
         blockType,
       ),
     );
-  }
+  };
 
-  _toggleInlineStyle(inlineStyle) {
+  toggleInlineStyle = (inlineStyle: any) => {
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
         inlineStyle,
       ),
     );
-  }
+  };
 
   render() {
     const { editorState } = this.state;
@@ -84,11 +90,6 @@ class RichTextEditor extends Component {
             editorState: EditorState.createWithContent(content),
             loadedInitialHtml: true,
           });
-        // const contentState = textEditorState.editorState.getCurrentContent();
-        // this.setState({emailHtml: result});
-        })
-        .catch((error) => {
-          this.sendToHome(error);
         });
     }
     // If the user changes block type before entering any text, we can
@@ -137,20 +138,17 @@ const styleMap = {
     padding: 2,
   },
 };
-function getBlockStyle(block) {
+function getBlockStyle(block: { getType: () => string }) {
   switch (block.getType()) {
     case 'blockquote': return 'RichEditor-blockquote';
     default: return null;
   }
 }
-class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
-  }
+class StyleButton extends React.Component<{ style: any; active: boolean; label: string; onToggle: Function }> {
+  onToggle = (e: MouseEvent) => {
+    e.preventDefault();
+    this.props.onToggle(this.props.style);
+  };
 
   render() {
     let className = 'RichEditor-styleButton';
@@ -175,7 +173,7 @@ const BLOCK_TYPES = [
   // { label: 'UL', style: 'unordered-list-item' },
   { label: 'OL', style: 'ordered-list-item' },
 ];
-const BlockStyleControls = (props) => {
+const BlockStyleControls = (props: { editorState: EditorState, onToggle: Function }) => {
   const { editorState } = props;
   const selection = editorState.getSelection();
   const blockType = editorState
@@ -201,7 +199,7 @@ const INLINE_STYLES = [
   { label: 'Italic', style: 'ITALIC' },
   { label: 'Underline', style: 'UNDERLINE' },
 ];
-const InlineStyleControls = (props) => {
+const InlineStyleControls = (props: { editorState: EditorState, onToggle: Function }) => {
   const currentStyle = props.editorState.getCurrentInlineStyle();
 
   return (

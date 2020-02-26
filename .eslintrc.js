@@ -24,12 +24,8 @@ module.exports = {
     'react/jsx-filename-extension': ['off'],
     'react/jsx-fragments': ['off'],
     'react/destructuring-assignment': ['off'],
-    'react/no-array-index-key': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/no-unescaped-entities': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/no-unused-state': ['warn'], // TODO: turn it into error when problems are fixed.
-    'react/prop-types': ['off'], // TODO: turn it into error when problems are fixed.
-    'react/forbid-prop-types': ['off'], // TODO: turn it into error when problems are fixed.
-    'react/require-default-props': ['off'], // TODO: turn it into error when problems are fixed.
     'react/sort-comp': ['off'],
   },
   'env': {

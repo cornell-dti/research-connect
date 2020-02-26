@@ -6,7 +6,7 @@ import { logoutGoogle } from '../../Utils';
 import * as Utils from '../../Utils';
 import { NavBarOptions } from '../types';
 
-type Props = { current: NavBarOptions };
+type Props = { current?: NavBarOptions };
 type State = { labId: string; loggedIn: boolean; onNewOppPage: boolean };
 
 class ProfessorNavbar extends Component<Props, State> {
@@ -37,7 +37,6 @@ class ProfessorNavbar extends Component<Props, State> {
           alert('You have to have an account to view this page');
           window.location.href = '/';
         } else {
-          // console.log(response.data);
           this.setState({ labId: response.data });
         }
       })
@@ -46,7 +45,6 @@ class ProfessorNavbar extends Component<Props, State> {
           Utils.handleTokenError(error);
         }
       });
-    /** END check to see if they're logged in */
   }
 
   render() {

@@ -12,13 +12,23 @@ import Footer from '../../components/Footer/Footer';
 import EmailDialog from '../../components/EmailDialog/EmailDialog';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
-class ApplicationPage extends Component {
-  constructor(props) {
+type Props = { match: { params: { id: string } } };
+type State = {
+  application: any;
+  opportunity: any;
+  resumeId: string;
+  transcriptId: string;
+  loading: boolean;
+};
+
+class ApplicationPage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       application: [],
       opportunity: [],
       resumeId: '',
+      transcriptId: '',
       loading: true,
     };
     ReactGA.initialize('UA-69262899-9');
@@ -26,18 +36,14 @@ class ApplicationPage extends Component {
   }
 
   componentDidMount() {
-    // this.setState({ loading: false });
-    // temporary
-    this.state.loading = false;
-    axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')
-    }&netId=` + 'prk57').then((response) => {
+    axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}&netId=prk57`).then((response) => {
       const oppsList = response.data;
       Object.keys(oppsList).forEach((opp) => {
-        oppsList[opp].applications.forEach((app) => {
+        oppsList[opp].applications.forEach((app: any) => {
           const curOpp = oppsList[opp].opportunity;
           if (app !== undefined) {
             if (app.id === this.props.match.params.id) {
-              this.setState({ application: app, opportunity: curOpp });
+              this.setState({ application: app, opportunity: curOpp, loading: false });
               axios.get(
                 `/api/undergrads/la/${this.state.application.undergradNetId
                 }?tokenId=${sessionStorage.getItem('token_id')}`,
@@ -61,7 +67,7 @@ class ApplicationPage extends Component {
     });
   }
 
-  toDivList(lst) {
+  toDivList(lst: string[]) {
     return lst.map((e) => (
       <div key={e}>
         {' '}
@@ -71,7 +77,7 @@ class ApplicationPage extends Component {
     ));
   }
 
-  getNoGPA(gpa) {
+  getNoGPA(gpa: number) {
     if (gpa === 5.0) {
       return 'No GPA';
     }
@@ -108,6 +114,7 @@ class ApplicationPage extends Component {
   render() {
     if (this.state.loading) {
       const style = { display: 'block', margin: 0, borderColor: 'red' };
+      // @ts-ignore
       const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
