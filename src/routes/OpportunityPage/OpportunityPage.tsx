@@ -1,10 +1,7 @@
 import React, { Component, ChangeEvent } from 'react';
 import axios from 'axios';
 import './OpportunityPage.scss';
-// @ts-ignore
-import CheckBox from 'react-icons/lib/fa/check-square-o';
-// @ts-ignore
-import CrossCircle from 'react-icons/lib/fa/minus-circle';
+import { FaRegCheckSquare as CheckBox, FaMinusCircle as CrossCircle } from 'react-icons/fa';
 import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
@@ -191,9 +188,12 @@ class OpportunityPage extends Component<Props, State> {
   }
 
   printQuestions() {
-    if (Object.keys(this.state.opportunity.questions).length >= 0) {
-      const keys = Object.keys(this.state.opportunity.questions);
-
+    const { questions } = this.state.opportunity;
+    if (questions == null) {
+      return <div />;
+    }
+    const keys = Object.keys(questions);
+    if (keys.length >= 0) {
       // sort the keys by their number
       keys.sort((a, b) => parseInt(a.replace('q', ''), 10) - parseInt(b.replace('q', ''), 10));
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './DashboardAction.scss';
-// @ts-ignore
-import AngleRight from 'react-icons/lib/fa/angle-right';
+import { FaAngleRight as AngleRight } from 'react-icons/fa';
 
 type Props = { icon: JSX.Element; iconColor: string; text: string; href: string; };
 

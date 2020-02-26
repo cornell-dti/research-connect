@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import './ApplicationBox.scss';
 import '../../../index.css';
-// @ts-ignore
-import Calendar from 'react-icons/lib/fa/calendar-check-o';
-// @ts-ignore
-import Info from 'react-icons/lib/fa/info-circle';
+import { FaCalendarCheck as Calendar, FaInfoCircle as Info } from 'react-icons/fa';
 import * as Utils from '../../Utils';
 
 type Props = {

@@ -3,12 +3,7 @@ import '../App/App.scss';
 import './ProfessorDashboard.scss';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
-// @ts-ignore
-import Newspaper from 'react-icons/lib/fa/newspaper-o';
-// @ts-ignore
-import Inbox from 'react-icons/lib/fa/inbox';
-// @ts-ignore
-import Edit from 'react-icons/lib/fa/edit';
+import { FaNewspaper as Newspaper, FaInbox as Inbox, FaEdit as Edit } from 'react-icons/fa';
 import * as ReactGA from 'react-ga';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
@@ -65,9 +60,7 @@ class ProfessorDashboard extends Component<{}, State> {
 
   render() {
     if (this.state.loading) {
-      const style = { display: 'block', margin: 0, borderColor: 'red' };
-      // @ts-ignore
-      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      const loader = <ClipLoader size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
     if (this.state.errorLoadingDataExists) {

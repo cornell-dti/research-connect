@@ -1,14 +1,9 @@
 import React, { Component, ChangeEvent, MouseEvent } from 'react';
 import './EditProfile.scss';
 import '../../index.css';
-// @ts-ignore
-import Pencil from 'react-icons/lib/fa/pencil';
-// @ts-ignore
-import Delete from 'react-icons/lib/ti/delete';
-// @ts-ignore
-import Check from 'react-icons/lib/fa/check';
-// @ts-ignore
-import Add from 'react-icons/lib/md/add-circle';
+import { FaPencilAlt as Pencil, FaCheck as Check } from 'react-icons/fa';
+import { TiDelete as Delete } from 'react-icons/ti';
+import { MdAddCircle as Add } from 'react-icons/md';
 // @ts-ignore
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
@@ -199,7 +194,13 @@ class EditProfile extends Component<{}, State> {
             placeholder="Add new course here"
             value={this.state.newCourse}
           />
-          <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse} />
+          <Add
+            className="add-icon"
+            // @ts-ignore
+            value={this.state.newCourse}
+            size={22}
+            onClick={this.addCourse}
+          />
           {list}
         </div>
       );
@@ -247,7 +248,13 @@ class EditProfile extends Component<{}, State> {
             value={this.state.newSkill}
           />
 
-          <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill} />
+          <Add
+            className="add-icon"
+            // @ts-ignore
+            value={this.state.newSkill}
+            size={22}
+            onClick={this.addSkill}
+          />
           {list}
         </div>
       );
@@ -463,6 +470,7 @@ class EditProfile extends Component<{}, State> {
                         <Pencil
                           size={20}
                           className="pencil-icon"
+                          // @ts-ignore
                           alt="edit"
                           onClick={this.handleEditResume}
                         />

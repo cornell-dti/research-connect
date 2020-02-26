@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './ApplicationPage.scss';
-// @ts-ignore
-import ExternalLink from 'react-icons/lib/fa/external-link';
-// @ts-ignore
-import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
+import { FaExternalLinkAlt as ExternalLink, FaArrowLeft } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
 import * as Utils from '../../components/Utils';
@@ -113,9 +110,7 @@ class ApplicationPage extends Component<Props, State> {
 
   render() {
     if (this.state.loading) {
-      const style = { display: 'block', margin: 0, borderColor: 'red' };
-      // @ts-ignore
-      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      const loader = <ClipLoader size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
 
@@ -133,7 +128,7 @@ class ApplicationPage extends Component<Props, State> {
         <Navbar />
         <div className="application-page-container">
           <div className="return-to-apps" onClick={this.returnToApps.bind(this)}>
-            <FaLongArrowLeft className="black-arrow" />
+            <FaArrowLeft className="black-arrow" />
             Return to applications
 
           </div>
