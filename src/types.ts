@@ -22,12 +22,16 @@ export type Opportunity = {
   requiredClasses: string[];
   questions: string[];
   yearsAllowed: string[];
+  majorsAllowed: string[];
   additionalInformation: string;
   spots: number;
   areas: string[];
   compensation: string[];
   starred: boolean;
   prereqsMatch: boolean;
+  facultyId: string;
+  ghostPost?: string;
+  ghostEmail?: string;
 };
 
 export type Professor = {
