@@ -34,14 +34,12 @@ class ApplicationList extends Component<Props, State> {
   shouldShow(application: any): boolean {
     const { filter } = this.props;
 
-    if (filter.opportunity.toLowerCase() !== 'all'
-        && filter.opportunity !== application.opportunity) return false;
+    if (filter.opportunity.toLowerCase() !== 'all' && filter.opportunity !== application.opportunity) return false;
 
     const yearsSelected = filter.yearSelect;
     const { gradYear } = application;
 
-    if (yearsSelected.includes(Utils.gradYearToGrade(gradYear))
-       || yearsSelected.length === 0) {
+    if (yearsSelected.includes(Utils.gradYearToGrade(gradYear)) || yearsSelected.length === 0) {
       const minGPA = filter.gpaSelect;
 
       if (minGPA <= application.gpa) {

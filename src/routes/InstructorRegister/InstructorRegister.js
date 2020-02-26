@@ -56,7 +56,7 @@ class InstructorRegister extends React.Component {
   // }
 
 
-  toggleNewLab() {
+  toggleNewLab = () => {
     this.setState((state) => {
       const update = {
         labNameValid: false,
@@ -69,18 +69,13 @@ class InstructorRegister extends React.Component {
       }
       return update;
     });
-  }
+  };
 
-  handleUpdateLab(labName, id) {
+  handleUpdateLab = (labName, id) => {
     if (!this.state.newLab) {
-      this.setState({ labId: id, name: labName });
-      if (labName !== '') {
-        this.setState({ labNameValid: true });
-      } else {
-        this.setState({ labNameValid: false });
-      }
+      this.setState({ labId: id, name: labName, labNameValid: labName !== '' });
     }
-  }
+  };
 
   loadOpportunitiesFromServer() {
     axios.get('/api/labs')
@@ -319,15 +314,15 @@ class InstructorRegister extends React.Component {
                           type="button"
                           className="right-button button-small-clear"
                           value="Add New Lab"
-                          onClick={this.toggleNewLab.bind(this)}
+                          onClick={this.toggleNewLab}
                         />
                       </div>
                       <div className="auto-div">
                         <AutoSuggest
                           className="left-input"
-                          updateLab={this.handleUpdateLab.bind(this)}
+                          updateLab={this.handleUpdateLab}
                           showDropdown={this.state.showDropdown}
-                          onChange={this.handleUpdateLab.bind(this)}
+                          onChange={this.handleUpdateLab}
                           data={this.state.data}
                         />
                         {!this.state.labNameValid && this.state.triedSubmitting

@@ -34,6 +34,7 @@ export type Professor = {
   _id: ID;
   name: string;
   department: string;
+  accepting: string;
   lab: string;
   photoId: string;
   bio: string;

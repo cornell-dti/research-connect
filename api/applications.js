@@ -149,11 +149,8 @@ app.post('/', (req, res) => {
       skills: [],
       opportunity: opportunity.title,
     };
-    undergradModel.find({ netId: req.body.netId }, (err2, u) => {
-      console.log(`undergrad is: ${u[0].skills}`);
+    undergradModel.find({ netId: req.body.netId }, (_, u) => {
       application.skills = u[0].skills;
-      console.log('Application dictionary set');
-      console.log(`Skills be: ${application.skills}`);
       opportunity.applications.push(application);
       opportunity.save((err3) => {
         if (err3) {

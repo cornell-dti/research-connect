@@ -1,6 +1,6 @@
 import React from 'react';
 import Detail, { UpdateDetailFunction } from './Detail';
-import * as Utils from '../Utils';
+import { csAreas } from '../constants';
 
 function CSAreasAllowed(props: { readonly update: UpdateDetailFunction }) {
   return (
@@ -8,7 +8,7 @@ function CSAreasAllowed(props: { readonly update: UpdateDetailFunction }) {
       detailName="areas"
       label="CS Areas"
       updateDetail={props.update}
-      choices={Utils.getCSAreas()}
+      choices={csAreas}
       type="checkbox"
     />
   );

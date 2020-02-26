@@ -6,8 +6,8 @@ import Footer from '../../components/Footer/Footer';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils';
+import { majorList } from '../../components/constants';
 
-const majorList = Utils.getMajorList();
 const gradYears = [
   new Date().getFullYear(),
   new Date().getFullYear() + 1,
@@ -95,9 +95,7 @@ class StudentRegister extends Component {
     }
   };
 
-  handleUpdateCourses(courseList) {
-    this.setState({ courses: courseList });
-  }
+  handleUpdateCourses = (courseList) => this.setState({ courses: courseList });
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -173,11 +171,10 @@ class StudentRegister extends Component {
             />
 
             {this.optionify(gradYears, 'gradYear')}
-
             {this.optionify(majorList, 'major')}
 
             <div className="student-register-course-select">
-              <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+              <CourseSelect updateCourses={this.handleUpdateCourses} />
             </div>
 
             <br />

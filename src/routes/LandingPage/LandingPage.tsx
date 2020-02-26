@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// @ts-ignore
 import { Container, Row, Col } from 'reactstrap';
 import './LandingPage.scss';
 import axios from 'axios';
@@ -53,7 +54,7 @@ class Landing extends Component {
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
   };
 
-  responseGoogleStudent = (response) => {
+  responseGoogleStudent = (response: any) => {
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
@@ -70,7 +71,7 @@ class Landing extends Component {
     });
   };
 
-  responseGoogle = (response) => {
+  responseGoogle = (response: any) => {
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
     sessionStorage.setItem('netId', response.profileObj.email.replace('@cornell.edu', ''));
@@ -132,14 +133,11 @@ class Landing extends Component {
           <div className="background-image" />
           <h1>Research Connect</h1>
           <h3>Find your next CS research opportunity.</h3>
-          <SearchBar id="search-div-container1" />
+          <SearchBar />
         </section>
 
         <section className="middleContainer2">
           <Container style={{ marginLeft: 'auto' }}>
-            {/* <Row> */}
-            {/* <p>Are you a professor, student, or other faculty member looking for research assistants? <a href="/profLanding">Visit Research Connect for Labs </a></p> */}
-            {/* </Row> */}
             <Row>
               <h2 className="big ">Explore Popular Areas of Interest</h2>
             </Row>

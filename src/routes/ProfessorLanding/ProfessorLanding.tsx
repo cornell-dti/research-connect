@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// @ts-ignore
 import { Container, Row, Col } from 'reactstrap';
 import './ProfessorLanding.scss';
 import axios from 'axios';
@@ -16,9 +17,8 @@ import CDTIlogo from '../../images/cdti.png';
 import * as Utils from '../../components/Utils';
 
 class ProfessorLanding extends Component {
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
-    this.state = {};
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
@@ -50,7 +50,7 @@ class ProfessorLanding extends Component {
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
   };
 
-  responseGoogleStudent = (response) => {
+  responseGoogleStudent = (response: any) => {
     sessionStorage.setItem('token_id', response.tokenId);
     // if they're signing up with an email that's not a cornell one, reject it
     if (response.profileObj.email.indexOf('@cornell.edu') === -1) {
@@ -66,7 +66,7 @@ class ProfessorLanding extends Component {
     });
   };
 
-  responseGoogle = (response) => {
+  responseGoogle = (response: any) => {
     sessionStorage.setItem('token_id', response.tokenId);
     // TODO this is wrong, will not always be net id since not all professors have net id emails... remove all references to this session item
     sessionStorage.setItem('netId', response.profileObj.email.replace('@cornell.edu', ''));

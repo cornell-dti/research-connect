@@ -65,35 +65,26 @@ class CreateOppForm extends React.Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.addQuestion = this.addQuestion.bind(this);
-    this.displayQuestions = this.displayQuestions.bind(this);
   }
 
   // Returns an array of CS areas
-  displayAreas() {
+  displayAreas = () => {
     const arrayOfAreas = [];
     for (let i = 0; i < this.state.areaData.length; i++) {
       arrayOfAreas.push({ label: this.state.areaData[i].name, value: this.state.areaData[i]._id });
     }
     return arrayOfAreas;
-  }
+  };
 
   loadAreasFromServer() {
     // Need code for getting areas
     axios.get('/api/labs')
-      .then((res) => {
-        this.setState({ areaData: res.data });
-        console.log(res.data);
-      }).catch((error) => {
-        console.log('error in create opportunity form');
-        Utils.handleTokenError(error);
-      });
+      .then((res) => this.setState({ areaData: res.data }))
+      .catch((error) => Utils.handleTokenError(error));
   }
 
   // display the questions interface to add/delete questions
-  displayQuestions() {
+  displayQuestions = () => {
     const questionBoxes = [];
     for (let i = 0; i < this.state.numQuestions; i++) {
       const stateLabel = `q${(i).toString()}`;
@@ -107,14 +98,14 @@ class CreateOppForm extends React.Component {
           <input
             name={i}
             value={this.state.questions[stateLabel]}
-            onChange={this.handleQuestionState.bind(this, i)}
+            onChange={() => this.handleQuestionState(i)}
             className="question"
             type="text"
           />
           <Delete
             size={30}
             id={i}
-            onClick={this.deleteQuestion.bind(this, stateLabel)}
+            onClick={() => this.deleteQuestion(stateLabel)}
             className="deleter-icon"
           />
         </div>,
@@ -125,15 +116,15 @@ class CreateOppForm extends React.Component {
         {questionBoxes}
       </div>
     );
-  }
+  };
 
-  deleteQuestion(data) {
+  deleteQuestion = (data) => {
     const deleted = parseInt(data.slice(1), 10);
     const newQnum = this.state.numQuestions - 1;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     const questionsEdit = {};
 
-    for (const question in questionsCopy) {
+    Object.keys(questionsCopy).forEach((question) => {
       const num = parseInt(question.slice(1), 10);
       if (num < deleted) {
         questionsEdit[question] = questionsCopy[question];
@@ -141,20 +132,20 @@ class CreateOppForm extends React.Component {
         const newString = `q${(num - 1).toString()}`;
         questionsEdit[newString] = questionsCopy[question];
       }
-    }
+    });
     this.setState({ numQuestions: newQnum, questions: questionsEdit });
-  }
+  };
 
-  addQuestion() {
+  addQuestion = () => {
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
     this.setState({
       questions: questionsCopy,
     });
     this.setState(({ numQuestions }) => ({ numQuestions: numQuestions + 1 }));
-  }
+  };
 
-  createGpaOptions() {
+  createGpaOptions = () => {
     const options = [];
     for (let i = 25; i <= 43; i++) {
       options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
@@ -170,36 +161,28 @@ class CreateOppForm extends React.Component {
         {options}
       </select>
     );
-  }
+  };
 
-  updateFilterOption(filterType, option) {
+  updateFilterOption = (filterType, option) => {
     this.setState((state) => {
       if (state[filterType].includes(option)) {
         return { [filterType]: state[filterType].filter((original) => original !== option) };
       }
       return { [filterType]: [...state[filterType], option] };
     });
-  }
+  };
 
-  handleUpdateYear(e) {
-    const option = e.target.value;
-    this.updateFilterOption('yearsAllowed', option);
-  }
+  handleUpdateYear = (e) => this.updateFilterOption('yearsAllowed', e.target.value);
 
-  handleUpdateCompensation(e) {
-    const option = e.target.value;
-    this.updateFilterOption('compensation', option);
-  }
+  handleUpdateCompensation = (e) => this.updateFilterOption('compensation', e.target.value);
 
-  toggleDetails() {
-    this.setState(({ showDetails }) => ({
-      detailsButtonValue: showDetails ? 'Show Advanced Options' : 'Hide Advanced Options',
-      showDetails: !showDetails,
-    }));
-  }
+  toggleDetails = () => this.setState(({ showDetails }) => ({
+    detailsButtonValue: showDetails ? 'Show Advanced Options' : 'Hide Advanced Options',
+    showDetails: !showDetails,
+  }));
 
   // Set values of form items in state and change their validation state if they're invalid
-  handleChange(event) {
+  handleChange = (event) => {
     if (event.target.name === 'labName') {
       this.setState({ labName: event.target.value });
     } else if (event.target.name === 'netID') {
@@ -242,26 +225,22 @@ class CreateOppForm extends React.Component {
     } else if (event.target.name === 'additional') {
       this.setState({ additionalInformation: event.target.value });
     }
-  }
+  };
 
-  handleQuestionState(i) {
+  handleQuestionState = (i) => {
     const stateLabel = `q${i.toString()}`;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
     this.setState({ questions: questionsCopy });
-  }
+  };
 
-  handleOpenDateChange(date) {
-    this.setState({ opens: date });
-  }
+  handleOpenDateChange = (date) => this.setState({ opens: date });
 
-  handleCloseDateChange(date) {
-    this.setState({ closes: date });
-  }
+  handleCloseDateChange = (date) => this.setState({ closes: date });
 
-  isValid() {
-    return this.state.titleIsValid && this.state.tasksAreValid && this.state.seasonIsValid && this.state.yearIsValid;
-  }
+  isValid = () => (
+    this.state.titleIsValid && this.state.tasksAreValid && this.state.seasonIsValid && this.state.yearIsValid
+  );
 
   // takes care of sending the form data to the back-end
   onSubmit = (e) => {
@@ -589,9 +568,7 @@ class CreateOppForm extends React.Component {
                   </ReactTooltip>
                 </div>
 
-                <CompensationAllowed
-                  update={Utils.updateMultipleChoiceFilter.bind(this)}
-                />
+                <CompensationAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
 
                 <div className="hours row input-row optional">
                   <input
@@ -664,13 +641,9 @@ class CreateOppForm extends React.Component {
                   </ReactTooltip>
                 </div>
 
-                <YearsAllowed
-                  update={Utils.updateMultipleChoiceFilter.bind(this)}
-                />
+                <YearsAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
 
-                <CSAreasAllowed
-                  update={Utils.updateMultipleChoiceFilter.bind(this)}
-                />
+                <CSAreasAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
 
                 <div className="row input-row optional">
                   <textarea
@@ -702,14 +675,14 @@ class CreateOppForm extends React.Component {
                     className="datePicker"
                     placeholderText="Select a date"
                     selected={this.state.opens}
-                    onChange={this.handleOpenDateChange.bind(this)}
+                    onChange={this.handleOpenDateChange}
                   />
 
                   <label className="label-inline ">Close Application Window (if applicable): </label>
                   <DatePicker
                     className="datePicker"
                     selected={this.state.closes}
-                    onChange={this.handleCloseDateChange.bind(this)}
+                    onChange={this.handleCloseDateChange}
                   />
                 </div>
                 <hr />
@@ -745,7 +718,7 @@ class CreateOppForm extends React.Component {
                   className="button"
                   type="button"
                   value={this.state.detailsButtonValue}
-                  onClick={this.toggleDetails.bind(this)}
+                  onClick={this.toggleDetails}
                 />
               </div>
               <div className="submit-div">

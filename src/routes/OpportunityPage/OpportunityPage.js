@@ -56,7 +56,7 @@ class OpportunityPage extends Component {
     this.parseGPA = this.parseGPA.bind(this);
   }
 
-  star() {
+  star = () => {
     const token_id = sessionStorage.getItem('token_id');
     const type = 'opportunity';
     const { id } = this.props.match.params;
@@ -71,7 +71,7 @@ class OpportunityPage extends Component {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   isEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -148,9 +148,7 @@ class OpportunityPage extends Component {
         const { data } = response;
         this.setState({ starred: data.includes(this.props.match.params.id) });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
     axios.get(`/api/opportunities/${this.props.match.params.id}?netId=${
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
@@ -544,38 +542,25 @@ class OpportunityPage extends Component {
                   <div className="header">
                     {this.state.opportunity.title}
                     <Star
-                      update={this.star.bind(this)}
+                      update={this.star}
                       starred={this.state.starred}
                     />
                   </div>
                   <div>{this.state.opportunity.ghostPost ? '' : this.state.opportunity.labName}</div>
                 </div>
                 <div className="column right-column" style={{ marginBottom: 0 }}>
-                  {!isNotLoggedIn && !isLab
-                    && <a className="button" href="#Application">Apply</a>
-                      /* { this.state.opportunity.ghostPost ? ": Rolling Admission" : this.convertDate(this.state.opportunity.closes) } */
-                    }
-                  {!isNotLoggedIn && isLab
-                    && (
-                    <a
-                      className="button"
-                      href={`/EditOpp?Id=${this.props.match.params.id}/`}
-                    >
+                  {!isNotLoggedIn && !isLab && <a className="button" href="#Application">Apply</a>}
+                  {!isNotLoggedIn && isLab && (
+                    <a className="button" href={`/EditOpp?Id=${this.props.match.params.id}/`}>
                       Edit
                       Opportunity
                     </a>
-                    )}
-                  {isNotLoggedIn
-                    && (
-                    <a
-                      className={`button ${
-                        isNotLoggedIn ? 'back-to-opportunities' : ''}`}
-                      href="/opportunities"
-                    >
+                  )}
+                  {isNotLoggedIn && (
+                    <a className={`button ${isNotLoggedIn ? 'back-to-opportunities' : ''}`} href="/opportunities">
                       Back To Opportunities
                     </a>
-                    )}
-
+                  )}
                 </div>
               </div>
               <div className="row">
@@ -608,7 +593,8 @@ class OpportunityPage extends Component {
                     <div className="header">Start Period:</div>
                     <div>
                       {/* Varies, can contact any time. */}
-                      {/* Changed it b/c launch was soon and these opportunities had no specific start date... must change later TODO */}
+                      {/* Changed it b/c launch was soon and these opportunities had no specific start date */}
+                      {/* ... must change later TODO */}
                       {this.state.opportunity.startSeason
                         ? `${this.state.opportunity.startSeason} `
                         : '(Season not specified) '}

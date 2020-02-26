@@ -43,13 +43,9 @@ class EditProfile extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-    // this.loadInfoFromServer();
-    this.loadInfoFromServer = this.loadInfoFromServer.bind(this);
-    this.displayCourses = this.displayCourses.bind(this);
-    this.displaySkills = this.displaySkills.bind(this);
   }
 
-  loadInfoFromServer() {
+  componentDidMount() {
     axios.get(`/api/undergrads/token/${sessionStorage.getItem('token_id')}`)
       .then((res) => {
         const info = res.data[0];
@@ -72,11 +68,7 @@ class EditProfile extends Component {
       });
   }
 
-  componentDidMount() {
-    this.loadInfoFromServer();
-  }
-
-  handleChange(event) {
+  handleChange = (event) => {
     if (event.target.id === 'year') {
       this.setState({ year: event.target.value });
     } else if (event.target.id === 'major') {
@@ -88,13 +80,13 @@ class EditProfile extends Component {
     } else if (event.target.id === 'new-skill') {
       this.setState({ newSkill: event.target.value });
     }
-  }
+  };
 
-  handleEditUpperBox() {
+  handleEditUpperBox = () => {
     this.setState(({ editYear, editMajor }) => ({ editYear: !editYear, editMajor: !editMajor }));
-  }
+  };
 
-  handleEditYear() {
+  handleEditYear = () => {
     const presentYear = new Date().getFullYear();
     const validateYear = [presentYear + 4, presentYear + 3, presentYear + 2, presentYear + 1, presentYear];
     if (validateYear.indexOf(parseInt(this.state.year, 10)) === -1) {
@@ -102,38 +94,25 @@ class EditProfile extends Component {
     } else {
       this.setState(({ editYear }) => ({ invalidYear: false, editYear: !editYear }));
     }
-  }
+  };
 
-  handleEditMajor() {
+  handleEditMajor = () => {
     if (this.state.major === '') {
       this.setState({ invalidMajor: true });
     } else {
       this.setState(({ editMajor }) => ({ invalidMajor: false, editMajor: !editMajor }));
     }
-  }
+  };
 
-  handleEditResume() {
-    this.setState(({ editResume }) => ({ editResume: !editResume }));
-  }
+  handleEditResume = () => this.setState(({ editResume }) => ({ editResume: !editResume }));
 
-  handleEditTranscript() {
-    this.setState(({ editTranscript }) => ({ editTranscript: !editTranscript }));
-  }
+  handleEditTranscript = () => this.setState(({ editTranscript }) => ({ editTranscript: !editTranscript }));
 
-  // Was useful when there was a pencil icon for skills and course. It is commented out if needed
-  // handleEditSkills(event) {
-  //     this.setState({editSkills: !this.state.editSkills});
-  // }
-
-  // handleEditCourses(event) {
-  //     this.setState({editCourses: !this.state.editCourses});
-  // }
-
-  handleDeleteCourse(data) {
+  handleDeleteCourse = (data) => {
     this.setState((state) => ({ relevantCourses: state.relevantCourses.filter((course) => course !== data) }));
-  }
+  };
 
-  addCourse() {
+  addCourse = () => {
     if (this.state.newCourse !== '') {
       this.setState((state) => ({
         relevantCourses: [...state.relevantCourses, state.newCourse],
@@ -142,20 +121,20 @@ class EditProfile extends Component {
     }
   }
 
-  handleDeleteSkill(data) {
+  handleDeleteSkill = (data) => {
     this.setState((state) => ({ relevantSkills: state.relevantSkills.filter((skill) => skill !== data) }));
-  }
+  };
 
-  addSkill() {
+  addSkill = () => {
     if (this.state.newSkill !== '') {
       this.setState((state) => ({
         relevantSkills: [...state.relevantSkills, state.newSkill],
         newSkill: '',
       }));
     }
-  }
+  };
 
-  displayCourses() {
+  displayCourses = () => {
     const list = [];
     if (this.state.editCourses) {
       for (let i = 0; i < this.state.relevantCourses.length; i++) {
@@ -171,7 +150,7 @@ class EditProfile extends Component {
               <Delete
                 size={30}
                 id={this.state.relevantCourses[i]}
-                onClick={this.handleDeleteCourse.bind(this, this.state.relevantCourses[i])}
+                onClick={() => this.handleDeleteCourse(this.state.relevantCourses[i])}
                 className="delete-icon"
               />
             </div>
@@ -182,7 +161,7 @@ class EditProfile extends Component {
         <div className="display-list">
           <input
             className="addTag"
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             id="new-course"
             type="text"
             name="new-course"
@@ -190,7 +169,7 @@ class EditProfile extends Component {
             placeholder="Add new course here"
             value={this.state.newCourse}
           />
-          <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse.bind(this)} />
+          <Add className="add-icon" value={this.state.newCourse} size={22} onClick={this.addCourse} />
           {list}
         </div>
       );
@@ -203,9 +182,9 @@ class EditProfile extends Component {
       );
     }
     return <div className="display-list">{list}</div>;
-  }
+  };
 
-  displaySkills() {
+  displaySkills = () => {
     const list = [];
     if (this.state.editSkills) {
       for (let i = 0; i < this.state.relevantSkills.length; i++) {
@@ -218,7 +197,7 @@ class EditProfile extends Component {
               <Delete
                 size={30}
                 id={this.state.relevantSkills[i]}
-                onClick={this.handleDeleteSkill.bind(this, this.state.relevantSkills[i])}
+                onClick={() => this.handleDeleteSkill(this.state.relevantSkills[i])}
                 className="delete-icon"
               />
             </div>
@@ -229,7 +208,7 @@ class EditProfile extends Component {
         <div className="display-list">
           <input
             className="addTag"
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             id="new-skill"
             type="text"
             name="new-skill"
@@ -238,7 +217,7 @@ class EditProfile extends Component {
             value={this.state.newSkill}
           />
 
-          <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill.bind(this)} />
+          <Add className="add-icon" value={this.state.newSkill} size={22} onClick={this.addSkill} />
           {list}
         </div>
       );
@@ -252,17 +231,17 @@ class EditProfile extends Component {
       );
     }
     return <div className="display-list">{list}</div>;
+  };
+
+  viewResume = (e) => {
+    e.preventDefault();
+    window.location.href = `/doc/${this.state.resumeId}`;
   }
 
-    viewResume = (e) => {
-      e.preventDefault();
-      window.location.href = `/doc/${this.state.resumeId}`;
-    }
-
-    viewTranscript = (e) => {
-      e.preventDefault();
-      window.location.href = `/doc/${this.state.transcriptId}`;
-    }
+  viewTranscript = (e) => {
+    e.preventDefault();
+    window.location.href = `/doc/${this.state.transcriptId}`;
+  }
 
     onDropResume = (acceptedFiles) => {
       acceptedFiles.forEach((file) => {
@@ -380,9 +359,9 @@ class EditProfile extends Component {
                             name="year"
                             id="year"
                             value={this.state.year}
-                            onChange={this.handleChange.bind(this)}
+                            onChange={this.handleChange}
                           />
-                          <Check size={25} onClick={this.handleEditYear.bind(this)} className="check-icon" />
+                          <Check size={25} onClick={this.handleEditYear} className="check-icon" />
                           {this.state.invalidYear ? 'Invalid Year' : ''}
                         </div>
                       )
@@ -392,7 +371,7 @@ class EditProfile extends Component {
                           <Pencil
                             size={20}
                             className="pencil-icon right-column"
-                            onClick={this.handleEditYear.bind(this)}
+                            onClick={this.handleEditYear}
                           />
                         </h5>
                       )}
@@ -405,9 +384,9 @@ class EditProfile extends Component {
                             name="major"
                             id="major"
                             value={this.state.major}
-                            onChange={this.handleChange.bind(this)}
+                            onChange={this.handleChange}
                           />
-                          <Check size={25} onClick={this.handleEditMajor.bind(this)} className="check-icon" />
+                          <Check size={25} onClick={this.handleEditMajor} className="check-icon" />
                           {this.state.invalidMajor ? 'Required' : ''}
                         </div>
                       )
@@ -418,7 +397,7 @@ class EditProfile extends Component {
                           <Pencil
                             size={20}
                             className="pencil-icon right-column"
-                            onClick={this.handleEditMajor.bind(this)}
+                            onClick={this.handleEditMajor}
                           />
                         </h5>
                       )}
@@ -450,7 +429,7 @@ class EditProfile extends Component {
                           <Check
                             size={23}
                             className="check-icon"
-                            onClick={this.handleEditResume.bind(this)}
+                            onClick={this.handleEditResume}
                           />
                         </h5>
                         <Dropzone
@@ -461,9 +440,10 @@ class EditProfile extends Component {
                             padding: '10px',
                             width: '50%',
                             margin: '0 0 0 25%',
-                            border: !this.state.resumeValid && this.state.triedSubmitting ? '3px #b31b1b solid' : '1px dashed black',
+                            border: !this.state.resumeValid && this.state.triedSubmitting
+                              ? '3px #b31b1b solid' : '1px dashed black',
                           }}
-                          onDrop={this.onDropResume.bind(this)}
+                          onDrop={this.onDropResume}
                         >
                           <p>Click/drag to update resume</p>
                         </Dropzone>
@@ -484,7 +464,7 @@ class EditProfile extends Component {
                           size={20}
                           className="pencil-icon"
                           alt="edit"
-                          onClick={this.handleEditResume.bind(this)}
+                          onClick={this.handleEditResume}
                         />
                       </h5>
                     )}
@@ -506,7 +486,7 @@ class EditProfile extends Component {
                             <Check
                               size={23}
                               className="check-icon"
-                              onClick={this.handleEditTranscript.bind(this)}
+                              onClick={this.handleEditTranscript}
                             />
                           </h5>
 
@@ -520,7 +500,7 @@ class EditProfile extends Component {
                               margin: '0 25%',
                               border: '1px dashed black',
                             }}
-                            onDrop={this.onDropTranscript.bind(this)}
+                            onDrop={this.onDropTranscript}
                           >
                             <p>Click/drag to update transcript</p>
 
@@ -542,7 +522,7 @@ class EditProfile extends Component {
                           <Pencil
                             size={20}
                             className="pencil-icon"
-                            onClick={this.handleEditTranscript.bind(this)}
+                            onClick={this.handleEditTranscript}
                           />
                         </h5>
                       )}

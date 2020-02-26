@@ -7,6 +7,7 @@ import CheckBox from 'react-icons/lib/fa/check-square-o';
 import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
 import * as Utils from '../Utils';
 import Star from '../Star/Star';
+import { roleStringForUndergrads } from '../constants';
 
 type Props = {
   opId: string;
@@ -106,7 +107,7 @@ class Opportunity extends Component<Props> {
   }
 
   static undergradIsViewingPage(role?: string) {
-    return role === Utils.roleStringForUndergrads;
+    return role === roleStringForUndergrads;
   }
 
   handleShowingStar(role?: string) {

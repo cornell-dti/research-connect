@@ -39,7 +39,7 @@ class Starred extends Component<Props, State> {
       });
   }
 
-  updateStar(id: string) {
+  updateStar = (id: string) => {
     const token_id = sessionStorage.getItem('token_id');
     const { type } = this.props;
 
@@ -53,7 +53,7 @@ class Starred extends Component<Props, State> {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   genOppCards() {
     const oppNodes = (this.state.data as OpportunityType[]).map((opp) => {
@@ -61,6 +61,7 @@ class Starred extends Component<Props, State> {
       const starred = (this.state.starred as OpportunityType[]).includes(opp._id);
       return (
         <Opportunity
+          key={opp._id}
           title={opp.title}
           projectDescription={opp.projectDescription}
           prereqsMatch={opp.prereqsMatch}
@@ -69,7 +70,7 @@ class Starred extends Component<Props, State> {
           closes={opp.closes}
           undergradTasks={opp.undergradTasks}
           starred={starred}
-          updateStar={this.updateStar.bind(this)}
+          updateStar={this.updateStar}
         />
       );
     });
@@ -84,16 +85,14 @@ class Starred extends Component<Props, State> {
         <Faculty
           key={prof._id}
           ID={prof._id}
-          filteredOptions={this.props.filteredOptions}
           name={prof.name}
           department={prof.department}
           lab={prof.lab}
           photoId={prof.photoId}
           bio={prof.bio}
-          researchInterests={prof.researchInterests}
           researchDescription={prof.researchDescription}
           starred={starred}
-          updateStar={this.updateStar.bind(this)}
+          updateStar={this.updateStar}
         />
       );
     });
