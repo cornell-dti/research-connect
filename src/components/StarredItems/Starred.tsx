@@ -33,9 +33,6 @@ class Starred extends Component<Props, State> {
             const onlyStarred = all.filter((i) => data.includes(i._id));
             this.setState({ data: onlyStarred, starred: data });
           });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   }
 
@@ -49,9 +46,6 @@ class Starred extends Component<Props, State> {
           const { data } = response;
           this.setState({ starred: data });
         }
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 

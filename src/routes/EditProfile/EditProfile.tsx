@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent, MouseEvent } from 'react';
 import './EditProfile.scss';
 import '../../index.css';
+// @ts-ignore
 import Pencil from 'react-icons/lib/fa/pencil';
+// @ts-ignore
 import Delete from 'react-icons/lib/ti/delete';
+// @ts-ignore
 import Check from 'react-icons/lib/fa/check';
+// @ts-ignore
 import Add from 'react-icons/lib/md/add-circle';
+// @ts-ignore
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import * as ReactGA from 'react-ga';
@@ -12,16 +17,41 @@ import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/StudentNavbar/StudentNavbar';
 import * as Utils from '../../components/Utils';
 
+type State = {
+  firstName: string;
+  lastName: string;
+  year: string;
+  major: string;
+  gpa: string;
+  relevantCourses: string[];
+  relevantSkills: string[];
+  editYear: boolean;
+  editMajor: boolean;
+  editCourses: boolean;
+  editSkills: boolean;
+  editResume: boolean;
+  editTranscript: boolean;
+  invalidYear: boolean;
+  invalidMajor: boolean;
+  newCourse: string;
+  newSkill: string;
+  netId: string;
+  resumeId: string;
+  transcriptId: string;
+  resume: any;
+  transcript: any;
+  resumeValid: boolean;
+}
 
-class EditProfile extends Component {
-  constructor(props) {
+class EditProfile extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       firstName: '',
       lastName: '',
       year: 'Sophomore',
       major: 'Computer Science',
-      gpa: 3.9,
+      gpa: '3.9',
       relevantCourses: ['CS 2110', 'CS 3410', 'INFO 1300'],
       relevantSkills: ['Java', 'Python', 'HTML', 'CSS', 'Javascript', 'Excel'],
       editYear: false,
@@ -68,7 +98,7 @@ class EditProfile extends Component {
       });
   }
 
-  handleChange = (event) => {
+  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.id === 'year') {
       this.setState({ year: event.target.value });
     } else if (event.target.id === 'major') {
@@ -108,7 +138,7 @@ class EditProfile extends Component {
 
   handleEditTranscript = () => this.setState(({ editTranscript }) => ({ editTranscript: !editTranscript }));
 
-  handleDeleteCourse = (data) => {
+  handleDeleteCourse = (data: string) => {
     this.setState((state) => ({ relevantCourses: state.relevantCourses.filter((course) => course !== data) }));
   };
 
@@ -121,7 +151,7 @@ class EditProfile extends Component {
     }
   }
 
-  handleDeleteSkill = (data) => {
+  handleDeleteSkill = (data: string) => {
     this.setState((state) => ({ relevantSkills: state.relevantSkills.filter((skill) => skill !== data) }));
   };
 
@@ -233,50 +263,48 @@ class EditProfile extends Component {
     return <div className="display-list">{list}</div>;
   };
 
-  viewResume = (e) => {
+  viewResume = (e: MouseEvent) => {
     e.preventDefault();
     window.location.href = `/doc/${this.state.resumeId}`;
   }
 
-  viewTranscript = (e) => {
+  viewTranscript = (e: MouseEvent) => {
     e.preventDefault();
     window.location.href = `/doc/${this.state.transcriptId}`;
   }
 
-    onDropResume = (acceptedFiles) => {
+    onDropResume = (acceptedFiles: any[]) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = () => {
           const fileAsBinaryString = reader.result;
+          // @ts-ignore
           const encodedData = window.btoa(fileAsBinaryString);
           // do whatever you want with the file content
           this.setState({ resume: [encodedData] });
           this.setState({ resumeValid: true });
         };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
 
         reader.readAsBinaryString(file);
       });
     }
 
-    onDropTranscript = (acceptedFiles) => {
+    onDropTranscript = (acceptedFiles: any[]) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = () => {
           const fileAsBinaryString = reader.result;
+          // @ts-ignore
           const encodedData = window.btoa(fileAsBinaryString);
           // do whatever you want with the file content
           this.setState({ transcript: [encodedData] });
         };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
 
         reader.readAsBinaryString(file);
       });
     }
 
-    onClick = (e) => {
+    onClick = (e: MouseEvent) => {
       e.preventDefault();
       const {
         year,
@@ -290,24 +318,10 @@ class EditProfile extends Component {
       const token_id = sessionStorage.getItem('token_id');
 
       if (this.state.resume != null && this.state.resume.length !== 0) {
-        axios.post('/api/docs', { token_id, resume })
-          .then((result) => {
-            console.log('Resume updated, result: ');
-            console.log(result);
-          }).catch((error) => {
-            console.log('Error in posting resume');
-            console.log(error);
-          });
+        axios.post('/api/docs', { token_id, resume });
       }
       if (this.state.transcript != null && this.state.transcript.length !== 0) {
-        axios.post('/api/docs', { token_id, transcript })
-          .then((result) => {
-            console.log('Transcript updated, result: ');
-            console.log(result);
-          }).catch((error) => {
-            console.log('Error in posting transcript');
-            console.log(error);
-          });
+        axios.post('/api/docs', { token_id, transcript });
       }
       axios.put(`/api/undergrads/${sessionStorage.getItem('token_id')}`, {
         year, major, gpa, relevantCourses, relevantSkills,
@@ -320,20 +334,6 @@ class EditProfile extends Component {
 
           // access the results here....
         });
-
-      // axios.put('/api/undergrads/' + this.state.netId, {year, major, gpa, relevantCourses, relevantSkills})
-      //     .then((result) => {
-      //         console.log("undergrad updated, result:");
-      //         console.log(result);
-      //         //access the results here....
-      //     });
-
-      // axios.post('/api/docs', {netId, resume})
-      //     .then((result) => {
-      //         console.log("Resume updated, result:");
-      //         console.log(result);
-      //         //access the results here....
-      //     });
     };
 
     render() {
@@ -440,7 +440,7 @@ class EditProfile extends Component {
                             padding: '10px',
                             width: '50%',
                             margin: '0 0 0 25%',
-                            border: !this.state.resumeValid && this.state.triedSubmitting
+                            border: !this.state.resumeValid
                               ? '3px #b31b1b solid' : '1px dashed black',
                           }}
                           onDrop={this.onDropResume}

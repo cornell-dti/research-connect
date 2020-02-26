@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
 import ReactGA from 'react-ga';
 import axios from 'axios';
 import '../../index.css';
+// @ts-ignore
 import DeleteIcon from 'react-icons/lib/ti/delete';
+// @ts-ignore
 import SearchIcon from 'react-icons/lib/io/search';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
@@ -14,19 +16,25 @@ import '../OpportunityPage/OpportunityPage.scss';
 import './FacultySearch.scss';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import { researchInterestsList } from '../../components/constants';
+import { Professor } from '../../types';
 
-class FacultySearch extends Component {
-  constructor(props) {
+type State = {
+  area: string;
+  searchBar: string;
+  clickedEnter: boolean;
+  role: string | null;
+  data: Professor[];
+  opportunitiesOptions: any
+};
+
+class FacultySearch extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
-      department: '',
       area: '',
       searchBar: '',
-      matchingSearches: [],
-      searching: false,
       clickedEnter: false,
       role: '',
-      numShowing: 20,
       data: [],
       opportunitiesOptions: {
         yearSelect: [],
@@ -51,7 +59,6 @@ class FacultySearch extends Component {
     axios.get('/api/faculty', {
       params: {
         department: 'tech',
-        // limit: this.state.numShowing,
         limit: 0,
         area: this.state.area,
         search: searchText,
@@ -79,28 +86,24 @@ class FacultySearch extends Component {
     this.getFaculty();
   }
 
-  handleChange = (event) => {
+  handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (event.target.name === 'area') {
-      this.setState({ area: event.target.value, numShowing: 20 }, () => {
-        this.getFaculty();
-      });
-    } else if (event.target.name === 'department') {
-      this.setState({ department: event.target.value, numShowing: 20 }, () => {
+      this.setState({ area: event.target.value }, () => {
         this.getFaculty();
       });
     }
   }
 
-  handleUpdateSearch = (e) => {
+  handleUpdateSearch = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchBar: e.target.value });
     if (!e.target.value) {
-      this.setState({ matchingSearches: [], clickedEnter: false }, () => {
+      this.setState({ clickedEnter: false }, () => {
         this.getFaculty();
       });
     }
   };
 
-  handleKeyPress = (e) => {
+  handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.setState({ clickedEnter: true }, () => {
         this.getFaculty();
@@ -108,24 +111,9 @@ class FacultySearch extends Component {
     }
   };
 
-  handlePageClick = () => {
-    this.setState(({ numShowing }) => ({ numShowing: numShowing + 20 }), () => {
-      this.getFaculty();
-    });
-  };
-
-  onFocus = () => this.setState({ searching: true });
-
-  onBlur = () => this.setState({ searching: false });
-
   clearSearch = () => {
     this.setState(
-      {
-        searching: false,
-        searchBar: '',
-        matchingSearches: [],
-        clickedEnter: false,
-      },
+      { searchBar: '', clickedEnter: false },
       () => this.getFaculty(),
     );
   };
@@ -135,11 +123,7 @@ class FacultySearch extends Component {
     if (areas.length === 0) {
       return [];
     }
-    const areasOptions = [];
-    areas.forEach((area) => {
-      areasOptions.push(<option value={area.trim()} key={area}>{area}</option>);
-    });
-    return areasOptions;
+    return areas.map((area) => <option value={area.trim()} key={area}>{area}</option>);
   };
 
   render() {
@@ -147,7 +131,7 @@ class FacultySearch extends Component {
       color: 'black',
       fontSize: '40px',
       fontWeight: 'bold',
-    };
+    } as const;
     return (
       <div className="opportunities-wrapper">
         <VariableNavbar role={this.state.role} current="facultysearch" />
@@ -157,8 +141,6 @@ class FacultySearch extends Component {
             <SearchIcon style={{ height: '100%' }} size={36} />
           </div>
           <input
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
             className="column column-70 search-bar"
             onKeyPress={this.handleKeyPress}
             onChange={this.handleUpdateSearch}
@@ -189,7 +171,6 @@ class FacultySearch extends Component {
               <div className="filter-child">
                 <label>Filter Faculty By....</label>
               </div>
-              {/* <h4>Filters</h4> */}
               <hr id="noHrMargin" />
               <div className="filter-child">
                 <label>Research Area</label>
@@ -198,14 +179,6 @@ class FacultySearch extends Component {
                   {this.generateAreaOptions()}
                 </select>
               </div>
-              {/* This currently doesn't work, will fix later... but it's v low priority */}
-              {/* <hr /> */}
-              {/* <label >Show:</label> */}
-              {/* <input type="checkbox" name="acceptOnline"/> */}
-              {/* <span>Faculty Accepting on Research Connect</span> */}
-              {/* <br/> */}
-              {/* <input type="checkbox" name="acceptEmail" /> */}
-              {/* <span>Faculty Accepting by Email</span> */}
               <br />
             </div>
           </div>
@@ -226,21 +199,7 @@ class FacultySearch extends Component {
               <div className="column column-70">
                 <div className="opp-list-container">
                   <span style={headerStyle}>Research Opportunities By Professor</span>
-                  <FacultyBox
-                    filteredOptions={this.state}
-                    url="opportunities"
-                    numShowing={this.state.numShowing}
-                    data={this.state.data}
-                  />
-                  {/* <div className="centered"> */}
-                  {/*  <input */}
-                  {/*    type="submit" */}
-                  {/*    className="button" */}
-                  {/*    id="button-load" */}
-                  {/*    value="Load More" */}
-                  {/*    onClick={this.handlePageClick.bind(this)} */}
-                  {/*  /> */}
-                  {/* </div> */}
+                  <FacultyBox filteredOptions={this.state} data={this.state.data} />
                 </div>
               </div>
             </div>
