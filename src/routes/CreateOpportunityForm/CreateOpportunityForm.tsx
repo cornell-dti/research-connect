@@ -7,15 +7,10 @@ import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 // @ts-ignore
 import ReactTooltip from 'react-tooltip';
-// @ts-ignore
-import InfoIcon from 'react-icons/lib/md/info';
-// @ts-ignore
-import Delete from 'react-icons/lib/ti/delete';
-// @ts-ignore
-import Add from 'react-icons/lib/md/add-circle';
 import { ClipLoader } from 'react-spinners';
-// @ts-ignore
-import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
+import { TiDelete as Delete } from 'react-icons/ti';
+import { MdInfo as InfoIcon, MdAddCircle as Add } from 'react-icons/md';
+import { FaArrowLeft } from 'react-icons/fa';
 import * as ReactGA from 'react-ga';
 import { updateForMultipleChoice, handleTokenError } from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
@@ -144,7 +139,7 @@ class CreateOppForm extends React.Component<{}, State> {
           />
           <Delete
             size={30}
-            id={i}
+            id={String(i)}
             onClick={() => this.deleteQuestion(stateLabel)}
             className="deleter-icon"
           />
@@ -335,9 +330,7 @@ class CreateOppForm extends React.Component<{}, State> {
 
   render() {
     if (this.state.loading) {
-      const style = { display: 'block', margin: 0, borderColor: 'red' };
-      // @ts-ignore
-      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      const loader = <ClipLoader size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
 
@@ -346,7 +339,7 @@ class CreateOppForm extends React.Component<{}, State> {
         {this.state.creatorNetId && <ProfessorNavbar current="newopp" />}
         {!this.state.creatorNetId && (
           <div className="go-home" onClick={() => { window.location.href = '/'; }}>
-            <FaLongArrowLeft
+            <FaArrowLeft
               style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }}
               className="black-arrow"
             />

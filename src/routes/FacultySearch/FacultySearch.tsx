@@ -2,10 +2,8 @@ import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
 import ReactGA from 'react-ga';
 import axios from 'axios';
 import '../../index.css';
-// @ts-ignore
-import DeleteIcon from 'react-icons/lib/ti/delete';
-// @ts-ignore
-import SearchIcon from 'react-icons/lib/io/search';
+import { TiDelete as DeleteIcon } from 'react-icons/ti';
+import { IoIosSearch as SearchIcon } from 'react-icons/io';
 import Footer from '../../components/Footer/Footer';
 import FacultyBox from '../../components/Faculty/FacultyBox/FacultyBox';
 import OpportunityBox from '../../components/Opportunity/OpportunityBox/OpportunityBox';

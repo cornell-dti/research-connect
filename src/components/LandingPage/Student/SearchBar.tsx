@@ -1,8 +1,6 @@
 import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
-// @ts-ignore
-import SearchIcon from 'react-icons/lib/io/search';
-// @ts-ignore
-import DeleteIcon from 'react-icons/lib/ti/delete';
+import { IoIosSearch as SearchIcon } from 'react-icons/io';
+import { TiDeleteOutline as DeleteIcon } from 'react-icons/ti';
 import '../../../routes/LandingPage/LandingPage.scss';
 
 type State = { searchBar: string };

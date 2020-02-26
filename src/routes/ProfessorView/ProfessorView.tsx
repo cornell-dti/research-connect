@@ -72,9 +72,7 @@ class ProfessorView extends Component<{}, State> {
   render() {
     const { loading } = this.state;
     if (loading) {
-      const style = { display: 'block', margin: 0, borderColor: 'red' };
-      // @ts-ignore
-      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      const loader = <ClipLoader size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
 

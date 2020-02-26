@@ -7,12 +7,8 @@ import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 // @ts-ignore
 import ReactTooltip from 'react-tooltip';
-// @ts-ignore
-import InfoIcon from 'react-icons/lib/md/info';
-// @ts-ignore
-import Delete from 'react-icons/lib/ti/delete';
-// @ts-ignore
-import Add from 'react-icons/lib/md/add-circle';
+import { TiDelete as Delete } from 'react-icons/ti';
+import { MdInfo as InfoIcon, MdAddCircle as Add } from 'react-icons/md';
 import * as ReactGA from 'react-ga';
 import * as Utils from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
@@ -177,7 +173,7 @@ class EditOppForm extends React.Component<{}, State> {
           />
           <Delete
             size={30}
-            id={i}
+            id={String(i)}
             onClick={() => this.deleteQuestion(stateLabel)}
             className="deleter-icon"
           />

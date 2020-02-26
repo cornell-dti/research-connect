@@ -1,10 +1,7 @@
 import React, { Component, ChangeEvent } from 'react';
 import '../../index.css';
 import './Opportunity.scss';
-// @ts-ignore
-import CheckBox from 'react-icons/lib/fa/check-square-o';
-// @ts-ignore
-import CrossCircle from 'react-icons/lib/fa/exclamation-circle';
+import { FaRegCheckSquare as CheckBox, FaExclamationCircle as CrossCircle } from 'react-icons/fa';
 import Star from '../Star/Star';
 import { roleStringForUndergrads } from '../constants';
 

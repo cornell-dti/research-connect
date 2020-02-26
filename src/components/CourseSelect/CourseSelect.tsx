@@ -1,7 +1,6 @@
 import React, { Component, MouseEvent } from 'react';
 import './CourseSelect.scss';
-// @ts-ignore
-import FaTimesCircle from 'react-icons/lib/fa/times-circle';
+import { FaTimesCircle } from 'react-icons/fa';
 
 type Props = { updateCourses: (courses: string[]) => void };
 type State = { courses: string[] };

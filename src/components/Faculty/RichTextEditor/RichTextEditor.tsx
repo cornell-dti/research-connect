@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { Component, MouseEvent } from 'react';
 import {
   Editor,
