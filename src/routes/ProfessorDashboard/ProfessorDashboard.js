@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorDashboard.scss';
 import axios from 'axios';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
 import Inbox from 'react-icons/lib/fa/inbox';
@@ -11,7 +10,6 @@ import * as ReactGA from 'react-ga';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
-
 
 class ProfessorDashboard extends Component {
   constructor(props) {
@@ -26,7 +24,12 @@ class ProfessorDashboard extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.setState({
+      loading: false,
+      errorLoadingDataExists: false,
+      errorMessage: '',
+    });
     axios.all([
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
       axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
@@ -42,9 +45,7 @@ class ProfessorDashboard extends Component {
         }
         const opps = Object.keys(apps.data);
         opps.unshift('All');
-        this.setState({ apps });
-        this.setState({ opportunities: opps });
-        this.setState({ labId: lab.data });
+        this.setState({ apps, opportunities: opps, labId: lab.data });
       })).catch((error) => {
         this.setState({
           errorLoadingDataExists: true,
@@ -52,14 +53,6 @@ class ProfessorDashboard extends Component {
             associated with your account. More info: ${error}`,
         });
       });
-  }
-
-  componentDidMount() {
-    this.setState({
-      loading: false,
-      errorLoadingDataExists: false,
-      errorMessage: '',
-    });
   }
 
   render() {

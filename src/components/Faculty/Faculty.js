@@ -24,16 +24,10 @@ class Faculty extends Component {
         </h6>
       );
     }
-    return (
-      <h6>
-        {str}
-        {' '}
-      </h6>
-    );
+    return <h6>{`${str} `}</h6>;
   }
 
   clickRow() {
-    // this.props.history.push({pathname: 'opportunity/' + this.props.opId});
     document.location.href = (`/faculty/${this.props.ID}`);
   }
 
@@ -44,8 +38,6 @@ class Faculty extends Component {
           <div className="column column-10">
             <img alt={this.props.name} src={this.props.photoId} width="75px" />
           </div>
-          {/* <div className="column column-10"> */}
-          {/* </div> */}
           <div className="column column-90">
             <h4>
               { this.props.name }
@@ -64,14 +56,8 @@ class Faculty extends Component {
                 ? this.convertDescription(this.props.researchDescription)
                 : this.convertDescription(this.props.bio)}
             </div>
-            {/* <h5>{this.props.researchInterests}</h5> */}
           </div>
-          {/* <div className="column column-20"> */}
-          {/* Accepting on Research Connect */}
-          {/* </div> */}
         </div>
-
-
       </div>
     );
   }

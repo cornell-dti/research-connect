@@ -43,13 +43,9 @@ class FacultySearch extends Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.getFaculty = this.getFaculty.bind(this);
-    this.generateAreaOptions = this.generateAreaOptions.bind(this);
   }
 
-  getFaculty() {
+  getFaculty = () => {
     const searchText = this.state.clickedEnter ? this.state.searchBar : '';
     axios.get('/api/faculty', {
       params: {
@@ -59,11 +55,8 @@ class FacultySearch extends Component {
         area: this.state.area,
         search: searchText,
       },
-    })
-      .then((res) => {
-        this.setState({ data: res.data });
-      });
-  }
+    }).then((res) => this.setState({ data: res.data }));
+  };
 
   componentDidMount() {
     // if they're not signed in...
@@ -74,8 +67,6 @@ class FacultySearch extends Component {
         .then((response) => {
           if (!response || response.data === 'none' || !response.data) {
             this.setState({ role: null });
-            // alert('You must be signed in to view this.');
-            // window.location.href = '/';
           } else {
             this.setState({ role: response.data });
           }
@@ -87,7 +78,7 @@ class FacultySearch extends Component {
     this.getFaculty();
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     if (event.target.name === 'area') {
       this.setState({ area: event.target.value, numShowing: 20 }, () => {
         this.getFaculty();
@@ -96,8 +87,6 @@ class FacultySearch extends Component {
       this.setState({ department: event.target.value, numShowing: 20 }, () => {
         this.getFaculty();
       });
-      // const currentShowing = this.state.numShowing;
-      // this.setState({numShowing: currentShowing});
     }
   }
 
@@ -115,16 +104,6 @@ class FacultySearch extends Component {
       this.setState({ clickedEnter: true }, () => {
         this.getFaculty();
       });
-      /** DEPRECATED SEARCH METHOD
-       axios.get(`/api/faculty/search?search='${this.state.searchBar}`).
-       then((response) => {
-            const matching = response.data.map(d => d._id);
-            this.setState({matchingSearches: matching});
-          }).
-       catch((error) => {
-            Utils.handleTokenError(error);
-          });
-       */
     }
   }
 
@@ -154,7 +133,7 @@ class FacultySearch extends Component {
     );
   }
 
-  generateAreaOptions() {
+  generateAreaOptions = () => {
     const areas = Utils.getResearchInterestsList();
     if (areas.length === 0) {
       return [];
@@ -164,7 +143,7 @@ class FacultySearch extends Component {
       areasOptions.push(<option value={area.trim()} key={area}>{area}</option>);
     });
     return areasOptions;
-  }
+  };
 
   render() {
     const headerStyle = {
@@ -220,50 +199,6 @@ class FacultySearch extends Component {
                 <select onChange={this.handleChange} name="area" className="select-wrapper">
                   <option value="">All</option>
                   {this.generateAreaOptions()}
-                  {/* <option value="Information Science">Information Science */}
-                  {/* </option> */}
-                  {/* <option value="Computer Science">Computer Science</option> */}
-                  {/* <option value="Electrical and Computer Engineering">Electrical */}
-                  {/* and Computer Engineering */}
-                  {/* </option> */}
-                  {/* <option value="Applied and Engineering Physics">Applied and */}
-                  {/* Engineering Physics */}
-                  {/* </option> */}
-                  {/* <option */}
-                  {/* value="Operations Research and Information Engineering">Operations */}
-                  {/* Research & Info Engineering */}
-                  {/* </option> */}
-                  {/* <option */}
-                  {/* value="Sibley School of Mechanical and Aerospace Engineering">Mechanical */}
-                  {/* and Aerospace Engineering */}
-                  {/* </option> */}
-                  {/* <option */}
-                  {/* value="Smith School of Chemical and Biomolecular Engineering">Chemical */}
-                  {/* and Biomolecular Engineering */}
-                  {/* </option> */}
-                  {/* <option */}
-                  {/* value="Biological and Environmental Engineering">Biological */}
-                  {/* and Environmental Engineering */}
-                  {/* </option> */}
-                  {/* <option */}
-                  {/* value="Meinig School of Biomedical Engineering">Biomedical */}
-                  {/* Engineering */}
-                  {/* </option> */}
-                  {/* <option value="Civil and Environmental Engineering">Civil and */}
-                  {/* Environmental Engineering */}
-                  {/* </option> */}
-                  {/* <option value="Materials Science and Engineering">Material */}
-                  {/* Science */}
-                  {/* </option> */}
-                  {/* <option value="Earth and Atmospheric Sciences">Earth and */}
-                  {/* Atmospheric Sciences */}
-                  {/* </option> */}
-                  {/* <option value="College of Human Ecology">College of Human */}
-                  {/* Ecology */}
-                  {/* </option> */}
-                  {/* <option value="Earth and Atmospheric Sciences">Earth and */}
-                  {/* Atmospheric Sciences */}
-                  {/* </option> */}
                 </select>
               </div>
               {/* This currently doesn't work, will fix later... but it's v low priority */}
@@ -274,10 +209,7 @@ class FacultySearch extends Component {
               {/* <br/> */}
               {/* <input type="checkbox" name="acceptEmail" /> */}
               {/* <span>Faculty Accepting by Email</span> */}
-
               <br />
-
-
             </div>
           </div>
           <div className="column column-80 opportunities-list-wrapper">

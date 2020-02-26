@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App/App.scss';
 import './ProfessorView.scss';
 import axios from 'axios';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
@@ -12,18 +11,11 @@ import ApplicationList from '../../components/ApplicationList/ApplicationList';
 import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
 import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
 import GPAFilter from '../../components/Filter/GPAFilter';
-
-// import StartDate from '../../components/StartDate/StartDate';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
-// import MajorSelect from '../../components/MajorSelect/MajorSelect';
-// import GPASelect from '../../components/GPASelect/GPASelect';
 
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
-
-ReactGA.pageview(window.location.pathname + window.location.search);
-
 
 class ProfessorView extends Component {
   constructor(props) {
@@ -31,10 +23,7 @@ class ProfessorView extends Component {
     this.state = {
       yearSelect: [],
       gpaSelect: '2.5',
-      // majorSelect: {},
-      // startDate: {},
       courses: [],
-      skills: [],
       opportunity: 'All',
       opportunities: [],
       loading: true,
@@ -43,21 +32,9 @@ class ProfessorView extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  handleUpdateMajor(majorObj) {
-    this.setState({ majorSelect: majorObj });
-  }
+  handleUpdateCourses = (courses) => this.setState({ courses });
 
-  handleUpdateCourses(courseList) {
-    this.setState({ courses: courseList });
-  }
-
-  handleUpdateSkills(skillList) {
-    this.setState({ skills: skillList });
-  }
-
-  handleUpdateOpportunity(opp) {
-    this.setState({ opportunity: opp });
-  }
+  handleUpdateOpportunity = (opportunity) => this.setState({ opportunity });
 
   componentDidMount() {
     this.state.loading = false; // temporary
@@ -80,22 +57,12 @@ class ProfessorView extends Component {
   }
 
   render() {
-    // const override = css`
-    //   display: block;
-    //   margin: 0 auto;
-    //   border-color: red;
-    // `;
     const { loading } = this.state;
     if (loading) {
       return (
         <div className="sweet-loading">
           <ClipLoader
-            style={{
-              display: 'block',
-              margin: 0,
-              borderColor: 'red',
-            }}
-            // className={override}
+            style={{ display: 'block', margin: 0, borderColor: 'red' }}
             sizeUnit="px"
             size={150}
             color="#ff0000"
@@ -121,7 +88,7 @@ class ProfessorView extends Component {
                   <label htmlFor="opportunityField">Opportunity</label>
                   <OpportunitySelect
                     opportunities={this.state.opportunities}
-                    updateOpportunity={this.handleUpdateOpportunity.bind(this)}
+                    updateOpportunity={this.handleUpdateOpportunity}
                   />
                 </div>
 
@@ -145,14 +112,6 @@ class ProfessorView extends Component {
                 </div>
 
                 <hr />
-
-                {/*
-  //TODO: ADD SKILL SELECT FILTER BACK?
-  <div className="filter-child">
-    <label htmlFor="skillField">Required Skills</label>
-    <SkillSelect updateSkills={this.handleUpdateSkills.bind(this)} />
-  </div>
-  */}
               </div>
             </div>
 

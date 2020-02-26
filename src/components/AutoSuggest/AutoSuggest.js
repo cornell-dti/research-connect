@@ -119,19 +119,17 @@ class AutoSuggest extends React.Component {
             </p>,
           );
           if (this.state.cursor === positionShowing) {
-            this.setState({ highlightLabName: suggestions[i].name });
-            this.setState({ highlightLabId: suggestions[i].id });
+            this.setState({ highlightLabName: suggestions[i].name, highlightLabId: suggestions[i].id });
           }
           positionShowing += 1;
         }
         if (this.state.cursor === -1) {
-          this.setState({ highlightLabId: null });
-          this.setState({ highlightLabName: '' });
+          this.setState({ highlightLabId: null, highlightLabName: '' });
         }
       }
     }
-    this.setState({ suggestionLength: suggArray.length });
     this.setState({
+      suggestionLength: suggArray.length,
       result: <div className="suggestion-array">{suggArray}</div>,
     });
   }

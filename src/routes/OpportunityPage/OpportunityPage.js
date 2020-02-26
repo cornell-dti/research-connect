@@ -40,7 +40,6 @@ class OpportunityPage extends Component {
       opportunity: {},
       questionAnswers: {},
       submitted: false,
-      previouslyApplied: false,
       triedSubmitting: false,
       student: null,
       coverLetter: '',
@@ -58,7 +57,6 @@ class OpportunityPage extends Component {
   }
 
   star() {
-    console.log('this is working');
     const token_id = sessionStorage.getItem('token_id');
     const type = 'opportunity';
     const { id } = this.props.match.params;
@@ -76,36 +74,31 @@ class OpportunityPage extends Component {
   }
 
   isEmpty(obj) {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) { return false; }
-    }
-    return true;
+    return Object.keys(obj).length === 0;
   }
 
   sendToHome(error) {
     if (!this.state.detectedLoggedOut) {
-      console.log('error in sendToHome in opportunity page');
       Utils.handleTokenError(error);
       window.location.href = '/';
-      console.log('done');
       this.setState({ detectedLoggedOut: true });
     }
   }
 
   handleChange(key) {
-    const answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers));
-    answersCopy[key] = document.getElementsByName(key)[0].value;
-    this.setState({
-      questionAnswers: answersCopy,
+    this.setState((state) => {
+      const answersCopy = JSON.parse(JSON.stringify(state.questionAnswers));
+      answersCopy[key] = document.getElementsByName(key)[0].value;
+      return { questionAnswers: answersCopy };
     });
   }
 
   coverChange(event) {
-    this.setState({ coverLetter: event.target.value });
-    const answersCopy = JSON.parse(JSON.stringify(this.state.questionAnswers));
-    answersCopy.coverLetter = event.target.value;
-    this.setState({
-      questionAnswers: answersCopy,
+    const coverLetter = event.target.value;
+    this.setState((state) => {
+      const answersCopy = JSON.parse(JSON.stringify(state.questionAnswers));
+      answersCopy.coverLetter = coverLetter;
+      return { coverLetter, questionAnswers: answersCopy };
     });
   }
 
@@ -114,25 +107,16 @@ class OpportunityPage extends Component {
     this.setState({ triedSubmitting: true });
 
     // get our form data out of state
-    const {
-      opportunity, questionAnswers, submitted, triedSubmitting, student, coverLetter, netId,
-    } = this.state;
-    // if (coverLetter) {
-    // let allQsAnswered = Object.values(questionAnswers).reduce((allQs, currentQ) => allQs && (currentQ != ''));
+    const { opportunity, questionAnswers, netId } = this.state;
     const allQsAnswered = Object.values(questionAnswers)
       .every((questionVal) => !(!questionVal));
     if (allQsAnswered === true) {
       this.setState({ submitted: true });
-      console.log('submitting form');
       const opportunityId = opportunity._id;
       const responses = questionAnswers;
       axios.post('/api/applications', { opportunityId, netId, responses })
-        .then((result) => {
-          console.log(result);
-        })
         .catch((error) => {
           this.sendToHome(error);
-          // Utils.handleTokenError(error);
         });
     }
   };
@@ -142,7 +126,6 @@ class OpportunityPage extends Component {
       .then((response) => (response.data ? response.data : null))
       .catch((error) => {
         this.sendToHome(error);
-        // Utils.handleTokenError(error);
       });
   }
 
@@ -174,14 +157,7 @@ class OpportunityPage extends Component {
       this.setState({ student: response.data.student });
       if (!this.isEmpty(response.data)) {
         const obj = {};
-        // get all the keys and put them in an array
-        for (const k in response.data.questions) {
-          // make sure it's an actual key and not a property that all objects have by default
-          if (response.data.questions.hasOwnProperty(k)) {
-            obj[k] = '';
-          }
-        }
-
+        Object.keys(response.data.questions).forEach((k) => { obj[k] = ''; });
         this.setState({ questionAnswers: obj });
       }
       if (!sessionStorage.getItem('token_id')) {
@@ -233,14 +209,7 @@ class OpportunityPage extends Component {
 
   printQuestions() {
     if (!this.isEmpty(this.state.opportunity.questions)) {
-      const keys = [];
-      // get all the keys and put them in an array
-      for (const k in this.state.opportunity.questions) {
-        // make sure it's an actual key and not a property that all objects have by default
-        if (this.state.opportunity.questions.hasOwnProperty(k)) {
-          keys.push(k);
-        }
-      }
+      const keys = Object.keys(this.state.opportunity.questions);
 
       // sort the keys by their number
       keys.sort((a, b) => {
@@ -317,54 +286,43 @@ class OpportunityPage extends Component {
     if (yearsArray) {
       let trackYear = false;
       if (yearsArray.includes('freshman')) {
-        if (this.state.student
-            && Utils.gradYearToString(this.state.student.gradYear)
-            === 'Freshman') {
-          yearDivArray.push(<div key="f">
-            <CheckBox className="greenCheck" />
-            <span
-              key="fresh"
-            >
-              {' '}
-              Freshman
-            </span>
-          </div>);
+        if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === 'Freshman') {
+          yearDivArray.push(
+            <div key="f">
+              <CheckBox className="greenCheck" />
+              <span key="fresh">{' Freshman'}</span>
+            </div>,
+          );
         } else {
-          yearDivArray.push(<div key="f">
-            <CrossCircle className="cross" />
-            <span
-              key="fresh"
-            >
-              {' '}
-              Freshman
-            </span>
-          </div>);
+          yearDivArray.push(
+            <div key="f">
+              <CrossCircle className="cross" />
+              <span key="fresh">{' Freshman'}</span>
+            </div>,
+          );
         }
         trackYear = true;
       }
       if (yearsArray.includes('sophomore')) {
-        if (this.state.student
-            && Utils.gradYearToString(this.state.student.gradYear)
-            === 'Sophomore') {
-          yearDivArray.push(<div key="so">
-            <CheckBox
-              className="greenCheck"
-            />
-            <span> Sophomore</span>
-                            </div>);
+        if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === 'Sophomore') {
+          yearDivArray.push(
+            <div key="so">
+              <CheckBox className="greenCheck" />
+              <span> Sophomore</span>
+            </div>,
+          );
         } else {
-          yearDivArray.push(<div key="so">
-            <CrossCircle
-              className="cross"
-            />
-            <span> Sophomore</span>
-                            </div>);
+          yearDivArray.push(
+            <div key="so">
+              <CrossCircle className="cross" />
+              <span> Sophomore</span>
+            </div>,
+          );
         }
         trackYear = true;
       }
       if (yearsArray.includes('junior')) {
-        if (this.state.student
-            && Utils.gradYearToString(this.state.student.gradYear) === 'Junior') {
+        if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === 'Junior') {
           yearDivArray.push(
             <div key="j">
               <CheckBox className="greenCheck" />
@@ -382,8 +340,7 @@ class OpportunityPage extends Component {
         trackYear = true;
       }
       if (yearsArray.includes('senior')) {
-        if (this.state.student
-            && Utils.gradYearToString(this.state.student.gradYear) === 'Senior') {
+        if (this.state.student && Utils.gradYearToString(this.state.student.gradYear) === 'Senior') {
           yearDivArray.push(
             <div key="se">
               <CheckBox className="greenCheck" />
@@ -414,6 +371,7 @@ class OpportunityPage extends Component {
         </ul>
       );
     }
+    return undefined;
   }
 
   parseMajors(arrayIn, isStudent) {
@@ -460,6 +418,7 @@ class OpportunityPage extends Component {
         </ul>
       );
     }
+    return undefined;
   }
 
   parseClasses(arrayIn, isStudent) {
@@ -469,12 +428,7 @@ class OpportunityPage extends Component {
           <ul>
             <div key="none">
               <CheckBox key="no" className="greenCheck" />
-              <span
-                key="n"
-              >
-                {' '}
-                No Preference
-              </span>
+              <span key="n">{' No Preference'}</span>
             </div>
           </ul>
         );
@@ -486,31 +440,22 @@ class OpportunityPage extends Component {
                 && this.state.student.courses.indexOf(course) !== -1) {
               return (
                 <div key={course}>
-                  <CheckBox
-                    className="greenCheck"
-                  />
-                  <span>
-                    {' '}
-                    {course}
-                  </span>
+                  <CheckBox className="greenCheck" />
+                  <span>{` ${course}`}</span>
                 </div>
               );
             }
             return (
               <div key={course}>
-                <CrossCircle
-                  className="cross"
-                />
-                <span>
-                  {' '}
-                  {course}
-                </span>
+                <CrossCircle className="cross" />
+                <span>{` ${course}`}</span>
               </div>
             );
           })}
         </ul>
       );
     }
+    return undefined;
   }
 
   parseGPA(gpa, isStudent) {
@@ -533,14 +478,10 @@ class OpportunityPage extends Component {
     }
     return (
       <p key={1}>
-        <CrossCircle
-          className="cross"
-        />
+        <CrossCircle className="cross" />
         <span>
           {' '}
-          {this.state.opportunity.minGPA.toFixed(
-            2,
-          )}
+          {this.state.opportunity.minGPA.toFixed(2)}
         </span>
       </p>
     );
@@ -579,7 +520,6 @@ class OpportunityPage extends Component {
       })
       .catch((error) => {
         this.sendToHome(error);
-        // Utils.handleTokenError(error);
       });
   }
 
@@ -731,12 +671,8 @@ class OpportunityPage extends Component {
                       {this.state.opportunity.ghostPost
                         ? (
                           <div>
-                            Please email
-                            {' '}
-                            {`${this.state.opportunity.ghostEmail
-                            } `}
-                            with your resume and why you're interested in order
-                            to apply.
+                            {`Please email ${this.state.opportunity.ghostEmail
+                            } with your resume and why you're interested in order to apply.`}
                             <LinkFaculty facultyId={this.state.opportunity.facultyId} />
                           </div>
                         )
@@ -774,11 +710,7 @@ class OpportunityPage extends Component {
                     <div className="column">
                       <div className="header">
                         {'Please '}
-                        <a
-                          href="/#forprofs"
-                        >
-                          create an account
-                        </a>
+                        <a href="/#forprofs">create an account</a>
                         {' to apply.'}
                       </div>
                     </div>

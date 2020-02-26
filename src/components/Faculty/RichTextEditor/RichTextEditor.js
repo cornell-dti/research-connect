@@ -86,9 +86,8 @@ class RichTextEditor extends Component {
         // const contentState = textEditorState.editorState.getCurrentContent();
         // this.setState({emailHtml: result});
         })
-        .catch(function (error) {
+        .catch((error) => {
           this.sendToHome(error);
-        // Utils.handleTokenError(error);
         });
     }
     // If the user changes block type before entering any text, we can

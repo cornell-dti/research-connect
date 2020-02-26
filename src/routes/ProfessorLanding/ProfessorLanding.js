@@ -46,10 +46,9 @@ class ProfessorLanding extends Component {
     }
   }
 
-  loginFailure(a) {
-    console.log(a);
+  loginFailure = () => {
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
-  }
+  };
 
   responseGoogleStudent = (response) => {
     sessionStorage.setItem('token_id', response.tokenId);
@@ -118,7 +117,7 @@ class ProfessorLanding extends Component {
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                   buttonText="Lab Log In/Sign Up"
                   onSuccess={this.responseGoogle}
-                  onFailure={this.loginFailure.bind(this)}
+                  onFailure={this.loginFailure}
                   className="signup"
                 />
 
@@ -148,8 +147,8 @@ class ProfessorLanding extends Component {
                 <GoogleLogin
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                   buttonText="CREATE AN ACCOUNT"
-                  onSuccess={this.responseGoogle.bind(this)}
-                  onFailure={this.loginFailure.bind(this)}
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.loginFailure}
                   className="signup"
                 />
               </Col>
@@ -246,7 +245,7 @@ class ProfessorLanding extends Component {
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="GET STARTED"
               onSuccess={this.responseGoogle}
-              onFailure={this.loginFailure.bind(this)}
+              onFailure={this.loginFailure}
               className="signup2 button"
             />
           </div>
@@ -266,7 +265,7 @@ class ProfessorLanding extends Component {
             </li>
           </ul>
           <p>Created by</p>
-          <a href="http://cornelldti.org/" target="_blank" rel="noopener noreferrer">
+          <a href="https://cornelldti.org/" target="_blank" rel="noopener noreferrer">
             <img className="CDTIlogo" src={CDTIlogo} alt="CDTI logo" />
           </a>
 

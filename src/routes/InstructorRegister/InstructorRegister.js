@@ -57,11 +57,18 @@ class InstructorRegister extends React.Component {
 
 
   toggleNewLab() {
-    this.setState({ labNameValid: false });
-    if (this.state.newLab) {
-      this.setState({ labId: null });
-    }
-    this.setState({ labURLValid: false, piValid: false, newLab: !this.state.newLab });
+    this.setState((state) => {
+      const update = {
+        labNameValid: false,
+        labURLValid: false,
+        piValid: false,
+        newLab: !state.newLab,
+      };
+      if (state.newLab) {
+        return { ...update, labId: null };
+      }
+      return update;
+    });
   }
 
   handleUpdateLab(labName, id) {
@@ -89,48 +96,34 @@ class InstructorRegister extends React.Component {
   }
 
   handleChangePosition(event) {
-    if (event.target.value !== 'Select Position') {
-      this.setState({ roleValid: true });
-    } else {
-      this.setState({ roleValid: false });
-    }
-    this.setState({ role: event.target.value });
+    const role = event.target.value;
+    this.setState({ roleValid: role !== 'Select Position', role });
   }
 
   handleChangeNotifications(event) {
-    if (event.target.value !== 'When do you want to receive emails about applications to your postings?') {
-      this.setState({ notifValid: true });
-    } else {
-      this.setState({ notifValid: false });
-    }
-    this.setState({ notifications: event.target.value });
+    const notifications = event.target.value;
+    const notifValid = notifications !== 'When do you want to receive emails about applications to your postings?';
+    this.setState({ notifValid, notifications });
   }
 
   handleChangeFirstName(event) {
-    if (event.target.value !== '') {
-      this.setState({ firstNameValid: true });
-    } else {
-      this.setState({ firstNameValid: false });
-    }
-    this.setState({ firstName: event.target.value });
+    const firstName = event.target.value;
+    this.setState({ firstNameValid: firstName !== '', firstName });
   }
 
   handleChangeLastName(event) {
-    if (event.target.value !== '') {
-      this.setState({ lastNameValid: true });
-    } else {
-      this.setState({ lastNameValid: false });
-    }
-    this.setState({ lastName: event.target.value });
+    const lastName = event.target.value;
+    this.setState({ lastNameValid: lastName !== '', lastName });
   }
 
   handleChangeNetId(event) {
-    if (event.target.value && event.target.value.indexOf('@cornell.edu') === -1) {
+    const netId = event.target.value;
+    if (netId && netId.indexOf('@cornell.edu') === -1) {
       this.setState({ netIDValid: true });
     } else {
       this.setState({ netIDValid: false });
     }
-    this.setState({ netId: event.target.value });
+    this.setState({ netId });
   }
 
   handleChangeNewLabName(event) {
@@ -168,8 +161,6 @@ class InstructorRegister extends React.Component {
 
   suggestionsClicked(event) {
     event.preventDefault();
-    console.log('clicked');
-    console.log(event.currentTarget);
   }
 
     onSubmit = (e) => {
@@ -177,8 +168,10 @@ class InstructorRegister extends React.Component {
       e.preventDefault();
       // get our form data out of state
       const {
-        data, newLab, showDropdown, role, notifications, firstName, lastName, netId, labId, labPage, name, labDescription, pi, firstNameValid, lastNameValid, netIDValid, roleValid, notifValid,
-        labNameValid, labURLValid, piValid,
+        data, newLab, showDropdown, role, notifications,
+        firstName, lastName, netId,
+        labId, labPage, name, labDescription, pi,
+        firstNameValid, lastNameValid, netIDValid, roleValid, notifValid, labNameValid, labURLValid, piValid,
       } = this.state;
       const token_id = sessionStorage.getItem('token_id');
       if (firstNameValid && lastNameValid && netIDValid && roleValid && notifValid && labNameValid

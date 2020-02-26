@@ -14,10 +14,7 @@ class FacultyList extends Component {
       .then((response) => {
         const { data } = response;
         this.setState({ starredFac: data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }).catch((error) => console.log(error));
   }
 
   updateStar(opId) {
@@ -30,28 +27,8 @@ class FacultyList extends Component {
           const starredVals = response.data;
           this.setState({ starredFac: starredVals });
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }).catch((error) => console.log(error));
   }
-
-  countNodes(nodes) {
-    let tempCount = 0;
-    let countString = '';
-    for (const k in nodes) {
-      if (nodes[k] != null) {
-        tempCount += 1;
-      }
-    }
-    if (tempCount === 1) {
-      countString = 'There is 1 result';
-    } else {
-      countString = `There are ${tempCount.toString()} results`;
-    }
-    return (countString);
-  }
-
 
   componentDidMount() {
     this.getStarredFac();
@@ -67,10 +44,6 @@ class FacultyList extends Component {
       yes: [], no: [], maybe: [], unknown: [],
     };
     this.props.data.forEach((prof) => {
-      // const { filteredOptions } = this.props;
-      // let departmentSelected = filteredOptions.department;
-      // let areaSelected = filteredOptions.area;
-      // let matchingSearches = filteredOptions.matchingSearches;
       profs[prof.accepting].push(
         <Faculty
           key={prof._id}
@@ -93,13 +66,9 @@ class FacultyList extends Component {
         profs[status] = [<p>No professors matching this criteria.</p>];
       }
     });
-    const nodeCount = this.countNodes(profs);
     return (
       <div>
         <div className="node-list-div">
-          {/* <p> */}
-          {/*  {nodeCount} matching your search criteria. */}
-          {/* </p> */}
           <p>Information last updated January 2020.</p>
         </div>
         <div style={headerStyle}>Professors Recruiting Undergrads This Semester</div>
