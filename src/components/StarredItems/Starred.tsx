@@ -12,7 +12,7 @@ type Props = {
   filteredOptions?: any;
 };
 type Data = OpportunityType | Professor;
-type State<D extends Data = Data> = { starred: D[]; data: D[] };
+type State<D extends Data = Data> = { starred: string[]; data: D[] };
 
 class Starred extends Component<Props, State> {
   state: State = { starred: [], data: [] };
@@ -25,11 +25,10 @@ class Starred extends Component<Props, State> {
 
     axios.get(`/api/undergrads/star?type=${this.props.type}&token_id=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
-        const { data }: { data: OpportunityType[] } = response;
+        const { data }: { data: string[] } = response;
         axios.get(`/api/${wrapper}`)
           .then((res) => {
             const all: Data[] = res.data;
-            // @ts-ignore
             const onlyStarred = all.filter((i) => data.includes(i._id));
             this.setState({ data: onlyStarred, starred: data });
           });
@@ -51,8 +50,7 @@ class Starred extends Component<Props, State> {
 
   genOppCards() {
     const oppNodes = (this.state.data as OpportunityType[]).map((opp) => {
-      // @ts-ignore
-      const starred = (this.state.starred as OpportunityType[]).includes(opp._id);
+      const starred = this.state.starred.includes(opp._id);
       return (
         <Opportunity
           key={opp._id}
@@ -73,8 +71,7 @@ class Starred extends Component<Props, State> {
 
   genFacCards() {
     const profNodes = (this.state.data as Professor[]).map((prof) => {
-      // @ts-ignore
-      const starred = (this.state.starred as Professor[]).includes(prof._id);
+      const starred = this.state.starred.includes(prof._id);
       return (
         <Faculty
           key={prof._id}

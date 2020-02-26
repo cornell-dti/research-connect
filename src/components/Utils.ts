@@ -75,7 +75,7 @@ function userHasNoRole(roleEndpointResponse?: { data: any }): boolean {
       || !roleEndpointResponse.data);
 }
 
-function getRoleFromResponse(roleEndpointResponse?: { data: any }): any {
+function getRoleFromResponse(roleEndpointResponse?: { data: any }): string | null {
   if (userHasNoRole(roleEndpointResponse)) {
     return null;
   }
@@ -87,7 +87,7 @@ function getTokenId(): string | null {
 }
 
 const ROLE_ENDPOINT = '/api/role/';
-export function getUserRole(redirectIfNotLoggedIn = false) {
+export function getUserRole(redirectIfNotLoggedIn = false): Promise<string | null> {
   return new Promise((resolve) => {
     const token = getTokenId();
     const isNotLoggedIn = !token;
@@ -100,7 +100,7 @@ export function getUserRole(redirectIfNotLoggedIn = false) {
       })
       .catch((error) => {
         if (redirectIfNotLoggedIn) {
-          resolve(handleTokenError(error));
+          resolve(String(handleTokenError(error)));
         } else {
           resolve('none');
         }
@@ -163,18 +163,6 @@ export function updateForMultipleChoice(originalList: string[], option: string):
     return originalList.filter((original) => original !== option);
   }
   return [...originalList, option];
-}
-
-// @ts-ignore
-export function updateMultipleChoiceFilter(filterName, option) {
-  // @ts-ignore
-  this.setState((state) => {
-    if (state[filterName].includes(option)) {
-      // @ts-ignore
-      return { [filterName]: state[filterName].filter((original) => original !== option) };
-    }
-    return { [filterName]: [...state[filterName], option] };
-  });
 }
 
 export function logoutGoogle() {

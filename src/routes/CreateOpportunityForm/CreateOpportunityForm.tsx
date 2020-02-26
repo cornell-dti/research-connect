@@ -256,7 +256,7 @@ class CreateOppForm extends React.Component<{}, State> {
     this.setState((state) => {
       const questionsCopy = JSON.parse(JSON.stringify(state.questions));
       // @ts-ignore
-      questionsCopy[stateLabel] = document.getElementsByName(String(i))[0].value;
+      questionsCopy[stateLabel] = document.getElementsByName(String(i))[0].value as string;
       return { questions: questionsCopy };
     });
   };
@@ -464,8 +464,6 @@ class CreateOppForm extends React.Component<{}, State> {
                     just a link to your website and text saying to email you
                     if anything looks interesting."
                   name="tasks"
-                  // @ts-ignore
-                  type="text"
                   value={this.state.undergradTasks}
                   onChange={this.handleChange}
                 />
@@ -535,8 +533,6 @@ class CreateOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Project Description and Goals"
                     name="descript"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.projectDescription}
                     onChange={this.handleChange}
                   />
@@ -562,8 +558,6 @@ class CreateOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)"
                     name="qual"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.qualifications}
                     onChange={this.handleChange}
                   />
@@ -690,8 +684,6 @@ class CreateOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Additional Information"
                     name="additional"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.additionalInformation}
                     onChange={this.handleChange}
                   />

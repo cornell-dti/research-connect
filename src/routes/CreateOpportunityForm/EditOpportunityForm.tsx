@@ -125,15 +125,14 @@ class EditOppForm extends React.Component<{}, State> {
     axios.get(`/api/opportunities/${id}?netId=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         if (response) {
-          const resp = response.data as Partial<State>;
+          type Response = Partial<Omit<State, 'opens' | 'closes'>> & { opens: string; closes: string };
+          const resp = response.data as Response;
           if (resp.title) this.setState({ title: resp.title });
           if (resp.areas) this.setState({ areas: resp.areas });
           if (resp.projectDescription) {
             this.setState({ projectDescription: resp.projectDescription });
           }
-          // @ts-ignore
           const openDate = moment(new Date(resp.opens));
-          // @ts-ignore
           const closeDate = moment(new Date(resp.closes));
           if (resp.startSeason) this.setState({ startSeason: resp.startSeason });
           if (resp.startYear) this.setState({ startYear: resp.startYear });
@@ -462,8 +461,6 @@ class EditOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Undergraduate Tasks"
                     name="tasks"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.undergradTasks}
                     onChange={this.handleChange}
                   />
@@ -552,8 +549,6 @@ class EditOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Project Description and Goals"
                     name="descript"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.projectDescription}
                     onChange={this.handleChange}
                   />
@@ -582,8 +577,6 @@ class EditOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)"
                     name="qual"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.qualifications}
                     onChange={this.handleChange}
                   />
@@ -763,8 +756,6 @@ class EditOppForm extends React.Component<{}, State> {
                   <textarea
                     className="column column-90"
                     placeholder="Topics of Research (Please separate with commas)"
-                    // @ts-ignore
-                    type="text"
                     name="areas"
                     value={this.state.areas}
                     onChange={this.handleChange}
@@ -792,8 +783,6 @@ class EditOppForm extends React.Component<{}, State> {
                     className="column column-90"
                     placeholder="Additional Information"
                     name="additional"
-                    // @ts-ignore
-                    type="text"
                     value={this.state.additionalInformation}
                     onChange={this.handleChange}
                   />

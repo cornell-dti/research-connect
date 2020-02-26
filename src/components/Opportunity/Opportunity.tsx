@@ -19,7 +19,7 @@ type Props = {
   closes: string;
   startSeason?: string;
   startYear?: string;
-  role?: string;
+  role?: string | null;
   updateStar: (id: string) => void;
 };
 
@@ -105,11 +105,11 @@ class Opportunity extends Component<Props> {
     return 'Open';
   }
 
-  static undergradIsViewingPage(role?: string) {
+  static undergradIsViewingPage(role?: string | null) {
     return role === roleStringForUndergrads;
   }
 
-  handleShowingStar(role?: string) {
+  handleShowingStar(role?: string | null) {
     if (Opportunity.undergradIsViewingPage(role)) {
       return (
         <Star
@@ -121,7 +121,7 @@ class Opportunity extends Component<Props> {
     return '';
   }
 
-  handleShowingPrereqs(role?: string) {
+  handleShowingPrereqs(role?: string | null) {
     if (Opportunity.undergradIsViewingPage(role)) {
       return this.checkPrereqs();
     }
