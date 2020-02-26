@@ -10,12 +10,12 @@ type State = { starredFac: string[] };
 class FacultyList extends Component<Props, State> {
   state: State = { starredFac: [] };
 
-  getStarredFac() {
+  componentDidMount() {
     axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         const { data } = response;
         this.setState({ starredFac: data });
-      }).catch((error) => console.log(error));
+      });
   }
 
   updateStar = (opId: string) => {
@@ -28,11 +28,7 @@ class FacultyList extends Component<Props, State> {
           const starredVals = response.data;
           this.setState({ starredFac: starredVals });
         }
-      }).catch((error) => console.log(error));
-  }
-
-  componentDidMount() {
-    this.getStarredFac();
+      });
   }
 
   render() {
@@ -45,7 +41,7 @@ class FacultyList extends Component<Props, State> {
       yes: [], no: [], maybe: [], unknown: [],
     };
     // sort the faculty by researchStatus so that those with a research status show first
-    this.props.data.sort((a, b) => (a.researchStatus.toLowerCase() > b.researchStatus.toLowerCase()) ? -1 : 1);
+    this.props.data.sort((a, b) => (a.researchStatus.toLowerCase() > b.researchStatus.toLowerCase() ? -1 : 1));
 
     this.props.data.forEach((prof) => {
       profs[prof.accepting].push(
@@ -66,7 +62,7 @@ class FacultyList extends Component<Props, State> {
     });
     Object.keys(profs).forEach((status) => {
       if (profs[status].length === 0) {
-        profs[status] = [<span></span>];
+        profs[status] = [<span />];
       }
     });
     return (

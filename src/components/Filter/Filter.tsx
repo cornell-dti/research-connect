@@ -1,19 +1,16 @@
 import React, { Component, ChangeEvent } from 'react';
 
-export type UpdateFilterFunction = (detailName: string, option: string) => void;
-
 type Props = {
-  type?: 'select' | 'checkbox';
+  type: 'select' | 'checkbox';
   label: string;
   choices: { [key: string]: string };
-  filterType: string;
-  updateFilterOption: UpdateFilterFunction;
+  updateFilterOption: (option: string) => void;
 };
 
 class Filter extends Component<Props> {
   handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const option = e.target.value;
-    this.props.updateFilterOption(this.props.filterType, option);
+    this.props.updateFilterOption(option);
   };
 
   // helper method for generating select

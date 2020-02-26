@@ -16,10 +16,8 @@ app.get('/check/:opportunityId', (req, res) => {
   const idToCheck = req.query.netId;
   debug('THIS IS WHERE WE START');
 
-  opportunityModel.findById(req.params.opportunityId, (err, opportunity) => {
-    // debug(err);
+  opportunityModel.findById(req.params.opportunityId, (_, opportunity) => {
     debug('callback function is being run');
-    // debug(opportunity);
     if (!opportunity) {
       debug('could not find matching opportunity');
       res.send(false);
@@ -310,7 +308,8 @@ app.get('/', (req, res) => {
   } else {
     opportunityModel.find(findTimelyOpps).sort(sortOrderObj).exec((_, opportunities) => {
       if (!opportunities) {
-        return res.send([]);
+        res.send([]);
+        return;
       }
       for (let i = 0; i < opportunities.length; i++) {
         opportunities[i].prereqsMatch = true;
@@ -376,6 +375,7 @@ function getSeasonsAfter(thisSeason) {
     // year or at the beginning
     return ['Spring', 'Summer', 'Fall', 'Winter'];
   }
+  return [];
 }
 
 function getRandomInt(min, max) {
@@ -528,7 +528,6 @@ app.post('/', async (req, res, next) => {
     const token = data.creatorNetId;
     // notice how we "thunk" (to use 3110 language) getUniqueTitle so we can get the promise it returns and await it to get its value
     const newTitle = await getUniqueTitle(data.title, data.supervisor);
-    console.log(`new title: ${newTitle}`);
     verify(token, (netIdActual) => {
       let ghostPost = false;
       let ghostEmail = '';
@@ -624,9 +623,9 @@ app.post('/', async (req, res, next) => {
               debug('sending email now!');
 
               sgMail.send(msg).catch((e) => {
-                console.log('error in sending below');
-                console.log(e);
-                console.log(e.response.body.errors);
+                debug('error in sending below');
+                debug(e);
+                debug(e.response.body.errors);
               });
             });
             debug('finished emailing students');
@@ -634,7 +633,6 @@ app.post('/', async (req, res, next) => {
       });
       debug('done with function');
       res.send('Success!');
-      // });
     }).catch((error) => {
       debug('verify error');
       debug(error);

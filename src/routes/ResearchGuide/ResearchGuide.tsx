@@ -8,6 +8,10 @@ import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 
+const contactFormLink = (
+  'https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform'
+);
+
 type State = { role: string | null };
 
 class ResearchGuide extends Component<{}, State> {
@@ -61,10 +65,6 @@ class ResearchGuide extends Component<{}, State> {
                       On that page, you can also see professors who are likely
                       to accept undergrads that semester and are doing research that piques your interest.
                     </p>
-                    {/* <h3 className="header2 substep">Browse Faculty</h3> */}
-                    {/* <p className="instructions">You could also browse the <a href="/faculty">"Email Faculty"</a> page */}
-                    {/* and filter faculty by areas you're interested in, then read their page */}
-                    {/* to see if their research aligns with what you want to do.</p> */}
                     <h2 className="header1 step">Step 2: Reach out to the PhD/Faculty</h2>
                     <h3 className="header2 substep">Email</h3>
                     <p className="instructions">
@@ -105,11 +105,7 @@ class ResearchGuide extends Component<{}, State> {
                     <h2 className="header1 step">Ask Us!</h2>
                     <p className="substep">
                       {'We\'d love to answer any questions you have - use the '}
-                      <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSelEuVftvCr9ndS2Cby0Zli2V89PIuqk2FxPzekd5MpSS9HGA/viewform"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                      <a href={contactFormLink} target="_blank" rel="noopener noreferrer">
                         contact form
                       </a>
                       {' to ask and we\'ll respond in 24 hours!'}

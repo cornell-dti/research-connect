@@ -15,6 +15,7 @@ class RichTextEditor extends Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
+    // eslint-disable-next-line react/no-string-refs
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({ editorState });
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -42,7 +43,7 @@ class RichTextEditor extends Component {
       if (newEditorState !== this.state.editorState) {
         this.onChange(newEditorState);
       }
-      return;
+      return undefined;
     }
     return getDefaultKeyBinding(e);
   }
@@ -118,6 +119,7 @@ class RichTextEditor extends Component {
             keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
             placeholder="Type your email here"
+            // eslint-disable-next-line react/no-string-refs
             ref="editor"
             spellCheck
           />

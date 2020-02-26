@@ -42,7 +42,6 @@ class OpportunityPage extends Component {
       submitted: false,
       triedSubmitting: false,
       student: null,
-      coverLetter: '',
       netId: 'unknown',
       role: '',
       detectedLoggedOut: false,
@@ -67,9 +66,6 @@ class OpportunityPage extends Component {
           const stars = response.data;
           this.setState({ starred: stars.includes(id) });
         }
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -90,15 +86,6 @@ class OpportunityPage extends Component {
       const answersCopy = JSON.parse(JSON.stringify(state.questionAnswers));
       answersCopy[key] = document.getElementsByName(key)[0].value;
       return { questionAnswers: answersCopy };
-    });
-  }
-
-  coverChange(event) {
-    const coverLetter = event.target.value;
-    this.setState((state) => {
-      const answersCopy = JSON.parse(JSON.stringify(state.questionAnswers));
-      answersCopy.coverLetter = coverLetter;
-      return { coverLetter, questionAnswers: answersCopy };
     });
   }
 
@@ -141,14 +128,24 @@ class OpportunityPage extends Component {
       .catch(() => false);
   }
 
-  // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the opportunity
-  componentWillMount() {
+  componentDidMount() {
+    if (!sessionStorage.getItem('token_id')) {
+      this.setState({ role: null });
+      return;
+    }
+
+    axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
+      .then((response) => {
+        this.setState({ role: response.data });
+      })
+      .catch((error) => {
+        this.sendToHome(error);
+      });
     axios.get(`/api/undergrads/star?type=opportunity&token_id=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         const { data } = response;
         this.setState({ starred: data.includes(this.props.match.params.id) });
-      })
-      .catch((error) => console.log(error));
+      });
     axios.get(`/api/opportunities/${this.props.match.params.id}?netId=${
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
@@ -497,30 +494,6 @@ class OpportunityPage extends Component {
     return <div>{compString}</div>;
   }
 
-  componentDidMount() {
-    if (!sessionStorage.getItem('token_id')) {
-      this.setState({ role: null });
-      return;
-    }
-
-    axios.get(`/api/role/${sessionStorage.getItem('token_id')}`)
-      .then((response) => {
-        // if they don't have a role or it's just not showing up for some reason, go to home page
-        // remove this line if you want anybody to be able to view opportunity page
-        /* if (!response || response.data === "none" || !response.data) {
-            alert("You must be signed in to view this.");
-            window.location.href = '/';
-          }
-          else {
-            this.setState({role: response.data});
-          } */
-        this.setState({ role: response.data });
-      })
-      .catch((error) => {
-        this.sendToHome(error);
-      });
-  }
-
   render() {
     const notProvidedMessage = 'Not specified';
     const isLab = this.state.role !== 'undergrad';
@@ -529,12 +502,8 @@ class OpportunityPage extends Component {
       <div>
         <VariableNavbar current="opportunities" role={this.state.role} />
 
-        <div className={`opportunities-page-wrapper ${
-          isLab ? 'opportunity-lab' : ''}`}
-        >
-          <div className={`wallpaper ${
-            isNotLoggedIn ? 'wallpaper-no-sign-in' : ''}`}
-          />
+        <div className={`opportunities-page-wrapper ${isLab ? 'opportunity-lab' : ''}`}>
+          <div className={`wallpaper ${isNotLoggedIn ? 'wallpaper-no-sign-in' : ''}`} />
           <div className="row opportunity-row">
             <div className="column opp-details-column">
               <div className="row opp-title-card">

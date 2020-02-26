@@ -8,17 +8,14 @@ import ReactTooltip from 'react-tooltip';
 import InfoIcon from 'react-icons/lib/md/info';
 import Delete from 'react-icons/lib/ti/delete';
 import Add from 'react-icons/lib/md/add-circle';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as ReactGA from 'react-ga';
-import * as Utils from '../../components/Utils';
+import { updateForMultipleChoice, handleTokenError } from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
-import YearsAllowed from '../../components/Detail/YearsAllowed';
-import CompensationAllowed from '../../components/Detail/CompensationAllowed';
-import CSAreasAllowed from '../../components/Detail/CSAreasAllowed';
-
+import Detail from '../../components/Detail/Detail';
+import { years, csAreas, compensation as compensationOptions } from '../../components/constants';
 
 class CreateOppForm extends React.Component {
   constructor(props) {
@@ -80,7 +77,7 @@ class CreateOppForm extends React.Component {
     // Need code for getting areas
     axios.get('/api/labs')
       .then((res) => this.setState({ areaData: res.data }))
-      .catch((error) => Utils.handleTokenError(error));
+      .catch((error) => handleTokenError(error));
   }
 
   // display the questions interface to add/delete questions
@@ -120,29 +117,30 @@ class CreateOppForm extends React.Component {
 
   deleteQuestion = (data) => {
     const deleted = parseInt(data.slice(1), 10);
-    const newQnum = this.state.numQuestions - 1;
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    const questionsEdit = {};
+    this.setState((state) => {
+      const newQnum = state.numQuestions - 1;
+      const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
+      const questionsEdit = {};
 
-    Object.keys(questionsCopy).forEach((question) => {
-      const num = parseInt(question.slice(1), 10);
-      if (num < deleted) {
-        questionsEdit[question] = questionsCopy[question];
-      } else if (num > deleted) {
-        const newString = `q${(num - 1).toString()}`;
-        questionsEdit[newString] = questionsCopy[question];
-      }
+      Object.keys(questionsCopy).forEach((question) => {
+        const num = parseInt(question.slice(1), 10);
+        if (num < deleted) {
+          questionsEdit[question] = questionsCopy[question];
+        } else if (num > deleted) {
+          const newString = `q${(num - 1).toString()}`;
+          questionsEdit[newString] = questionsCopy[question];
+        }
+      });
+      return { numQuestions: newQnum, questions: questionsEdit };
     });
-    this.setState({ numQuestions: newQnum, questions: questionsEdit });
   };
 
   addQuestion = () => {
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
-    this.setState({
-      questions: questionsCopy,
+    this.setState((state) => {
+      const questionsCopy = JSON.parse(JSON.stringify(state.questions));
+      questionsCopy[`q${(state.numQuestions).toString()}`] = '';
+      return { questions: questionsCopy, numQuestions: state.numQuestions + 1 };
     });
-    this.setState(({ numQuestions }) => ({ numQuestions: numQuestions + 1 }));
   };
 
   createGpaOptions = () => {
@@ -229,9 +227,11 @@ class CreateOppForm extends React.Component {
 
   handleQuestionState = (i) => {
     const stateLabel = `q${i.toString()}`;
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
-    this.setState({ questions: questionsCopy });
+    this.setState((state) => {
+      const questionsCopy = JSON.parse(JSON.stringify(state.questions));
+      questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
+      return { questions: questionsCopy };
+    });
   };
 
   handleOpenDateChange = (date) => this.setState({ opens: date });
@@ -248,7 +248,10 @@ class CreateOppForm extends React.Component {
     e.preventDefault();
     // get our form data out of state
     const {
-      email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes, labName, supervisor, numQuestions, result,
+      email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
+      qualifications, compensation, startSeason, startYear, yearsAllowed, questions,
+      requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes,
+      labName, supervisor, numQuestions,
     } = this.state;
 
     // makes sure all the fields that are required are valid
@@ -295,7 +298,8 @@ class CreateOppForm extends React.Component {
           if (this.state.creatorNetId) {
             document.location.href = '/professorView';
           } else {
-            alert('Submitted! You can find your opportunity on the opportunities page of our site! (research-connect.com/faculty/)');
+            alert('Submitted! You can find your opportunity on the opportunities page of our site! '
+              + '(research-connect.com/faculty/)');
             document.location.href = '/faculty';
           }
         });
@@ -303,9 +307,8 @@ class CreateOppForm extends React.Component {
         if (error.response) {
           if (error.response.status === 400) {
             alert('One of the required fields is not properly filled in.');
-          } else if (!Utils.handleTokenError(error)) {
+          } else if (!handleTokenError(error)) {
             // if there's no token-related error, then do the alert.
-            console.log(error.response.data);
             alert('Something went wrong on our side. Please refresh and try again.');
           }
         }
@@ -342,7 +345,10 @@ class CreateOppForm extends React.Component {
         {this.state.creatorNetId && <ProfessorNavbar current="newopp" />}
         {!this.state.creatorNetId && (
           <div className="go-home" onClick={() => this.goHome()}>
-            <FaLongArrowLeft style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }} className="black-arrow" />
+            <FaLongArrowLeft
+              style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }}
+              className="black-arrow"
+            />
             Home
           </div>
         )}
@@ -353,7 +359,8 @@ class CreateOppForm extends React.Component {
               <h3>Create New Position</h3>
               <h6>
                 If you post without an account, students will have to write an email to you if they are interested.
-                If you post with an account, students will write a cover letter on the site and you can view their info through our portal as well as edit your opportunity.
+                If you post with an account, students will write a cover letter on the site and
+                you can view their info through our portal as well as edit your opportunity.
               </h6>
               <span className="required-star-top">* Required Fields</span>
             </div>
@@ -367,7 +374,8 @@ class CreateOppForm extends React.Component {
 
 
               <div
-                className={!this.state.emailIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
+                className={!this.state.emailIsValid && this.state.triedSubmitting
+                  ? 'row input-row wrong' : 'row input-row'}
               >
 
                 <span className="required-star">*</span>
@@ -390,7 +398,10 @@ class CreateOppForm extends React.Component {
 
               </div>
 
-              <div className={!this.state.supervisorIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}>
+              <div
+                className={!this.state.supervisorIsValid && this.state.triedSubmitting
+                  ? 'row input-row wrong' : 'row input-row'}
+              >
                 <span className="required-star">*</span>
 
                 <input
@@ -413,7 +424,8 @@ class CreateOppForm extends React.Component {
               </div>
 
               <div
-                className={!this.state.titleIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
+                className={!this.state.titleIsValid && this.state.triedSubmitting
+                  ? 'row input-row wrong' : 'row input-row'}
               >
 
                 <span className="required-star">*</span>
@@ -441,7 +453,8 @@ class CreateOppForm extends React.Component {
               </div>
 
               <div
-                className={!this.state.tasksAreValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
+                className={!this.state.tasksAreValid && this.state.triedSubmitting
+                  ? 'row input-row wrong' : 'row input-row'}
               >
                 <span className="required-star">*</span>
                 <textarea
@@ -480,7 +493,8 @@ class CreateOppForm extends React.Component {
                 <span className="required-star">*</span>
 
                 <select
-                  className={!this.state.seasonIsValid && this.state.triedSubmitting ? 'startSeason wrong-select' : 'startSeason'}
+                  className={!this.state.seasonIsValid && this.state.triedSubmitting
+                    ? 'startSeason wrong-select' : 'startSeason'}
                   name="startSeason"
                   value={this.state.startSeason}
                   onChange={this.handleChange}
@@ -493,7 +507,8 @@ class CreateOppForm extends React.Component {
                 </select>
 
                 <select
-                  className={!this.state.yearIsValid && this.state.triedSubmitting ? 'startYear wrong-select' : 'startYear'}
+                  className={!this.state.yearIsValid && this.state.triedSubmitting
+                    ? 'startYear wrong-select' : 'startYear'}
                   name="startYear"
                   value={this.state.startYear}
                   onChange={this.handleChange}
@@ -568,7 +583,16 @@ class CreateOppForm extends React.Component {
                   </ReactTooltip>
                 </div>
 
-                <CompensationAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
+                <Detail
+                  detailName="compensation"
+                  label="Student Compensation (leave blank if just experience):"
+                  updateDetail={
+                    (option) => this.setState((state) => ({
+                      compensation: updateForMultipleChoice(state.compensation, option),
+                    }))
+                  }
+                  choices={compensationOptions}
+                />
 
                 <div className="hours row input-row optional">
                   <input
@@ -641,9 +665,24 @@ class CreateOppForm extends React.Component {
                   </ReactTooltip>
                 </div>
 
-                <YearsAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
-
-                <CSAreasAllowed update={Utils.updateMultipleChoiceFilter.bind(this)} />
+                <Detail
+                  detailName="yearsAllowed"
+                  label="Years Desired:"
+                  updateDetail={
+                    (option) => this.setState((state) => ({
+                      yearsAllowed: updateForMultipleChoice(state.yearsAllowed, option),
+                    }))
+                  }
+                  choices={years}
+                />
+                <Detail
+                  detailName="areas"
+                  label="CS Areas"
+                  updateDetail={
+                    (option) => this.setState((state) => ({ areas: updateForMultipleChoice(state.areas, option) }))
+                  }
+                  choices={csAreas}
+                />
 
                 <div className="row input-row optional">
                   <textarea
@@ -692,8 +731,8 @@ class CreateOppForm extends React.Component {
                   <InfoIcon data-tip data-for="info-questions" className="info-icon-title" size={20} />
                   <ReactTooltip place="top" id="info-questions" aria-haspopup="true" role="example">
                     <p className="info-text-large">
-                      We recommend asking "Why are you interested in this lab and/or position?" to
-                      gauge interest.You will nonetheless be able to view each students' cover
+                      We recommend asking &quot;Why are you interested in this lab and/or position?&quot; to
+                      {'gauge interest. You will nonetheless be able to view each students\' cover'}
                       letter, year, GPA, résumé, and major, in addition to their responses to these
                       questions once they apply.
                     </p>

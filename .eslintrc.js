@@ -19,7 +19,7 @@ module.exports = {
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'no-use-before-define': ['off'],
     'no-unused-vars': ['warn'], // TODO: turn it into error when problems are fixed.
-    'new-cap': ['warn'],
+    'new-cap': ['off'],
     'react/state-in-constructor': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/jsx-fragments': ['off'],
