@@ -149,7 +149,7 @@ export function handleNonTokenError(error: { response: { status: number; data: a
  */
 export function getParameterByName(name: string, url: string): string | null {
   if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
+  name = name.replace(/[[\]]/g, '\\$&');
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
 
   const results = regex.exec(url);

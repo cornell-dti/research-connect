@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express.Router();
-const { classesModel, debug } = require('../common.js');
+const { classesModel } = require('../common.js');
 
 //* returns (`res.send()`s) all the classes in the following array:
 // [{"label": classFull (that's a field in the model), "value": id of that class}, ... and so on for every class]

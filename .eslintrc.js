@@ -14,17 +14,15 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': ['off'],
     'jsx-a11y/no-static-element-interactions': ['off'],
     'max-classes-per-file': ['off'],
-    'max-len': [1, 120, 2, {ignoreComments: true}],
+    'max-len': ['error', 120, 2, {ignoreComments: true}],
     'no-param-reassign': ['off'],
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'no-use-before-define': ['off'],
-    'no-unused-vars': ['warn'], // TODO: turn it into error when problems are fixed.
     'new-cap': ['off'],
     'react/state-in-constructor': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/jsx-fragments': ['off'],
     'react/destructuring-assignment': ['off'],
-    'react/no-unescaped-entities': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/no-unused-state': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/sort-comp': ['off'],
   },
