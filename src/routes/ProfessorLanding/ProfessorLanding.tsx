@@ -39,10 +39,7 @@ class ProfessorLanding extends Component {
             window.location.href = endUrl;
           }
         })
-        .catch((error) => {
-          console.log('error in proffessor landing /api/role');
-          Utils.handleTokenError(error);
-        });
+        .catch((error) => Utils.handleTokenError(error));
     }
   }
 

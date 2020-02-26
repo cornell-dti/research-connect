@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import axios from 'axios';
 import * as ReactGA from 'react-ga';
 import '../App/App.scss';
@@ -16,8 +16,26 @@ const gradYears = [
   new Date().getFullYear() + 4,
 ];
 
-class StudentRegister extends Component {
-  constructor(props) {
+type State = {
+  firstName: string;
+  lastName: string;
+  gradYear: string;
+  major: string;
+  GPA: string;
+  netId: string;
+  email: string;
+  courses: string[];
+  firstNameValid: boolean;
+  lastNameValid: boolean;
+  gradYearValid: boolean;
+  majorValid: boolean;
+  triedSubmitting: boolean;
+  isButtonDisabled: boolean;
+  buttonValue: string;
+};
+
+class StudentRegister extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       firstName: '',
@@ -40,8 +58,8 @@ class StudentRegister extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  optionify(inputArray, inputName) {
-    const newArray = [];
+  optionify(inputArray: (string | number)[], inputName: string) {
+    const newArray: JSX.Element[] = [];
     for (let i = 0; i < inputArray.length; i++) {
       newArray.push(
         <option key={inputArray[i]} value={inputArray[i]}>
@@ -74,30 +92,28 @@ class StudentRegister extends Component {
     );
   }
 
-  onChange = (e) => {
+  onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     // Because we named the inputs to match their corresponding values in state, it's
     // super easy to update the state
     const { name } = e.target;
     if (name !== 'courses') {
       const validationName = `${name}Valid`;
+      // @ts-ignore: too dynamic
       this.setState({ [name]: e.target.value });
       if (name === 'gradYear' || name === 'major') {
-        document.getElementById(name).innerHTML = [e.target.value];
+        document.getElementById(name)!.innerHTML = e.target.value;
       }
 
-      if (e.target.value !== '') {
-        this.setState({ [validationName]: true });
-      } else {
-        this.setState({ [validationName]: false });
-      }
+      // @ts-ignore: too dynamic
+      this.setState({ [validationName]: e.target.value !== '' });
     } else {
-      this.setState({ [e.target.name]: (e.target.value).replace(/ /g, '').split(',') });
+      this.setState({ courses: (e.target.value).replace(/ /g, '').split(',') });
     }
   };
 
-  handleUpdateCourses = (courseList) => this.setState({ courses: courseList });
+  handleUpdateCourses = (courseList: string[]) => this.setState({ courses: courseList });
 
-  onSubmit = (e) => {
+  onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     // get our form data out of state
     const {

@@ -4,7 +4,7 @@ import Navbar from './StudentNavbar/StudentNavbar';
 import GuestNavbar from './GuestNavbar';
 import { NavBarOptions } from './types';
 
-type Props = { role: string; current: NavBarOptions };
+type Props = { role: string | null; current: NavBarOptions };
 
 class VariableNavbar extends Component<Props> {
   goHome() {
