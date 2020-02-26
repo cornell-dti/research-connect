@@ -45,13 +45,10 @@ function generateId() {
 // Only used to store resume and transcript, looks for req.body.resume or req.body.transcript.
 app.post('/', (req, res) => {
   verify(req.body.token_id, (email) => {
-    debug(`email: ${email}`);
     if (email === null) {
       return res.status(412).send('No user found with current session token.');
     }
-    debug('net id:');
     const netId = common.getNetIdFromEmail(email);
-    debug(netId);
     if (!netId) {
       return res
         .status(412)

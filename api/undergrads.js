@@ -12,18 +12,13 @@ app.get('/la/:netId', (req, res) => {
     if (!profNetId) {
       return res.status(401).send({});
     }
-    debug('prof net id');
-    debug(profNetId);
     labAdministratorModel.findOne({ netId: profNetId }, (err, labAdmin) => {
       if (labAdmin === null) return res.status(403).send({});
-      debug(req.params);
       undergradModel.findOne({ netId: req.params.netId }, (err2, undergrad) => {
         if (err2) {
           return err2;
         }
-        debug(undergrad);
         res.send(undergrad);
-        // debug(undergrad.netId);
         return null;
       });
       return null;
@@ -117,16 +112,8 @@ app.get('/token/:tokenId', (req, res) => {
     }
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
       if (err) {
-        debug('Not found');
         return err;
       }
-      debug('Found');
-      if (undergrads.length) {
-        debug(undergrads[0].netId);
-      } else {
-        debug('no results found');
-      }
-
       return res.send(undergrads);
     });
   }).catch((error) => {
@@ -136,30 +123,20 @@ app.get('/token/:tokenId', (req, res) => {
 
 // previously POST /createUndergrad
 app.post('/', (req, res) => {
-  debug(req.body);
   if (!req.body || !req.body.token_id) {
     return res.status(412).send('No user found with current session token.');
   }
   verify(req.body.token_id, (email) => {
-    debug(`email: ${email}`);
     if (email === null) {
       return res.status(412).send('No user found with current session token.');
     }
-    debug('net id:');
     const netId = common.getNetIdFromEmail(email);
-    debug(netId);
     if (!netId) {
       return res.status(412)
         .send('The email you signed up with does not end in @cornell.edu. Please log out and try again.');
     }
-    debug('checkpoint');
     // req is json containing the stuff that was sent if there was anything
     const data = req.body;
-    debug(data.firstName);
-    debug(data.lastName);
-    debug(data.gradYear);
-    debug(data.major);
-    debug(data.GPA);
     if (data.courses) {
       data.courses = data.courses.map((element) => {
         const trimmed = element.trim();
@@ -173,8 +150,6 @@ app.post('/', (req, res) => {
       });
       data.courses = data.courses.filter(Boolean); // remove falsy values, https://stackoverflow.com/a/32906951/5177017
     }
-    debug(data.courses);
-    debug('This be the resume');
     // if they don't have the required values
     if (!data.firstName || !data.lastName || !data.gradYear) {
       return res.status(400).send('Missing either first name, last name, or graduation year');
@@ -188,18 +163,11 @@ app.post('/', (req, res) => {
       netId,
       courses: data.courses,
     });
-    debug('undergrad: ');
-    debug(undergrad);
     undergrad.save((err) => {
-      debug('undergrad saved');
       if (err) {
         res.status(500).send({ errors: err.errors });
-        debug(err);
-        debug('error in saving ugrad');
-        debug(err);
-      } else { // Handle this error however you see fit
-        debug('saved, now to:');
-        debug(`${netId}@cornell.edu`);
+      } else {
+        // Handle this error however you see fit
         const msg = {
           to: `${netId}@cornell.edu`,
           from: {
@@ -218,20 +186,13 @@ app.post('/', (req, res) => {
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
         };
-        debug('before send');
-        sgMail.send(msg).catch((e) => {
-          console.log('error in sending below');
-          console.log(e);
-          console.log(e.response.body.errors);
-        });
-        debug('after send');
+        sgMail.send(msg).catch((e) => debug(e.response.body.errors));
         res.status(200).send('success!');
       }
       // Now the opportunity is saved in the commonApp collection on mlab!
     });
     return null;
   }, true).catch((error) => {
-    debug('error in verify');
     debug(error);
     handleVerifyError(error, res);
     return null;
@@ -240,8 +201,6 @@ app.post('/', (req, res) => {
 });
 
 app.put('/:netId', (req, res) => {
-  debug('We have reached the backend');
-  debug(req.body);
   const data = req.body;
   let nId = req.params.netId;
   verify(req.params.tokenId, (decrypted) => {
@@ -250,10 +209,8 @@ app.put('/:netId', (req, res) => {
       if (err) {
         res.status(500).send(err);
       } else {
-      // Update each attribute with any possible attribute that may have been submitted in the body of the request
-      // If that attribute isn't in the request body, default back to whatever it was before.
-
-        debug(undergrad);
+        // Update each attribute with any possible attribute that may have been submitted in the body of the request
+        // If that attribute isn't in the request body, default back to whatever it was before.
 
         undergrad[0].gradYear = data.year || undergrad[0].gradYear;
         undergrad[0].major = data.major || undergrad[0].major;
@@ -268,7 +225,6 @@ app.put('/:netId', (req, res) => {
           if (err2) {
             res.status(500).send(err2);
           }
-          debug('success!');
           res.status(200).send(todo);
         });
       }
@@ -334,7 +290,6 @@ app.post('/star', (req, res) => {
           }
           addOrRemoveIfExists(arr, itemId);
         } else {
-          debug('no faculty or opportunity id present.');
           res.status(500).send('no faculty or opportunity id present');
           return;
         }
@@ -344,7 +299,6 @@ app.post('/star', (req, res) => {
             res.status(500).send(err2);
             return;
           }
-          debug('success!');
           res.status(200).send(arr);
         });
       }

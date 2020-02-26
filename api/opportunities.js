@@ -14,12 +14,8 @@ function findLabWithAdmin(labs, adminNetId) {
 
 app.get('/check/:opportunityId', (req, res) => {
   const idToCheck = req.query.netId;
-  debug('THIS IS WHERE WE START');
-
   opportunityModel.findById(req.params.opportunityId, (_, opportunity) => {
-    debug('callback function is being run');
     if (!opportunity) {
-      debug('could not find matching opportunity');
       res.send(false);
       return;
     }
@@ -199,7 +195,6 @@ app.get('/', (req, res) => {
 
   if (token && token !== 'null') {
     verify(token, (undergradNetId) => {
-      debug(`here! ${undergradNetId}`);
       // find the undergrad so we can get their info to determine the "preqreqs match" field
       undergradModel.findOne({ netId: undergradNetId }, (err, undergrad) => {
         const undergrad1 = undergrad;
@@ -213,7 +208,6 @@ app.get('/', (req, res) => {
               }
               // make sure it's not null/undefined/falsy, but express also makes it a string "null" if the value isn't there so we have to check for that
               if (urlLabId && urlLabId !== 'null') {
-                debug('2');
                 labModel.findById(urlLabId, (err3, lab) => {
                   let oppIdsToOnlyInclude = lab.opportunities;
                   // right now the ids are Object Ids (some mongoose thing) so we have to convert them to strings; it's tricky because if you console.log them when they're objects it'll look just like they're strings!
@@ -290,9 +284,6 @@ app.get('/', (req, res) => {
               res.send(opportunities);
             });
             if (opportunities) {
-              for (let i = 0; i < opportunities.length; i++) {
-                // debug(opportunities[i].prereqsMatch);
-              }
               if (err) {
                 // handle the error appropriately
                 res.send(err);
@@ -391,8 +382,6 @@ function getUniqueTitle(title, supervisor) {
     opportunityModel.find({ title: { $regex: regexTitle, $options: 'i' } }, 'title',
       (err, otherTitles) => {
         if (err) {
-          debug('error in get unique title');
-          debug(err);
           // if there's an error, just append a random integer
           resolve(`${title} (${getRandomInt(1, 15)})`);
         }
@@ -407,11 +396,9 @@ function getUniqueTitle(title, supervisor) {
         }
         // find all opps that have the title that case insensitive starts with: title + supervisor
         // if there's an opp called "intern (john smith) 2", then this will match the intern (john smith) and we'll add the 3 after it
-        debug(`new title so far: ${newTitle}`);
         opportunityModel.find(
           { title: { $regex: `^${newTitle}`, $options: 'i' } }, 'title',
           (err2, otherTitles2) => {
-            debug(`other titles found: ${otherTitles2}`);
             if (err2) {
               debug(err2);
             }
@@ -430,7 +417,6 @@ app.post('/', async (req, res, next) => {
   try {
     // req is json containing the stuff that was sent if there was anything
     const data = req.body;
-    debug(data);
     // TODO don't make startSeason and startYear required, say "leave blank for ASAP", update that in the back-end
     // REQUIRED FIELDS:
     if (!data
@@ -444,29 +430,6 @@ app.post('/', async (req, res, next) => {
       return res.status(400).send();
     }
 
-    debug(`email: ${data.email}`);
-    debug(`netid: ${data.creatorNetId}`);
-    debug(`labpage: ${data.labPage}`);
-    debug(`title: ${data.title}`);
-    debug(`projDesc: ${data.projectDescription}`);
-    debug(`undergradTasks: ${data.undergradTasks}`);
-    debug(`qualifs: ${data.qualifications}`);
-    debug(`supervisor: ${data.supervisor}`);
-    debug(`startSeason: ${data.startSeason}`);
-    debug(`startYear: ${data.startYear}`);
-    debug(`apps: ${data.applications}`);
-    debug(`yearsAllowed: ${data.yearsAllowed}`);
-    debug(`majorsAllowed: ${data.majorsAllowed}`);
-    // debug(`question 1: ${JSON.parse(JSON.stringify(data.questions)).q0}`);
-    // debug(`question 2: ${JSON.parse(JSON.stringify(data.questions)).q1}`);
-    debug(`requiredClasses: ${data.requiredClasses}`);
-    debug(`minGPA: ${data.minGPA}`);
-    debug(`minHours: ${data.minHours}`);
-    debug(`maxHours: ${data.maxHours}`);
-    debug(`additionalInformation: ${data.additionalInformation}`);
-    debug(`opens: ${data.opens}`);
-    debug(`closes: ${data.closes}`);
-    debug(`areas: ${data.areas}`);
     let maxHours;
     data.minHours = parseInt(data.minHours, 10);
     data.minHours = Number(data.minHours);
@@ -501,7 +464,6 @@ app.post('/', async (req, res, next) => {
     // END CLEAN UP QUESTIONS FIELD
     // if the compensation array is empty, then that means they don't have any compensation
     if (data.compensation === undefined || data.compensation.length === 0) {
-      debug('2.5');
       data.compensation = ['none'];
     }
     data.questions.coverLetter = 'Cover Letter: Describe why you\'re interested in this lab/position in particular, '
@@ -596,12 +558,9 @@ app.post('/', async (req, res, next) => {
         // const opportunityMajor = req.body.majorsAllowed;
         undergradModel.find({},
           (err2, studentsWhoMatch) => {
-            debug('students who match');
             // studentsWhoMatch = [studentsWhoMatch[0]]; // just FOR TESTING
             Object.keys(studentsWhoMatch).forEach((undergrad1) => {
               const { firstName } = studentsWhoMatch[undergrad1];
-              // to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
-              debug('in email message!');
               const msg = {
                 to: `${studentsWhoMatch[undergrad1].netId}@cornell.edu`,
                 from: {
@@ -620,21 +579,15 @@ app.post('/', async (req, res, next) => {
                        <br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
               };
-              debug('sending email now!');
 
               sgMail.send(msg).catch((e) => {
-                debug('error in sending below');
-                debug(e);
                 debug(e.response.body.errors);
               });
             });
-            debug('finished emailing students');
           });
       });
-      debug('done with function');
       res.send('Success!');
     }).catch((error) => {
-      debug('verify error');
       debug(error);
       handleVerifyError(error, res);
     });
@@ -709,7 +662,6 @@ app.put('/:id', (req, res) => {
   });
 });
 app.get('/search', (req, res) => {
-  debug(req.query.search);
   opportunityModel.find({ $text: { $search: req.query.search } }, '_id',
     (err, search) => {
       if (err) {
@@ -719,7 +671,6 @@ app.get('/search', (req, res) => {
         if (search === null) {
           res.send('Search not found :(');
         }
-        debug(search);
         res.send(search);
       }
     });
@@ -739,10 +690,8 @@ app.delete('/:id', (req, res) => {
 });
 
 function processOpportunity(tokenNetId, oppId, res) {
-  debug(`toke net id: ${tokenNetId}`);
   opportunityModel.findById(oppId).lean().exec((err, opportunity) => {
     if (err) {
-      debug('error in process opportunity');
       debug(err);
       return res.send(err);
     }
@@ -842,8 +791,6 @@ app.get('/:id', (req, res) => {
     processOpportunity(null, id, res);
     return null;
   }
-  debug(`token: ${req.query.netId}`);
-  debug(`id: ${req.params.id}`);
   verify(req.query.netId, (tokenNetId) => {
     processOpportunity(tokenNetId, id, res);
   }).catch((error) => {

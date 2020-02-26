@@ -29,7 +29,6 @@ app.post('/send', (req, res) => {
      *
      */
   undergradModel.findOne({ netId: ugradNetId }, (err, ugradInfo) => {
-    debug(ugradInfo);
     labAdministratorModel.findOne({ netId: profId }, (err2, prof) => {
       opportunityModel.findById(oppId, (err3, opportunity) => {
         for (let i = 0; i < opportunity.applications.length; i++) {
