@@ -8,7 +8,7 @@
     "@emotion/styled": "^10.0.7",
     "@sendgrid/mail": "^6.2.1",
     "aws-sdk": "^2.224.1",
-    "axios": "^0.18.0",
+    "axios": "^0.19.2",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
