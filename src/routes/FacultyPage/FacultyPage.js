@@ -360,11 +360,11 @@ class FacultyPage extends Component {
                       <AcceptingMessage acceptingStatus={this.state.profInfo.accepting} researchStatus={this.state.profInfo.researchStatus} />
                     </p>
                   </div>
-                  {this.state.profInfo.accepting !== 'yes' ? ''
+                  {(this.state.profInfo.researchStatus === '' && this.state.profInfo.accepting !== 'yes') ? ''
                     : (
                       <div className="opp-details-section">
                         <div className="header">Qualifications</div>
-                        <Linkify properties={{ target: '_blank' }}><p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : 'This professor did not explicitly specify any qualifications.'}</p></Linkify>
+                        <Linkify properties={{ target: '_blank' }}><p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : 'This professor did not explicitly specify any qualifications, but that does not mean that there are none.'}</p></Linkify>
                       </div>
                     )}
                 </div>
