@@ -21,7 +21,7 @@ type Props = {
     major: string;
     gpa: string,
     courses: readonly string[];
-    status: boolean;
+    status: string;
     timeSubmitted: string;
   };
 };

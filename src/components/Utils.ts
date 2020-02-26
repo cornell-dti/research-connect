@@ -1,26 +1,10 @@
 import axios from 'axios';
 
-function dateIsBetween(date, lowerBound, upperBound) {
+function dateIsBetween(date: Date, lowerBound: Date, upperBound: Date) {
   return (lowerBound <= date && date <= upperBound);
 }
-export function gradStringtoYear(gradString) {
-  const presentYear = new Date().getFullYear();
-  const presentMonth = new Date().getMonth();
-  if (gradString === 'Freshman') {
-    return (presentMonth < 5) ? presentYear - 3 : presentYear - 4;
-  }
-  if (gradString === 'Sophomore') {
-    return (presentMonth < 5) ? presentYear - 3 : presentYear - 4;
-  }
-  if (gradString === 'Junior') {
-    return (presentMonth < 5) ? presentYear - 3 : presentYear - 4;
-  }
-  if (gradString === 'Senior') {
-    return (presentMonth < 5) ? presentYear - 3 : presentYear - 4;
-  }
-}
 
-export function gradYearToGrade(gradYear) {
+export function gradYearToGrade(gradYear: number): string {
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'sophomore';
@@ -29,7 +13,7 @@ export function gradYearToGrade(gradYear) {
   return '';
 }
 
-export function gradYearToString(gradYear) {
+export function gradYearToString(gradYear: number): string {
   const presentDate = new Date();
   if (dateIsBetween(presentDate, new Date(gradYear - 4, 7, 10), new Date(gradYear - 3, 4, 23))) return 'Freshman';
   if (dateIsBetween(presentDate, new Date(gradYear - 3, 4, 24), new Date(gradYear - 2, 4, 23))) return 'Sophomore';
@@ -38,7 +22,7 @@ export function gradYearToString(gradYear) {
   return '';
 }
 
-export function convertDate(dateString) {
+export function convertDate(dateString: string): string {
   const dateObj = new Date(dateString);
   const month = dateObj.getUTCMonth() + 1;
   const day = dateObj.getUTCDay() + 1;
@@ -46,20 +30,20 @@ export function convertDate(dateString) {
   return `${month.toString()}/${day.toString()}/${year.toString()}`;
 }
 
-export function capitalizeFirstLetter(string) {
+export function capitalizeFirstLetter(string: string): string {
   if (!string || string.length < 1) {
     return string;
   }
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function refreshStorage() {
+function refreshStorage(): void {
   sessionStorage.clear();
   window.location.href = '/';
 }
 
 // helper function for logoutGoogle
-function tryLoggingOut() {
+function tryLoggingOut(): void {
   if (!window.gapi || !window.gapi.auth2) {
     refreshStorage();
     return;
@@ -86,19 +70,19 @@ function tryLoggingOut() {
   }
 }
 
-function userHasNoRole(roleEndpointResponse) {
+function userHasNoRole(roleEndpointResponse?: { data: any }): boolean {
   return (!roleEndpointResponse || roleEndpointResponse.data === 'none'
       || !roleEndpointResponse.data);
 }
 
-function getRoleFromResponse(roleEndpointResponse) {
+function getRoleFromResponse(roleEndpointResponse?: { data: any }): any {
   if (userHasNoRole(roleEndpointResponse)) {
     return null;
   }
-  return roleEndpointResponse.data;
+  return roleEndpointResponse!.data;
 }
 
-function getTokenId() {
+function getTokenId(): string | null {
   return sessionStorage.getItem('token_id');
 }
 
@@ -132,7 +116,7 @@ export function getUserRole(redirectIfNotLoggedIn = false) {
  * the promise callback for axios
  * @return {boolean} returns false if there was no token-related error.
  */
-export function handleTokenError(error) {
+export function handleTokenError(error: { response: { status: number } }): boolean {
   if (error.response) {
     if (error.response.status === 409 || error.response.status === 412 || error.response.status === 500) {
       if (window.location.pathname === '/') {
@@ -149,7 +133,7 @@ export function handleTokenError(error) {
   return false;
 }
 
-export function handleNonTokenError(error) {
+export function handleNonTokenError(error: { response: { status: number; data: any } }): void {
   if (error.response.status === 400) {
     alert(error.response.data);
   } else {
@@ -163,7 +147,7 @@ export function handleNonTokenError(error) {
  * @param {string} url
  * @return {string} the value of that url param, in our example it'd be bear
  */
-export function getParameterByName(name, url) {
+export function getParameterByName(name: string, url: string): string | null {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, '\\$&');
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
@@ -174,9 +158,19 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+export function updateForMultipleChoice(originalList: string[], option: string): string[] {
+  if (originalList.includes(option)) {
+    return originalList.filter((original) => original !== option);
+  }
+  return [...originalList, option];
+}
+
+// @ts-ignore
 export function updateMultipleChoiceFilter(filterName, option) {
+  // @ts-ignore
   this.setState((state) => {
     if (state[filterName].includes(option)) {
+      // @ts-ignore
       return { [filterName]: state[filterName].filter((original) => original !== option) };
     }
     return { [filterName]: [...state[filterName], option] };

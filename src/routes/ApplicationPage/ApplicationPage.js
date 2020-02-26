@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './ApplicationPage.scss';
+// @ts-ignore
 import ExternalLink from 'react-icons/lib/fa/external-link';
+// @ts-ignore
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
@@ -89,14 +91,10 @@ class ApplicationPage extends Component {
             <a href={this.state.transcriptId} target="_blank" rel="noopener noreferrer">
               <h6 className="no-margin">
                 View Transcript
-
-                <ExternalLink
-                  className="red-link"
-                />
+                <ExternalLink className="red-link" />
               </h6>
             </a>
           </div>
-
         </div>
         <hr />
       </div>
@@ -108,34 +106,16 @@ class ApplicationPage extends Component {
   }
 
   render() {
-    // const override = css`
-    // display: block;
-    // margin: 0 auto;
-    // border-color: red;
-    // `;
-
     if (this.state.loading) {
-      return (
-        <div className="sweet-loading">
-          <ClipLoader
-            style={{
-              display: 'block',
-              margin: 0,
-              borderColor: 'red',
-            }}
-            sizeUnit="px"
-            size={150}
-            color="#ff0000"
-            loading={this.state.loading}
-          />
-        </div>
-      );
+      const style = { display: 'block', margin: 0, borderColor: 'red' };
+      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      return <div className="sweet-loading">{loader}</div>;
     }
 
     const { responses } = this.state.application;
     const { questions } = this.state.opportunity;
-    const questionsAndResponses = Object.keys(responses).map((question, c) => (
-      <div className="question-and-response" key={c}>
+    const questionsAndResponses = Object.keys(responses).map((question) => (
+      <div className="question-and-response" key={question}>
         <div className="question header">{questions[question] ? questions[question] : 'Cover Letter'}</div>
         <div className="response">{responses[question]}</div>
       </div>

@@ -13,11 +13,21 @@ import CourseSelect from '../../components/CourseSelect/CourseSelect';
 
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
-import * as Utils from '../../components/Utils';
+import { updateForMultipleChoice } from '../../components/Utils';
 import { gpa, years } from '../../components/constants';
 
-class ProfessorView extends Component {
-  constructor(props) {
+type State = {
+  yearSelect: string[];
+  gpaSelect: string;
+  courses: string[];
+  skills: string[];
+  opportunity: string;
+  opportunities: string[];
+  loading: boolean;
+};
+
+class ProfessorView extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       yearSelect: [],
@@ -32,9 +42,15 @@ class ProfessorView extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  handleUpdateCourses = (courses) => this.setState({ courses });
+  handleUpdateCourses = (courses: string[]) => this.setState({ courses });
 
-  handleUpdateOpportunity = (opportunity) => this.setState({ opportunity });
+  handleUpdateOpportunity = (opportunity: string) => this.setState({ opportunity });
+
+  handleYearSelect = (oneOption: string) => this.setState((state) => ({
+    yearSelect: updateForMultipleChoice(state.yearSelect, oneOption),
+  }));
+
+  handleGPASelect = (gpaSelect: string) => this.setState({ gpaSelect });
 
   componentDidMount() {
     axios.all([
@@ -59,6 +75,7 @@ class ProfessorView extends Component {
     const { loading } = this.state;
     if (loading) {
       const style = { display: 'block', margin: 0, borderColor: 'red' };
+      // @ts-ignore
       const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
       return <div className="sweet-loading">{loader}</div>;
     }
@@ -72,7 +89,9 @@ class ProfessorView extends Component {
             <div className="column column-20">
               <div className="filter-box">
 
-                <Filter label="Filter by..." />
+                <div className="filter-child">
+                  <label>Filter by...</label>
+                </div>
                 <hr />
 
                 <div className="filter-child">
@@ -86,9 +105,8 @@ class ProfessorView extends Component {
                 <hr />
 
                 <Filter
-                  filterType="yearSelect"
                   label="School Year"
-                  updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
+                  updateFilterOption={this.handleYearSelect}
                   choices={years}
                   type="checkbox"
                 />
@@ -96,9 +114,8 @@ class ProfessorView extends Component {
                 <hr />
 
                 <Filter
-                  filterType="gpaSelect"
                   label="GPA Select"
-                  updateFilterOption={(filterType, option) => this.setState({ [filterType]: option })}
+                  updateFilterOption={this.handleGPASelect}
                   choices={gpa}
                   type="select"
                 />

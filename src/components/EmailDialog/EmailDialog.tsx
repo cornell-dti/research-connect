@@ -57,9 +57,6 @@ class EmailDialog extends React.Component<Props, State> {
         this.setState({
           emailContent: response.data[this.props.buttonText.toLowerCase()],
         });
-      })
-      .catch((error: Error) => {
-        console.log(error);
       });
   }
 
@@ -88,14 +85,9 @@ class EmailDialog extends React.Component<Props, State> {
       undergradNetId: this.props.app.undergradNetId,
       message: this.state.emailContent,
       status: this.getStatusAction(this.props.statusText.toLowerCase()),
-    }).then((response) => {
-      // handle success
-      console.log(response);
-    })
-      .catch((error) => {
-        console.log(error);
-      });
-    window.location.href = 'professorView';
+    }).then(() => {
+      window.location.href = 'professorView';
+    });
   }
 
   getDisabled = (): boolean | undefined => {

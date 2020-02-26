@@ -1,38 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import './FacultyPage.scss';
 import axios from 'axios';
 import '../OpportunityPage/OpportunityPage.scss';
-import { stateToHTML } from 'draft-js-export-html';
 
 import * as ReactGA from 'react-ga';
+// @ts-ignore
 import Linkify from 'react-linkify';
-import RichTextEditor from '../../components/Faculty/RichTextEditor/RichTextEditor';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import * as Utils from '../../components/Utils';
-import { logoutGoogle } from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import Star from '../../components/Star/Star';
 
 /**
  * @param props should be awards=this.state.profInfo.awards
  */
-const ListItems = (props) => {
+const ListItems = (props: { pub?: boolean; items: string[] }): ReactElement => {
   if (!props.items || props.items.length === 0 || !Array.isArray(props.items)) {
-    const returnVals = [];
-    if (props.pub) {
-      returnVals.push("Check the professor's website at the top of this page or Google Scholar to "
-        + "find papers they've written.");
-      return returnVals;
-    }
-    return 'Not listed';
+    return (
+      <React.Fragment>
+        {props.pub
+          ? 'Check the professor\'s website at the top of this page or Google Scholar to find papers they\'ve written.'
+          : 'Not listed'}
+      </React.Fragment>
+    );
   }
   // remove � characters when mapping
-  return props.items.map((item) => <p key={item}>{item.replace(/\uFFFD/g, '')}</p>);
+  return (
+    <React.Fragment>
+      {props.items.map((item) => <p key={item}>{item.replace(/\uFFFD/g, '')}</p>)}
+    </React.Fragment>
+  );
 };
 
-function AcceptingMessage(props) {
-  const { acceptingStatus, researchStatus } = props;
-  let status = [];
+type AcceptingMessageProps = {
+  acceptingStatus: 'yes' | 'no' | 'maybe' | 'unknown';
+  researchStatus?: string[];
+}
+
+function AcceptingMessage({ acceptingStatus, researchStatus }: AcceptingMessageProps) {
+  const status = [];
   if (acceptingStatus === 'yes') {
     status.push(
       <p>
@@ -78,7 +84,6 @@ function AcceptingMessage(props) {
     );
   }
   if (researchStatus && researchStatus.length > 0) {
-    status = [];
     // status.push(<span>Undergrad Research Status: </span>);
     status.push(researchStatus);
   }
@@ -86,22 +91,19 @@ function AcceptingMessage(props) {
   return <div>{status}</div>;
 }
 
+type Props = { match: { params: { id: string } } };
+type State = { profInfo: any; starred: boolean; role: string | null };
 
-class FacultyPage extends Component {
-  constructor(props) {
+class FacultyPage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       profInfo: {},
-      buttonValue: 'Send Email',
-      isButtonDisabled: false,
-      tokenId: '',
       starred: false,
+      role: null,
     };
-    this.TextEditor = React.createRef();
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-
-    this.separateInterests = this.separateInterests.bind(this);
   }
 
   star = () => {
@@ -115,12 +117,11 @@ class FacultyPage extends Component {
           const stars = response.data;
           this.setState({ starred: stars.includes(id) });
         }
-      })
-      .catch((error) => console.log(error));
+      });
   };
 
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the faculty member
-  componentWillMount() {
+  componentDidMount() {
     axios.get(`/api/faculty/${this.props.match.params.id}`)
       .then((response) => {
         this.setState({ profInfo: response.data });
@@ -132,8 +133,7 @@ class FacultyPage extends Component {
       .then((response) => {
         const { data } = response;
         this.setState({ starred: data.includes(this.props.match.params.id) });
-      })
-      .catch((error) => console.log(error));
+      });
 
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
@@ -145,19 +145,14 @@ class FacultyPage extends Component {
           if (!response || response.data === 'none' || !response.data) {
             this.setState({ role: null });
           } else {
-            this.setState({
-              role: response.data,
-              tokenId: sessionStorage.getItem('token_id'),
-            });
+            this.setState({ role: response.data });
           }
         })
-        .catch((error) => {
-          Utils.handleTokenError(error);
-        });
+        .catch((error) => Utils.handleTokenError(error));
     }
   }
 
-  separateInterests(list) {
+  separateInterests = (list: string[]) => {
     let separated = '';
     if (list != null) {
       for (let i = 0; i < list.length; i++) {
@@ -170,80 +165,15 @@ class FacultyPage extends Component {
       }
     }
     return separated;
-  }
-
-  disableButton() {
-    this.setState({
-      isButtonDisabled: true,
-      buttonValue: 'Sending...',
-    });
-  }
-
-  completeButton() {
-    this.setState({
-      isButtonDisabled: true,
-      buttonValue: 'Sent!',
-    });
-  }
-
-  breakButton() {
-    this.setState({
-      isButtonDisabled: true,
-      buttonValue: 'Error sending email',
-    });
-  }
-
-  sendEmail() {
-    if (!window.confirm('The email will sent to this professor from your email with the text you entered. Continue?')) {
-      return;
-    }
-    this.disableButton();
-    const textEditorState = this.TextEditor.current.state;
-    const contentState = textEditorState.editorState.getCurrentContent();
-    const emailHtml = stateToHTML(contentState);
-    const userToken = sessionStorage.getItem('token_id');
-    if (!this.state.profInfo) {
-      this.breakButton();
-    }
-    if (!userToken) {
-      logoutGoogle();
-    }
-    const profEmail = this.state.profInfo.email;
-    console.log(emailHtml);
-    axios.post('/api/faculty/email', { emailHtml, profEmail, userToken })
-      .then(() => {
-        this.completeButton();
-      })
-      .catch((error) => {
-        this.breakButton();
-        console.log('error in /api/faculty/email in faculty page');
-        Utils.handleTokenError(error);
-      });
-  }
-
-  joinSentence(array, oxford_comma) {
-    let lastWord = '';
-    if (array.length > 1) {
-      lastWord = ` and ${array.pop()}`;
-      if (oxford_comma && array.length > 1) {
-        lastWord = `,${lastWord}`;
-      }
-    }
-    return array.join(', ') + lastWord;
-  }
-
+  };
 
   render() {
     const noInfoMessage = 'No description provided';
-    const isNotLoggedIn = !(this.state.role);
     return (
-
       <div>
         <VariableNavbar role={this.state.role} current="facultysearch" />
         <div className="opportunities-page-wrapper">
-          <div className={`wallpaper ${
-            !this.state.role ? 'wallpaper-no-sign-in' : ''}`}
-          />
+          <div className={`wallpaper ${!this.state.role ? 'wallpaper-no-sign-in' : ''}`} />
 
           <div className="row opportunity-row">
             <div className="column opp-details-column">
@@ -331,14 +261,24 @@ class FacultyPage extends Component {
                   <div className="opp-details-section">
                     <div className="header">Doing Research With This Professor</div>
                     <p>
-                      <AcceptingMessage acceptingStatus={this.state.profInfo.accepting} researchStatus={this.state.profInfo.researchStatus} />
+                      <AcceptingMessage
+                        acceptingStatus={this.state.profInfo.accepting}
+                        researchStatus={this.state.profInfo.researchStatus}
+                      />
                     </p>
                   </div>
                   {(this.state.profInfo.researchStatus === '' && this.state.profInfo.accepting !== 'yes') ? ''
                     : (
                       <div className="opp-details-section">
                         <div className="header">Qualifications</div>
-                        <Linkify properties={{ target: '_blank' }}><p>{this.state.profInfo.qualifications ? this.state.profInfo.qualifications : 'This professor did not explicitly specify any qualifications, but that does not mean that there are none.'}</p></Linkify>
+                        <Linkify properties={{ target: '_blank' }}>
+                          <p>
+                            {this.state.profInfo.qualifications
+                              ? this.state.profInfo.qualifications
+                              : 'This professor did not explicitly specify any qualifications, '
+                              + 'but that does not mean that there are none.'}
+                          </p>
+                        </Linkify>
                       </div>
                     )}
                 </div>
@@ -391,8 +331,9 @@ class FacultyPage extends Component {
 
                 <div className="opp-qual-section">
                   <h6 className="header">How Do I Find Research?</h6>
-                  One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to the professor's
-                  office and ask them about their research and then express your interest in working with them. See our
+                  One way is by writing emails to professors whose work seems interesting (see below for template).
+                  {'You could also go to the professor\'s office and ask them about their research and'}
+                  then express your interest in working with them. See our
                   {' '}
                   <a href="/guide">{' "How to Find Research" '}</a>
                   {' '}
@@ -401,20 +342,22 @@ class FacultyPage extends Component {
 
                 <div className="opp-qual-section">
                   <h6 className="header">What to Write?</h6>
-                  {/* (Note that we save the email you send here so you can use it as a template for the next professor) */}
-                  1st Paragraph: Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.
+                  1st Paragraph: Your name, year, major, and some expression of interest in a
+                  specific paper or topic of theirs. Use their papers, website link (top of page) or
+                  other info on this page to understand their research and mention those details.
                   <br />
-                  2nd Paragraph: Say you're interested in opportunities in their lab, talk about your experience in this area if applicable.
+                  {'2nd Paragraph: Say you\'re interested in opportunities in their lab, talk about'}
+                  your experience in this area if applicable.
                   <br />
-                  3rd Paragraph: Include a link to your resume (and transcript if you'd like).
-
+                  {'3rd Paragraph: Include a link to your resume (and transcript if you\'d like).'}
                 </div>
 
                 <hr />
 
                 <div className="opp-qual-section">
                   <h6 className="header">Is It Too Early To Reach Out For [Summer/Fall/Spring] Research?</h6>
-                  No; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
+                  No; worst case scenario they tell you to ping them in a month or so
+                  {'and now you\'ve demonstrated interest.'}
                 </div>
               </div>
             </div>

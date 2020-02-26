@@ -25,9 +25,6 @@ class OpportunityList extends Component<Props, State> {
       .then((response) => {
         const { data } = response;
         this.setState({ starredOps: data });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   }
 
@@ -41,9 +38,6 @@ class OpportunityList extends Component<Props, State> {
           const starredVals = response.data;
           this.setState({ starredOps: starredVals });
         }
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -98,7 +92,8 @@ class OpportunityList extends Component<Props, State> {
 
       const { startDate } = filteredOptions;
       const oppStartDate = `${opp.startSeason} ${opp.startYear}`;
-      opportunityWillShow = opportunityWillShow && (startDate === '' || oppStartDate === ' ' || startDate === oppStartDate);
+      opportunityWillShow = opportunityWillShow
+        && (startDate === '' || oppStartDate === ' ' || startDate === oppStartDate);
 
       // multiple/checkbox choices
       const yearsSelected = filteredOptions.yearSelect;
@@ -137,29 +132,8 @@ class OpportunityList extends Component<Props, State> {
       return null;
     });
 
-    const nodeCount = this.countNodes(oppNodes);
-    const searchCrit = this.props.searching ? (
-      <p>
-        {nodeCount}
-        {' '}
-        {' '}
-        {' '}
-        matching your search criteria.
-      </p>
-    ) : (
-      <p>
-        {nodeCount}
-        {' '}
-        {' '}
-      </p>
-    );
-
     return (
       <div>
-        {/* <div className="node-list-div"> */}
-        {/*  { searchCrit } */}
-
-        {/* </div> */}
         { oppNodes }
       </div>
     );

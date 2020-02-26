@@ -3,20 +3,28 @@ import '../App/App.scss';
 import './ProfessorDashboard.scss';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
+// @ts-ignore
 import Newspaper from 'react-icons/lib/fa/newspaper-o';
+// @ts-ignore
 import Inbox from 'react-icons/lib/fa/inbox';
+// @ts-ignore
 import Edit from 'react-icons/lib/fa/edit';
 import * as ReactGA from 'react-ga';
 import DashboardAction from '../../components/DashboardAction/DashboardAction';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
-class ProfessorDashboard extends Component {
-  constructor(props) {
+type State = {
+  labId: string;
+  loading: boolean;
+  errorLoadingDataExists?: boolean;
+  errorMessage?: string;
+};
+
+class ProfessorDashboard extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
-      applications: [],
-      opportunities: [],
       labId: '',
       loading: true,
     };
@@ -35,7 +43,7 @@ class ProfessorDashboard extends Component {
       axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
       axios.get(`/api/labAdmins/lab/${sessionStorage.getItem('token_id')}`),
     ])
-      .then(axios.spread((role, apps, lab) => {
+      .then(axios.spread((role, applications, lab) => {
         if (role.data !== 'grad'
           && role.data !== 'labtech'
           && role.data !== 'postdoc'
@@ -43,9 +51,9 @@ class ProfessorDashboard extends Component {
           && role.data !== 'pi') {
           window.location.href = '/';
         }
-        const opps = Object.keys(apps.data);
-        opps.unshift('All');
-        this.setState({ apps, opportunities: opps, labId: lab.data });
+        const opportunities = Object.keys(applications.data);
+        opportunities.unshift('All');
+        this.setState({ labId: lab.data });
       })).catch((error) => {
         this.setState({
           errorLoadingDataExists: true,
@@ -57,27 +65,13 @@ class ProfessorDashboard extends Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <div className="sweet-loading">
-          <ClipLoader
-            // className={override}
-            style={{
-              display: 'block',
-              margin: 0,
-              borderColor: 'red',
-            }}
-            sizeUnit="px"
-            size={150}
-            color="#ff0000"
-            loading={this.state.loading}
-          />
-        </div>
-      );
+      const style = { display: 'block', margin: 0, borderColor: 'red' };
+      // @ts-ignore
+      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      return <div className="sweet-loading">{loader}</div>;
     }
     if (this.state.errorLoadingDataExists) {
-      return (
-        <div>{this.state.errorMessage}</div>
-      );
+      return <div>{this.state.errorMessage}</div>;
     }
 
     const newspaper = <Newspaper />;

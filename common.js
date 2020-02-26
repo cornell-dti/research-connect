@@ -81,10 +81,10 @@ mongoose.connect(mongoDB, {
 const db = mongoose.connection;
 
 // Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  debug('connected to mongo');
-});
+// eslint-disable-next-line no-console
+db.on('error', () => console.error('MongoDB connection error:'));
+db.once('open', () => debug('connected to mongo'));
+
 /** Begin SCHEMAS */
 const { Schema } = mongoose; // same as mongoose.Schema
 
@@ -103,7 +103,16 @@ const undergradSchema = new Schema({
   transcriptId: { type: String, required: false },
   skills: { type: [String], required: false },
   subscribed: { type: Boolean, default: true },
-  emailHtml: { type: String, default: 'Template: <br><b>1st Paragraph:</b> Your name, year, major, and some expression of interest in a specific paper or topic of theirs. Use their papers, website link (top of page) or other info on this page to understand their research and mention those details.<br><b>2nd Paragraph:</b> Mention you\'re interested in opportunities in their lab, talk about your experience in this area (if applicable).<br><b>3rd Paragraph:</b> Include a link to your resume (and transcript if you\'d like).' },
+  emailHtml: {
+    type: String,
+    default: 'Template: '
+      + '<br><b>1st Paragraph:</b> Your name, year, major, and some expression of interest in a '
+      + 'specific paper or topic of theirs. Use their papers, website link (top of page) or other '
+      + 'info on this page to understand their research and mention those details.<br>'
+      + '<b>2nd Paragraph:</b> Mention you\'re interested in opportunities in their lab, talk about '
+      + 'your experience in this area (if applicable).<br>'
+      + '<b>3rd Paragraph:</b> Include a link to your resume (and transcript if you\'d like).',
+  },
   starredOpportunities: { type: [String], required: false, default: [] },
   starredFaculty: { type: [String], required: false, default: [] },
   // resumeId: {type: Schema.Types.ObjectId, ref: "Documents"},
@@ -159,13 +168,16 @@ const facultySchema = new Schema({
   email: { type: String },
   accepting: { type: String, enum: ['yes', 'no', 'unknown', 'maybe'], default: 'unknown' },
   semestersAccepted: { type: [String] }, // used to eventually tell students if this professor has accepted in  the past and is likely to accept in future
-  researchStatus: {type: String, default: '', required: false},  // describes general research situation for this professor, i.e. "I'm full but contact me if you're very interested in one of my papers and want to research next semester"
+  // describes general research situation for this professor,
+  // i.e. "I'm full but contact me if you're very interested in one of my papers and want to research next semester"
+  researchStatus: { type: String, default: '', required: false },
   qualifications: { type: String, default: '' },
   requiredCourses: { type: [String], default: [] }, // this is here so one day we can automatically check if students have the required courses
   bio: { type: String },
   teaching: { type: String },
 });
-// create text indices so we can use the mongo search functionality: https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
+// create text indices so we can use the mongo search functionality:
+// https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
 facultySchema.index({ '$**': 'text' });
 const facultyModel = mongoose.model('Faculty', facultySchema, 'Faculty');
 module.exports.facultyModel = facultyModel;
@@ -222,10 +234,13 @@ const opportunitySchema = new Schema({
   messages: {
     type: Schema.Types.Mixed,
     default: {
-      accept: 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. Please email me to find out more about when you will start.',
+      accept: 'Hi, \nI am pleased to inform you that our lab will accept you for the opportunity you applied for. '
+        + 'Please email me to find out more about when you will start.',
       reject: 'Hi, \nI regret to inform you that our lab will not be able to accept you for the position '
                 + ' you applied for at our lab. Please consider applying again in the future.',
-      interview: 'Hi, \nWe reviewed your application and would love to learn more about you. Please email me with times in the next seven days that work for you for an interview regarding this opportunity.',
+      interview: 'Hi, \nWe reviewed your application and would love to learn more about you. '
+        + 'Please email me with times in the next seven days that work for you '
+        + 'for an interview regarding this opportunity.',
     },
   },
   applications: { type: [Schema.Types.Mixed], default: [] },

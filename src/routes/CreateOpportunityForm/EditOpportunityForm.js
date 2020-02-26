@@ -1,12 +1,17 @@
 import React from 'react';
 import './CreateOpportunityForm.scss';
+// @ts-ignore
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
+// @ts-ignore
 import ReactTooltip from 'react-tooltip';
+// @ts-ignore
 import InfoIcon from 'react-icons/lib/md/info';
+// @ts-ignore
 import Delete from 'react-icons/lib/ti/delete';
+// @ts-ignore
 import Add from 'react-icons/lib/md/add-circle';
 import * as ReactGA from 'react-ga';
 import * as Utils from '../../components/Utils';
@@ -95,7 +100,9 @@ class EditOppForm extends React.Component {
           if (response.questions) this.setState({ questions: response.questions });
           if (response.requiredClasses) this.setState({ requiredClasses: response.requiredClasses });
           if (response.minGPA) this.setState({ minGPA: response.minGPA });
-          if (response.minHours !== undefined && response.minHours !== null) this.setState({ minHours: response.minHours });
+          if (response.minHours !== undefined && response.minHours !== null) {
+            this.setState({ minHours: response.minHours });
+          }
           if (response.maxHours) this.setState({ maxHours: response.maxHours });
           if (response.opens) this.setState({ opens: openDate });
           if (response.closes) this.setState({ closes: closeDate });
@@ -105,52 +112,6 @@ class EditOppForm extends React.Component {
         }
       });
   };
-
-  /**
-     onSubmit = (e) => {
-        this.setState({triedSubmitting: true});
-        e.preventDefault();
-        // get our form data out of state
-        const {
-            netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation,
-            startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens,
-            closes, labName, supervisor, numQuestions, titleIsValid, tasksAreValid, seasonIsValid, yearIsValid
-        } = this.state;
-        if (titleIsValid && tasksAreValid && seasonIsValid && yearIsValid) {
-            axios.post('/opportunities', {
-                netId,
-                creatorNetId,
-                labPage,
-                areas,
-                title,
-                projectDescription,
-                undergradTasks,
-                qualifications,
-                compensation,
-                startSeason,
-                startYear,
-                yearsAllowed,
-                questions,
-                requiredClasses,
-                minGPA,
-                minHours,
-                maxHours,
-                opens,
-                closes,
-                labName,
-                supervisor,
-                numQuestions
-            })
-                .then((result) => {
-                    //access the results here....
-                    document.location.href = "/professorView"
-                });
-        }
-        else {
-            window.scrollTo(0, 0);
-        }
-    };
-     */
 
   // display the questions interface to add/delete questions
   displayQuestions = () => {
@@ -167,7 +128,7 @@ class EditOppForm extends React.Component {
           <input
             name={i}
             value={this.state.questions[stateLabel]}
-            onChange={this.handleQuestionState.bind(this, i)}
+            onChange={() => this.handleQuestionState(i)}
             className="question"
             type="text"
           />
@@ -189,21 +150,23 @@ class EditOppForm extends React.Component {
 
   deleteQuestion = (data) => {
     const deleted = parseInt(data.slice(1), 10);
-    const newQnum = this.state.numQuestions - 1;
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    const questionsEdit = {};
+    this.setState((state) => {
+      const newQnum = state.numQuestions - 1;
+      const questionsCopy = JSON.parse(JSON.stringify(state.questions));
+      const questionsEdit = {};
 
-    Object.keys(questionsCopy).forEach((question) => {
-      const num = parseInt(question.slice(1), 10);
-      if (num < deleted) {
-        questionsEdit[question] = questionsCopy[question];
-      } else if (num > deleted) {
-        const newString = `q${(num - 1).toString()}`;
-        questionsEdit[newString] = questionsCopy[question];
-      }
+      Object.keys(questionsCopy).forEach((question) => {
+        const num = parseInt(question.slice(1), 10);
+        if (num < deleted) {
+          questionsEdit[question] = questionsCopy[question];
+        } else if (num > deleted) {
+          const newString = `q${(num - 1).toString()}`;
+          questionsEdit[newString] = questionsCopy[question];
+        }
+      });
+
+      return { numQuestions: newQnum, questions: questionsEdit };
     });
-
-    this.setState({ numQuestions: newQnum, questions: questionsEdit });
   };
 
   addQuestion = () => {
@@ -268,7 +231,6 @@ class EditOppForm extends React.Component {
     }
   }
 
-
   // Set values of form items in state and change their validation state if they're invalid
   handleChange = (event) => {
     if (event.target.name === 'labName') {
@@ -285,8 +247,6 @@ class EditOppForm extends React.Component {
     } else if (event.target.name === 'areas') {
       const areaArray = event.target.value.split(',');
       this.setState({ areas: areaArray });
-    } else if (event.target.name === 'pi') {
-      this.setState({ pi: event.target.value });
     } else if (event.target.name === 'supervisor') {
       this.setState({ supervisor: event.target.value });
     } else if (event.target.name === 'descript') {
@@ -330,10 +290,10 @@ class EditOppForm extends React.Component {
 
   handleQuestionState = (i) => {
     const stateLabel = `q${i.toString()}`;
-    const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-    questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
-    this.setState({
-      questions: questionsCopy,
+    this.setState((state) => {
+      const questionsCopy = JSON.parse(JSON.stringify(state.questions));
+      questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
+      return { questions: questionsCopy };
     });
   };
 
@@ -341,14 +301,15 @@ class EditOppForm extends React.Component {
 
   handleCloseDateChange = (date) => this.setState({ closes: date });
 
-
     // takes care of sending the form data to the back-end
     onSubmit = (e) => {
-      //  this.setState({triedSubmitting: true});
       e.preventDefault();
       // get our form data out of state
       const {
-        netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks, qualifications, compensation, startSeason, startYear, yearsAllowed, questions, requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor, numQuestions, additionalInformation, result,
+        netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
+        qualifications, compensation, startSeason, startYear, yearsAllowed, questions,
+        requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor,
+        numQuestions, additionalInformation,
       } = this.state;
 
       // makes sure all the fields that are required are valid
@@ -384,16 +345,12 @@ class EditOppForm extends React.Component {
         numQuestions,
         additionalInformation,
       })
-        .then((result) => {
+        .then(() => {
           // access the results here....
-          this.setState({ submit: 'Submitted!', isButtonDisabled: true, buttonValue: 'Submitted!' });
-          function sleep(time) {
-            return new Promise((resolve) => setTimeout(resolve, time));
-          }
-
-          sleep(1200).then(() => {
+          this.setState({ isButtonDisabled: true, buttonValue: 'Submitted!' });
+          setTimeout(() => {
             document.location.href = '/professorView';
-          });
+          }, 1200);
         }).catch((error) => {
           if (error.response) {
             if (error.response.status === 400) {
@@ -425,7 +382,8 @@ class EditOppForm extends React.Component {
               >
 
                 <div
-                  className={!this.state.titleIsValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
+                  className={!this.state.titleIsValid && this.state.triedSubmitting
+                    ? 'row input-row wrong' : 'row input-row'}
                 >
 
                   <span className="required-star">*</span>
@@ -453,7 +411,8 @@ class EditOppForm extends React.Component {
                 </div>
 
                 <div
-                  className={!this.state.tasksAreValid && this.state.triedSubmitting ? 'row input-row wrong' : 'row input-row'}
+                  className={!this.state.tasksAreValid && this.state.triedSubmitting
+                    ? 'row input-row wrong' : 'row input-row'}
                 >
                   <span className="required-star">*</span>
                   <textarea
@@ -490,7 +449,8 @@ class EditOppForm extends React.Component {
                   <span className="required-star">*</span>
 
                   <select
-                    className={!this.state.seasonIsValid && this.state.triedSubmitting ? 'startSeason wrong-select' : 'startSeason'}
+                    className={!this.state.seasonIsValid && this.state.triedSubmitting
+                      ? 'startSeason wrong-select' : 'startSeason'}
                     name="startSeason"
                     value={this.state.startSeason}
                     onChange={this.handleChange}
@@ -503,7 +463,8 @@ class EditOppForm extends React.Component {
                   </select>
 
                   <select
-                    className={!this.state.yearIsValid && this.state.triedSubmitting ? 'startYear wrong-select' : 'startYear'}
+                    className={!this.state.yearIsValid && this.state.triedSubmitting
+                      ? 'startYear wrong-select' : 'startYear'}
                     name="startYear"
                     value={this.state.startYear}
                     onChange={this.handleChange}
@@ -602,9 +563,6 @@ class EditOppForm extends React.Component {
                 </div>
 
                 <div className="years-allowed compensation">
-                  {/* className={!this.state.compensationIsValid && this.state.triedSubmitting ? "startYear years-allowed wrong-select" : "years-allowed compensation"}> */}
-                  {/* <span className="required-star">*</span> */}
-
                   <label className="label-inline">
                     Student Compensation (leave blank if just
                     experience):
@@ -814,10 +772,10 @@ class EditOppForm extends React.Component {
                   />
                   <ReactTooltip place="right" id="info-additional" aria-haspopup="true" role="example">
                     <div className="info-text">
-                      <span>Include any other relevant information to your opportunity not already described in the form.</span>
-
+                      <span>
+                        Include any other relevant information to your opportunity not already described in the form.
+                      </span>
                     </div>
-
                   </ReactTooltip>
                 </div>
 
@@ -844,7 +802,7 @@ class EditOppForm extends React.Component {
                   <InfoIcon data-tip data-for="info-questions" className="info-icon-title" size={20} />
                   <ReactTooltip place="top" id="info-questions" aria-haspopup="true" role="example">
                     <p className="info-text-large">
-                      We recommend asking "Why are you interested in this lab and/or position?" to
+                      We recommend asking &quot;Why are you interested in this lab and/or position?&quot; to
                       gauge interest.
                       {'You will nonetheless be able to view each student\'s cover letter, year, GPA,'}
                       résumé,

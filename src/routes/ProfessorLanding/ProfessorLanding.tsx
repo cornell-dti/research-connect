@@ -43,9 +43,7 @@ class ProfessorLanding extends Component {
     }
   }
 
-  loginFailure = () => {
-    console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
-  };
+  loginFailure = () => {};
 
   responseGoogleStudent = (response: any) => {
     sessionStorage.setItem('token_id', response.tokenId);
