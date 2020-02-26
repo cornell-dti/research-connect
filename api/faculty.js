@@ -3,7 +3,7 @@ const express = require('express');
 const app = express.Router();
 const https = require('https');
 const {
-  facultyModel, debug, verify, handleVerifyError, undergradModel, sgMail,
+  facultyModel, verify, handleVerifyError, undergradModel, sgMail,
 } = require('../common.js');
 
 /**
@@ -60,26 +60,9 @@ app.get('/', (req, res) => {
     .limit(parseInt(limit, 10))
     .sort({ name: 'ascending' }) // https://mongoosejs.com/docs/api.html#query_Query-sort (it's hard to find)
     .exec((err, faculty) => {
-      const allAreas = [];
       if (err) {
         return res.status(500).send(err);
       }
-      /** BEGIN code to print out all unique facutly researchInterests
-      faculty.forEach((fac) =>{
-        if (fac){
-          const interests = fac.researchInterests;
-          if (interests){
-            allAreas.push(...interests);
-          }
-        }
-      });
-      console.log("All areas!");
-      console.log(allAreas.length);
-      allAreas = allAreas.filter( onlyUnique );
-      console.log(allAreas.length);
-      console.log(allAreas);
-       * END CODE TO PRINT OUT ALL UNIQUE researchInterests (for testing)
-       */
       return res.send(faculty);
     });
 });

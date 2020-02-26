@@ -182,7 +182,8 @@ app.post('/', (req, res) => {
           html: `Hi ${undergrad.firstName},<br />
                        Thanks for signing up for Research Connect! To help you
                        in your research journey, we've provided a comprehensive
-                       step-by-step guide to finding computer science research. View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a>
+                       step-by-step guide to finding computer science research.
+                       View it <a href="http://bit.ly/2Ob7dfz?ref=email">here!</a>
                        <br /><br />Thanks,
                        <br />The Research Connect Team<br /><br />`,
         };

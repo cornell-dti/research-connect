@@ -62,7 +62,7 @@ class EditOppForm extends React.Component {
 
   getUrlId = (val) => {
     const url = window.location.href;
-    const word = val.replace(/[\[\]]/g, '\\$&');
+    const word = val.replace(/[[\]]/g, '\\$&');
     const regex = new RegExp(`[?&]${word}(=([^&#]*)|&|#|$)`);
     const res = regex.exec(url);
     if (!res) {

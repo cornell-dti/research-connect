@@ -214,7 +214,6 @@ const opportunitySchema = new Schema({
     default: ['none'],
   },
   supervisor: { type: String, default: 'TBD' }, // can be null
-  // spots: {type: Number, required: false, min: 0, default: -1},   //-1 if no limit, number of people they're willing to take, -1 indicates no cap to # of spots
   startSeason: { type: String, enum: ['Summer', 'Fall', 'Winter', 'Spring'] }, // null if start asap, string b/c it will prob be something like Fall 2018
   startYear: { type: Number },
   yearsAllowed: {
