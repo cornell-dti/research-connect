@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import axios from 'axios';
 import './OpportunityPage.scss';
+// @ts-ignore
 import CheckBox from 'react-icons/lib/fa/check-square-o';
+// @ts-ignore
 import CrossCircle from 'react-icons/lib/fa/minus-circle';
 import * as ReactGA from 'react-ga';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
 import Star from '../../components/Star/Star';
+import { Opportunity } from '../../types';
 
-function LinkFaculty(props) {
+function LinkFaculty(props: { facultyId: string }) {
   // if we manually enter their faculty ID in the database, then we can show
   // their faculty page here
   if (props.facultyId) {
@@ -33,11 +36,25 @@ function LinkFaculty(props) {
   );
 }
 
-class OpportunityPage extends Component {
-  constructor(props) {
+type Props = { match: { params: { id: string } } };
+type State = {
+  opportunity: Opportunity,
+  questionAnswers: { [key: string]: string },
+  submitted: boolean;
+  triedSubmitting: boolean;
+  student: any,
+  netId: string | null;
+  role: string | null;
+  detectedLoggedOut: boolean;
+  starred: boolean;
+  appliedAlready?: boolean;
+};
+
+class OpportunityPage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      opportunity: {},
+      opportunity: {} as Opportunity,
       questionAnswers: {},
       submitted: false,
       triedSubmitting: false,
@@ -69,27 +86,24 @@ class OpportunityPage extends Component {
       });
   };
 
-  isEmpty(obj) {
-    return Object.keys(obj).length === 0;
-  }
-
-  sendToHome(error) {
+  sendToHome = (error: { response: { status: number } }) => {
     if (!this.state.detectedLoggedOut) {
       Utils.handleTokenError(error);
       window.location.href = '/';
       this.setState({ detectedLoggedOut: true });
     }
-  }
+  };
 
-  handleChange(key) {
+  handleChange = (key: string) => {
     this.setState((state) => {
       const answersCopy = JSON.parse(JSON.stringify(state.questionAnswers));
+      // @ts-ignore
       answersCopy[key] = document.getElementsByName(key)[0].value;
       return { questionAnswers: answersCopy };
     });
-  }
+  };
 
-  handleAppSubmit = (e) => {
+  handleAppSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.setState({ triedSubmitting: true });
 
@@ -116,7 +130,7 @@ class OpportunityPage extends Component {
       });
   }
 
-  hasApplied(netId, opportunityId) {
+  hasApplied(netId: string, opportunityId: string) {
     return axios.get(`/api/opportunities/check/${opportunityId}?netId=${netId}`)
       .then((response) => {
         // returns true or false
@@ -150,8 +164,8 @@ class OpportunityPage extends Component {
       sessionStorage.getItem('token_id')}`).then((response) => {
       this.setState({ opportunity: response.data });
       this.setState({ student: response.data.student });
-      if (!this.isEmpty(response.data)) {
-        const obj = {};
+      if (Object.keys(response.data).length >= 0) {
+        const obj: { [k: string]: string } = {};
         Object.keys(response.data.questions).forEach((k) => { obj[k] = ''; });
         this.setState({ questionAnswers: obj });
       }
@@ -173,64 +187,32 @@ class OpportunityPage extends Component {
       }).catch(() => {
         this.setState({ netId: '' });
       });
-      /**
-       const appliedAlready = this.hasUndergradApplied(this.state.netId,
-       this.state.opportunity._id).then((appliedStatus) => {
-        if (!this.isEmpty(response.data)) {
-          this.setState({netId: response.data[0].netId});
-          const appliedAlready = await this.hasApplied(this.state.netId,
-              this.state.opportunity._id);
-          this.setState({appliedAlready});
-        }
-      });
-
-       axios.get('/api/undergrads/token' + sessionStorage.getItem('token_id'))
-       .then((response) => {
-        if (!this.isEmpty(response.data)) {
-          this.setState({ netId: response.data[0].netId });
-          const appliedAlready = await this.hasApplied(this.state.netId, this.state.opportunity._id);
-          this.setState({appliedAlready})
-        }
-      })
-       .catch((error) => {
-        this.sendToHome(error);
-        // Utils.handleTokenError(error);
-      });
-       */
-    }).catch((error) => {
-      this.sendToHome(error);
-    });
+    }).catch((error) => this.sendToHome(error));
   }
 
   printQuestions() {
-    if (!this.isEmpty(this.state.opportunity.questions)) {
+    if (Object.keys(this.state.opportunity.questions).length >= 0) {
       const keys = Object.keys(this.state.opportunity.questions);
 
       // sort the keys by their number
-      keys.sort((a, b) => {
-        // remove the q from "q1" or "q5" based on number of question
-        const aNum = a.replace('q', '');
-        const bNum = b.replace('q', '');
-        // if a's numb is less than b's num then return a value less than 0 indicating a comes before b.
-        return aNum - bNum;
-      });
+      keys.sort((a, b) => parseInt(a.replace('q', ''), 10) - parseInt(b.replace('q', ''), 10));
 
       const questionMapping = keys.map((key) => (
         <div id={key} key={key}>
-          {this.state.opportunity.questions[key]}
+          {this.state.opportunity.questions[parseInt(key.replace('q', ''), 10)]}
           <br />
           <textarea
             style={{ minHeight: '16rem' }}
             name={key}
             key={key}
-            onChange={this.handleChange.bind(this, key)}
+            onChange={() => this.handleChange(key)}
           />
           <br />
         </div>
       ));
 
       return (
-        <form onSubmit={this.handleAppSubmit.bind(this)}>
+        <form onSubmit={this.handleAppSubmit}>
           {questionMapping}
           <div className="submit-button-div">
             <input className="button" type="submit" value="Submit" />
@@ -239,13 +221,13 @@ class OpportunityPage extends Component {
       );
     }
     return (
-      <form onSubmit={this.handleAppSubmit.bind(this)}>
+      <form onSubmit={this.handleAppSubmit}>
         <input className="button" type="submit" value="Submit" />
       </form>
     );
   }
 
-  convertDate(dateString) {
+  convertDate(dateString: string) {
     const dateObj = new Date(dateString);
     let year = dateObj.getUTCFullYear().toString();
     year = year.substring(2, 4);
@@ -256,7 +238,7 @@ class OpportunityPage extends Component {
     if (month < 10) {
       month0 = '0';
     }
-    if (day0 < 10) {
+    if (Number(day0) < 10) {
       day0 = '0';
     }
 
@@ -265,8 +247,8 @@ class OpportunityPage extends Component {
   }
 
   checkOpen() {
-    const openDateObj = new Date(this.props.opens);
-    const closesDateObj = new Date(this.props.closes);
+    const openDateObj = new Date(this.state.opportunity.opens);
+    const closesDateObj = new Date(this.state.opportunity.closes);
     const nowTime = Date.now();
     if (closesDateObj.getTime() < nowTime) {
       return 'Closed';
@@ -276,7 +258,7 @@ class OpportunityPage extends Component {
     return 'Open';
   }
 
-  parseYears(yearsArray, isStudent) {
+  parseYears(yearsArray: string[]) {
     const yearDivArray = [];
     if (yearsArray) {
       let trackYear = false;
@@ -369,7 +351,7 @@ class OpportunityPage extends Component {
     return undefined;
   }
 
-  parseMajors(arrayIn, isStudent) {
+  parseMajors(arrayIn: string[]) {
     if (arrayIn) {
       if (arrayIn.length === 0) {
         return (
@@ -416,7 +398,7 @@ class OpportunityPage extends Component {
     return undefined;
   }
 
-  parseClasses(arrayIn, isStudent) {
+  parseClasses(arrayIn: string[]) {
     if (arrayIn) {
       if (arrayIn.length === 0) {
         return (
@@ -453,9 +435,9 @@ class OpportunityPage extends Component {
     return undefined;
   }
 
-  parseGPA(gpa, isStudent) {
+  parseGPA() {
     // if minGPA is falsy or falls in range
-    if (!this.state.minGPA || (this.state.student && this.state.opportunity
+    if (!this.state.opportunity.minGPA || (this.state.student && this.state.opportunity
         && this.state.opportunity.minGPA <= this.state.student.gpa)) {
       return (
         <p key={0}>
@@ -482,7 +464,7 @@ class OpportunityPage extends Component {
     );
   }
 
-  parseCompensation(compensation) {
+  parseCompensation() {
     let compString = 'Not specified';
     if (this.state.opportunity && this.state.opportunity.compensation) {
       const pay = this.state.opportunity.compensation.indexOf('pay') !== -1;
@@ -576,27 +558,20 @@ class OpportunityPage extends Component {
                     <div className="header">Weekly Hours</div>
                     <div>
                       {(() => {
-                        let { minHours } = this.state.opportunity;
-                        let { maxHours } = this.state.opportunity;
+                        const { minHours, maxHours } = this.state.opportunity;
                         if (!minHours && !maxHours) {
                           return 'Not specified';
                         }
-                        minHours = minHours ? this.state.opportunity.minHours
-                          : 'Not specified';
-                        maxHours = maxHours ? `${this.state.opportunity.maxHours} `
-                          : 'Not specified';
-                        return `${minHours} - ${maxHours} hours per week`;
+                        const min = minHours ? this.state.opportunity.minHours : 'Not specified';
+                        const max = maxHours ? `${this.state.opportunity.maxHours} ` : 'Not specified';
+                        return `${min} - ${max} hours per week`;
                       })()}
                     </div>
                   </div>
                   <div className="opp-details-section">
                     <div className="header">Compensation</div>
                     <div>
-                      {this.state.opportunity.compensation
-                        ? this.parseCompensation(
-                          this.state.opportunity.compensation,
-                        )
-                        : 'Not specified'}
+                      {this.state.opportunity.compensation ? this.parseCompensation() : 'Not specified'}
                     </div>
                   </div>
                   <div className="opp-details-section">
@@ -647,8 +622,7 @@ class OpportunityPage extends Component {
                               }
                             </div>
                             {
-                              (!this.state.submitted
-                                  && !this.state.appliedAlready)
+                              (!this.state.submitted && !this.state.appliedAlready)
                                 ? this.printQuestions()
                                 : <p>You have applied to this position.</p>
                             }
@@ -697,7 +671,7 @@ class OpportunityPage extends Component {
 
                 <div className="opp-qual-section">
                   <h6 className="header">GPA</h6>
-                  {this.parseGPA(this.state.opportunity.minGPA)}
+                  {this.parseGPA()}
                 </div>
 
                 <hr />
