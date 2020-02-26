@@ -1,10 +1,11 @@
 module.exports = {
-  'extends': 'airbnb',
-  'parser': 'babel-eslint',
+  'extends': ['airbnb', 'react-app'],
   'rules': {
     'camelcase': ['off'], // Allow usage of token_id
+    'no-alert': ['off'], // Too common
     'no-underscore-dangle': ['off'], // Allow interaction with mongodb.
     'class-methods-use-this': ['off'],
+    'import/extensions': ['off'], // to allow ts
     // TODO: turn these a11y problems into error again when we have time to fix them. Right now there are too many of them :(
     'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/aria-role': ['off'],
@@ -19,9 +20,9 @@ module.exports = {
     'no-use-before-define': ['off'],
     'no-unused-vars': ['warn'], // TODO: turn it into error when problems are fixed.
     'new-cap': ['warn'],
+    'react/state-in-constructor': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/jsx-fragments': ['off'],
-    'react/jsx-no-bind': ['off'], // TODO: turn it into error when class-field-properties are introduced.
     'react/destructuring-assignment': ['off'],
     'react/no-array-index-key': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/no-unescaped-entities': ['warn'], // TODO: turn it into error when problems are fixed.
@@ -34,5 +35,13 @@ module.exports = {
   'env': {
       "browser": true,
       "node": true,
-  }
+  },
+  'settings': {
+    'import/resolver': {
+      'node': {
+        'extensions': ['.mjs', '.js', '.json', '.ts', '.tsx'],
+        'paths': ['src']
+      }
+    }
+  },
 };

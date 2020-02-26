@@ -1,32 +1,9 @@
-/* eslint-disable no-unused-vars */
-// import series from 'async/series'; //specification: https://caolan.github.io/async/docs.html#series
-
-// server.js
-
-
 // import dependencies
-// require('dotenv').config();
-const async = require('async');
 const express = require('express');
-const supportsColor = require('supports-color');
-const debug = require('debug')('http');
-const path = require('path');
-const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fs = require('fs');
-const { OAuth2Client } = require('google-auth-library');
-
-const client = new OAuth2Client('938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com');
 const fileUpload = require('express-fileupload');
-const request = require('request');
-
-// let corsKey = null;
-// if (fs.existsSync('./CorsKey.json')) {
-//     corsKey = JSON.parse(fs.readFileSync('CorsKey.json', 'utf8'));
-//     corsKey = corsKey.key;
-// }
 
 // create instances
 const app = express();
@@ -36,14 +13,9 @@ const router = express.Router();
 // it up, or 3001
 const port = process.env.PORT || 3001;
 
-// uncomment after placing your favicon in /public
-// let favicon = require('serve-favicon');
-// app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
-// app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 // TODO only allow cors for specific endpoints, not all: https://github.com/expressjs/cors#enable-cors-for-a-single-route
 app.use(cors());
 app.use(fileUpload());
@@ -68,6 +40,8 @@ const labRoute = require('./api/labs');
 const docsRoute = require('./api/docs');
 const classesRoute = require('./api/classes');
 
+/** Begin ENDPOINTS */
+
 app.use('/api/', index);
 app.use('/api/labAdmins', labAdminsRoute);
 app.use('/api/opportunities', opportunityRoute);
@@ -79,31 +53,11 @@ app.use('/api/messages', messagesRoute);
 app.use('/api/docs', docsRoute);
 app.use('/api/classes', classesRoute);
 
-// router.get('/', function (req, res) {
-//     res.json({message: 'API Initialized!'});
-// });
-
 app.use('/api', router);
-app.use(express.static('./src/docs'));
-app.use('/*', express.static('./src/docs'));
-
-
-/** Begin ENDPOINTS */
+app.use(express.static('./build'));
+app.use('/*', express.static('./build'));
 
 /** End ENDPOINTS */
-
-
-/** **************************** */
-// END NON-DEFAULT CODE
-/** **************************** */
-
-
-// catch 404 and fgorward to error handler
-// app.use(function (req, res, next) {
-//     let err = new Error('Not Found');
-//     err.status = 404;
-//     next(err);
-// });
 
 module.exports = app;
 

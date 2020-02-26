@@ -1,18 +1,8 @@
 /* eslint-disable no-unused-vars */
 // We do this because a lot of the packages are exported and used later
 require('dotenv').config();
-const async = require('async');
-const express = require('express');
-const supportsColor = require('supports-color');
 const debug = require('debug')('server:app');
-const path = require('path');
-const favicon = require('serve-favicon');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
-const fileUpload = require('express-fileupload');
 const bluebird = require('bluebird');
 const request = require('request');
 const AWS = require('aws-sdk');

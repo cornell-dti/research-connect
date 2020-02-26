@@ -3,7 +3,6 @@ import axios from 'axios';
 import './ApplicationPage.scss';
 import ExternalLink from 'react-icons/lib/fa/external-link';
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
-import { css } from '@emotion/styled';
 import { ClipLoader } from 'react-spinners';
 import * as ReactGA from 'react-ga';
 import * as Utils from '../../components/Utils';
@@ -24,7 +23,10 @@ class ApplicationPage extends Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    // this.setState({ loading: false });
+    // temporary
+    this.state.loading = false;
     axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')
     }&netId=` + 'prk57').then((response) => {
       const oppsList = response.data;
@@ -38,11 +40,11 @@ class ApplicationPage extends Component {
                 `/api/undergrads/la/${this.state.application.undergradNetId
                 }?tokenId=${sessionStorage.getItem('token_id')}`,
               )
-                .then((response) => {
-                  this.setState({ resumeId: response.data.resumeId });
-                  const transcriptIdText = response.data.transcriptId != null
+                .then((response2) => {
+                  this.setState({ resumeId: response2.data.resumeId });
+                  const transcriptIdText = response2.data.transcriptId != null
                     ? ''
-                    : response.data.transcriptId;
+                    : response2.data.transcriptId;
                   this.setState({ transcriptId: transcriptIdText });
                 })
                 .catch((error) => {
@@ -55,12 +57,6 @@ class ApplicationPage extends Component {
     }).catch((error) => {
       Utils.handleTokenError(error);
     });
-  }
-
-  componentDidMount() {
-    // this.setState({ loading: false });
-    // temporary
-    this.state.loading = false;
   }
 
   toDivList(lst) {
@@ -136,18 +132,14 @@ class ApplicationPage extends Component {
       );
     }
 
-    const questionsAndResponses = [];
     const { responses } = this.state.application;
     const { questions } = this.state.opportunity;
-    let c = 0;
-    for (const question in responses) {
-      questionsAndResponses.push(
-        <div className="question-and-response" key={c++}>
-          <div className="question header">{questions[question] ? questions[question] : 'Cover Letter'}</div>
-          <div className="response">{responses[question]}</div>
-        </div>,
-      );
-    }
+    const questionsAndResponses = Object.keys(responses).map((question, c) => (
+      <div className="question-and-response" key={c}>
+        <div className="question header">{questions[question] ? questions[question] : 'Cover Letter'}</div>
+        <div className="response">{responses[question]}</div>
+      </div>
+    ));
 
     return (
       <div>

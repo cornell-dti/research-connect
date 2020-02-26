@@ -53,12 +53,9 @@ class EditOppForm extends React.Component {
     };
     ReactGA.initialize('UA-69262899-9');
     ReactGA.pageview(window.location.pathname + window.location.search);
-    this.handleChange = this.handleChange.bind(this);
-    this.addQuestion = this.addQuestion.bind(this);
-    this.displayQuestions = this.displayQuestions.bind(this);
   }
 
-  getUrlId(val) {
+  getUrlId = (val) => {
     const url = window.location.href;
     const word = val.replace(/[\[\]]/g, '\\$&');
     const regex = new RegExp(`[?&]${word}(=([^&#]*)|&|#|$)`);
@@ -70,14 +67,14 @@ class EditOppForm extends React.Component {
       return '';
     }
     return decodeURIComponent(res[2].replace(/\+/g, ' '));
-  }
+  };
 
   componentDidMount() {
     const id = this.getUrlId('Id');
     this.setValues(id);
   }
 
-  setValues(id) {
+  setValues = (id) => {
     axios.get(`/api/opportunities/${id}?netId=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         if (response) {
@@ -105,11 +102,9 @@ class EditOppForm extends React.Component {
           if (response.labName) this.setState({ labName: response.labName });
           if (response.supervisor) this.setState({ supervisor: response.supervisor });
           if (response.additionalInformation) this.setState({ additionalInformation: response.additionalInformation });
-          console.log(response.additionalInformation);
         }
       });
-  }
-
+  };
 
   /**
      onSubmit = (e) => {
@@ -158,7 +153,7 @@ class EditOppForm extends React.Component {
      */
 
   // display the questions interface to add/delete questions
-  displayQuestions() {
+  displayQuestions = () => {
     const questionBoxes = [];
     for (let i = 0; i < this.state.numQuestions; i++) {
       const stateLabel = `q${(i).toString()}`;
@@ -179,7 +174,7 @@ class EditOppForm extends React.Component {
           <Delete
             size={30}
             id={i}
-            onClick={this.deleteQuestion.bind(this, stateLabel)}
+            onClick={() => this.deleteQuestion(stateLabel)}
             className="deleter-icon"
           />
         </div>,
@@ -190,15 +185,15 @@ class EditOppForm extends React.Component {
         {questionBoxes}
       </div>
     );
-  }
+  };
 
-  deleteQuestion(data) {
+  deleteQuestion = (data) => {
     const deleted = parseInt(data.slice(1), 10);
     const newQnum = this.state.numQuestions - 1;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     const questionsEdit = {};
 
-    for (const question in questionsCopy) {
+    Object.keys(questionsCopy).forEach((question) => {
       const num = parseInt(question.slice(1), 10);
       if (num < deleted) {
         questionsEdit[question] = questionsCopy[question];
@@ -206,26 +201,18 @@ class EditOppForm extends React.Component {
         const newString = `q${(num - 1).toString()}`;
         questionsEdit[newString] = questionsCopy[question];
       }
-    }
-
-
-    this.setState({ numQuestions: newQnum });
-
-    this.setState({
-      questions: questionsEdit,
     });
-    // setTimeout(() => {
-    //           this.makeBoxes()
-    //       }, 40);
-  }
 
-  addQuestion() {
+    this.setState({ numQuestions: newQnum, questions: questionsEdit });
+  };
+
+  addQuestion = () => {
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[`q${(this.state.numQuestions).toString()}`] = '';
     this.setState(({ numQuestions }) => ({ questions: questionsCopy, numQuestions: numQuestions + 1 }));
-  }
+  };
 
-  createGpaOptions() {
+  createGpaOptions = () => {
     const options = [];
     for (let i = 25; i <= 43; i++) {
       options.push(<option key={i} value={(i / 10).toString()}>{(i / 10).toString()}</option>);
@@ -241,7 +228,7 @@ class EditOppForm extends React.Component {
         {options}
       </select>
     );
-  }
+  };
 
   setYears() {
     if (this.state.yearsAllowed !== []) {
@@ -283,7 +270,7 @@ class EditOppForm extends React.Component {
 
 
   // Set values of form items in state and change their validation state if they're invalid
-  handleChange(event) {
+  handleChange = (event) => {
     if (event.target.name === 'labName') {
       this.setState({ labName: event.target.value });
     } else if (event.target.name === 'netID') {
@@ -339,24 +326,20 @@ class EditOppForm extends React.Component {
     } else if (event.target.name === 'additional') {
       this.setState({ additionalInformation: event.target.value });
     }
-  }
+  };
 
-  handleQuestionState(i) {
+  handleQuestionState = (i) => {
     const stateLabel = `q${i.toString()}`;
     const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
     questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
     this.setState({
       questions: questionsCopy,
     });
-  }
+  };
 
-  handleOpenDateChange(date) {
-    this.setState({ opens: date });
-  }
+  handleOpenDateChange = (date) => this.setState({ opens: date });
 
-  handleCloseDateChange(date) {
-    this.setState({ closes: date });
-  }
+  handleCloseDateChange = (date) => this.setState({ closes: date });
 
 
     // takes care of sending the form data to the back-end
@@ -403,9 +386,7 @@ class EditOppForm extends React.Component {
       })
         .then((result) => {
           // access the results here....
-          this.setState({ submit: 'Submitted!' });
-          this.setState({ isButtonDisabled: true });
-          this.setState({ buttonValue: 'Submitted!' });
+          this.setState({ submit: 'Submitted!', isButtonDisabled: true, buttonValue: 'Submitted!' });
           function sleep(time) {
             return new Promise((resolve) => setTimeout(resolve, time));
           }
@@ -846,14 +827,14 @@ class EditOppForm extends React.Component {
                     className="datePicker"
                     placeholderText="Select a date"
                     selected={this.state.opens}
-                    onChange={this.handleOpenDateChange.bind(this)}
+                    onChange={this.handleOpenDateChange}
                   />
 
                   <label className="label-inline ">Close Application Window: </label>
                   <DatePicker
                     className="datePicker"
                     selected={this.state.closes}
-                    onChange={this.handleCloseDateChange.bind(this)}
+                    onChange={this.handleCloseDateChange}
                   />
                 </div>
                 <hr />
