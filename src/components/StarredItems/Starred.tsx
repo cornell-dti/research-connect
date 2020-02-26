@@ -87,6 +87,7 @@ class Starred extends Component<Props, State> {
           researchDescription={prof.researchDescription}
           starred={starred}
           updateStar={this.updateStar}
+          researchStatus={prof.researchStatus}
         />
       );
     });

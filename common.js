@@ -158,7 +158,8 @@ const facultySchema = new Schema({
   department: { type: String },
   email: { type: String },
   accepting: { type: String, enum: ['yes', 'no', 'unknown', 'maybe'], default: 'unknown' },
-  semestersAccepted: { type: [String] }, // used to eventualyl tell students if this professor has accepted in  the past and is likely to accept in future
+  semestersAccepted: { type: [String] }, // used to eventually tell students if this professor has accepted in  the past and is likely to accept in future
+  researchStatus: {type: String, default: '', required: false},  // describes general research situation for this professor, i.e. "I'm full but contact me if you're very interested in one of my papers and want to research next semester"
   qualifications: { type: String, default: '' },
   requiredCourses: { type: [String], default: [] }, // this is here so one day we can automatically check if students have the required courses
   bio: { type: String },

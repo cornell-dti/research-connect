@@ -40,4 +40,5 @@ export type Professor = {
   bio: string;
   researchInterests: string;
   researchDescription: string;
+  researchStatus: string;
 };
