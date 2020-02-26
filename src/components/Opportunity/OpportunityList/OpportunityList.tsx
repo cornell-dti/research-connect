@@ -10,14 +10,13 @@ type Props = {
   filteredOptions: any;
   searching: boolean;
 };
-type State = { starredOps: {}[]; role?: string };
+type State = { starredOps: {}[]; role?: string | null };
 
 class OpportunityList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { starredOps: [] };
     this.setUserRole();
-    Utils.updateMultipleChoiceFilter.bind(this);
   }
 
   getStarredOps() {
@@ -61,7 +60,6 @@ class OpportunityList extends Component<Props, State> {
   }
 
   async setUserRole() {
-    // @ts-ignore
     this.setState({ role: await Utils.getUserRole() });
   }
 

@@ -20,7 +20,6 @@ type State = {
   yearSelect: string[];
   gpaSelect: string;
   courses: string[];
-  skills: string[];
   opportunity: string;
   opportunities: string[];
   loading: boolean;
@@ -33,7 +32,6 @@ class ProfessorView extends Component<{}, State> {
       yearSelect: [],
       gpaSelect: '2.5',
       courses: [],
-      skills: [],
       opportunity: 'All',
       opportunities: [],
       loading: true,
@@ -134,7 +132,15 @@ class ProfessorView extends Component<{}, State> {
             <div className="column">
               <div className="application-list-container">
                 <div className="application-list-header">Applications For Your Lab</div>
-                <ApplicationList filter={this.state} />
+                <ApplicationList
+                  filter={{
+                    opportunity: this.state.opportunity,
+                    yearSelect: this.state.yearSelect,
+                    gpaSelect: this.state.gpaSelect,
+                    courses: this.state.courses,
+                    skills: [],
+                  }}
+                />
               </div>
             </div>
           </div>

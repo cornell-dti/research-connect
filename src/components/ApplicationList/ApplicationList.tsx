@@ -4,11 +4,21 @@ import './ApplicationList.scss';
 import ApplicationBox from './ApplicationBox/ApplicationBox';
 import * as Utils from '../Utils';
 
-type Props = { filter: any };
-type State = { data: any };
+type Props = {
+  filter: {
+    opportunity: string;
+    yearSelect: string[];
+    gpaSelect: string;
+    courses: string[];
+    skills: string[];
+  };
+};
+type State = {
+  data: { [key: string]: any };
+};
 
 class ApplicationList extends Component<Props, State> {
-  state: State = { data: [] };
+  state: State = { data: {} };
 
   componentDidMount() {
     axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`)
@@ -54,7 +64,7 @@ class ApplicationList extends Component<Props, State> {
   render() {
     const { data } = this.state;
 
-    if (data.length === 0 || data === {} || Object.keys(data).length === 0) {
+    if (data === {} || Object.keys(data).length === 0) {
       return (
         <div>There are currently no applications.</div>
       );
@@ -63,7 +73,7 @@ class ApplicationList extends Component<Props, State> {
     const apps: JSX.Element[] = [];
     let k = 0;
 
-    Object.entries(data).forEach((oppAppPair: any) => {
+    Object.entries(data).forEach((oppAppPair: [string, any]) => {
       oppAppPair[1].applications.forEach((app: any) => {
         if (app.gpa === 5.0) app.gpa = 'No GPA';
         if (app !== undefined) {
