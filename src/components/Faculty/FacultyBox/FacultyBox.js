@@ -21,6 +21,10 @@ class FacultyBox extends Component {
   loadFacultyFromServer() {
     axios.get('/api/faculty?department=tech')
       .then((res) => {
+        // sort the faculty by researchStatus so that those with a research status show first
+        res.data.sort((a, b) => (a.researchStatus > b.researchStatus) ? 1 : -1);
+        console.log("data here: ");
+        console.log(res.data);
         this.setState({ data: res.data });
       });
   }

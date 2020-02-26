@@ -66,6 +66,9 @@ class FacultyList extends Component {
     const profs = {
       yes: [], no: [], maybe: [], unknown: [],
     };
+    // sort the faculty by researchStatus so that those with a research status show first
+    this.props.data.sort((a, b) => (a.researchStatus.toLowerCase() > b.researchStatus.toLowerCase()) ? -1 : 1);
+
     this.props.data.forEach((prof) => {
       // const { filteredOptions } = this.props;
       // let departmentSelected = filteredOptions.department;
@@ -83,6 +86,7 @@ class FacultyList extends Component {
           bio={prof.bio}
           researchInterests={prof.researchInterests}
           researchDescription={prof.researchDescription}
+          researchStatus={prof.researchStatus}
           starred={this.state.starredFac.includes(prof._id)}
           updateStar={this.updateStar.bind(this)}
         />,
@@ -90,7 +94,7 @@ class FacultyList extends Component {
     });
     Object.keys(profs).forEach((status) => {
       if (profs[status].length === 0) {
-        profs[status] = [<p>No professors matching this criteria.</p>];
+        profs[status] = [<span></span>];
       }
     });
     const nodeCount = this.countNodes(profs);
@@ -102,17 +106,13 @@ class FacultyList extends Component {
           {/* </p> */}
           <p>Information last updated January 2020.</p>
         </div>
-        <div style={headerStyle}>Professors Recruiting Undergrads This Semester</div>
+        <div style={headerStyle}>CS Professors Who May Consider Working With Undergrads This Semester</div>
         {profs.yes}
-        <br />
-        <div style={headerStyle}>Professors Maybe Recruiting Undergrads This Semester</div>
         {profs.maybe}
-        <br />
-        <div style={headerStyle}>Professors Not Recruiting Undergrads This Semester</div>
-        {profs.no}
-        <br />
-        <div style={headerStyle}>Unknown Whether Professor Is Recruiting Undergrads This Semester</div>
         {profs.unknown}
+        <br />
+        <div style={headerStyle}>CS Professors Not Working With Undergrads This Semester</div>
+        {profs.no}
       </div>
     );
   }

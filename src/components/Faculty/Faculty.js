@@ -54,11 +54,17 @@ class Faculty extends Component {
                 starred={this.props.starred}
               />
             </h4>
-            <h5>{this.props.department}</h5>
+            {/*<h5>{this.props.department}</h5>*/}
             {this.props.lab !== null && this.propslab !== '' && this.props.lab !== undefined
               ? (<h5>{this.props.lab}</h5>)
               : <span />}
 
+            <h6>
+              {this.props.researchStatus ?
+                this.convertDescription("Undergrad Research Status: " + this.props.researchStatus)
+                : this.convertDescription( "Undergrad Research Status: No info available. If you're very interested in this professor's work, email them to " +
+                "find out if they are currently open to working with undergrads.")}
+            </h6>
             <div>
               {this.props.researchDescription && this.props.researchDescription.length > 0
                 ? this.convertDescription(this.props.researchDescription)

@@ -41,8 +41,8 @@ const ListItems = (props) => {
 };
 
 function AcceptingMessage(props) {
-  const { acceptingStatus } = props;
-  const status = [];
+  const { acceptingStatus, researchStatus } = props;
+  let status = [];
   if (acceptingStatus === 'yes') {
     status.push(
       <p>
@@ -88,6 +88,11 @@ function AcceptingMessage(props) {
         email writing tips.
       </p>,
     );
+  }
+  if (researchStatus && researchStatus.length > 0) {
+    status = [];
+    // status.push(<span>Undergrad Research Status: </span>);
+    status.push(researchStatus);
   }
   status.push(<p>Last updated: January 2020.</p>);
   return <div>{status}</div>;
@@ -352,7 +357,7 @@ class FacultyPage extends Component {
                   <div className="opp-details-section">
                     <div className="header">Doing Research With This Professor</div>
                     <p>
-                      <AcceptingMessage acceptingStatus={this.state.profInfo.accepting} />
+                      <AcceptingMessage acceptingStatus={this.state.profInfo.accepting} researchStatus={this.state.profInfo.researchStatus} />
                     </p>
                   </div>
                   {this.state.profInfo.accepting !== 'yes' ? ''
