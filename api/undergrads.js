@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express.Router();
 const {
-  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgOppsGroup, sgStatusGroup, sgAnnouncementsGroup,
+  verify, undergradModel, labAdministratorModel, debug, handleVerifyError, sgMail, sgAnnouncementsGroup,
 } = require('../common.js');
 const common = require('../common.js');
 
@@ -41,14 +41,16 @@ app.post('/email', (req, res) => {
   const { tokenId } = req.body;
   verify(tokenId, (netId) => {
     if (!netId) {
-      return res.send('');
+      res.send('');
+      return;
     }
     undergradModel.findOne({ netId }, (err, undergrad) => {
       if (err || !undergrad) {
         debug(err);
-        return res.send('');
+        res.send('');
+        return;
       }
-      return res.send(undergrad.emailHtml);
+      res.send(undergrad.emailHtml);
     });
   }).catch((error) => {
     handleVerifyError(error, res);
@@ -58,25 +60,24 @@ app.post('/email', (req, res) => {
 app.get('/star', (req, res) => {
   verify(req.query.token_id, (decrypted) => {
     if (!decrypted) {
-      return res.send([]);
+      res.send([]);
+      return;
     }
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
-      debug('netid');
       if (err) {
-        debug('Not found');
-        return res.status(500).send([]);
+        res.status(500).send([]);
+        return;
       }
-      debug('Found');
-      if (undergrads.length) {
-      } else {
-        debug('no results found');
-        return res.send([]);
+      if (!undergrads.length) {
+        res.send([]);
+        return;
       }
       if (req.query.type === 'opportunity') {
-        return res.send(undergrads[0].starredOpportunities);
+        res.send(undergrads[0].starredOpportunities);
+        return;
       }
       if (req.query.type === 'faculty') {
-        return res.send(undergrads[0].starredFaculty);
+        res.send(undergrads[0].starredFaculty);
       }
     });
   }).catch((error) => {
@@ -92,7 +93,8 @@ app.get('/isStarred', (req, res) => {
   const { type } = req.query;
   verify(req.query.token_id, (decrypted) => {
     if (!decrypted) {
-      return res.send([]);
+      res.send([]);
+      return;
     }
     const searchObj = { netId: decrypted };
     if (type === 'opportunity') {
@@ -100,9 +102,8 @@ app.get('/isStarred', (req, res) => {
     } else {
       searchObj.starredFaculty = itemId;
     }
-    undergradModel.findOne(searchObj, (_, undergrad) =>
-      // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
-      res.send(!!undergrad));
+    // if undergrad is falsy, then this will be false meaning this id isn't in this undergrad
+    undergradModel.findOne(searchObj, (_, undergrad) => res.send(!!undergrad));
   }).catch((error) => {
     handleVerifyError(error, res);
   });
@@ -111,7 +112,8 @@ app.get('/isStarred', (req, res) => {
 app.get('/token/:tokenId', (req, res) => {
   verify(req.params.tokenId, (decrypted) => {
     if (!decrypted) {
-      return res.send([]);
+      res.send([]);
+      return;
     }
     undergradModel.find({ netId: decrypted }, (err, undergrads) => {
       if (err) {
@@ -147,7 +149,8 @@ app.post('/', (req, res) => {
     const netId = common.getNetIdFromEmail(email);
     debug(netId);
     if (!netId) {
-      return res.status(412).send('The email you signed up with does not end in @cornell.edu. Please log out and try again.');
+      return res.status(412)
+        .send('The email you signed up with does not end in @cornell.edu. Please log out and try again.');
     }
     debug('checkpoint');
     // req is json containing the stuff that was sent if there was anything
@@ -310,7 +313,8 @@ app.post('/star', (req, res) => {
   const { type } = req.body;
   verify(data.token_id, (decrypted) => {
     if (!decrypted) {
-      return res.send([]);
+      res.send([]);
+      return;
     }
     undergradModel.find({ netId: decrypted }, (err, undergrad) => {
       if (err) {
@@ -318,7 +322,8 @@ app.post('/star', (req, res) => {
       } else {
         // this would happen if a lab admin is POSTing
         if (!undergrad.length) {
-          return res.send([]);
+          res.send([]);
+          return;
         }
         let arr = [];
         if (itemId) {

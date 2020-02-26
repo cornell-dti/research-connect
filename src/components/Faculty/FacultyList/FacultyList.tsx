@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Faculty from '../Faculty';
 import '../../Opportunity/OpportunityList/OpportunityList.scss';
+import { Professor } from '../../../types';
 
-class FacultyList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { starredFac: [] };
-  }
+type Props = { data: Professor[]; filteredOptions: any; };
+type State = { starredFac: string[] };
+
+class FacultyList extends Component<Props, State> {
+  state: State = { starredFac: [] };
 
   getStarredFac() {
     axios.get(`/api/undergrads/star?type=faculty&token_id=${sessionStorage.getItem('token_id')}`)
@@ -17,7 +18,7 @@ class FacultyList extends Component {
       }).catch((error) => console.log(error));
   }
 
-  updateStar(opId) {
+  updateStar = (opId: string) => {
     const token_id = sessionStorage.getItem('token_id');
     const type = 'faculty';
     const id = opId;
@@ -39,8 +40,8 @@ class FacultyList extends Component {
       color: 'black',
       fontSize: '24px',
       fontWeight: 'bolder',
-    };
-    const profs = {
+    } as const;
+    const profs: { [key: string]: JSX.Element[] } = {
       yes: [], no: [], maybe: [], unknown: [],
     };
     this.props.data.forEach((prof) => {
@@ -48,16 +49,14 @@ class FacultyList extends Component {
         <Faculty
           key={prof._id}
           ID={prof._id}
-          filteredOptions={this.props.filteredOptions}
           name={prof.name}
           department={prof.department}
           lab={prof.lab}
           photoId={prof.photoId}
           bio={prof.bio}
-          researchInterests={prof.researchInterests}
           researchDescription={prof.researchDescription}
           starred={this.state.starredFac.includes(prof._id)}
-          updateStar={this.updateStar.bind(this)}
+          updateStar={this.updateStar}
         />,
       );
     });

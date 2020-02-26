@@ -3,9 +3,6 @@ import './FacultyPage.scss';
 import axios from 'axios';
 import '../OpportunityPage/OpportunityPage.scss';
 import { stateToHTML } from 'draft-js-export-html';
-import {
-  Editor, EditorState, convertFromHTML, ContentState,
-} from 'draft-js';
 
 import * as ReactGA from 'react-ga';
 import Linkify from 'react-linkify';
@@ -16,9 +13,6 @@ import { logoutGoogle } from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import Star from '../../components/Star/Star';
 
-
-// Utils.gradYearToString(2020) == "Sophomore"
-
 /**
  * @param props should be awards=this.state.profInfo.awards
  */
@@ -26,10 +20,6 @@ const ListItems = (props) => {
   if (!props.items || props.items.length === 0 || !Array.isArray(props.items)) {
     const returnVals = [];
     if (props.pub) {
-      // Have to break it up b/c one string can't handle full tags for whatever reason in JSX
-      // returnVals.push("Click");
-      // returnVals.push(<a href="http://bit.ly/2VQMksy" target="_blank"> here </a>);
-      // returnVals.push("if you're interested in viewing the abstracts (summaries) of their most recent and their most cited papers.");
       returnVals.push("Check the professor's website at the top of this page or Google Scholar to "
         + "find papers they've written.");
       return returnVals;
@@ -62,10 +52,8 @@ function AcceptingMessage(props) {
     status.push(
       <p>
         <b>Not Accepting: </b>
-        This professor does not plan to work with undergrads this
-        semester,
-        so it's not worth asking to do research with them. This could change
-        in future semesters.
+        This professor does not plan to work with undergrads this semester,
+        {'so it\'s not worth asking to do research with them. This could change in future semesters.'}
       </p>,
     );
   } else if (acceptingStatus === 'maybe') {
@@ -73,10 +61,10 @@ function AcceptingMessage(props) {
       <p>
         <b>Possibly Accepting: </b>
         This professor indicated that they may work with undergrads
-        this semester, but there's also a chance that they won't work with any.
+        {'this semester, but there\'s also a chance that they won\'t work with any.'}
         You can still email the professor if their work seems interesting. See
         the sidebar on the right for email writing tips.
-                  </p>,
+      </p>,
     );
   } else {
     status.push(
@@ -111,8 +99,7 @@ class FacultyPage extends Component {
     this.separateInterests = this.separateInterests.bind(this);
   }
 
-  star() {
-    console.log('this is working');
+  star = () => {
     const token_id = sessionStorage.getItem('token_id');
     const type = 'faculty';
     const { id } = this.props.match.params;
@@ -124,14 +111,11 @@ class FacultyPage extends Component {
           this.setState({ starred: stars.includes(id) });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+      .catch((error) => console.log(error));
+  };
 
   // this runs before the "render and return ( ... ) " runs. We use it to get data from the backend about the faculty member
   componentWillMount() {
-    console.log(this.props.match.params.id);
     axios.get(`/api/faculty/${this.props.match.params.id}`)
       .then((response) => {
         this.setState({ profInfo: response.data });
@@ -144,9 +128,7 @@ class FacultyPage extends Component {
         const { data } = response;
         this.setState({ starred: data.includes(this.props.match.params.id) });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
 
     if (!sessionStorage.getItem('token_id')) {
       this.setState({ role: null });
@@ -269,25 +251,17 @@ class FacultyPage extends Component {
                   <h3>
                     <b>{this.state.profInfo.name}</b>
                     <Star
-                      update={this.star.bind(this)}
+                      update={this.star}
                       starred={this.state.starred}
                     />
                   </h3>
 
                   <p>
-                    {this.state.profInfo.title}
-                    {' '}
-                    in
-                    {' '}
-                    {this.state.profInfo.department}
-                    {' '}
-                    at
+                    {`${this.state.profInfo.title} in ${this.state.profInfo.department} at `}
                     {this.state.profInfo.labName ? this.state.profInfo.labName : ' Cornell'}
                   </p>
                   <p>
-
-                    Areas of
-                    Interest:
+                    Areas of Interest:
                     {' '}
 
                     {(this.state.profInfo.researchInterests && this.state.profInfo.researchInterests.length !== 0)
@@ -401,41 +375,6 @@ class FacultyPage extends Component {
                   </div>
                 </div>
               </div>
-              {/* <div className="row"> */}
-              {/*  <div className="opp-details-card" id="emailText"> */}
-              {/*    {this.state.role ? ( */}
-              {/*      <div> */}
-              {/*        <RichTextEditor tokenId={this.state.tokenId} ref={this.TextEditor} /> */}
-              {/*        <div style={{ textAlign: 'center', marginTop: '10px' }}> */}
-              {/*          <input */}
-              {/*            type="submit" */}
-              {/*            className="button" */}
-              {/*            style={{ width: '150px' }} */}
-              {/*            value={this.state.buttonValue} */}
-              {/*            disabled={this.state.isButtonDisabled} */}
-              {/*            onClick={this.sendEmail.bind(this)} */}
-              {/*          /> */}
-              {/*          <br /> */}
-              {/*          <p style={{ fontSize: '10px' }}> */}
-              {/*            {`We'll send the email to this professor from the Cornell address you signed up with and will also send you a separate copy.`} */}
-              {/*          </p> */}
-              {/*        </div> */}
-              {/*      </div> */}
-              {/*    ) : ( */}
-              {/*      <div className="header"> */}
-              {/*        {'Please '} */}
-              {/*        <a */}
-              {/*          href="/#student-sign-up" */}
-              {/*        > */}
-              {/*          create an account */}
-              {/*        </a> */}
-              {/*        {` to use our email composer! Your email will be saved as */}
-              {/*        a template as well as scheduled to be sent out at the */}
-              {/*        ideal time.`} */}
-              {/*      </div> */}
-              {/*    )} */}
-              {/*  </div> */}
-              {/* </div> */}
             </div>
             <div className="column">
               <div className="opp-qualifications">
@@ -450,7 +389,7 @@ class FacultyPage extends Component {
                   One way is by writing emails to professors whose work seems interesting (see below for template). You could also go to the professor's
                   office and ask them about their research and then express your interest in working with them. See our
                   {' '}
-                  <a href="/guide"> "How to Find Research" </a>
+                  <a href="/guide">{' "How to Find Research" '}</a>
                   {' '}
                   section for more info.
                 </div>
@@ -471,19 +410,7 @@ class FacultyPage extends Component {
                 <div className="opp-qual-section">
                   <h6 className="header">Is It Too Early To Reach Out For [Summer/Fall/Spring] Research?</h6>
                   No; worst case scenario they tell you to ping them in a month or so and now you've demonstrated interest.
-
                 </div>
-
-                {/* <hr /> */}
-
-                {/* <div className="opp-qual-section"> */}
-                {/*  <h6 className="header">Technical Details</h6> */}
-                {/*  Regarding the email composer at the bottom of this page: */}
-                {/*  We use the Sendgrid API so the email comes from you and when */}
-                {/*  professors responds they're responding to you! */}
-                {/*  We'll also schedule the email to go out the soonest weekday */}
-                {/*  morning, when they're least likely to have it slip through their inbox. */}
-                {/* </div> */}
               </div>
             </div>
           </div>

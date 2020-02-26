@@ -13,6 +13,7 @@ import '../OpportunityPage/OpportunityPage.scss';
 
 import './FacultySearch.scss';
 import VariableNavbar from '../../components/Navbars/VariableNavbar';
+import { researchInterestsList } from '../../components/constants';
 
 class FacultySearch extends Component {
   constructor(props) {
@@ -90,22 +91,22 @@ class FacultySearch extends Component {
     }
   }
 
-  handleUpdateSearch(e) {
+  handleUpdateSearch = (e) => {
     this.setState({ searchBar: e.target.value });
     if (!e.target.value) {
       this.setState({ matchingSearches: [], clickedEnter: false }, () => {
         this.getFaculty();
       });
     }
-  }
+  };
 
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       this.setState({ clickedEnter: true }, () => {
         this.getFaculty();
       });
     }
-  }
+  };
 
   handlePageClick = () => {
     this.setState(({ numShowing }) => ({ numShowing: numShowing + 20 }), () => {
@@ -113,15 +114,11 @@ class FacultySearch extends Component {
     });
   };
 
-  onFocus() {
-    this.setState({ searching: true });
-  }
+  onFocus = () => this.setState({ searching: true });
 
-  onBlur() {
-    this.setState({ searching: false });
-  }
+  onBlur = () => this.setState({ searching: false });
 
-  clearSearch() {
+  clearSearch = () => {
     this.setState(
       {
         searching: false,
@@ -131,10 +128,10 @@ class FacultySearch extends Component {
       },
       () => this.getFaculty(),
     );
-  }
+  };
 
   generateAreaOptions = () => {
-    const areas = Utils.getResearchInterestsList();
+    const areas = researchInterestsList;
     if (areas.length === 0) {
       return [];
     }
@@ -160,11 +157,11 @@ class FacultySearch extends Component {
             <SearchIcon style={{ height: '100%' }} size={36} />
           </div>
           <input
-            onFocus={this.onFocus.bind(this)}
-            onBlur={this.onBlur.bind(this)}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
             className="column column-70 search-bar"
-            onKeyPress={this.handleKeyPress.bind(this)}
-            onChange={this.handleUpdateSearch.bind(this)}
+            onKeyPress={this.handleKeyPress}
+            onChange={this.handleUpdateSearch}
             value={this.state.searchBar}
             type="text"
             name="search"
@@ -176,7 +173,7 @@ class FacultySearch extends Component {
             {this.state.searchBar !== ''
               ? (
                 <DeleteIcon
-                  onClick={this.clearSearch.bind(this)}
+                  onClick={this.clearSearch}
                   className="clear-icon"
                   size={30}
                 />

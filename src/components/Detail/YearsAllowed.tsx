@@ -1,6 +1,6 @@
 import React from 'react';
 import Detail, { UpdateDetailFunction } from './Detail';
-import * as Utils from '../Utils';
+import { years } from '../constants';
 
 function YearsAllowed(props: { readonly update: UpdateDetailFunction }) {
   return (
@@ -8,7 +8,7 @@ function YearsAllowed(props: { readonly update: UpdateDetailFunction }) {
       detailName="yearsAllowed"
       label="Years Desired:"
       updateDetail={props.update}
-      choices={Utils.getYears()}
+      choices={years}
       type="checkbox"
     />
   );

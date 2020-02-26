@@ -1,16 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import '../Opportunity/OpportunityList/OpportunityList.scss';
 import '../Opportunity/Opportunity.scss';
 import './Faculty.scss';
 import Star from '../Star/Star';
 
-class Faculty extends Component {
-  star(e) {
+type Props = {
+  ID: string;
+  name: string;
+  photoId: string;
+  starred: boolean;
+  department: string;
+  lab: string;
+  researchDescription: string;
+  bio: string;
+  updateStar: (id: string) => void;
+}
+
+class Faculty extends Component<Props> {
+  star = (e: ChangeEvent) => {
     e.stopPropagation();
     this.props.updateStar(this.props.ID);
-  }
+  };
 
-  convertDescription(str) {
+  convertDescription(str: string) {
     // if string is empty
     if (!str) {
       return '';
@@ -42,12 +54,12 @@ class Faculty extends Component {
             <h4>
               { this.props.name }
               <Star
-                update={this.star.bind(this)}
+                update={this.star}
                 starred={this.props.starred}
               />
             </h4>
             <h5>{this.props.department}</h5>
-            {this.props.lab !== null && this.propslab !== '' && this.props.lab !== undefined
+            {this.props.lab !== null && this.props.lab !== '' && this.props.lab !== undefined
               ? (<h5>{this.props.lab}</h5>)
               : <span />}
 

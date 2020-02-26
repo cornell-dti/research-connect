@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { KeyboardEvent, ChangeEvent } from 'react';
 import '../../routes/App/App.scss';
 import '../../routes/InstructorRegister/InstructorRegister.scss';
 
-class AutoSuggest extends React.Component {
-  constructor(props) {
+type Props = {
+  data: { name: string; _id: string }[];
+  updateLab: (labName: string, labId: string | null) => void;
+}
+type State = {
+  value: string;
+  showDropdown: boolean;
+  cursor: number;
+  result: JSX.Element;
+  suggestionLength: number;
+  highlightLabName: string;
+  highlightLabId: string | null;
+};
+
+class AutoSuggest extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       value: '',
@@ -14,18 +28,11 @@ class AutoSuggest extends React.Component {
       highlightLabName: '',
       highlightLabId: null,
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.getSuggestions = this.getSuggestions.bind(this);
-    this.clickFill = this.clickFill.bind(this);
   }
 
-  handleChange = (event) => {
-    this.setState({ value: event.target.value });
-    this.setState({ showDropdown: true, cursor: -1 });
-    setTimeout(() => {
-      this.getSuggestions();
-    }, 40);
+  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ value: event.target.value, showDropdown: true, cursor: -1 });
+    setTimeout(() => this.getSuggestions(), 40);
     this.props.updateLab(event.target.value, null);
   };
 
@@ -34,7 +41,7 @@ class AutoSuggest extends React.Component {
     this.getSuggestions();
   };
 
-  clickFill = (labName, labId) => {
+  clickFill = (labName: string, labId: string | null) => {
     this.setState({ value: labName, showDropdown: false });
 
     this.props.updateLab(labName, labId);
@@ -51,7 +58,7 @@ class AutoSuggest extends React.Component {
     }, 120);
   };
 
-  handleKeyDown(e) {
+  handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     const { cursor, suggestionLength } = this.state;
 
     if (e.key === 'ArrowUp' && cursor > -1) {
@@ -79,7 +86,7 @@ class AutoSuggest extends React.Component {
     }
   }
 
-  getSuggestions() {
+  getSuggestions = () => {
     const arrayOfLabs = [];
 
     for (let ind = 0; ind < this.props.data.length; ind++) {
@@ -98,7 +105,7 @@ class AutoSuggest extends React.Component {
           suggArray.push(
             <p
               className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
-              onClick={this.clickFill}
+              onClick={() => this.clickFill(suggestions[i].name, suggestions[i].id)}
               key={suggestions[i].id}
             >
               {suggestions[i].name}
@@ -112,7 +119,7 @@ class AutoSuggest extends React.Component {
           suggArray.push(
             <p
               className={`${this.state.cursor === positionShowing ? 'active autoOp' : 'autoOp'}`}
-              onClick={this.clickFill}
+              onClick={() => this.clickFill(suggestions[i].name, suggestions[i].id)}
               key={suggestions[i].id}
             >
               {suggestions[i].name}
@@ -132,21 +139,20 @@ class AutoSuggest extends React.Component {
       suggestionLength: suggArray.length,
       result: <div className="suggestion-array">{suggArray}</div>,
     });
-  }
+  };
 
   render() {
     return (
       <div className="left-input">
         <input
           autoComplete="off"
-          ref="autoFill"
           name="auto"
           className="suggest-input"
           placeholder="Type Lab Name Exactly As It Appears In The Auto Suggest Box (Or Click On It)"
           type="text"
           value={this.state.value}
           onBlur={this.onBlur}
-          onKeyDown={this.handleKeyDown.bind(this)}
+          onKeyDown={this.handleKeyDown}
           onChange={this.handleChange}
           onClick={this.handleClick}
         />

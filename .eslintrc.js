@@ -22,7 +22,6 @@ module.exports = {
     'react/state-in-constructor': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/jsx-fragments': ['off'],
-    'react/jsx-no-bind': ['off'], // TODO: turn it into error when class-field-properties are introduced.
     'react/destructuring-assignment': ['off'],
     'react/no-array-index-key': ['warn'], // TODO: turn it into error when problems are fixed.
     'react/no-unescaped-entities': ['warn'], // TODO: turn it into error when problems are fixed.

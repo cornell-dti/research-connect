@@ -1,6 +1,6 @@
 import React from 'react';
 import Detail, { UpdateDetailFunction } from './Detail';
-import * as Utils from '../Utils';
+import { compensation } from '../constants';
 
 function CompensationAllowed(props: { readonly update: UpdateDetailFunction }) {
   return (
@@ -8,7 +8,7 @@ function CompensationAllowed(props: { readonly update: UpdateDetailFunction }) {
       detailName="compensation"
       label="Student Compensation (leave blank if just experience):"
       updateDetail={props.update}
-      choices={Utils.getCompensation()}
+      choices={compensation}
       type="checkbox"
     />
   );

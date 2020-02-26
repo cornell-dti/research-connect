@@ -5,7 +5,6 @@ const {
   labModel, debug,
 } = require('../common.js');
 
-
 // previously GET /getlabs
 // get all the labs
 app.get('/', (req, res) => {
@@ -33,13 +32,6 @@ app.get('/:id', (req, res) => {
 app.post('/', (req, res) => {
   // req is json containing the stuff that was sent if there was anything
   const data = req.body;
-  debug(data);
-
-  debug('We are in createLab');
-  debug(data.name);
-  debug(data.labPage);
-  debug(data.labDescription);
-
   const lab = new labModel({
     name: data.name,
     labPage: data.labPage,
@@ -85,15 +77,10 @@ app.put('/:id', (req, res) => {
 
 app.delete('/:id', (req, res) => {
   const { id } = req.params;
-
   labModel.findByIdAndRemove(id, () => {
     // We'll create a simple object to send back with a message and the id of the document that was removed
     // You can really do this however you want, though.
-    const response = {
-      message: 'Lab successfully deleted',
-      id,
-    };
-    res.status(200).send(response);
+    res.status(200).send({ message: 'Lab successfully deleted', id });
   });
 });
 

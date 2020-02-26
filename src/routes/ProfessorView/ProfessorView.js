@@ -9,13 +9,12 @@ import ApplicationList from '../../components/ApplicationList/ApplicationList';
 
 // necessary for all filters
 import Filter from '../../components/Filter/Filter'; // this one is just the label, a bit annoying
-import SchoolYearFilter from '../../components/Filter/SchoolYearFilter';
-import GPAFilter from '../../components/Filter/GPAFilter';
 import CourseSelect from '../../components/CourseSelect/CourseSelect';
 
 import OpportunitySelect from '../../components/OpportunitySelect/OpportunitySelect';
 import Footer from '../../components/Footer/Footer';
 import * as Utils from '../../components/Utils';
+import { gpa, years } from '../../components/constants';
 
 class ProfessorView extends Component {
   constructor(props) {
@@ -24,6 +23,7 @@ class ProfessorView extends Component {
       yearSelect: [],
       gpaSelect: '2.5',
       courses: [],
+      skills: [],
       opportunity: 'All',
       opportunities: [],
       loading: true,
@@ -37,7 +37,6 @@ class ProfessorView extends Component {
   handleUpdateOpportunity = (opportunity) => this.setState({ opportunity });
 
   componentDidMount() {
-    this.state.loading = false; // temporary
     axios.all([
       axios.get(`/api/role/${sessionStorage.getItem('token_id')}`),
       axios.get(`/api/applications?id=${sessionStorage.getItem('token_id')}`),
@@ -52,24 +51,16 @@ class ProfessorView extends Component {
         }
         const opps = Object.keys(apps.data);
         opps.unshift('All');
-        this.setState({ opportunities: opps });
+        this.setState({ opportunities: opps, loading: false });
       }));
   }
 
   render() {
     const { loading } = this.state;
     if (loading) {
-      return (
-        <div className="sweet-loading">
-          <ClipLoader
-            style={{ display: 'block', margin: 0, borderColor: 'red' }}
-            sizeUnit="px"
-            size={150}
-            color="#ff0000"
-            loading={loading}
-          />
-        </div>
-      );
+      const style = { display: 'block', margin: 0, borderColor: 'red' };
+      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      return <div className="sweet-loading">{loader}</div>;
     }
 
     return (
@@ -94,21 +85,29 @@ class ProfessorView extends Component {
 
                 <hr />
 
-                <SchoolYearFilter
-                  update={Utils.updateMultipleChoiceFilter.bind(this)}
+                <Filter
+                  filterType="yearSelect"
+                  label="School Year"
+                  updateFilterOption={Utils.updateMultipleChoiceFilter.bind(this)}
+                  choices={years}
+                  type="checkbox"
                 />
 
                 <hr />
 
-                <GPAFilter
-                  update={Utils.updateSingleChoiceFilter.bind(this)}
+                <Filter
+                  filterType="gpaSelect"
+                  label="GPA Select"
+                  updateFilterOption={(filterType, option) => this.setState({ [filterType]: option })}
+                  choices={gpa}
+                  type="select"
                 />
 
                 <hr />
 
                 <div className="filter-child">
                   <label htmlFor="courseField">Required Courses</label>
-                  <CourseSelect updateCourses={this.handleUpdateCourses.bind(this)} />
+                  <CourseSelect updateCourses={this.handleUpdateCourses} />
                 </div>
 
                 <hr />

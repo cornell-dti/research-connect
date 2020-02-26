@@ -3,7 +3,7 @@ import React, { Component, ChangeEvent } from 'react';
 export type UpdateFilterFunction = (detailName: string, option: string) => void;
 
 type Props = {
-  type: 'select' | 'checkbox';
+  type?: 'select' | 'checkbox';
   label: string;
   choices: { [key: string]: string };
   filterType: string;
@@ -19,14 +19,9 @@ class Filter extends Component<Props> {
   // helper method for generating select
   createCheckbox() {
     const { choices } = this.props;
-    const options = Object.keys(choices).map((value, index) => (
+    const options = Object.keys(choices).map((value) => (
       <React.Fragment>
-        <input
-          onChange={this.handleChange}
-          type="checkbox"
-          value={value}
-          key={index}
-        />
+        <input onChange={this.handleChange} type="checkbox" value={value} key={value} />
         {choices[value]}
         <br />
       </React.Fragment>
@@ -41,10 +36,8 @@ class Filter extends Component<Props> {
 
   createSelect() {
     const { choices } = this.props;
-    const options = Object.keys(choices).map((value, index) => (
-      <option key={index} value={value}>
-        {choices[value]}
-      </option>
+    const options = Object.keys(choices).map((value) => (
+      <option key={value} value={value}>{choices[value]}</option>
     ));
     return (
       <select className="select-wrapper" onChange={this.handleChange}>
@@ -53,9 +46,8 @@ class Filter extends Component<Props> {
     );
   }
 
-
   render() {
-    let filter;
+    let filter = null;
 
     if (this.props.type === 'select') {
       filter = this.createSelect();

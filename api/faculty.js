@@ -217,21 +217,19 @@ function calculateSendTime() {
     } else {
       increment = 2; // Saturday/6
     }
-  }
-  // Weekdays
-  else if (isBefore8am) {
+  } else if (isBefore8am) {
+    // Weekdays
     increment = 0;
   } else if (!isBefore8am && !isAfter10am) {
+    // Weekdays
     increment = 0;
     sendNow = true;
-  }
-  // Must be past 10am today at this point.
-  // if not friday...
-  else if (dayOfWeek !== 5) {
+  } else if (dayOfWeek !== 5) {
+    // Must be past 10am today at this point.
+    // if not friday...
     increment = 1;
-  }
-  // Must be past 10am and friday so send on Monday
-  else {
+  } else {
+    // Must be past 10am and friday so send on Monday
     increment = 3;
   }
 
@@ -263,13 +261,15 @@ app.post('/email', (req, res) => {
   });
   verify(userToken, (netId) => {
     if (!netId) {
-      return res.status(500).send('No account found.');
+      res.status(500).send('No account found.');
+      return;
     }
 
     undergradModel.findOneAndUpdate({ netId }, { $set: { emailHtml } }, {}, (err, undergrad) => {
       if (err || !undergrad) {
         // if here, somehow they submitted an email without having an account
-        return res.status(500).send(err);
+        res.status(500).send(err);
+        return;
       }
       const sendTime = calculateSendTime();
       // convert to Unix timestamp in seconds b/c that's what sendgrid requires
@@ -306,7 +306,7 @@ app.post('/email', (req, res) => {
       sgMail.send(msg).then(() => res.end()).catch((err2) => {
         if (err2) {
           debug(err2);
-          return res.status(500).send(err2);
+          res.status(500).send(err2);
         }
       });
     });
