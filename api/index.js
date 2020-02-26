@@ -27,9 +27,7 @@ app.get('/populate', (req, res) => {
       };
       opps[i].contactName = 'N/A';
       opps[i].additionalInformation = '';
-      opps[i].save((err2) => {
-        debug(err2);
-      });
+      opps[i].save((err2) => debug(err2));
     }
   });
   res.end();
@@ -60,14 +58,9 @@ app.get('/hasRegistered/:input', (req, res) => {
     }
     // see if they have a netid or not (in which case we'll have to search by email)
     const searchQuery = (email === null ? { netId } : { email });
-    labAdministratorModel.findOne(searchQuery, (err2, labAdmin) => {
-      debug(labAdmin);
-      debug(labAdmin !== null);
-      return res.send(labAdmin !== null);
-    });
+    labAdministratorModel.findOne(searchQuery, (_, labAdmin) => res.send(labAdmin !== null));
     return null;
   }).catch((err) => {
-    debug('weird error in findOne');
     debug(err);
   });
 });
@@ -118,17 +111,8 @@ app.get('/verify/:token', (req) => {
       // Or, if multiple clients access the backend:
       // [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
-    const payload = ticket.getPayload();
-    const userid = payload.sub;
-    debug('before');
-    debug(userid);
-    debug(payload);
-    debug('after');
-
-    // If request specified a G Suite domain:
-    // const domain = payload['hd'];
+    ticket.getPayload();
   }
-
   verify2();
 });
 

@@ -22,11 +22,7 @@ app.get('/lab/:id', (req, res) => {
     return res.send(null);
   }
   verify(req.params.id, (email) => {
-    debug(2);
     labAdministratorModel.findOne({ email }, (err, labAdmin) => {
-      debug(err);
-      debug('la');
-      debug(labAdmin);
       // if labAdmin is null or undefined (falsy) then it's an undergraed
       if (!labAdmin) {
         return res.send('undergrad');
@@ -66,10 +62,7 @@ function createLabAdminObject(data) {
  All three should be in req.body. If labId is not null, then just continue with the method as usual.
  */
 function createLabAndAdmin(req, res) {
-  debug('This means we had to go somewhere else');
-
   const data = req.body;
-  debug(data);
   const lab = new labModel({
     name: data.name,
     labPage: data.labPage,
@@ -148,11 +141,7 @@ function createLabAdmin(data, res) {
 app.post('/', (req, res) => {
   // req is json containing the stuff that was sent if there was anything
   const data = req.body;
-  debug('we are in createLabAdmin');
-  debug(data);
   verify(data.token_id, (email) => {
-    debug('email');
-    debug(email);
     data.email = email;
     // if labId is null then there is no existing lab and creating new lab
     if (!data.labId) {
@@ -223,7 +212,7 @@ app.post('/', (req, res) => {
 
       labAdmin.save((err) => {
         if (err) {
-          console.error(err);
+          debug(err);
           return res.status(500).send({ errors: err.errors });
         } // Handle this error however you see fit
 
@@ -232,7 +221,7 @@ app.post('/', (req, res) => {
           lab.markModified('labAdmins');
           lab.save((err2) => {
             if (err2) {
-              console.error(err2);
+              debug(err2);
               return res.status(500).send(err2);
             }
             return res.send('success');

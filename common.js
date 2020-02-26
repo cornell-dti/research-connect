@@ -1,3 +1,4 @@
+// @ts-check
 /* eslint-disable no-unused-vars */
 // We do this because a lot of the packages are exported and used later
 require('dotenv').config();
@@ -73,9 +74,7 @@ module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
 // Set up default mongoose connection
-mongoose.connect(mongoDB, {
-  useMongoClient: true,
-});
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Get the default connection
 const db = mongoose.connection;
@@ -192,16 +191,13 @@ facultyModel.find({}, function(err, facultyArray){
         currentFaculty.researchDescription = (currentFaculty.researchDescription ? currentFaculty.researchDescription.replace(/[^\x00-\x7F]/g, "") : currentFaculty.researchDescription);
         currentFaculty.teaching = (currentFaculty.teaching ? currentFaculty.teaching.replace(/[^\x00-\x7F]/g, "") : currentFaculty.teaching);
         currentFaculty.save(function(err, doc){
-           if (err){
-               debug("error!");
-               debug(err);
-               debug(doc);
-           }
+          if (err){
+            debug(err);
+          }
         });
     }
 });
- * */
-
+*/
 
 /** OPPORTUNITY SCHEMA */
 const opportunitySchema = new Schema({
@@ -272,6 +268,7 @@ const opportunitySchema = new Schema({
 });
 opportunitySchema.index({ '$**': 'text' });
 opportunitySchema.pre('validate', (next) => {
+  // @ts-ignore
   if (this.maxHours < this.minHours) {
     next(new Error('Min hours must be greater than or equal to max hours.'));
   } else {
@@ -352,9 +349,11 @@ async function verify(token, callback, justEmail) {
       }
 
       if (err2) {
+        // @ts-ignore
         debug('app:error')(err2);
       }
 
+      // @ts-ignore
       callback(labAdmin.netId);
     });
   });

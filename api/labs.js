@@ -1,9 +1,7 @@
 const express = require('express');
 
 const app = express.Router();
-const {
-  labModel, debug,
-} = require('../common.js');
+const { labModel, debug } = require('../common.js');
 
 // previously GET /getlabs
 // get all the labs

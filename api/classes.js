@@ -11,12 +11,9 @@ app.get('/', (req, res) => {
       res.send(err);
       return;
     }
-    debug(classes.length);
     const arr = [];
     for (let i = 0; i < classes.length; i++) {
       const classesObject = classes[i];
-      debug(`${classesObject.classFull}\n`);
-      debug(classesObject._id);
       const text = { value: classesObject._id, label: classesObject.classFull };
       arr.push(text);
     }

@@ -95,7 +95,6 @@ app.get('/', (req, res) => {
  * @return array of 0 elements if no search is specified, matching profs if search term is specified
  */
 app.get('/search', (req, res) => {
-  debug(req.query.search);
   let searchQuery = getBaseFacultyFilter();
   searchQuery.$text = { $search: req.query.search };
   // if req.query.search is empty string or undefined (falsy) then just send back all faculty
@@ -105,17 +104,11 @@ app.get('/search', (req, res) => {
   }
   facultyModel.find(searchQuery, (err, search) => {
     if (err) {
-      // //if the error code name is "TypeMismatch" then req.query.search was null so just send back an empty array
-      // if (err.codeName === "TypeMismatch"){
-      //     res.status(200).send([]);
-      // }
-      debug(err);
       res.send(err);
     } else {
       if (search === null) {
         res.send([]);
       }
-      debug(search);
       res.send(search);
     }
   });
@@ -136,19 +129,6 @@ app.get('/:id', (req, res) => {
     return res.send(faculty);
   });
 });
-
-/**
-app.post('/', (req, res) => {
-  const data = req.body;
-  // TODO
-});
-
-app.put('/:id', (req, res) => {
-  const id = req.params.id;
-  // TODO
-});
-
- */
 
 app.delete('/:id', (req, res) => {
   const { id } = req.params;
@@ -305,7 +285,6 @@ app.post('/email', (req, res) => {
       };
       sgMail.send(msg).then(() => res.end()).catch((err2) => {
         if (err2) {
-          debug(err2);
           res.status(500).send(err2);
         }
       });
