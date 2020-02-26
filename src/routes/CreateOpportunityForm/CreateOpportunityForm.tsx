@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import './CreateOpportunityForm.scss';
+// @ts-ignore
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
+// @ts-ignore
 import ReactTooltip from 'react-tooltip';
+// @ts-ignore
 import InfoIcon from 'react-icons/lib/md/info';
+// @ts-ignore
 import Delete from 'react-icons/lib/ti/delete';
+// @ts-ignore
 import Add from 'react-icons/lib/md/add-circle';
 import { ClipLoader } from 'react-spinners';
+// @ts-ignore
 import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left';
 import * as ReactGA from 'react-ga';
 import { updateForMultipleChoice, handleTokenError } from '../../components/Utils';
@@ -17,8 +23,47 @@ import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorN
 import Detail from '../../components/Detail/Detail';
 import { years, csAreas, compensation as compensationOptions } from '../../components/constants';
 
-class CreateOppForm extends React.Component {
-  constructor(props) {
+type State = {
+  creatorNetId: string | null;
+  labPage: string;
+  areas: string[];
+  email: string;
+  title: string;
+  projectDescription: string;
+  undergradTasks: string;
+  qualifications: string;
+  compensation: string[];
+  startSeason: string;
+  startYear: string;
+  yearsAllowed: string[];
+  questions: { [key: string]: string };
+  requiredClasses: string[];
+  minGPA: string;
+  minHours: string;
+  maxHours: string;
+  opens: moment.Moment;
+  closes: moment.Moment;
+  labName: string;
+  supervisor: string;
+  additionalInformation: string;
+  numQuestions: number;
+  titleIsValid: boolean;
+  emailIsValid: boolean;
+  tasksAreValid: boolean;
+  seasonIsValid: boolean;
+  yearIsValid: boolean;
+  supervisorIsValid: boolean;
+  triedSubmitting: boolean;
+  isButtonDisabled: boolean;
+  buttonValue: string;
+  loading: boolean;
+  areaData: any[],
+  detailsButtonValue: string;
+  showDetails: boolean;
+};
+
+class CreateOppForm extends React.Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       creatorNetId: sessionStorage.getItem('token_id'),
@@ -48,14 +93,12 @@ class CreateOppForm extends React.Component {
       emailIsValid: false,
       tasksAreValid: false,
       seasonIsValid: false,
-      // compensationIsValid: false,
       yearIsValid: false,
       supervisorIsValid: false,
       triedSubmitting: false,
       isButtonDisabled: false,
       buttonValue: 'Submit New Position',
       loading: false,
-      selectedOptions: null,
       areaData: [],
       detailsButtonValue: 'Show Advanced Options',
       showDetails: false,
@@ -93,7 +136,7 @@ class CreateOppForm extends React.Component {
             {' '}
           </span>
           <input
-            name={i}
+            name={String(i)}
             value={this.state.questions[stateLabel]}
             onChange={() => this.handleQuestionState(i)}
             className="question"
@@ -115,12 +158,12 @@ class CreateOppForm extends React.Component {
     );
   };
 
-  deleteQuestion = (data) => {
+  deleteQuestion = (data: string) => {
     const deleted = parseInt(data.slice(1), 10);
     this.setState((state) => {
       const newQnum = state.numQuestions - 1;
       const questionsCopy = JSON.parse(JSON.stringify(this.state.questions));
-      const questionsEdit = {};
+      const questionsEdit: { [k: string]: string } = {};
 
       Object.keys(questionsCopy).forEach((question) => {
         const num = parseInt(question.slice(1), 10);
@@ -161,26 +204,13 @@ class CreateOppForm extends React.Component {
     );
   };
 
-  updateFilterOption = (filterType, option) => {
-    this.setState((state) => {
-      if (state[filterType].includes(option)) {
-        return { [filterType]: state[filterType].filter((original) => original !== option) };
-      }
-      return { [filterType]: [...state[filterType], option] };
-    });
-  };
-
-  handleUpdateYear = (e) => this.updateFilterOption('yearsAllowed', e.target.value);
-
-  handleUpdateCompensation = (e) => this.updateFilterOption('compensation', e.target.value);
-
   toggleDetails = () => this.setState(({ showDetails }) => ({
     detailsButtonValue: showDetails ? 'Show Advanced Options' : 'Hide Advanced Options',
     showDetails: !showDetails,
   }));
 
   // Set values of form items in state and change their validation state if they're invalid
-  handleChange = (event) => {
+  handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (event.target.name === 'labName') {
       this.setState({ labName: event.target.value });
     } else if (event.target.name === 'netID') {
@@ -191,8 +221,6 @@ class CreateOppForm extends React.Component {
     } else if (event.target.name === 'email') {
       const st = event.target.value.length > 0;
       this.setState({ email: event.target.value, emailIsValid: st });
-    } else if (event.target.name === 'pi') {
-      this.setState({ pi: event.target.value });
     } else if (event.target.name === 'supervisor') {
       const st = event.target.value.length > 0;
       this.setState({ supervisor: event.target.value, supervisorIsValid: st });
@@ -212,8 +240,6 @@ class CreateOppForm extends React.Component {
     } else if (event.target.name === 'startYear') {
       const st = event.target.value !== 'Select';
       this.setState({ startYear: event.target.value, yearIsValid: st });
-    } else if (event.target.name === 'compensation') {
-      this.setState({ compensation: event.target.value });
     } else if (event.target.name === 'gpa') {
       this.setState({ minGPA: event.target.value });
     } else if (event.target.name === 'min') {
@@ -225,30 +251,31 @@ class CreateOppForm extends React.Component {
     }
   };
 
-  handleQuestionState = (i) => {
+  handleQuestionState = (i: number) => {
     const stateLabel = `q${i.toString()}`;
     this.setState((state) => {
       const questionsCopy = JSON.parse(JSON.stringify(state.questions));
-      questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
+      // @ts-ignore
+      questionsCopy[stateLabel] = document.getElementsByName(String(i))[0].value;
       return { questions: questionsCopy };
     });
   };
 
-  handleOpenDateChange = (date) => this.setState({ opens: date });
+  handleOpenDateChange = (date: moment.Moment) => this.setState({ opens: date });
 
-  handleCloseDateChange = (date) => this.setState({ closes: date });
+  handleCloseDateChange = (date: moment.Moment) => this.setState({ closes: date });
 
   isValid = () => (
     this.state.titleIsValid && this.state.tasksAreValid && this.state.seasonIsValid && this.state.yearIsValid
   );
 
   // takes care of sending the form data to the back-end
-  onSubmit = (e) => {
+  onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     this.setState({ triedSubmitting: true });
     e.preventDefault();
     // get our form data out of state
     const {
-      email, netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
+      email, creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
       qualifications, compensation, startSeason, startYear, yearsAllowed, questions,
       requiredClasses, minGPA, minHours, maxHours, additionalInformation, opens, closes,
       labName, supervisor, numQuestions,
@@ -260,7 +287,6 @@ class CreateOppForm extends React.Component {
     }
     axios.post('/api/opportunities', {
       email,
-      netId,
       creatorNetId,
       labPage,
       areas,
@@ -285,16 +311,8 @@ class CreateOppForm extends React.Component {
       numQuestions,
     })
       .then(() => {
-        // access the results here....
-        this.setState({ submit: 'Submitted!' });
-        this.setState({
-          isButtonDisabled: true,
-        });
-        this.setState({ buttonValue: 'Submitted!' });
-        function sleep(time) {
-          return new Promise((resolve) => setTimeout(resolve, time));
-        }
-        sleep(1200).then(() => {
+        this.setState({ isButtonDisabled: true, buttonValue: 'Submitted!' });
+        setTimeout(() => {
           if (this.state.creatorNetId) {
             document.location.href = '/professorView';
           } else {
@@ -302,7 +320,7 @@ class CreateOppForm extends React.Component {
               + '(research-connect.com/faculty/)');
             document.location.href = '/faculty';
           }
-        });
+        }, 1200);
       }).catch((error) => {
         if (error.response) {
           if (error.response.status === 400) {
@@ -316,35 +334,18 @@ class CreateOppForm extends React.Component {
   };
 
   render() {
-    // const override = css`
-    //   display: block;
-    //   margin: 0 auto;
-    //   border-color: red;
-    //   `;
-
     if (this.state.loading) {
-      return (
-        <div className="sweet-loading">
-          <ClipLoader
-            style={{
-              display: 'block',
-              margin: 0,
-              borderColor: 'red',
-            }}
-            sizeUnit="px"
-            size={150}
-            color="#ff0000"
-            loading={this.state.loading}
-          />
-        </div>
-      );
+      const style = { display: 'block', margin: 0, borderColor: 'red' };
+      // @ts-ignore
+      const loader = <ClipLoader style={style} sizeUnit="px" size={150} color="#ff0000" loading />;
+      return <div className="sweet-loading">{loader}</div>;
     }
 
     return (
       <div>
         {this.state.creatorNetId && <ProfessorNavbar current="newopp" />}
         {!this.state.creatorNetId && (
-          <div className="go-home" onClick={() => this.goHome()}>
+          <div className="go-home" onClick={() => { window.location.href = '/'; }}>
             <FaLongArrowLeft
               style={{ verticalAlign: 'text-top', position: 'relative', top: '2px' }}
               className="black-arrow"
@@ -463,6 +464,7 @@ class CreateOppForm extends React.Component {
                     just a link to your website and text saying to email you
                     if anything looks interesting."
                   name="tasks"
+                  // @ts-ignore
                   type="text"
                   value={this.state.undergradTasks}
                   onChange={this.handleChange}
@@ -533,6 +535,7 @@ class CreateOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Project Description and Goals"
                     name="descript"
+                    // @ts-ignore
                     type="text"
                     value={this.state.projectDescription}
                     onChange={this.handleChange}
@@ -559,6 +562,7 @@ class CreateOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)"
                     name="qual"
+                    // @ts-ignore
                     type="text"
                     value={this.state.qualifications}
                     onChange={this.handleChange}
@@ -584,7 +588,6 @@ class CreateOppForm extends React.Component {
                 </div>
 
                 <Detail
-                  detailName="compensation"
                   label="Student Compensation (leave blank if just experience):"
                   updateDetail={
                     (option) => this.setState((state) => ({
@@ -666,7 +669,6 @@ class CreateOppForm extends React.Component {
                 </div>
 
                 <Detail
-                  detailName="yearsAllowed"
                   label="Years Desired:"
                   updateDetail={
                     (option) => this.setState((state) => ({
@@ -676,7 +678,6 @@ class CreateOppForm extends React.Component {
                   choices={years}
                 />
                 <Detail
-                  detailName="areas"
                   label="CS Areas"
                   updateDetail={
                     (option) => this.setState((state) => ({ areas: updateForMultipleChoice(state.areas, option) }))
@@ -689,6 +690,7 @@ class CreateOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Additional Information"
                     name="additional"
+                    // @ts-ignore
                     type="text"
                     value={this.state.additionalInformation}
                     onChange={this.handleChange}
