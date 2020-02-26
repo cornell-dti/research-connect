@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import './CreateOpportunityForm.scss';
 // @ts-ignore
 import DatePicker from 'react-datepicker';
@@ -18,11 +18,54 @@ import * as Utils from '../../components/Utils';
 import Footer from '../../components/Footer/Footer';
 import ProfessorNavbar from '../../components/Navbars/ProfessorNavbar/ProfessorNavbar';
 
-ReactGA.pageview(window.location.pathname + window.location.search);
+type State = {
+  creatorNetId: string | null;
+  labPage: string;
+  areas: string[];
+  title: string;
+  projectDescription: string;
+  undergradTasks: string;
+  qualifications: string;
+  compensation: string[];
+  startSeason: string;
+  startYear: string;
+  yearsAllowed: string[];
+  questions: { [key: string]: string };
+  requiredClasses: string[];
+  minGPA: string;
+  minHours: string;
+  maxHours: string;
+  opens: moment.Moment;
+  closes: moment.Moment;
+  labName: string;
+  supervisor: string;
+  additionalInformation: string;
+  numQuestions: number;
+  titleIsValid: boolean;
+  tasksAreValid: boolean;
+  seasonIsValid: boolean;
+  yearIsValid: boolean;
+  triedSubmitting: boolean;
+  isButtonDisabled: boolean;
+  buttonValue: string;
+};
 
+class EditOppForm extends React.Component<{}, State> {
+  pay!: HTMLInputElement;
 
-class EditOppForm extends React.Component {
-  constructor(props) {
+  credit!: HTMLInputElement;
+
+  undetermined!: HTMLInputElement;
+
+  freshman!: HTMLInputElement;
+
+  sophomore!: HTMLInputElement;
+
+  junior!: HTMLInputElement;
+
+  senior!: HTMLInputElement;
+
+  constructor(props: {}) {
     super(props);
     this.state = {
       creatorNetId: sessionStorage.getItem('token_id'),
@@ -50,7 +93,6 @@ class EditOppForm extends React.Component {
       titleIsValid: false,
       tasksAreValid: false,
       seasonIsValid: false,
-      // compensationIsValid: false,
       yearIsValid: false,
       triedSubmitting: false,
       isButtonDisabled: false,
@@ -60,7 +102,7 @@ class EditOppForm extends React.Component {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
-  getUrlId = (val) => {
+  getUrlId = (val: string): string | null => {
     const url = window.location.href;
     const word = val.replace(/[[\]]/g, '\\$&');
     const regex = new RegExp(`[?&]${word}(=([^&#]*)|&|#|$)`);
@@ -79,36 +121,38 @@ class EditOppForm extends React.Component {
     this.setValues(id);
   }
 
-  setValues = (id) => {
+  setValues = (id: string | null) => {
     axios.get(`/api/opportunities/${id}?netId=${sessionStorage.getItem('token_id')}`)
       .then((response) => {
         if (response) {
-          response = response.data;
-          if (response.title) this.setState({ title: response.title });
-          if (response.areas) this.setState({ areas: response.areas });
-          if (response.projectDescription) {
-            this.setState({ projectDescription: response.projectDescription });
+          const resp = response.data as Partial<State>;
+          if (resp.title) this.setState({ title: resp.title });
+          if (resp.areas) this.setState({ areas: resp.areas });
+          if (resp.projectDescription) {
+            this.setState({ projectDescription: resp.projectDescription });
           }
-          const openDate = moment(new Date(response.opens));
-          const closeDate = moment(new Date(response.closes));
-          if (response.startSeason) this.setState({ startSeason: response.startSeason });
-          if (response.startYear) this.setState({ startYear: response.startYear });
-          if (response.undergradTasks) this.setState({ undergradTasks: response.undergradTasks });
-          if (response.qualifications) this.setState({ qualifications: response.qualifications });
-          if (response.compensation) this.setState({ compensation: response.compensation });
-          if (response.yearsAllowed) this.setState({ yearsAllowed: response.yearsAllowed });
-          if (response.questions) this.setState({ questions: response.questions });
-          if (response.requiredClasses) this.setState({ requiredClasses: response.requiredClasses });
-          if (response.minGPA) this.setState({ minGPA: response.minGPA });
-          if (response.minHours !== undefined && response.minHours !== null) {
-            this.setState({ minHours: response.minHours });
+          // @ts-ignore
+          const openDate = moment(new Date(resp.opens));
+          // @ts-ignore
+          const closeDate = moment(new Date(resp.closes));
+          if (resp.startSeason) this.setState({ startSeason: resp.startSeason });
+          if (resp.startYear) this.setState({ startYear: resp.startYear });
+          if (resp.undergradTasks) this.setState({ undergradTasks: resp.undergradTasks });
+          if (resp.qualifications) this.setState({ qualifications: resp.qualifications });
+          if (resp.compensation) this.setState({ compensation: resp.compensation });
+          if (resp.yearsAllowed) this.setState({ yearsAllowed: resp.yearsAllowed });
+          if (resp.questions) this.setState({ questions: resp.questions });
+          if (resp.requiredClasses) this.setState({ requiredClasses: resp.requiredClasses });
+          if (resp.minGPA) this.setState({ minGPA: resp.minGPA });
+          if (resp.minHours !== undefined && resp.minHours !== null) {
+            this.setState({ minHours: resp.minHours });
           }
-          if (response.maxHours) this.setState({ maxHours: response.maxHours });
-          if (response.opens) this.setState({ opens: openDate });
-          if (response.closes) this.setState({ closes: closeDate });
-          if (response.labName) this.setState({ labName: response.labName });
-          if (response.supervisor) this.setState({ supervisor: response.supervisor });
-          if (response.additionalInformation) this.setState({ additionalInformation: response.additionalInformation });
+          if (resp.maxHours) this.setState({ maxHours: resp.maxHours });
+          if (resp.opens) this.setState({ opens: openDate });
+          if (resp.closes) this.setState({ closes: closeDate });
+          if (resp.labName) this.setState({ labName: resp.labName });
+          if (resp.supervisor) this.setState({ supervisor: resp.supervisor });
+          if (resp.additionalInformation) this.setState({ additionalInformation: resp.additionalInformation });
         }
       });
   };
@@ -126,7 +170,7 @@ class EditOppForm extends React.Component {
             {' '}
           </span>
           <input
-            name={i}
+            name={String(i)}
             value={this.state.questions[stateLabel]}
             onChange={() => this.handleQuestionState(i)}
             className="question"
@@ -148,12 +192,12 @@ class EditOppForm extends React.Component {
     );
   };
 
-  deleteQuestion = (data) => {
+  deleteQuestion = (data: string) => {
     const deleted = parseInt(data.slice(1), 10);
     this.setState((state) => {
       const newQnum = state.numQuestions - 1;
       const questionsCopy = JSON.parse(JSON.stringify(state.questions));
-      const questionsEdit = {};
+      const questionsEdit: { [k: string]: string } = {};
 
       Object.keys(questionsCopy).forEach((question) => {
         const num = parseInt(question.slice(1), 10);
@@ -212,7 +256,6 @@ class EditOppForm extends React.Component {
     }
   }
 
-
   setCompensation() {
     if (this.state.compensation !== []) {
       const compensationArray = [];
@@ -232,7 +275,7 @@ class EditOppForm extends React.Component {
   }
 
   // Set values of form items in state and change their validation state if they're invalid
-  handleChange = (event) => {
+  handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (event.target.name === 'labName') {
       this.setState({ labName: event.target.value });
     } else if (event.target.name === 'netID') {
@@ -288,25 +331,26 @@ class EditOppForm extends React.Component {
     }
   };
 
-  handleQuestionState = (i) => {
+  handleQuestionState = (i: number) => {
     const stateLabel = `q${i.toString()}`;
     this.setState((state) => {
       const questionsCopy = JSON.parse(JSON.stringify(state.questions));
-      questionsCopy[stateLabel] = document.getElementsByName(i)[0].value;
+      // @ts-ignore
+      questionsCopy[stateLabel] = document.getElementsByName(String(i))[0].value;
       return { questions: questionsCopy };
     });
   };
 
-  handleOpenDateChange = (date) => this.setState({ opens: date });
+  handleOpenDateChange = (date: moment.Moment) => this.setState({ opens: date });
 
-  handleCloseDateChange = (date) => this.setState({ closes: date });
+  handleCloseDateChange = (date: moment.Moment) => this.setState({ closes: date });
 
     // takes care of sending the form data to the back-end
-    onSubmit = (e) => {
+    onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
       e.preventDefault();
       // get our form data out of state
       const {
-        netId, creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
+        creatorNetId, labPage, areas, title, projectDescription, undergradTasks,
         qualifications, compensation, startSeason, startYear, yearsAllowed, questions,
         requiredClasses, minGPA, minHours, maxHours, opens, closes, labName, supervisor,
         numQuestions, additionalInformation,
@@ -321,7 +365,6 @@ class EditOppForm extends React.Component {
       //     return;
       // }
       axios.put(`/api/opportunities/${this.getUrlId('Id')}`, {
-        netId,
         creatorNetId,
         labPage,
         areas,
@@ -419,6 +462,7 @@ class EditOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Undergraduate Tasks"
                     name="tasks"
+                    // @ts-ignore
                     type="text"
                     value={this.state.undergradTasks}
                     onChange={this.handleChange}
@@ -508,6 +552,7 @@ class EditOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Project Description and Goals"
                     name="descript"
+                    // @ts-ignore
                     type="text"
                     value={this.state.projectDescription}
                     onChange={this.handleChange}
@@ -537,6 +582,7 @@ class EditOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Preferred Qualifications (i.e. completion of a class, familiarity with a subject)"
                     name="qual"
+                    // @ts-ignore
                     type="text"
                     value={this.state.qualifications}
                     onChange={this.handleChange}
@@ -570,36 +616,30 @@ class EditOppForm extends React.Component {
                   </label>
                   <br />
                   <input
-                    ref={(node) => {
-                      this.pay = node;
-                    }}
+                    ref={(node) => { this.pay = node!; }}
                     onChange={this.setCompensation.bind(this)}
                     type="checkbox"
                     name="pay"
                     value="pay"
-                    checked={this.state.compensation.indexOf('pay') !== -1 ? 'checked' : ''}
+                    checked={this.state.compensation.indexOf('pay') !== -1}
                   />
                   <label className="label-inline">Pay </label>
                   <input
-                    ref={(node) => {
-                      this.credit = node;
-                    }}
+                    ref={(node) => { this.credit = node!; }}
                     onChange={this.setCompensation.bind(this)}
                     type="checkbox"
                     name="credit"
                     value="credit"
-                    checked={this.state.compensation.indexOf('credit') !== -1 ? 'checked' : ''}
+                    checked={this.state.compensation.indexOf('credit') !== -1}
                   />
                   <label className="label-inline">Course Credit </label>
                   <input
-                    ref={(node) => {
-                      this.undetermined = node;
-                    }}
+                    ref={(node) => { this.undetermined = node!; }}
                     onChange={this.setCompensation.bind(this)}
                     type="checkbox"
                     name="undetermined"
                     value="undetermined"
-                    checked={this.state.compensation.indexOf('undetermined') !== -1 ? 'checked' : ''}
+                    checked={this.state.compensation.indexOf('undetermined') !== -1}
                   />
                   <label className="label-inline">Not sure yet</label>
                 </div>
@@ -683,47 +723,39 @@ class EditOppForm extends React.Component {
                 <div className="years-allowed optional">
                   <label className="label-inline">Years Desired: </label>
                   <input
-                    ref={(node) => {
-                      this.freshman = node;
-                    }}
+                    ref={(node) => { this.freshman = node!; }}
                     onChange={this.setYears.bind(this)}
                     type="checkbox"
                     name="Freshman"
                     value="Freshman"
-                    checked={this.state.yearsAllowed.indexOf('freshman') !== -1 ? 'checked' : ''}
+                    checked={this.state.yearsAllowed.indexOf('freshman') !== -1}
                   />
                   <label className="label-inline">Freshmen </label>
                   <input
-                    ref={(node) => {
-                      this.sophomore = node;
-                    }}
+                    ref={(node) => { this.sophomore = node!; }}
                     onChange={this.setYears.bind(this)}
                     type="checkbox"
                     name="Sophomore"
                     value="Sophomore"
-                    checked={this.state.yearsAllowed.indexOf('sophomore') !== -1 ? 'checked' : ''}
+                    checked={this.state.yearsAllowed.indexOf('sophomore') !== -1}
                   />
                   <label className="label-inline">Sophomores </label>
                   <input
-                    ref={(node) => {
-                      this.junior = node;
-                    }}
+                    ref={(node) => { this.junior = node!; }}
                     onChange={this.setYears.bind(this)}
                     type="checkbox"
                     name="Junior"
                     value="Junior"
-                    checked={this.state.yearsAllowed.indexOf('junior') !== -1 ? 'checked' : ''}
+                    checked={this.state.yearsAllowed.indexOf('junior') !== -1}
                   />
                   <label className="label-inline">Juniors</label>
                   <input
-                    ref={(node) => {
-                      this.senior = node;
-                    }}
+                    ref={(node) => { this.senior = node!; }}
                     onChange={this.setYears.bind(this)}
                     type="checkbox"
                     name="Senior"
                     value="Senior"
-                    checked={this.state.yearsAllowed.indexOf('senior') !== -1 ? 'checked' : ''}
+                    checked={this.state.yearsAllowed.indexOf('senior') !== -1}
                   />
                   <label className="label-inline">Seniors </label>
                 </div>
@@ -731,6 +763,7 @@ class EditOppForm extends React.Component {
                   <textarea
                     className="column column-90"
                     placeholder="Topics of Research (Please separate with commas)"
+                    // @ts-ignore
                     type="text"
                     name="areas"
                     value={this.state.areas}
@@ -759,6 +792,7 @@ class EditOppForm extends React.Component {
                     className="column column-90"
                     placeholder="Additional Information"
                     name="additional"
+                    // @ts-ignore
                     type="text"
                     value={this.state.additionalInformation}
                     onChange={this.handleChange}
