@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { Switch, BrowserRouter, Route } from 'react-router-dom';
-import Opportunities from './routes/Opportunities/Opportunities';
+import {
+  Switch,
+  BrowserRouter,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import OpportunityPage from './routes/OpportunityPage/OpportunityPage';
 import Error from './components/Error/Error';
 import CreateOpportunityForm from './routes/CreateOpportunityForm/CreateOpportunityForm';
@@ -26,7 +30,7 @@ import SavedFaculty from './routes/SavedFaculty/SavedFaculty';
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route exact path="/opportunities" component={Opportunities} />
+      <Route exact path="/opportunities" component={() => <Redirect to="/faculty" />} />
       <Route path="/opportunity/:id" component={OpportunityPage} />
       <Route exact path="/profLanding" component={ProfessorLanding} />
       <Route path="/faculty/:id" component={FacultyPage} />

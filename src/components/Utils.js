@@ -179,12 +179,12 @@ export const roleStringForUndergrads = 'undergrad';
 export const roleStringForGrads = 'grad';
 
 export function getMajorList() {
-  const majorList = ['Africana Studies', 'Agricultural Sciences', 'American Studies', 'Animal Science', 'Anthropology', 'Applied Economics and Management', 'Archaeology', 'Architecture', 'Asian Studies', 'Astronomy', 'Atmospheric Science', 'Biological Engineering', 'Biological Sciences', 'Biology and Society', 'Biomedical Engineering', 'Biometry and Statistics', 'Chemical Engineering', 'Chemistry and Chemical Biology', 'China and Asia-Pacific Studies', 'Civil Engineering', 'Classics (Classics, Classical Civ., Greek, Latin)', 'College Scholar Program', 'Communication', 'Comparative Literature', 'Computer Science', 'Design and Environmental Analysis', 'Development Sociology', 'Economics', 'Electrical and Computer Engineering', 'Engineering Physics', 'English', 'Entomology', 'Environmental and Sustainability Sciences', 'Environmental Engineering', 'Feminist, Gender & Sexuality Studies', 'Fiber Science and Apparel Design', 'Fine Arts', 'Food Science', 'French', 'German', 'German Area Studies', 'Global & Public Health Sciences', 'Government', 'History', 'History of Architecture (transfer students only)', 'History of Art', 'Hotel Administration School of Hotel Administration', 'Human Biology, Health and Society', 'Human Development', 'Independent Major—Arts and Sciences', 'Independent Major—Engineering', 'Industrial and Labor Relations School of Industrial and Labor Relations', 'Information Science', 'Information Science, Systems, and Technology', 'Interdisciplinary Studies', 'International Agriculture and Rural Development', 'Italian', 'Landscape Architecture', 'Linguistics', 'Materials Science and Engineering', 'Mathematics', 'Mechanical Engineering', 'Music', 'Near Eastern Studies', 'Nutritional Sciences', 'Operations Research and Engineering', 'Performing and Media Arts', 'Philosophy', 'Physics', 'Plant Science', 'Policy Analysis and Management', 'Psychology', 'Religious Studies', 'Science and Technology Studies', 'Science of Earth Systems', 'Sociology', 'Spanish', 'Statistical Science', 'Urban and Regional Studies', 'Viticulture and Enology', 'Undecided'];
-  return majorList;
+  return ['Africana Studies', 'Agricultural Sciences', 'American Studies', 'Animal Science', 'Anthropology', 'Applied Economics and Management', 'Archaeology', 'Architecture', 'Asian Studies', 'Astronomy', 'Atmospheric Science', 'Biological Engineering', 'Biological Sciences', 'Biology and Society', 'Biomedical Engineering', 'Biometry and Statistics', 'Chemical Engineering', 'Chemistry and Chemical Biology', 'China and Asia-Pacific Studies', 'Civil Engineering', 'Classics (Classics, Classical Civ., Greek, Latin)', 'College Scholar Program', 'Communication', 'Comparative Literature', 'Computer Science', 'Design and Environmental Analysis', 'Development Sociology', 'Economics', 'Electrical and Computer Engineering', 'Engineering Physics', 'English', 'Entomology', 'Environmental and Sustainability Sciences', 'Environmental Engineering', 'Feminist, Gender & Sexuality Studies', 'Fiber Science and Apparel Design', 'Fine Arts', 'Food Science', 'French', 'German', 'German Area Studies', 'Global & Public Health Sciences', 'Government', 'History', 'History of Architecture (transfer students only)', 'History of Art', 'Hotel Administration School of Hotel Administration', 'Human Biology, Health and Society', 'Human Development', 'Independent Major—Arts and Sciences', 'Independent Major—Engineering', 'Industrial and Labor Relations School of Industrial and Labor Relations', 'Information Science', 'Information Science, Systems, and Technology', 'Interdisciplinary Studies', 'International Agriculture and Rural Development', 'Italian', 'Landscape Architecture', 'Linguistics', 'Materials Science and Engineering', 'Mathematics', 'Mechanical Engineering', 'Music', 'Near Eastern Studies', 'Nutritional Sciences', 'Operations Research and Engineering', 'Performing and Media Arts', 'Philosophy', 'Physics', 'Plant Science', 'Policy Analysis and Management', 'Psychology', 'Religious Studies', 'Science and Technology Studies', 'Science of Earth Systems', 'Sociology', 'Spanish', 'Statistical Science', 'Urban and Regional Studies', 'Viticulture and Enology', 'Undecided'];
 }
 
 export function getResearchInterestsList() {
-  const researchInterests = [' Programming Languages - CS',
+  const researchInterests = [
+    ' Programming Languages - CS',
     ' Computer Architecture',
     ' Computer Systems',
     ' Security',
@@ -228,19 +228,18 @@ export function getCSAreas() {
   };
 }
 
-export function getNavbarOptions() {
-  return ['newopp', 'professorDashboard', 'professorView', 'opportunities', 'studentDashboard', 'editprofile', 'facultysearch'];
-}
+export const getNavbarOptions = () => [
+  'newopp', 'professorDashboard', 'professorView', 'opportunities', 'studentDashboard', 'editprofile', 'facultysearch',
+];
 
-export function getCompensation() {
-  return { money: ' Money', credit: ' Credit' };
-}
+export const getCompensation = () => ({ money: ' Money', credit: ' Credit' });
 
-export function getYears() {
-  return {
-    freshman: ' Freshman', sophomore: ' Sophmore', junior: ' Junior', senior: ' Senior',
-  };
-}
+export const getYears = () => ({
+  freshman: ' Freshman',
+  sophomore: ' Sophmore',
+  junior: ' Junior',
+  senior: ' Senior',
+});
 
 export function getGPA() {
   return {

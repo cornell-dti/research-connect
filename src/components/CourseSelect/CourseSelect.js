@@ -21,21 +21,8 @@ class CourseSelect extends Component {
     this.newText.value = '';
   }
 
-  removeFromArray(arr) {
-    let what; const a = arguments; let L = a.length; let
-      ax;
-    while (L > 1 && arr.length) {
-      what = a[--L];
-      while ((ax = arr.indexOf(what)) !== -1) {
-        arr.splice(ax, 1);
-      }
-    }
-    return arr;
-  }
-
   removeCourse(course) {
-    const { courses } = this.state;
-    this.removeFromArray(courses, course);
+    const courses = this.state.courses.filter((c) => c !== course);
     this.setState({ courses }, () => this.props.updateCourses(courses));
   }
 

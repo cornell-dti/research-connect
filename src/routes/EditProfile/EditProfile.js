@@ -130,34 +130,28 @@ class EditProfile extends Component {
   // }
 
   handleDeleteCourse(data) {
-    const currentCourses = this.state.relevantCourses;
-    const index = currentCourses.indexOf(data);
-    currentCourses.splice(index, 1);
-
-    this.setState({ relevantCourses: currentCourses });
+    this.setState((state) => ({ relevantCourses: state.relevantCourses.filter((course) => course !== data) }));
   }
 
   addCourse() {
     if (this.state.newCourse !== '') {
-      const currentCourses = this.state.relevantCourses;
-      currentCourses.push(this.state.newCourse);
-      this.setState({ relevantCourses: currentCourses, newCourse: '' });
+      this.setState((state) => ({
+        relevantCourses: [...state.relevantCourses, state.newCourse],
+        newCourse: '',
+      }));
     }
   }
 
   handleDeleteSkill(data) {
-    const currentSkills = this.state.relevantSkills;
-    const index = currentSkills.indexOf(data);
-    currentSkills.splice(index, 1);
-
-    this.setState({ relevantSkills: currentSkills });
+    this.setState((state) => ({ relevantSkills: state.relevantSkills.filter((skill) => skill !== data) }));
   }
 
   addSkill() {
     if (this.state.newSkill !== '') {
-      const currentSkills = this.state.relevantSkills;
-      currentSkills.push(this.state.newSkill);
-      this.setState({ relevantSkills: currentSkills, newSkill: '' });
+      this.setState((state) => ({
+        relevantSkills: [...state.relevantSkills, state.newSkill],
+        newSkill: '',
+      }));
     }
   }
 
@@ -165,22 +159,24 @@ class EditProfile extends Component {
     const list = [];
     if (this.state.editCourses) {
       for (let i = 0; i < this.state.relevantCourses.length; i++) {
-        list.push(<div key={i} className="edit-container">
-          <div className="editting">
-            <p
-              className="course editting"
-              key={`${this.state.relevantCourses[i]}edit`}
-            >
-              {this.state.relevantCourses[i]}
-            </p>
-            <Delete
-              size={30}
-              id={this.state.relevantCourses[i]}
-              onClick={this.handleDeleteCourse.bind(this, this.state.relevantCourses[i])}
-              className="delete-icon"
-            />
-          </div>
-        </div>);
+        list.push(
+          <div key={i} className="edit-container">
+            <div className="editting">
+              <p
+                className="course editting"
+                key={`${this.state.relevantCourses[i]}edit`}
+              >
+                {this.state.relevantCourses[i]}
+              </p>
+              <Delete
+                size={30}
+                id={this.state.relevantCourses[i]}
+                onClick={this.handleDeleteCourse.bind(this, this.state.relevantCourses[i])}
+                className="delete-icon"
+              />
+            </div>
+          </div>,
+        );
       }
       return (
         <div className="display-list">
@@ -200,12 +196,11 @@ class EditProfile extends Component {
       );
     }
     for (let i = 0; i < this.state.relevantCourses.length; i++) {
-      list.push(<p
-        className="display-list-item course"
-        key={this.state.relevantCourses[i]}
-      >
-        {this.state.relevantCourses[i]}
-      </p>);
+      list.push(
+        <p className="display-list-item course" key={this.state.relevantCourses[i]}>
+          {this.state.relevantCourses[i]}
+        </p>,
+      );
     }
     return <div className="display-list">{list}</div>;
   }
@@ -214,22 +209,21 @@ class EditProfile extends Component {
     const list = [];
     if (this.state.editSkills) {
       for (let i = 0; i < this.state.relevantSkills.length; i++) {
-        list.push(<div key={i} className="edit-container">
-          <div className="editting">
-            <p
-              className="skill editting"
-              key={`${this.state.relevantSkills[i]}edit`}
-            >
-              {this.state.relevantSkills[i]}
-            </p>
-            <Delete
-              size={30}
-              id={this.state.relevantSkills[i]}
-              onClick={this.handleDeleteSkill.bind(this, this.state.relevantSkills[i])}
-              className="delete-icon"
-            />
-          </div>
-                  </div>);
+        list.push(
+          <div key={i} className="edit-container">
+            <div className="editting">
+              <p className="skill editting" key={`${this.state.relevantSkills[i]}edit`}>
+                {this.state.relevantSkills[i]}
+              </p>
+              <Delete
+                size={30}
+                id={this.state.relevantSkills[i]}
+                onClick={this.handleDeleteSkill.bind(this, this.state.relevantSkills[i])}
+                className="delete-icon"
+              />
+            </div>
+          </div>,
+        );
       }
       return (
         <div className="display-list">
@@ -356,13 +350,6 @@ class EditProfile extends Component {
       //     });
 
       // axios.post('/api/docs', {netId, resume})
-      //     .then((result) => {
-      //         console.log("Resume updated, result:");
-      //         console.log(result);
-      //         //access the results here....
-      //     });
-
-      // axios.post('/api/docs', {netId, transcript})
       //     .then((result) => {
       //         console.log("Resume updated, result:");
       //         console.log(result);

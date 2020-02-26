@@ -7,8 +7,6 @@ import CourseSelect from '../../components/CourseSelect/CourseSelect';
 import './StudentRegister.scss';
 import * as Utils from '../../components/Utils';
 
-ReactGA.pageview(window.location.pathname + window.location.search);
-
 const majorList = Utils.getMajorList();
 const gradYears = [
   new Date().getFullYear(),
@@ -39,8 +37,7 @@ class StudentRegister extends Component {
       buttonValue: 'Submit',
     };
     ReactGA.initialize('UA-69262899-9');
-    ReactGA.pageview(window.location.pathname + window.location.search); this.onChange.bind(this);
-    this.onSubmit.bind(this);
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   optionify(inputArray, inputName) {

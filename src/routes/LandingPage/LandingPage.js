@@ -49,9 +49,9 @@ class Landing extends Component {
     }
   }
 
-  loginFailure() {
+  loginFailure = () => {
     console.log('Error logging in with Google, please ensure you used an @cornell.edu address.');
-  }
+  };
 
   responseGoogleStudent = (response) => {
     sessionStorage.setItem('token_id', response.tokenId);
@@ -95,10 +95,6 @@ class Landing extends Component {
     });
   };
 
-  viewOpps() {
-    window.location.href = '/faculty';
-  }
-
   render() {
     return (
       <div className="landingPage">
@@ -121,7 +117,7 @@ class Landing extends Component {
                   clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
                   buttonText="Log In/Sign Up"
                   onSuccess={this.responseGoogleStudent}
-                  onFailure={this.loginFailure.bind(this)}
+                  onFailure={this.loginFailure}
                   className="signup"
                 />
 
@@ -137,15 +133,6 @@ class Landing extends Component {
           <h1>Research Connect</h1>
           <h3>Find your next CS research opportunity.</h3>
           <SearchBar id="search-div-container1" />
-          {/* <input */}
-          {/*  className="white-button" */}
-          {/*  id="whiteButton" */}
-          {/*  type="button" */}
-          {/*  onClick={this.viewOpps.bind(this)} */}
-          {/*  value="View All Opportunities" */}
-          {/*  style={{backgroundColor: "white", borderColor: "white", color: "rgb(166,57,45)", marginTop: "20px", width: "30rem", height: "5rem"}} */}
-          {/* /> */}
-
         </section>
 
         <section className="middleContainer2">
@@ -307,24 +294,13 @@ class Landing extends Component {
               clientId="938750905686-krm3o32tgqofhdb05mivarep1et459sm.apps.googleusercontent.com"
               buttonText="GET STARTED"
               onSuccess={this.responseGoogleStudent}
-              onFailure={this.loginFailure.bind(this)}
+              onFailure={this.loginFailure}
               className="signup2 button"
             />
           </div>
         </section>
 
         <footer className="footer-all">
-          {/* <ul>
-            <li><a href="#" aria-label = "twitter"><i className="fa fa-twitter-square" /></a></li>
-            <li><a href="#" aria-label = "facebook"><i className="fa fa-facebook-square" /></a></li>
-            <li><a href="#" aria-label = "snapchat"><i className="fa fa-snapchat-square" /></a></li>
-            <li><a href="mailto:acb352@cornell.edu" aria-label = "email"><i className="fas fa-envelope" /></a></li>
-            <li>
-              <a href="https://github.com/cornell-dti/research-connect" aria-label = "github">
-                <i className="fa fa-github-square" />
-              </a>
-            </li>
-          </ul> */}
           <p>Created by</p>
           <a href="https://cornelldti.org/" target="_blank" rel="noopener noreferrer">
             <img className="CDTIlogo" src={CDTIlogo} alt="Cornell Design & Tech Initiative" />
