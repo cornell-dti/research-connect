@@ -83,9 +83,7 @@ module.exports.mongoose = mongoose;
 
 const mongoDB = process.env.MONGODB;
 // Set up default mongoose connection
-mongoose.connect(mongoDB, {
-  useMongoClient: true,
-});
+mongoose.connect(mongoDB, {useNewUrlParser: true});
 
 // Get the default connection
 const db = mongoose.connection;
