@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
-    "@emotion/core": "^10.0.7",
+    "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.7",
     "@sendgrid/mail": "^6.2.1",
     "aws-sdk": "^2.224.1",
